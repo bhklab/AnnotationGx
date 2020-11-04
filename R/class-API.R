@@ -14,12 +14,12 @@
 #' @md
 #' @keywords internal
 .API <- setClass('API',
-    representation=list(
-        url='character',
-        documentation='list',
-        accepts='character',
-        targets='list'
-        ))
+                 representation=list(
+                     url='character',
+                     documentation='list',
+                     accepts='character',
+                     targets='list'
+                 ))
 
 #' Constructor for an API Connection Class
 #'
@@ -27,9 +27,10 @@
 #'
 #' @return an `API` object storing the API connection and metadata about it.
 #'
-#'
+#' @import httr
+#' @import jsonlite
+#' @import xml
 #' @export
 API <- function(url) {
-
-
+    .API(url, documentation=list(), accepts='', targets=list())
 }
