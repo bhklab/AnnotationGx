@@ -21,43 +21,40 @@ getDrugBank <- function(url='https://go.drugbank.com/releases/5-1-7/downloads/al
 #'
 #' @import xml2
 #' @export
-parseDrugBankXML <- function(xmlPath, outPath)
+parseDrugBankXML <- function(xmlPath, table=c('pathways', 'targets'),
+    outPath='data')
 {
-    drugBank <- read_xml(filePath)
+    extractFun <- switch(match.arg(table),
+        'pathways'=getPathways,
+        'targets'=getTargets)
 
-    getNodePathway <- function(node) getPathways(xml2::as_list(node))
-    a <- Sys.time()
-    pathwayL <- bplapply(xml_children(drugBank), getNodePathway)
-    b <- Sys.time()
-    diff <- b - a
-    diff
+    drugBank <- read_xml(xmlPath)
 
-    pathwayDT <- rbindlist(pathwayL, fill=TRUE)
-    pathwayDT <- pathwayDT[, lapply(.SD, unlist)]
+    getTableFromNode <- function(node) extractFun(xml2::as_list(node))
+    dataL <- bptry(bplapply(xml_children(drugBank), getTableFromNode))
+
+    dataL <- dataL[bpok(dataL)]
+    qsave(dataL, 'data/targetL.qs')
+
+    dataDT <- rbindlist(dataL, fill=TRUE)
+    # Get rid of list columns
+    ifNotCharAsChar <- function(col)
+        if (!is.character(col)) as.character(col) else col
+    dataDT <- dataDT[, lapply(.SD, ifNotCharAsChar)]
+    # Fix "NULL" strings
+    for (colIdx in seq_len(ncol(dataDT))) {
+        set(dataDT, j=colIdx,
+            value=fifelse(dataDT[[colIdx]] == 'NULL' |
+                dataDT[[colIdx]] == 'list(NULL)', NA_character_,
+                    dataDT[[colIdx]]))
+    }
 
     if (!missing(outPath)) {
-        fwrite(pathwayDT, outPath)
+        fwrite(dataDT, file.path(outPath, paste0(table, '.csv')))
     }
 
-    return(pathwayDT)
-}
-
-#' Collect repeated list item names into a single list item
-#'
-#' @param dataList A `list` with repeated names.
-#' @return A `list` with unique names, collecting repeats into sublists.
-#'
-#' @export
-groupListByName <- function(dataList) {
-
-    uniqueNames <- unique(names(dataList))
-    newList <- vector(mode='list', length(uniqueNames))
-    names(newList) <- uniqueNames
-
-    for (name in uniqueNames) {
-        newList[[name]] <- dataList[name]
-    }
-    return(newList)
+    rm(drugBank); gc()
+    return(dataDT)
 }
 
 #' Extract the `pathway` item from a node in the DrugBank .xml file
@@ -67,7 +64,8 @@ groupListByName <- function(dataList) {
 #' @return A `data.table` containing the pathway data for `nodeL`
 #'
 #' @export
-getPathways <- function(nodeL) {
+getPathways <- function(nodeL)
+{
     pathwayL <- nodeL$pathways$pathway
     pathDT <- as.data.table(pathwayL)
     rm(pathwayL)
@@ -81,6 +79,140 @@ getPathways <- function(nodeL) {
     return(pathDT)
 }
 
+#' Extract the `target` item from a node in the DrugBank .xml file
+#'
+#' @param nodeL A `list` produced by calling `xml2::as_list` on a single node
+#'   in the DrugBank database .xml file.
+#' @return A `data.table` containing the target data for `nodeL`
+#'
+#' @export
+getTargets <- function(nodeL)
+{
+    # -- handle edge case where nodeL is wrapped in unnamed list
+    if (is.null(names(nodeL))) nodeL <- nodeL[[1]]
+    if (is.null(names(nodeL))) return(data.table())
+
+    # -- get the drug annotations for the node
+    drugName <- unlist(nodeL$name)
+    print(drugName)
+    drugBankID <- unlist(nodeL$`drugbank-id`)
+
+    # -- extract the desired list
+    targetL <- nodeL$targets$target
+    #rm(nodeL); gc()
+    if (is.null(targetL)) return(data.table())
+
+    # -- define local helpers
+    .listUnique <- function(...) list(unique(...))
+
+    # -- preprocess the peptide list
+    isDuplicated <- duplicated(names(targetL))
+    names(targetL)[isDuplicated] <- paste0(names(targetL)[isDuplicated],
+        seq_len(sum(isDuplicated)))
+
+    ## TODO:: refactor this mess
+    peptides <- targetL[grepl('polypeptide', names(targetL))]
+    targetL <- targetL[!isDuplicated]
+    for (peptideL in peptides) {
+        if (length(targetL$polypeptide) > 0) {
+            peptItemLength <- vapply(peptideL, length, numeric(1))
+            peptideL[peptItemLength > 1] <- lapply(peptideL[peptItemLength > 1], data.table)
+            peptideL[peptItemLength > 1] <- lapply(peptideL[peptItemLength > 1], `[`, j=listColToDT(V1))
+
+            # check for nested lists and unlist them
+            listItemIsList <- function(list) if (length(list) >= 1) is.list(list[[1]]) else FALSE
+            peptItemIsList <- vapply(peptideL, listItemIsList, logical(1))
+            isListLenEq1 <- peptItemLength == 1 & !peptItemIsList
+            peptideL[isListLenEq1] <- lapply(peptideL[isListLenEq1], unlist)
+
+            # preprocess specific list items
+            if (length(peptideL$`external-identifiers`) > 0) {
+                if (!is.data.table(peptideL$`external-identifiers`)) {
+                    peptideL$`external-identifiers` <-
+                        data.table(peptideL$`external-identifiers`)
+                    peptideL$`external-identifiers` <-
+                        peptideL$`external-identifiers`[, listColToDT(V1)]
+                }
+                peptideL$`external-identifiers` <-
+                    peptideL$`external-identifiers`[, lapply(.SD, unlist)]
+                peptideL$`external-identifiers`[, resource := gsub(' ', '', resource)]
+                peptideL$`external-identifiers` <-
+                    dcast(peptideL$`external-identifiers`, . ~ resource,
+                        value.var='identifier')[, . := NULL]
+            }
+            if (length(peptideL$`go-classifiers`) > 0) {
+                if (!is.data.table(peptideL$`go-classifiers`)) {
+                    peptideL$`go-classifiers` <- data.table(peptideL$`go-classifiers`)
+                    peptideL$`go-classifiers` <- peptideL$`go-classifiers`[, listColToDT(V1)]
+                }
+                peptideL$`go-classifiers` <- peptideL$`go-classifiers`[, lapply(.SD, unlist)]
+                peptideL$`go-classifiers` <- dcast(peptideL$`go-classifiers`, ... ~ category,
+                    value.var='description', fun.aggregate=list)[, . := NULL]
+            }
+            if (length(peptideL$pfams) > 0) {
+                if (!is.data.table(peptideL$pfams)) {
+                    peptideL$pfams <- data.table(peptideL$pfams)
+                    peptideL$pfams <- peptideL$pfams[, listColToDT(V1)]
+                }
+                peptideL$pfams <- peptideL$pfams[,
+                    list(id=mapply(paste, identifier, name, MoreArgs=list(sep=' = '),
+                        SIMPLIFY=FALSE))]
+            }
+
+            # coerce to data.table
+            peptideDT <- as.data.table(peptideL)
+            peptideDT <- peptideDT[, lapply(.SD, unlist)] # remove any list columns
+
+            # cast to a single row
+            peptideDT <- dcast(peptideDT, name ~ ...,
+                value.var=setdiff(colnames(peptideDT), 'name'),
+                fun.aggregate=.listUnique)
+
+            if (is.data.table(targetL$polypeptide)) {
+                targetL$polypeptide <-
+                    rbindlist(list(targetL$polypeptide, peptideDT), fill=TRUE)
+            } else {
+                targetL$polypeptide <- peptideDT
+            }
+            rm(peptideDT); gc()
+        }
+    }
+
+    ## -- preprocess the reference list
+    if (length(targetL$references$articles) > 0) {
+        refDT <- data.table(targetL$references$articles)[, listColToDT(V1)]
+        targetL$references <- refDT$`pubmed-id`
+        targetL$citation <- refDT$citation
+        rm(refDT)
+    } else {
+        targetL$citation <- NULL
+    }
+
+    ## -- preprocess actions
+    if (length(targetL$actions) > 0)
+        targetL$actions <- unique(unlist(targetL$actions))
+
+    ## -- convert to data.table
+    targetDT <- as.data.table(targetL)
+    rm(targetL)
+    targetDT <- targetDT[, lapply(.SD, unlist, recursive=FALSE)]
+    if (any(isDuplicated)) {
+        targetDT <- dcast(targetDT, polypeptide.name ~ ...,
+            value.var=setdiff(colnames(targetDT), c('polypetide.name')),
+            fun.aggregate=.listUnique)
+    } else {
+        targetDT <- dcast(targetDT, id + name ~ ...,
+            value.var=setdiff(colnames(targetDT), c('id', 'name')),
+            fun.aggregate=.listUnique)
+    }
+
+    # -- handle edge case where column name is wrong
+    setnames(targetDT, 'polypeptide.name.1', 'polypeptide.name', skip_absent=TRUE)
+
+    # --
+    targetDT[, `:=`(drugName=drugName, drugBankID=drugBankID)]
+    return(targetDT)
+}
 
 #' Convert a list column in a `data.table` to a `data.table`
 #'
@@ -89,7 +221,11 @@ getPathways <- function(nodeL) {
 #'
 #' @export
 listColToDT <- function(col) {
-    rbindlist(lapply(col, as.data.table))
+    if (is.list(col)) {
+        rbindlist(lapply(col, as.data.table), fill=TRUE)
+    } else {
+        col
+    }
 }
 
 if (sys.nframe() == 0) {
@@ -98,7 +234,9 @@ if (sys.nframe() == 0) {
     library(BiocParallel)
     library(jsonlite)
     library(httr)
-    filePath <- 'data/full database.xml'
+    library(qs)
+    xmlPath <- 'data/drugbank.xml'
+    extractFun <- getTargets
 
-    DT <- parseDrugBankXML(filePath)
+    targets <- parseDrugBankXML(filePath, 'targets')
 }

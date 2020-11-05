@@ -2,7 +2,7 @@
 #'
 #'
 #'
-#' @importFrom httr GETf  
+#' @importFrom httr GET
 #' @import jsonlite
 #' @import data.table
 getPubChem <- function(id, input='compound', identifier='cid', operation='',
@@ -14,7 +14,6 @@ getPubChem <- function(id, input='compound', identifier='cid', operation='',
     if (length(id) > 1) id <- paste0(na.omit(id), collapse=',')
 
     # build query URL
-    .buildURL <- function(...) paste(..., sep='/')
     query <- .buildURL(url, input, identifier, id, operation, output)
     query <- paste(query, filter, sep='?')
     print(query)
