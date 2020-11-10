@@ -22,11 +22,16 @@ getDrugBank <- function(url='https://go.drugbank.com/releases/5-1-7/downloads/al
 #' @import xml2
 #' @export
 parseDrugBankXML <- function(xmlPath, table=c('pathways', 'targets'),
-    outPath='data')
+    outPath='data', ..., nodeFun)
 {
-    extractFun <- switch(match.arg(table),
-        'pathways'=getPathways,
-        'targets'=getTargets)
+    if (missing(nodeFun))
+        extractFun <- switch(table,
+            'pathways'=getPathways,
+            'targets'=getTargets)
+    else
+        extractFun <- nodeFun
+
+    if (!is)
 
     drugBank <- read_xml(xmlPath)
 
@@ -48,6 +53,8 @@ parseDrugBankXML <- function(xmlPath, table=c('pathways', 'targets'),
                 dataDT[[colIdx]] == 'list(NULL)', NA_character_,
                     dataDT[[colIdx]]))
     }
+
+    ## TODO:: add table specific post processing (e.g., filters on columns)
 
     if (!missing(outPath)) {
         fwrite(dataDT, file.path(outPath, paste0(table, '.csv')))
