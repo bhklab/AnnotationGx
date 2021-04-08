@@ -35,7 +35,7 @@ getPubChem <- function(id, input='compound', identifier='cid', operation='',
 #' @importFrom httr content
 #' @md
 #' @export
-parseJSON <- function(response, as='test', ...) {
+parseJSON <- function(response, as='text', ...) {
     fromJSON(content(response, as, ...))
 }
 
@@ -62,6 +62,21 @@ buildAIDTable <- function(list) {
     as.data.table(list$InformationList$Information)
 }
 
+#'
+#'
+#'
+#' 
+getSynonymsFromName <- function(drugNames) {
+    results <- vector(mode='list', length(drugNames))
+    names(result) <- drugNames
+    for (drug in drugNames) {
+        results[[drug]] <-  content(getPubChem(id=drug, identifier='Name', 
+            operation='synonyms'), 'parsed')
+        Sys.sleep(0.6)
+    }
+    return(results)
+}
+
 if (sys.nframe() == 0) {
     library(httr)
     library(jsonlite)
@@ -73,6 +88,8 @@ if (sys.nframe() == 0) {
 
     result <- queryPubChem(id=drugInfo$cid, identifier='cid',
     operation='aids', filter='aids_type=active')
+
+    result <- getSynonymsFromName(drugs)
 
     # Get assay ids for each cid in drugInfo
     AIDtable <- buildAIDTable(result)
