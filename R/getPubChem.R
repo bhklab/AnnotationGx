@@ -16,10 +16,11 @@ getPubChem <- function(id, input='compound', identifier='cid', operation='',
     # build query URL
     query <- .buildURL(url, input, identifier, id, operation, output)
     query <- paste(query, filter, sep='?')
-    print(query)
+    encodedQuery <- URLencode(query, reserved=TRUE)
+    print(encodedQuery)
 
     # get HTTP response
-    GET(query)
+    GET(encodedQuery)
 }
 
 #' Parse a JSON into a list
@@ -66,16 +67,25 @@ buildAIDTable <- function(list) {
 #'
 #'
 #' 
-getSynonymsFromName <- function(drugNames) {
+querySynonymsFromName <- function(drugNames) {
+    ## TODO:: Design a general mechanism for correcting special character
+    safeDrugNames <- drugNames
     results <- vector(mode='list', length(drugNames))
-    names(result) <- drugNames
-    for (drug in drugNames) {
-        results[[drug]] <-  content(getPubChem(id=drug, identifier='Name', 
-            operation='synonyms'), 'parsed')
+    names(results) <- safeDrugNames
+    # Quote all drug names for safety
+    for (drug in safeDrugNames) {
+        results[[drug]] <- content(
+            getPubChem(
+                id=drugs[5], 
+                identifier='Name', 
+                operation='synonyms'), 'parsed')
         Sys.sleep(0.6)
     }
     return(results)
 }
+
+
+
 
 if (sys.nframe() == 0) {
     library(httr)
@@ -87,9 +97,17 @@ if (sys.nframe() == 0) {
     drugInfo <- drugInfo(GDSC)
 
     result <- queryPubChem(id=drugInfo$cid, identifier='cid',
-    operation='aids', filter='aids_type=active')
+        operation='aids', filter='aids_type=active')
 
-    result <- getSynonymsFromName(drugs)
+    result <- querySynonymsFromName(drugs)
+    unlist_result <- lapply(result, unlist)
+    expSynDT <- data.table(drugid=drugs, synonyms=unlist_result)
+    expSynDT[, synonyms2 := mapply(c, drugid, synonyms)]
+    mappedSynonyms <- expSynDT[, .(list(which(..lab_drugids %in% unlist(.SD$synonyms2)))), by=drugid]
+    mappedSynonyms <- mappedSynonyms[, unlist(V1), by=drugid]
+
+    unmapped <- setdiff(expSynDT$drugid, mappedSynonyms$drugid)
+    unmappedDT <- expSynDT[drugid %in% unmapped]
 
     # Get assay ids for each cid in drugInfo
     AIDtable <- buildAIDTable(result)
