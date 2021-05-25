@@ -7,6 +7,7 @@ Authors@R: c(
         email = "christopher.eeles@uhnresearch.ca"),
     person("Sisira", "Nair", role = c("aut"),
         email="sisira.nair@uhnresearch.ca"),
+    person("Petr", "Smirnov", role=c("aut")),
     person("Benjamin", "Haibe-Kains", role=c("aut", "cre"),
         email = "benjamin.haibe.kains@utoronto.ca"))
 Description: A package for building, updating and querying an

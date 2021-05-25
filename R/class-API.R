@@ -29,7 +29,7 @@
 #'
 #' @import httr
 #' @import jsonlite
-#' @import xml
+#' @import xml2
 #' @export
 API <- function(url) {
     .API(url, documentation=list(), accepts='', targets=list())

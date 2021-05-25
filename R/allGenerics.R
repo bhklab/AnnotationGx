@@ -1,7 +1,1 @@
-#'
-#'
-#'
-#'
-#'
-#'
 setGeneric('query', function(API, ...) standardGeneric('query'))

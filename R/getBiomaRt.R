@@ -1,10 +1,3 @@
-#'
-#'
-#'
-#'
-#'
-#'
-#'
 getBiomaRt <- function() {
 
     # -- connect to ensembl to map gene symbols

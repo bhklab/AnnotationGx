@@ -15,9 +15,9 @@ getDrugBank <- function(url='https://go.drugbank.com/releases/5-1-7/downloads/al
 #' **WARNING**: Due to the size of the database dump it is likely this
 #'   function will crash your computer if you have less than 32 GB of RAM!
 #'
-#' @param xmlPath
+#' @param xmlPath a
 #' @param outPath `character`
-#' @param ...
+#' @param ... a
 #'
 #' @import xml2
 #' @export
