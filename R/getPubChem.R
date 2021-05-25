@@ -1,14 +1,35 @@
-#' Fetch 
+#' Constructs and executes a GET request to the PubChem REST API
 #'
+#' @description
+#' This function builds a query to the PubChem REST API based on the function
+#' parameters then executes that query.
 #'
+#' @details
+#' See https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest for the complete API 
+#' documentation.
 #'
+#' 
+#'
+#' @param id
+#' @param input
+#' @param identifier
+#' @param operation
+#' @param output
+#' @param ... Force subsequent arguments to be named. Not used.
+#' @param url The URL of the PubChem REST API.
+#' @param fitler 
+#'
+#' @return A `response` object
+#'
+#' @seealso [httr::GET], []
+#'
+#' @md
 #' @importFrom httr GET
 #' @import jsonlite
 #' @import data.table
 getPubChem <- function(id, input='compound', identifier='cid', operation='',
     output='JSON', ..., url='https://pubchem.ncbi.nlm.nih.gov/rest/pug',
     filter='')
-
 {
     # handle list or vector inputs for id
     if (length(id) > 1) id <- paste0(na.omit(id), collapse=',')
@@ -41,13 +62,19 @@ parseJSON <- function(response, as='text', ...) {
 }
 
 #' Query the PubChem REST API, with the result automatically converted from
-#'  JSON to a list.
+#'   JSON to a list. This only works when `output='JSON'` in `getPubChem`.
 #' 
 #' @param ... Fallthrough arguments to `AnnotationGx::getPubChem` function.
 #' 
 #' @md
 #' @export
 queryPubChem <- function(...) parseJSON(getPubChem(...))
+
+
+## ============================
+## queryPubChem wrapper methods
+## ----------------------------
+
 
 #' Build a `data.table` of assay ids from the a PubChem query list.
 #' 
