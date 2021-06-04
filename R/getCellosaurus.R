@@ -19,7 +19,9 @@ getCelloxml <- function(url = "https://ftp.expasy.org/databases/cellosaurus/cell
 #' @param main.xml is read xml object from getCelloxml
 #' 
 #' 
-#' 
+#' @md
+#' @importFrom xml2 xml_find_all xml_find_first xml_text
+#' @export
 getInfoFromCellID <- function(cell.nm, main.xml){
   xmlObject <- xml_find_first(main.xml,paste("//cell-line/name-list/name[normalize-space(text()) = '", cell.nm, "']/../..", sep = ""))
   std.name <- xml_text(xml_find_first(xmlObject, ".//name-list/name[@type = 'identifier']"))

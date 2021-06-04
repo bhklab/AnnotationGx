@@ -16,7 +16,6 @@
 #' @export
 .groupListByName <- function(dataList)
 {
-
     uniqueNames <- unique(names(dataList))
     newList <- vector(mode='list', length(uniqueNames))
     names(newList) <- uniqueNames

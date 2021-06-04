@@ -145,7 +145,7 @@ getPubChem <- function(id, domain='compound', namespace='cid', operation='',
 
     # build query URL
     query <- .buildURL(url, domain, namespace, id, operation, output)
-    query <- paste(query, output_operation, sep='?')
+    query <- paste(query, operation_options, sep='?')
     encodedQuery <- URLencode(query, reserved=TRUE)
     print(encodedQuery)
 
