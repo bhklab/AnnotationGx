@@ -6,7 +6,7 @@
 #' @return A `character` vector with the URL.
 #'
 #' @export
-.buildURL <- function(...) paste(..., sep='/')
+.buildURL <- function(...) paste0(na.omit(unlist(list(...))), collapse='/')
 
 #' Collect repeated list item names into a single list item
 #'

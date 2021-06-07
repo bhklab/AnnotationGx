@@ -22,7 +22,7 @@ getCelloxml <- function(url = "https://ftp.expasy.org/databases/cellosaurus/cell
 #' @md
 #' @importFrom xml2 xml_find_all xml_find_first xml_text
 #' @export
-getInfoFromCellID <- function(cell.nm, main.xml){
+getInfoFromCellID <- function(cell.nm, main.xml) {
   xmlObject <- xml_find_first(main.xml,paste("//cell-line/name-list/name[normalize-space(text()) = '", cell.nm, "']/../..", sep = ""))
   std.name <- xml_text(xml_find_first(xmlObject, ".//name-list/name[@type = 'identifier']"))
   syno.list <- xml_text(xml_find_all(xmlObject, ".//name-list/name[@type = 'synonym']"))
@@ -50,7 +50,6 @@ getInfoFromCellID <- function(cell.nm, main.xml){
 #' Build a `data.table` of annotations from query list.
 #' @param cellnames is the list of cell names (identifiers and synonyms)
 #' @param url is cellosaurus link to xml 
-#' 
 #' 
 #' 
 getCellosaurus <- function(cellnames, url = "https://ftp.expasy.org/databases/cellosaurus/cellosaurus.xml"){

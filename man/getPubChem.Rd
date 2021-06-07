@@ -8,11 +8,11 @@ getPubChem(
   id,
   domain = "compound",
   namespace = "cid",
-  operation = "",
+  operation = NA,
   output = "JSON",
   ...,
   url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug",
-  operation_options = ""
+  operation_options = NA
 )
 }
 \arguments{

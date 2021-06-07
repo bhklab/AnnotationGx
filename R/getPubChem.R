@@ -7,6 +7,7 @@
 
 #' Constructs and executes a GET request to the PubChem PUG REST API
 #'
+#'
 #' @description
 #' This function builds a query URL for the PubChem PUG REST API based on the 
 #' function parameters then executes that query, returning a `httr::request` 
@@ -76,7 +77,6 @@
 #' Complete documentation for valid output formats can be found at:
 #' https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest$_Toc494865558
 #' 
-#'
 #' @param id The identifier for REST API query. This should be a valid compound
 #'   identifier for the specified `domain` and `namespace`. For example, if
 #'   `domain='compound'` and `namespace='cid'` then `id` should be one or
@@ -136,17 +136,21 @@
 #' @md
 #' @importFrom httr GET
 #' @export
-getPubChem <- function(id, domain='compound', namespace='cid', operation='',
+getPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
     output='JSON', ..., url='https://pubchem.ncbi.nlm.nih.gov/rest/pug',
-    operation_options='')
+    operation_options=NA)
 {
     # handle list or vector inputs for id
     if (length(id) > 1) id <- paste0(na.omit(id), collapse=',')
 
+    # replace special characters in id
+    id <- URLencode(id, reserved=TRUE)
+
     # build query URL
     query <- .buildURL(url, domain, namespace, id, operation, output)
-    query <- paste(query, operation_options, sep='?')
-    encodedQuery <- URLencode(query, reserved=TRUE)
+    if (!is.na(operation_options))
+        query <- paste(query, operation_options, sep='?')
+    encodedQuery <- URLencode(query)
     print(encodedQuery)
 
     # get HTTP response
