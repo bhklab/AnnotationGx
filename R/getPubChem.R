@@ -279,7 +279,8 @@ getPubChemFromNSC <- function(ids, to='cids', ..., raw=FALSE) {
 #' @param ... Force subsequent parameters to be named. Not used.
 #' @param properties A `character` vector of properties to return. Only used
 #'   when `to='property'`. Common properties of interest are: 'Title' (name), 
-#'   'IUPACName', 'CanonicalSMILES', 'IsomericSMILES', 'InChIKey'. 
+#'   'IUPACName', 'CanonicalSMILES', 'IsomericSMILES', 'InChIKey'. The default
+#'   setting with return all of these.
 #'   See details for more information.
 #'
 #' @return A `data.frame` or `list` containing results of the query.
@@ -292,7 +293,8 @@ getPubChemFromNSC <- function(ids, to='cids', ..., raw=FALSE) {
 #' @md
 #' @export
 getPubChemCompoundFromCID <- function(ids, to='property', ..., 
-    properties=c('Title', 'IUPACName', 'CanonicalSMILES', 'InChIKey')) 
+    properties=c('Title', 'IUPACName', 'CanonicalSMILES', 'IsomericSMILES', 
+        'InChIKey')) 
 {
     if (!is.character(ids)) ids <- as.character(ids)
     if (to == 'property' && !missing(properties))

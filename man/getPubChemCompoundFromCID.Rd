@@ -8,7 +8,7 @@ getPubChemCompoundFromCID(
   ids,
   to = "property",
   ...,
-  properties = c("IUPACName")
+  properties = c("Title", "IUPACName", "CanonicalSMILES", "IsomericSMILES", "InChIKey")
 )
 }
 \arguments{
@@ -21,9 +21,10 @@ to 'record', which returns all available data from the specified IDs.}
 \item{...}{Force subsequent parameters to be named. Not used.}
 
 \item{properties}{A \code{character} vector of properties to return. Only used
-when \code{to='property'}. Common properties of interest are: 'IUPACName',
-'CanonicalSMILES', 'IsomericSMILES', 'InChIKey'. See details for more
-information.}
+when \code{to='property'}. Common properties of interest are: 'Title' (name),
+'IUPACName', 'CanonicalSMILES', 'IsomericSMILES', 'InChIKey'. The default
+setting with return all of these.
+See details for more information.}
 }
 \value{
 A \code{data.frame} or \code{list} containing results of the query.
