@@ -6,6 +6,9 @@
 \usage{
 buildAIDTable(list)
 }
+\arguments{
+\item{A}{}
+}
 \description{
 Build a \code{data.table} of assay ids from the a PubChem query list.
 }

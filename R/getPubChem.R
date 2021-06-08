@@ -196,7 +196,7 @@ queryPubChem <- function(...) parseJSON(getPubChem(...))
 
 #' Build a `data.table` of assay ids from the a PubChem query list.
 #' 
-#' @list
+#' @param A
 #' 
 #' 
 #' 
@@ -232,33 +232,104 @@ querySynonymsFromName <- function(drugNames) {
     return(results)
 }
 
+#' @title getPubChemFromNSC
+#' 
+#' @description
+#' Return a data.frame mapping from ids to the information specified in `to`.
+#'
+#' @param ids A `character` or `numeric` vector of valid NSC ids to use for the
+#'   query.
+#' @param to A `character(1)` vector with the desired return type. Currently
+#'   only 'cids' and 'sids' are implemented, but other options are available
+#'   via the PubChem API.
+#' @param ... Force subsequent parameters to be named. Not used.
+#' @param raw A `logical(1)` vector specifying whether to early return the raw
+#'   query results. Use this if specifying an unimplemented return to the `to`
+#'   paramater.
+#'
+#' @return A `data.frame` where the first column is the specified NSC ids and 
+#'   the second column is the results specified in `to`.
+#'
+#' @md
+#' @export
+getPubChemFromNSC <- function(ids, to='cids', ..., raw=FALSE) {
+    if (!is.character(ids)) ids <- as.character(ids)
+    queryRes <- queryPubChem(ids, domain='substance', 
+        namespace='sourceid/DTP.NCI', operation=to)
+    if (raw) return(queryRes[[1]][[1]])
+    switch(to,
+        'cids'={ 
+            cbind(data.frame(NSC_id=ids), 
+                data.frame(lapply(queryRes[[1]][[1]], unlist)))
+        },
+        'sids'={
+            data.frame(NSC_id=ids, SID=unlist(queryRes[[1]][[1]]))
+        },
+        stop('The operation ', to, ' has not been implemented yet!',  
+            ' To return the unprocessed results of the query, set `raw=TRUE`.')
+    )
+}
 
+#' @title getPubChemFromCID
+#'
+#' @param ids A `character` or `numeric` vector of valid PubChem CIDs to use
+#'   for the query.
+#' @param to A `character(1)` vector with the desired return type. Defaults
+#'   to 'record', which returns all available data from the specified IDs.
+#' @param ... Force subsequent parameters to be named. Not used.
+#' @param properties A `character` vector of properties to return. Only used
+#'   when `to='property'`. Common properties of interest are: 'Title' (name), 
+#'   'IUPACName', 'CanonicalSMILES', 'IsomericSMILES', 'InChIKey'. 
+#'   See details for more information.
+#'
+#' @return A `data.frame` or `list` containing results of the query.
+#'
+#' @details
+#' ## `properties`
+#' For a full list of availabe properties see: 
+#' https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest$_Toc494865556
+#'
+#' @md
+#' @export
+getPubChemCompoundFromCID <- function(ids, to='property', ..., 
+    properties=c('Title', 'IUPACName', 'CanonicalSMILES', 'InChIKey')) 
+{
+    if (!is.character(ids)) ids <- as.character(ids)
+    if (to == 'property' && !missing(properties))
+        to <- paste0(to, '/', paste0(properties, collapse=','))
+    queryRes <- queryPubChem(ids, domain='compound', 
+        namespace='cid', operation=to)
+    return(queryRes[[1]][[1]])
+}
 
 
 if (sys.nframe() == 0) {
-    library(httr)
-    library(jsonlite)
-    library(data.table)
-    library(PharmacoGx)
+    library(AnnotationGx)
 
-    GDSC <- readRDS(list.files('../PSets', pattern = 'GDSC.*v2.*', full.names=TRUE))
-    drugInfo <- drugInfo(GDSC)
+    ids <- c(1, 17, 26, 89, 112, 171, 185, 186, 197, 291)
+    NSCtoCID <- getPubChemFromNSC(ids)
+    cids <- NSCtoCID$CID
+    compoundProperties <- getPubChemCompoundFromCID(cids, 
+        properties=c('IUPACName', 'CanonicalSMILES', 'Title', 'Inchikey'))
 
-    result <- queryPubChem(id=drugInfo$cid, namespace='cid',
-        operation='aids', operation_options='aids_type=active')
+    # GDSC <- readRDS(list.files('../PSets', pattern = 'GDSC.*v2.*', full.names=TRUE))
+    # drugInfo <- drugInfo(GDSC)
 
-    result <- querySynonymsFromName(drugs)
-    unlist_result <- lapply(result, unlist)
-    expSynDT <- data.table(drugid=drugs, synonyms=unlist_result)
-    expSynDT[, synonyms2 := mapply(c, drugid, synonyms)]
-    mappedSynonyms <- expSynDT[, .(list(which(..lab_drugids %in% unlist(.SD$synonyms2)))), by=drugid]
-    mappedSynonyms <- mappedSynonyms[, unlist(V1), by=drugid]
+    # result <- queryPubChem(id=drugInfo$cid, namespace='cid',
+    #     operation='aids', operation_options='aids_type=active')
 
-    unmapped <- setdiff(expSynDT$drugid, mappedSynonyms$drugid)
-    unmappedDT <- expSynDT[drugid %in% unmapped]
+    # result <- querySynonymsFromName(drugs)
+    # unlist_result <- lapply(result, unlist)
+    # expSynDT <- data.table(drugid=drugs, synonyms=unlist_result)
+    # expSynDT[, synonyms2 := mapply(c, drugid, synonyms)]
+    # mappedSynonyms <- expSynDT[, .(list(which(..lab_drugids %in% unlist(.SD$synonyms2)))), by=drugid]
+    # mappedSynonyms <- mappedSynonyms[, unlist(V1), by=drugid]
 
-    # Get assay ids for each cid in drugInfo
-    AIDtable <- buildAIDTable(result)
+    # unmapped <- setdiff(expSynDT$drugid, mappedSynonyms$drugid)
+    # unmappedDT <- expSynDT[drugid %in% unmapped]
 
-    # 
+    # # Get assay ids for each cid in drugInfo
+    # AIDtable <- buildAIDTable(result)
+
+    # # 
 }
