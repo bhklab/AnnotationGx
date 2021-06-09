@@ -21,7 +21,8 @@ Imports:
     xml2,
     jsonlite,
     data.table,
-    rlang
+    rlang,
+    CoreGx
 License: `use_mit_license()`
 Encoding: UTF-8
 LazyData: true

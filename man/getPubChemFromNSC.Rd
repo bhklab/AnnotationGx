@@ -12,13 +12,16 @@ query.}
 
 \item{to}{A \code{character(1)} vector with the desired return type. Currently
 only 'cids' and 'sids' are implemented, but other options are available
-via the PubChem API.}
+via the PubChem API. This corresponds to the \code{operation} portion of the
+PubChem API URL Path.}
 
-\item{...}{Force subsequent parameters to be named. Not used.}
+\item{...}{Fall through arguments to bpmapply. Use this to pass in BPARAM
+parameter to customize parellization settings. Alternatively, just call
+register with your desired}
 
 \item{raw}{A \code{logical(1)} vector specifying whether to early return the raw
 query results. Use this if specifying an unimplemented return to the \code{to}
-paramater.}
+parameter.}
 }
 \value{
 A \code{data.frame} where the first column is the specified NSC ids and

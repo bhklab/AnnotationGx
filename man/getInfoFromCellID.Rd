@@ -4,12 +4,12 @@
 \alias{getInfoFromCellID}
 \title{Filter parent node cell-line and parse child nodes for required annotations}
 \usage{
-getInfoFromCellID(cell.nm, main.xml)
+getInfoFromCellID(cell_nm, main_xml)
 }
 \arguments{
-\item{cell.nm}{is cell name}
+\item{cell_nm}{is cell name}
 
-\item{main.xml}{is read xml object from getCelloxml}
+\item{main_xml}{is read xml object from getCelloxml}
 }
 \description{
 Filter parent node cell-line and parse child nodes for required annotations

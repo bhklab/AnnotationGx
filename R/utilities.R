@@ -30,9 +30,13 @@
 ##FIXME:: Remove these in final package build
 .collapse <- CoreGx::.collapse
 
-.errorMsg <- CoreGx::.errorMsg
+.message <- CoreGx::.message
 
-.warnMsg <- CoreGx::.warnMsg
+.error <- CoreGx::.error
+
+.warning <- CoreGx::.warning
+
+.funContext <- CoreGx:::.funContext
 
 #' Return the name of the function and the name of the package that function
 #'   is in when called within an R function.
