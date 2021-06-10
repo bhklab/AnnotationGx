@@ -4,7 +4,7 @@
 \alias{parseJSON}
 \title{Parse a JSON into a list}
 \usage{
-parseJSON(response, as = "text", ...)
+parseJSON(response, as = "text", ..., encoding = "UTF-8")
 }
 \arguments{
 \item{response}{A \code{response} object as returned by \code{httr::GET}}

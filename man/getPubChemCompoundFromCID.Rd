@@ -8,7 +8,9 @@ getPubChemCompoundFromCID(
   ids,
   to = "property",
   ...,
-  properties = c("Title", "IUPACName", "CanonicalSMILES", "IsomericSMILES", "InChIKey")
+  properties = c("Title", "IUPACName", "CanonicalSMILES", "IsomericSMILES", "InChIKey"),
+  batch = TRUE,
+  raw = FALSE
 )
 }
 \arguments{

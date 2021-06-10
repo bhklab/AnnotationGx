@@ -7,7 +7,6 @@
 
 #' Constructs and executes a GET request to the PubChem PUG REST API
 #'
-#'
 #' @description
 #' This function builds a query URL for the PubChem PUG REST API based on the 
 #' function parameters then executes that query, returning a `httr::request` 
@@ -124,7 +123,7 @@
 #'
 #' @return A `httr::response` object with the results of the GET request.
 #'
-#' @seealso [httr::GET], [queryPubChem]
+#' @seealso [httr::GET], [httr::RETRY], [queryRequestPubChem]
 #'
 #' @references
 #' Kim S, Thiessen PA, Cheng T, Yu B, Bolton EE. An update on PUG-REST: RESTful interface for programmatic access to PubChem. Nucleic Acids Res. 2018 July 2; 46(W1):W563-570. doi:10.1093/nar/gky294.
@@ -134,9 +133,9 @@
 #' Kim S, Thiessen PA, Bolton EE. Programmatic Retrieval of Small Molecule Information from PubChem Using PUG-REST. In Kutchukian PS, ed. Chemical Biology Informatics and Modeling. Methods in Pharmacology and Toxicology. New York, NY: Humana Press, 2018, pp. 1-24. doi:10.1007/7653_2018_30.
 #'
 #' @md
-#' @importFrom httr GET timeout
+#' @importFrom httr RETRY GET timeout
 #' @export
-getPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
+getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
     output='JSON', ..., url='https://pubchem.ncbi.nlm.nih.gov/rest/pug',
     operation_options=NA)
 {
@@ -151,11 +150,76 @@ getPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
     if (!is.na(operation_options))
         query <- paste(query, operation_options, sep='?')
     encodedQuery <- URLencode(query)
-    #print(nchar(encodedQuery))
-    # print(encodedQuery)
 
-    # get HTTP response
-    GET(encodedQuery, timeout(29))
+    # print(dput(encodedQuery))
+
+    # get HTTP response, respecting the 30s max query time of PubChem API
+    tryCatch(RETRY('GET', encodedQuery, timeout(29), times=5),
+        error={function(e) message("GET error: ", e)}
+    )
+}
+
+#' @title queryPubChem
+#'
+#' @inheritParams getRequestPubChem
+#' @param ... Fall through parameters to `bpmapply`.
+#'
+#' @md
+#' @export
+queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
+    output='JSON', ..., url='https://pubchem.ncbi.nlm.nih.gov/rest/pug',
+    operation_options=NA, batch=TRUE, raw=FALSE)
+{
+    if (!is.character(id)) id <- as.character(id)
+    
+    ## TODO:: Retrieve PubChem server status to dynamically set query spacing
+    ##>based on server load
+    .queryPubChemSleep <- function(x, i, ...) {
+        if (is(bpparam(), 'SerialParam')) Sys.sleep(0.17 * i) else 
+            Sys.sleep(1 * floor(i / 5))
+        queryRequestPubChem(x, ...)
+    }
+
+    # -- make queries
+    # TODO:: Throw errors in getPubChem for bad HTTP request to allow use
+    ##>of BPREDO feature
+    if (batch) {
+        # determine how many queries to make, with a max 4000 characters per query
+    
+        # add 2 characters for conversion of ',' as '%2C' after URL encoding
+        maxNChars <- max(vapply(id, FUN=nchar, numeric(1)), na.rm=TRUE) + 2
+        totalLength <- length(id) * maxNChars
+        numQueries <- ceiling(totalLength / 4000)
+        querySize <- ceiling(length(id) / numQueries)
+        queries <- split(id, ceiling(seq_along(id) / querySize))
+
+        queryRes <- bpmapply(FUN=.queryPubChemSleep, x=queries, i=seq_along(queries),
+            MoreArgs=list(domain=domain, namespace=namespace, operation=operation,
+                output=output, url=url, operation_options=operation_options), 
+            SIMPLIFY=FALSE, ...) 
+    } else {
+        queryRes <- bpmapply(FUN=.queryPubChemSleep, x=id, i=seq_along(id),
+            MoreArgs=list(domain=domain, namespace=namespace, operation=operation,
+                output=output, url=url, operation_options=operation_options),
+            SIMPLIFY=FALSE, ...)
+        queries <- as.list(id)
+    }
+
+    # -- early return option
+    if (raw)  return(queryRes)   
+
+    # -- deal with failed queries
+    failed <- unlist(lapply(queryRes, names)) != 'InformationList'
+    failedQueries <- Map(list, query=queries[failed], failure=queryRes[failed])
+    queryRes <- queryRes[!failed]
+    queries <- queries[!failed]
+    if (is.null(queries)) queries <- NA
+
+    # -- Attach query metadata to the returned list
+    attributes(queryRes)$failed <- failedQueries
+    attributes(queryRes)$queries <- queries
+
+    return(queryRes)
 }
 
 #' Parse a JSON into a list
@@ -171,18 +235,18 @@ getPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
 #' @importFrom jsonlite fromJSON
 #' @importFrom httr content
 #' @export
-parseJSON <- function(response, as='text', ...) {
-    fromJSON(content(response, as, ...))
+parseJSON <- function(response, as='text', ..., encoding='UTF-8') {
+    fromJSON(content(response, as=as, ..., encoding=encoding))
 }
 
 #' Query the PubChem REST API, with the result automatically converted from
-#'   JSON to a list. This only works when `output='JSON'` in `getPubChem`.
+#'   JSON to a list. This only works when `output='JSON'` in `getRequestPubChem`.
 #' 
-#' @param ... Fallthrough arguments to `AnnotationGx::getPubChem` function.
+#' @param ... Fallthrough arguments to `AnnotationGx::getRequestPubChem` function.
 #' 
 #' @md
 #' @export
-queryPubChem <- function(...) parseJSON(getPubChem(...))
+queryRequestPubChem <- function(...) parseJSON(getRequestPubChem(...))
 
 
 ## ============================
@@ -221,7 +285,7 @@ querySynonymsFromName <- function(drugNames) {
     # Quote all drug names for safety
     for (drug in safeDrugNames) {
         results[[drug]] <- content(
-            getPubChem(
+            getRequestPubChem(
                 id=drug, 
                 namespace='Name',
                 operation='synonyms'),
@@ -236,7 +300,7 @@ querySynonymsFromName <- function(drugNames) {
 #' @title getPubChemFromNSC
 #' 
 #' @description
-#' Return a data.frame mapping from ids to the information specified in `to`.
+#' Return a data.table mapping from ids to the information specified in `to`.
 #'
 #' @param ids A `character` or `numeric` vector of valid NSC ids to use for the
 #'   query.
@@ -244,14 +308,14 @@ querySynonymsFromName <- function(drugNames) {
 #'   only 'cids' and 'sids' are implemented, but other options are available
 #'   via the PubChem API. This corresponds to the `operation` portion of the
 #'   PubChem API URL Path.
-#' @param ... Fall through arguments to bpmapply. Use this to pass in BPARAM
+#' @param ... Fall through arguments to bpmapply. Use this to pass in BPPARAM
 #'   parameter to customize parellization settings. Alternatively, just call
-#'   register with your desired 
+#'   `register()` with your desired parallel backend configuration. 
 #' @param raw A `logical(1)` vector specifying whether to early return the raw
 #'   query results. Use this if specifying an unimplemented return to the `to`
 #'   parameter.
 #'
-#' @return A `data.frame` where the first column is the specified NSC ids and 
+#' @return A `data.table` where the first column is the specified NSC ids and 
 #'   the second column is the results specified in `to`.
 #'
 #' @md
@@ -259,42 +323,20 @@ querySynonymsFromName <- function(drugNames) {
 #' @importFrom CoreGx .error .warning
 #' @importFrom BiocParallel bpmapply bpparam
 #' @export
-getPubChemFromNSC <- function(ids, to='cids', ..., raw=FALSE) {
+getPubChemFromNSC <- function(ids, to='cids', ..., batch=TRUE, raw=FALSE) {
     
     funContext <- .funContext('::getPubChemFromNSC')
-    if (!is.character(ids)) ids <- as.character(ids)
 
-    ## TODO:: Retrieve PubChem server status to dynamically set query spacing
-    ##>based on server load
-    .queryPubChemSleep <- function(x, i, ...) {
-        Sys.sleep(0.34 * floor(i %% 5))
-        queryPubChem(x, ..., encoding='UTF-8')
-    }
+    # -- make the GET request
+    queryRes <- queryPubChem(ids, domain='substance', 
+        namespace='sourceid/DTP.NCI', operation=to, batch=batch, raw=raw)
 
-    # -- determine how many queries to make, with a max 4000 characters per query
-    
-    # add 2 characters for conversion of ',' as '%2C' after URL encoding
-    maxNChars <- max(vapply(ids, FUN=nchar, numeric(1)), na.rm=TRUE) + 2
-    totalLength <- length(ids) * maxNChars
-    numQueries <- ceiling(totalLength / 4000)
-    querySize <- ceiling(length(ids) / numQueries)
-    queries <- split(ids, ceiling(seq_along(ids) / querySize))
-
-    # -- make queries
-    # TODO:: Throw errors in getPubChem for bad HTTP request to allow use
-    ##>of bpretry feature
-    queryRes <- bpmapply(FUN=.queryPubChemSleep, x=queries, i=seq_along(queries),
-        MoreArgs=list(domain='substance', namespace='sourceid/DTP.NCI', 
-            operation=to), SIMPLIFY=FALSE) 
-    
     # -- early return option
     if (raw) return(queryRes)
 
-    # -- deal with failed queries
-    failed <- unlist(lapply(queryRes, names)) != 'InformationList'
-    failedQueries <- Map(list, query=queries[failed], failure=queryRes[failed])
-    queryRes <- queryRes[!failed]
-    queries <- queries[!failed]
+    # -- handle failed queries
+    failedQueries <- attributes(queryRes)$failed
+    queries <- attributes(queryRes)$queries
 
     # -- process the results
     .replace_NULL_NA <- function(DT) lapply(DT, function(x) { 
@@ -307,7 +349,7 @@ getPubChemFromNSC <- function(ids, to='cids', ..., raw=FALSE) {
     queryRes <- rbindlist(queryRes)
     switch(to,
         'cids'={
-            unlistQueryRes <- queryRes[, NCI_id := unlist(queries)][, 
+            unlistQueryRes <- queryRes[, NSC_id := unlist(queries)][, 
                 lapply(.SD, FUN=.replace_NULL_NA)][, lapply(.SD, unlist)]
             if (nrow(unlistQueryRes) > nrow(queryRes)) 
                 .warning(funContext, 'Some IDs multimap to returned CIDs, 
@@ -316,7 +358,7 @@ getPubChemFromNSC <- function(ids, to='cids', ..., raw=FALSE) {
                 failed to map and will have NA CIDs.')
         },
         'sids'={
-            unlistQueryRes <- queryRes[, NCI_id := unlist(queries)][, 
+            unlistQueryRes <- queryRes[, NSC_id := unlist(queries)][, 
                 lapply(.SD, FUN=.replace_NULL_NA)][, lapply(.SD, unlist)]
             if (nrow(unlistQueryRes) > nrow(queryRes)) 
                 .warning(funContext, 'Some IDs multimap to returned SIDs, 
@@ -332,6 +374,8 @@ getPubChemFromNSC <- function(ids, to='cids', ..., raw=FALSE) {
             `attributes(<result>)$failed` for more information.')
         attributes(unlistQueryRes)$failed <- failedQueries
     }
+    # rearrange columns so that NSC_id is first
+    setcolorder(unlistQueryRes, rev(colnames(unlistQueryRes)))
     return(unlistQueryRes)
 }
 
@@ -359,7 +403,7 @@ getPubChemFromNSC <- function(ids, to='cids', ..., raw=FALSE) {
 #' @export
 getPubChemCompoundFromCID <- function(ids, to='property', ..., 
     properties=c('Title', 'IUPACName', 'CanonicalSMILES', 'IsomericSMILES', 
-        'InChIKey')) 
+        'InChIKey'), batch=TRUE, raw=FALSE) 
 {
     if (!is.character(ids)) ids <- as.character(ids)
     if (to == 'property' && !missing(properties))
@@ -376,6 +420,14 @@ if (sys.nframe() == 0) {
 
     ids <- unique(na.omit(fread('local_data/DTP_NCI60_RAW.csv')[[1]]))
     NSCtoCID <- getPubChemFromNSC(ids)
+
+    failed <- attributes(NSCtoCID)$failed
+    failedQueries <- lapply(failed, FUN=`[[`, i='query')
+
+    retryQueries <- lapply(failedQueries, FUN=getPubChemFromNSC, batch=FALSE)
+
+
+
     cids <- NSCtoCID$CID
     compoundProperties <- getPubChemCompoundFromCID(cids)
 
