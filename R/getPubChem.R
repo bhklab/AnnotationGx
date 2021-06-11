@@ -1,4 +1,3 @@
-ev
 
 ## =========================================
 ## Make GET Requests to the PubChem REST API
@@ -449,12 +448,12 @@ if (sys.nframe() == 0) {
     library(data.table)
 
     ids <- unique(na.omit(fread('local_data/DTP_NCI60_RAW.csv')[[1]]))
-    NSCtoCID <- fread('NSCtoCID.csv') # getPubChemFromNSC(ids)
+    NSCtoCID <- getPubChemFromNSC(ids)
 
-    # failed <- attributes(NSCtoCID)$failed
-    # failedQueries <- lapply(failed, FUN=`[[`, i='query')
+    failed <- attributes(NSCtoCID)$failed
+    failedQueries <- lapply(failed, FUN=`[[`, i='query')
 
-    # retryQueries <- lapply(failedQueries, FUN=getPubChemFromNSC, batch=FALSE)
+    retryQueries <- lapply(failedQueries, FUN=getPubChemFromNSC, batch=FALSE)
 
     cids <- na.omit(NSCtoCID$CID)
     compoundProperties <- getPubChemCompound(cids)
