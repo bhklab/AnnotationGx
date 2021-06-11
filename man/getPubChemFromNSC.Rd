@@ -4,7 +4,7 @@
 \alias{getPubChemFromNSC}
 \title{getPubChemFromNSC}
 \usage{
-getPubChemFromNSC(ids, to = "cids", ..., raw = FALSE)
+getPubChemFromNSC(ids, to = "cids", ..., batch = TRUE, raw = FALSE)
 }
 \arguments{
 \item{ids}{A \code{character} or \code{numeric} vector of valid NSC ids to use for the
@@ -12,18 +12,21 @@ query.}
 
 \item{to}{A \code{character(1)} vector with the desired return type. Currently
 only 'cids' and 'sids' are implemented, but other options are available
-via the PubChem API.}
+via the PubChem API. This corresponds to the \code{operation} portion of the
+PubChem API URL Path.}
 
-\item{...}{Force subsequent parameters to be named. Not used.}
+\item{...}{Fall through arguments to bpmapply. Use this to pass in BPPARAM
+parameter to customize parellization settings. Alternatively, just call
+\code{register()} with your desired parallel backend configuration.}
 
 \item{raw}{A \code{logical(1)} vector specifying whether to early return the raw
 query results. Use this if specifying an unimplemented return to the \code{to}
-paramater.}
+parameter.}
 }
 \value{
-A \code{data.frame} where the first column is the specified NSC ids and
+A \code{data.table} where the first column is the specified NSC ids and
 the second column is the results specified in \code{to}.
 }
 \description{
-Return a data.frame mapping from ids to the information specified in \code{to}.
+Return a data.table mapping from ids to the information specified in \code{to}.
 }

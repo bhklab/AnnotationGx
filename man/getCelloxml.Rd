@@ -2,7 +2,7 @@
 % Please edit documentation in R/getCellosaurus.R
 \name{getCelloxml}
 \alias{getCelloxml}
-\title{Access and read xml}
+\title{Access and parse Cellosaurus xml}
 \usage{
 getCelloxml(
   url = "https://ftp.expasy.org/databases/cellosaurus/cellosaurus.xml"
@@ -11,6 +11,15 @@ getCelloxml(
 \arguments{
 \item{url}{is cellosaurus link to xml}
 }
+\value{
+A data.table object with the results of the input cell line(s)
+}
 \description{
-Access and read xml
+This function reads Cellosaurus XML and parses nodes for cell line annotations based on input parameters, returning a data.table object
+}
+\details{
+
+}
+\references{
+Bairoch A.The Cellosaurus, a cell line knowledge resource.J. Biomol. Tech. 29:25-38(2018) DOI: 10.7171/jbt.18-2902-002; PMID: 29805321; PMCID: PMC5945021
 }

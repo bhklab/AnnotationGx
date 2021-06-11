@@ -30,3 +30,8 @@ output/
 # R Object Files
 *.rds
 .Rproj.user
+
+# Local data
+local_data
+local_data/*
+
