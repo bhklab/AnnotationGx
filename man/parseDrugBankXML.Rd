@@ -7,7 +7,7 @@
 parseDrugBankXML(
   xmlPath,
   table = c("pathways", "targets"),
-  outPath = "data",
+  outPath = tempdir(),
   ...,
   nodeFun
 )

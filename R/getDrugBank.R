@@ -22,7 +22,7 @@ getDrugBank <- function(url='https://go.drugbank.com/releases/5-1-7/downloads/al
 #' @import xml2
 #' @export
 parseDrugBankXML <- function(xmlPath, table=c('pathways', 'targets'),
-    outPath='data', ..., nodeFun)
+    outPath=tempdir(), ..., nodeFun)
 {
     if (missing(nodeFun))
         extractFun <- switch(table,
@@ -31,15 +31,13 @@ parseDrugBankXML <- function(xmlPath, table=c('pathways', 'targets'),
     else
         extractFun <- nodeFun
 
-    if (!is)
-
     drugBank <- read_xml(xmlPath)
 
     getTableFromNode <- function(node) extractFun(xml2::as_list(node))
     dataL <- bptry(bplapply(xml_children(drugBank), getTableFromNode))
 
     dataL <- dataL[bpok(dataL)]
-    qsave(dataL, 'data/targetL.qs')
+    qsave(dataL, file.path(outPath, 'targetL.qs'))
 
     dataDT <- rbindlist(dataL, fill=TRUE)
     # Get rid of list columns
@@ -236,14 +234,16 @@ listColToDT <- function(col) {
 }
 
 if (sys.nframe() == 0) {
+    library(AnnotationGx)
     library(xml2)
     library(data.table)
-    library(BiocParallel)
-    library(jsonlite)
-    library(httr)
-    library(qs)
-    xmlPath <- 'data/drugbank.xml'
-    extractFun <- getTargets
 
-    targets <- parseDrugBankXML(filePath, 'targets')
+    # load the xml file
+    filePath <- 'local_data/drugbank.xml'
+    drugBank <- read_xml(filePath)
+    xml_ns_strip(drugBank)
+
+    # namespace of interest is d1, see xml_ns(drugBank)
+    drugs <- xml_find_all(drugBank, 'd1:drug')
+    targets <- xml_find_all(drugs, 'd1:targets')
 }

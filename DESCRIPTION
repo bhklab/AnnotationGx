@@ -12,7 +12,7 @@ Authors@R: c(
         email = "benjamin.haibe.kains@utoronto.ca"))
 Description: A package for building, updating and querying an
     annotation database for pharmaco-genomic data. Provides API interfaces
-    to various bioinformatic and cheminformatic databases, as well as a set
+    to various bioinformatic and chemoinformatic databases, as well as a set
     of functions for curating your data using the annotations retrieved from
     those APIs.
 Depends: R (>= 4.0)

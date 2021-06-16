@@ -1,0 +1,36 @@
+### OS ###  
+
+.DS_Store
+
+### R ###
+
+# History files
+.Rhistory
+.*.history
+
+# Session Data files
+.RData
+
+# User-specific files
+.Ruserdata
+.RProj.user
+
+# RStudio
+.*.Rproj
+
+### Data ###
+
+..Rcheck
+data/.*
+output/.*
+
+# Spreadsheets
+.*.csv
+
+# R Object Files
+.*.rds
+.Rproj.user
+
+# Local data
+local_data
+local_data/.*

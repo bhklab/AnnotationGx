@@ -132,6 +132,7 @@
 #' Kim S, Thiessen PA, Bolton EE. Programmatic Retrieval of Small Molecule Information from PubChem Using PUG-REST. In Kutchukian PS, ed. Chemical Biology Informatics and Modeling. Methods in Pharmacology and Toxicology. New York, NY: Humana Press, 2018, pp. 1-24. doi:10.1007/7653_2018_30.
 #'
 #' @md
+#' @importFrom jsonlite toJSON
 #' @importFrom httr RETRY GET timeout
 #' @export
 getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
@@ -150,11 +151,25 @@ getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=
         query <- paste(query, operation_options, sep='?')
     encodedQuery <- URLencode(query)
 
-    # print(dput(encodedQuery))
-
     # get HTTP response, respecting the 30s max query time of PubChem API
-    tryCatch(RETRY('GET', encodedQuery, timeout(29), times=5),
-        error={function(e) message("GET error: ", e)})
+    tryCatch({
+        result <- RETRY('GET', encodedQuery, timeout(29), times=3, 
+            terminate_on=c(400, 404))
+        canParse <- tryCatch({ parseJSON(result); TRUE }, error=function(e) FALSE)
+        if (output == 'JSON' && !canParse) stop('Parsing to JSON failed') else 
+            result
+        },
+        error=function(e) { 
+            message(e);
+            # return a response JSON with the error if the query fails
+            if (output == 'JSON') {
+                return(httr:::response(
+                    header=list(`Content-Type`='JSON'),
+                    # url=encodedQuery,
+                    content=paste0('{Error: "', paste0(e, collapse=' '), '"}'),
+                    status_code=400))
+            }
+        })
 }
 
 #' @title queryPubChem
@@ -163,6 +178,9 @@ getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=
 #' @param ... Fall through parameters to `bpmapply`.
 #'
 #' @md
+#' @importFrom BiocParallel bplapply bpparam bpnworkers bpworkers<- 
+#'   bpprogressbar<- bplog<-
+#' @importFrom jsonlite toJSON
 #' @export
 queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
     output='JSON', ..., url='https://pubchem.ncbi.nlm.nih.gov/rest/pug',
@@ -175,16 +193,17 @@ queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
     if (is.null(BPPARAM)) {
         BPPARAM <- bpparam()
         if (class(BPPARAM) %in% c('MulticoreParam', 'SnowParam')) {
-            if (bpnworkers(BPPARAM) > 5) bpworkers(BPPARAM) <- 5  
+            if (bpnworkers(BPPARAM) > 5) bpworkers(BPPARAM) <- 5
         }
         bpprogressbar(BPPARAM) <- TRUE
     }
 
     ## TODO:: Retrieve PubChem server status to dynamically set query spacing
     ##>based on server load
-    .queryPubChemSleep <- function(x, i, ...) {
-        if (is(list(...)[['BPPARAM']], 'SerialParam')) Sys.sleep(0.17)
-        queryRequestPubChem(x, ..., BPPARAM=BPPARAM)
+    .queryPubChemSleep <- function(x, ...) {
+        if (is(bpparam(), 'SerialParam')) { Sys.sleep(0.2) }
+        tryCatch(queryRequestPubChem(x, ...),
+            error=function(e) list('Error'=paste0('queryPubChemError: ', e, collapse=' ')))
     }
 
     # -- make queries
@@ -200,30 +219,30 @@ queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
         querySize <- ceiling(length(id) / numQueries)
         queries <- split(id, ceiling(seq_along(id) / querySize))
 
-        queryRes <- bpmapply(FUN=.queryPubChemSleep, x=queries, i=seq_along(queries),
-            MoreArgs=list(domain=domain, namespace=namespace, operation=operation,
-                output=output, url=url, operation_options=operation_options), 
-            SIMPLIFY=FALSE, BPPARAM=BPPARAM) 
+        queryRes <- bplapply(queries, FUN=.queryPubChemSleep, domain=domain, 
+            namespace=namespace, operation=operation, output=output, url=url, 
+            operation_options=operation_options, BPPARAM=BPPARAM) 
     } else {
-        queryRes <- bpmapply(FUN=.queryPubChemSleep, x=id, i=seq_along(id),
-            MoreArgs=list(domain=domain, namespace=namespace, operation=operation,
-                output=output, url=url, operation_options=operation_options),
-            SIMPLIFY=FALSE, BPPARAM=BPPARAM)
+        queryRes <- bplapply(id, FUN=.queryPubChemSleep, domain=domain, 
+            namespace=namespace, operation=operation, output=output, url=url, 
+            operation_options=operation_options, BPPARAM=BPPARAM)
         queries <- as.list(id)
     }
 
     # -- early return option
-    if (raw)  return(queryRes)   
+    if (raw)  return(queryRes)
 
     # -- deal with failed queries
-    failed <- unlist(lapply(queryRes, names)) %in% c("Fault", "Bad")
-    failedQueries <- Map(list, query=queries[failed], failure=queryRes[failed])
-    queryRes <- queryRes[!failed]
-    queries <- queries[!failed]
-    if (is.null(queries)) queries <- NA
+    failed <- unlist(lapply(queryRes, names)) %in% c("Fault", "Bad", "Error")
+    if (any(failed)) {
+        failedQueries <- Map(list, query=queries[failed], failure=queryRes[failed])
+        queryRes <- queryRes[!failed]
+        queries <- queries[!failed]
+        attributes(queryRes)$failed <- failedQueries
+        if (is.null(queries)) queries <- NA
+    }
 
     # -- Attach query metadata to the returned list
-    attributes(queryRes)$failed <- failedQueries
     attributes(queryRes)$queries <- queries
 
     return(queryRes)
@@ -243,7 +262,7 @@ queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
 #' @importFrom httr content
 #' @export
 parseJSON <- function(response, as='text', ..., encoding='UTF-8') {
-    fromJSON(content(response, as=as, ..., encoding=encoding))
+    fromJSON(content(response, as=as, ..., type='JSON', encoding=encoding))
 }
 
 #' Query the PubChem REST API, with the result automatically converted from
@@ -329,7 +348,6 @@ querySynonymsFromName <- function(drugNames) {
 #' @md
 #' @importFrom data.table data.table as.data.table
 #' @importFrom CoreGx .error .warning
-#' @importFrom BiocParallel bpmapply bpparam bpnworkers bpworkers<- bpprogressbar<-
 #' @export
 getPubChemFromNSC <- function(ids, to='cids', ..., batch=TRUE, raw=FALSE) {
     
@@ -346,15 +364,25 @@ getPubChemFromNSC <- function(ids, to='cids', ..., batch=TRUE, raw=FALSE) {
     failedQueries <- attributes(queryRes)$failed
     queries <- attributes(queryRes)$queries
 
+    # -- rehandle failed queries, somehow they are getting past queryPubChem?
+    ## FIXME:: How are they failed queries not found in queryPubChem?
+    failed <- unlist(lapply(queryRes, names)) %in% c("Fault", "Bad", "Error")
+    if (any(failed)) {
+        newFailedQueries <- Map(list, query=queries[failed], failure=queryRes[failed])
+        failedQueries <- c(failedQueries, newFailedQueries)
+        queryRes <- queryRes[!failed]
+        queries <- queries[!failed]
+    }
+
     # -- process the results
     .replace_NULL_NA <- function(DT) lapply(DT, function(x) { 
         ifelse(is.null(x), rep(NA_integer_, length(x)), x) })
 
     # TODO:: Determine if all results are wrapped in two lists? If not this may 
     #>break the function.
-    .parseQueryToDT <- function(queryRes) as.data.table(queryRes)[[1]][[1]]
+    .parseQueryToDT <- function(queryRes) as.data.table(queryRes[[1]][[1]])
     queryRes <- lapply(queryRes, FUN=.parseQueryToDT)
-    queryRes <- rbindlist(queryRes)
+    queryRes <- rbindlist(queryRes, fill=TRUE)
     switch(to,
         'cids'={
             unlistQueryRes <- queryRes[, NSC_id := unlist(queries)][, 
@@ -436,7 +464,7 @@ getPubChemCompound <- function(ids, from='cid', to='property', ...,
     queryRes <- lapply(queryRes, FUN=.parseQueryToDT)
     queryRes <- rbindlist(queryRes)
 
-    if (to == 'sid') setcolnames(queryRes, 'CID', 'SID')
+    if (from == 'sid') setcolnames(queryRes, 'CID', 'SID')
     if (length(failedQueries) > 1) attributes(queryRes)$failed <- failedQueries
     
     return(queryRes)
@@ -452,11 +480,25 @@ if (sys.nframe() == 0) {
 
     failed <- attributes(NSCtoCID)$failed
     failedQueries <- lapply(failed, FUN=`[[`, i='query')
+    failedIDs <- unlist(failedQueries)
 
-    retryQueries <- lapply(failedQueries, FUN=getPubChemFromNSC, batch=FALSE)
+    retryQueries <- getPubChemFromNSC(failedIDs, batch=FALSE)
+    NSCtoCID <- rbind(NSCtoCID, retryQueries[!is.na(SID), ])
 
     cids <- na.omit(NSCtoCID$CID)
     compoundProperties <- getPubChemCompound(cids)
+
+    unmapped_sids <- NSCtoCID[!(CID %chin% compoundProperties$CID), ]$SID
+    compoundPropertiesSID <- getPubChemCompound(unmapped_sids, from='sid')
+
+    NSCtoName <- merge.data.table(NSCtoCID, compoundProperties, by='CID', all.x=TRUE)
+    NSCtoNameSID <- merge.data.table(NSCtoCID, compoundPropertiesSID, by='SID')
+    NSCtoName[NSCtoNameSID, Title := i.Title, on=c('SID', 'NSC_id')]
+
+    failed_to_map <- setdiff(ids, NSCtoName$NSC_id)
+
+    retryAgain <- getPubChemFromNSC(failed_to_map, to='sids', batch=FALSE)
+    SIDtoName <- getPubChemCompound(sids, from='sid')
 
     # GDSC <- readRDS(list.files('../PSets', pattern = 'GDSC.*v2.*', full.names=TRUE))
     # drugInfo <- drugInfo(GDSC)
