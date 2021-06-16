@@ -26,46 +26,46 @@
 #' @importFrom xml2 read_xml xml_find_all xml_find_first xml_text xml_add_child
 #' @export
 
-queryCelloxml <-
-  function(url = "https://ftp.expasy.org/databases/cellosaurus/cellosaurus.xml",
-           cellline_input,
-           namespace = "name",
-           verbose = TRUE) {
-    if (namespace != "name" & namespace != "cvclid") {
-      if (verbose) {
-        message("invalid input. Please provide a valid namespace : 'name' or 'cvclid'")
+queryCellosaurus <-
+    function(url = "https://ftp.expasy.org/databases/cellosaurus/cellosaurus.xml",
+             cellline_input,
+             namespace = "name",
+             verbose = TRUE) {
+      if (namespace != "name" & namespace != "cvclid") {
+        if (verbose) {
+          message("invalid input. Please provide a valid namespace : 'name' or 'cvclid'")
+        }
+        return(NULL)
       }
-      return(NULL)
-    }
-    if (verbose) {
-      message(paste(
-        "xml read started from",
-        url,
-        format(Sys.time(), "%Y-%m-%d %H:%M:%S")
-      ))
-    }
-    main_xml <- read_xml(url)
-    if (verbose) {
-      message(paste(
-        "xml read completed at",
-        format(Sys.time(), "%Y-%m-%d %H:%M:%S")
-      ))
-    }
-    root_node <- xml_new_root("cell-line-list")
-    cellline_input <- cellline_input[!is.na(cellline_input)]
-    if (namespace == "name") {
-      for (ip in 1:length(cellline_input)) {
-        xmlObject <-
-          xml_find_first(
-            main_xml,
-            paste(
-              "//cell-line/name-list/name[normalize-space(text()) = '",
-              cellline_input[ip],
-              "']/../..",
-              sep = ""
-            )
-          )
-        if (length(xmlObject) > 0) {
+      if (verbose) {
+        message(paste(
+          "xml read started from",
+          url,
+          format(Sys.time(), "%Y-%m-%d %H:%M:%S")
+        ))
+      }
+        main_xml <- read_xml(url)
+        if (verbose) {
+          message(paste(
+            "xml read completed at",
+            format(Sys.time(), "%Y-%m-%d %H:%M:%S")
+          ))
+        }
+        root_node <- xml_new_root("cell-line-list")
+        cellline_input <- cellline_input[!is.na(cellline_input)]
+        if (namespace == "name") {
+          for (ip in 1:length(cellline_input)) {
+            xmlObject <-
+              xml_find_first(
+                main_xml,
+                paste(
+                  "//cell-line/name-list/name[normalize-space(text()) = '",
+                  cellline_input[ip],
+                  "']/../..",
+                  sep = ""
+                )
+              )
+            if (length(xmlObject) > 0) {
           xml_add_child(root_node, xmlObject)
         }
       }
@@ -95,4 +95,4 @@ queryCelloxml <-
       ))
     }
     return(root_node)
-  }
+    }

@@ -24,24 +24,24 @@
 #' @export
 
 getCelloxml <-
-  function(url = "https://ftp.expasy.org/databases/cellosaurus/cellosaurus.xml", verbose = TRUE) {
-    #TO DO : fix verbose issue and 4 spaces
-    if (verbose) {
-      message(paste(
-        "xml read started from",
-        url,
-        format(Sys.time(), "%Y-%m-%d %H:%M:%S")
-      ))
+    function(url = "https://ftp.expasy.org/databases/cellosaurus/cellosaurus.xml", verbose = TRUE) {
+      #TO DO : fix verbose issue and 4 spaces
+      if (verbose) {
+        message(paste(
+          "xml read started from",
+          url,
+          format(Sys.time(), "%Y-%m-%d %H:%M:%S")
+        ))
+      }
+      main_xml <- read_xml(url)
+      if (verbose) {
+        message(paste(
+          "xml read completed at",
+          format(Sys.time(), "%Y-%m-%d %H:%M:%S")
+        ))
+      }
+      return(main_xml)
     }
-    main_xml <- read_xml(url)
-    if (verbose) {
-      message(paste(
-        "xml read completed at",
-        format(Sys.time(), "%Y-%m-%d %H:%M:%S")
-      ))
-    }
-    return(main_xml)
-  }
 
 #' Filter parent node cell-line and parse child nodes for required annotations
 #' @param cell_ip is either cell name or cvcl id.
@@ -53,31 +53,31 @@ getCelloxml <-
 #' @importFrom xml2 xml_find_all xml_find_first xml_text
 #' @export
 getInfoFromCelllineInput <-
-  function(cell_ip, main_xml, input_type) {
-    if (input_type == "name") {
-      xmlObject <-
-        xml_find_first(
-          main_xml,
-          paste(
-            "//cell-line/name-list/name[normalize-space(text()) = '",
-            cell_ip,
-            "']/../..",
-            sep = ""
+    function(cell_ip, main_xml, input_type) {
+      if (input_type == "name") {
+        xmlObject <-
+          xml_find_first(
+            main_xml,
+            paste(
+              "//cell-line/name-list/name[normalize-space(text()) = '",
+              cell_ip,
+              "']/../..",
+              sep = ""
+            )
           )
-        )
-    }
-    else if (input_type == "cvclid") {
-      xmlObject <-
-        xml_find_first(
-          main_xml,
-          paste(
-            "//cell-line/accession-list/accession[@type = 'primary'][normalize-space(text()) = '",
-            cell_ip,
-            "']/../..",
-            sep = ""
+      }
+      else if (input_type == "cvclid") {
+        xmlObject <-
+          xml_find_first(
+            main_xml,
+            paste(
+              "//cell-line/accession-list/accession[@type = 'primary'][normalize-space(text()) = '",
+              cell_ip,
+              "']/../..",
+              sep = ""
+            )
           )
-        )
-    }
+      }
     std_name <-
       xml_text(xml_find_first(xmlObject, ".//name-list/name[@type = 'identifier']"))
     syno_list <-
@@ -119,7 +119,7 @@ getInfoFromCelllineInput <-
         meta = meta
       )
     return(op_list)
-  }
+    }
 
 ## ============================
 ## getCellosaurus wrapper methods
@@ -139,45 +139,45 @@ getInfoFromCelllineInput <-
 #' @importFrom data.table data.table
 #' @export
 getCellosaurus <-
-  function(cellline_input,
-           namespace = "name",
-           url = "https://ftp.expasy.org/databases/cellosaurus/cellosaurus.xml",
-           verbose = TRUE) {
-    if (namespace != "name" & namespace != "cvclid") {
-      if (verbose) {
-        message("invalid input. Please provide a valid namespace : 'name' or 'cvclid'")
+    function(cellline_input,
+             namespace = "name",
+             url = "https://ftp.expasy.org/databases/cellosaurus/cellosaurus.xml",
+             verbose = TRUE) {
+      if (namespace != "name" & namespace != "cvclid") {
+        if (verbose) {
+          message("invalid input. Please provide a valid namespace : 'name' or 'cvclid'")
+        }
+        return(NULL)
       }
-      return(NULL)
-    }
-    if (verbose) {
-      message(paste(
-        "omitting",
-        sum(!complete.cases(cellline_input)),
-        "missing/NA value(s) from input",
-        sep = " "
-      ))
-    }
-    cellline_input <- cellline_input[!is.na(cellline_input)]
-    main_xml <- getCelloxml(url)
-    op_dt <-
-      data.table(
-        standard_name = character(),
-        synonyms = character(),
-        cvcl_id = character(),
-        disease = character(),
-        ncit_id = character(),
-        category = character(),
-        depmap_id = character(),
-        sex = character(),
-        age = numeric(),
-        metastatic_site = character()
-      )
-    if (verbose) {
-      message("fetching cell line data from xml")
-    }
-    for (nm in 1:length(cellline_input)) {
-      if (namespace == "name") {
-        op_list <-
+      if (verbose) {
+        message(paste(
+          "omitting",
+          sum(!complete.cases(cellline_input)),
+          "missing/NA value(s) from input",
+          sep = " "
+        ))
+      }
+      cellline_input <- cellline_input[!is.na(cellline_input)]
+      main_xml <- getCelloxml(url)
+      op_dt <-
+        data.table(
+          standard_name = character(),
+          synonyms = character(),
+          cvcl_id = character(),
+          disease = character(),
+          ncit_id = character(),
+          category = character(),
+          depmap_id = character(),
+          sex = character(),
+          age = numeric(),
+          metastatic_site = character()
+        )
+      if (verbose) {
+        message("fetching cell line data from xml")
+      }
+      for (nm in 1:length(cellline_input)) {
+        if (namespace == "name") {
+          op_list <-
           getInfoFromCelllineInput(cell_ip = cellline_input[nm],
                                    main_xml = main_xml,
                                    input_type = "name")
@@ -211,4 +211,4 @@ getCellosaurus <-
       ))
     }
     return(op_dt)
-  }
+    }
