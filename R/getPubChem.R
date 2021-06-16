@@ -347,7 +347,6 @@ querySynonymsFromName <- function(drugNames) {
 #'
 #' @md
 #' @importFrom data.table data.table as.data.table
-#' @importFrom CoreGx .error .warning
 #' @export
 getPubChemFromNSC <- function(ids, to='cids', ..., batch=TRUE, raw=FALSE) {
     

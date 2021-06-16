@@ -28,15 +28,29 @@
 
 
 ##FIXME:: Remove these in final package build
-.collapse <- CoreGx::.collapse
+.collapse <- function (..., collapse = " ") paste0(..., collapse=collapse)
 
-.message <- CoreGx::.message
+.message <- function (...) {
+    optionName <- paste0(packageName(), ".verbose")
+    optionIsTRUE <- !is.null(getOption(optionName)) && getOption(optionName)
+    verboseIsTRUE <- getOption("verbose")
+    if (optionIsTRUE || verboseIsTRUE) 
+        message(blue$bold(.formatMessage(...)))
+}
 
-.error <- CoreGx::.error
+.formatMessage <- function (..., collapse = ", ") {
+    paste0(strwrap(paste0(..., collapse = collapse)), collapse = "\n")
+}
 
-.warning <- CoreGx::.warning
+.error <- function (...) {
+    stop(magenta$bold(.formatMessage(...)), call. = FALSE)
+}
 
-.funContext <- CoreGx:::.funContext
+.warning <- function (...) {
+    warning(cyan$bold(.formatMessage(...)), call. = FALSE)
+}
+
+.funContext <- function (funName) paste0("[", packageName(), funName, "]\n")
 
 #' Return the name of the function and the name of the package that function
 #'   is in when called within an R function.
