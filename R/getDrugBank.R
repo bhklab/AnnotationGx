@@ -237,13 +237,63 @@ if (sys.nframe() == 0) {
     library(AnnotationGx)
     library(xml2)
     library(data.table)
+    library(BiocParallel)
+
+    # -- read in the data
 
     # load the xml file
     filePath <- 'local_data/drugbank.xml'
     drugBank <- read_xml(filePath)
-    xml_ns_strip(drugBank)
 
-    # namespace of interest is d1, see xml_ns(drugBank)
+    # helper function
+    .find_all_as_list <- function(...) as_list(xml_find_all(...))
+
+    # -- get drug information
+    # NOTE: namespace of interest is d1, see xml_ns(drugBank)
     drugs <- xml_find_all(drugBank, 'd1:drug')
-    targets <- xml_find_all(drugs, 'd1:targets')
+    drug_primary_dbid <- xml_find_all(drugs, 'd1:drugbank-id[@primary="true"]') |>
+        as_list() |> unlist()
+    drug_name <- xml_find_all(drugs, 'd1:name') |> as_list() |> unlist()
+    drug_fda_status <- xml_find_all(drugs, 'd1:groups') |> as_list() |> 
+        lapply(FUN=unlist) |> lapply(FUN=paste0, collapse='|') |> unlist()
+
+    # -- extract exteral identifiers
+    # configure paralellization
+    bpparam <- MulticoreParam(progressbar=TRUE)
+    # extract and parse the identifiers into a character vector
+    drug_ext_ids_list <- xml_find_all(drugs, 'd1:external-identifiers') |> 
+        bplapply(FUN=as_list, BPPARAM=bpparam)
+    drug_ext_ids_DTs <- drug_ext_ids_list |>
+        lapply(FUN=\(x) { rbindlist(lapply(x, as.data.table)) })
+    drug_ext_ids <- unlist(lapply(drug_ext_ids_DTs, 
+        FUN=\(x) paste0(paste(x$resource, x$identifier, sep='='), collapse='|')))
+
+    # -- build the drug table
+    drug_DT <- data.table(
+        drugbank_id=drug_primary_dbid, 
+        name=drug_name, 
+        external_ids=drug_ext_ids, 
+        fda_status=drug_fda_status)
+
+    # -- get target information
+    drug_targets <- xml_find_all(drugBank, 'd1:drug/d1:targets')
+
+    targetList <- drug_targets |> bplapply(FUN=as_list, BPPARAM=bpparam)
+
+    # extract non-nested items
+    id <- drug_targets |> 
+        bplapply(FUN=.find_all_as_list, 'd1:target/d1:id', BPPARAM=bpparam)
+    name <- .find_all_as_list(drug_targets, 'd1:target/d1:name') |> unlist()
+    organism <- .find_all_as_list(drug_targets, 'd1:target/d1:organism') |> unlist()
+    known_action <- .find_all_as_list(drug_targets, 'd1:target/d1:known-action') |> 
+        unlist()
+
+    # extract nested items
+    actions <- .find_all_as_list(target, 'd1:actions')
+    references <- .find_all_as_list(target, 'd1:references')
+    polypeptide <- .find_all_as_list(target, 'd1:polypeptide')
+
+    # -- polypeptide for each target
+    name <- unlist(.find_all_as_list(target, 'd1:name'))
+
 }
