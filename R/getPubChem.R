@@ -154,7 +154,7 @@ getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=
     # get HTTP response, respecting the 30s max query time of PubChem API
     tryCatch({
         result <- RETRY('GET', encodedQuery, timeout(29), times=3, 
-            terminate_on=c(400, 404))
+            terminate_on=c(400, 404, 503))
         canParse <- tryCatch({ parseJSON(result); TRUE }, error=function(e) FALSE)
         if (output == 'JSON' && !canParse) stop('Parsing to JSON failed') else 
             result

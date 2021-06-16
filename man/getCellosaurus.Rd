@@ -5,14 +5,23 @@
 \title{Build a \code{data.table} of annotations from query list.}
 \usage{
 getCellosaurus(
-  cellnames,
-  url = "https://ftp.expasy.org/databases/cellosaurus/cellosaurus.xml"
+  cellline_input,
+  namespace = "name",
+  url = "https://ftp.expasy.org/databases/cellosaurus/cellosaurus.xml",
+  verbose = TRUE
 )
 }
 \arguments{
-\item{cellnames}{is the list of cell names (identifiers and synonyms)}
+\item{cellline_input}{is either cell name or cvcl id (identifiers or synonyms)}
+
+\item{namespace}{is either cell line name(s) which is default, denoted by \code{name} or Cellosaurus ID (CVCL ID) denoted by \code{cvclid}.}
 
 \item{url}{is cellosaurus link to xml}
+
+\item{verbose}{is TRUE by default}
+}
+\value{
+A \code{data.table} object with the results of the input cell line(s)
 }
 \description{
 Build a \code{data.table} of annotations from query list.
