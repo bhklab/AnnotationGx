@@ -32,12 +32,21 @@ when \code{to='property'}. Common properties of interest are: 'Title' (name),
 'IUPACName', 'CanonicalSMILES', 'IsomericSMILES', 'InChIKey'. The default
 setting will return 'Title'.
 See details for more information.}
+
+\item{batch}{\code{logical(1)} Should the query be run in batches (i.e., multiple
+ids per GET request to the API). Default is \code{TRUE}. Should be set to
+\code{FALSE} when retrying failed queries.}
+
+\item{raw}{\code{logical(1)} Should the raw query results be early returned. This
+can be useful for diagnosing issues with failing queries.}
 }
 \value{
-A \code{data.frame} or \code{list} containing results of the query.
+A \code{data.table} containing results of the query, or a list if \code{raw}
+is set to \code{TRUE}. Failed queries are available as an attribute of the
+returned object, see \code{attributes(object)}.
 }
 \description{
-getPubChemCompound
+Make queries to the PubChem Compound domain.
 }
 \details{
 \subsection{\code{properties}}{

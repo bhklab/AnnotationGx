@@ -30,6 +30,7 @@
 ##FIXME:: Remove these in final package build
 .collapse <- function (..., collapse = " ") paste0(..., collapse=collapse)
 
+#' @importFrom crayon blue bold
 .message <- function (...) {
     optionName <- paste0(packageName(), ".verbose")
     optionIsTRUE <- !is.null(getOption(optionName)) && getOption(optionName)
@@ -42,10 +43,12 @@
     paste0(strwrap(paste0(..., collapse = collapse)), collapse = "\n")
 }
 
+#' @importFrom crayon magenta bold
 .error <- function (...) {
     stop(magenta$bold(.formatMessage(...)), call. = FALSE)
 }
 
+#' @importFrom crayon cyan bold
 .warning <- function (...) {
     warning(cyan$bold(.formatMessage(...)), call. = FALSE)
 }
@@ -85,6 +88,7 @@
 #' @noRd
 .context <- .getExecutionContext
 
-characterToNamedList <- function(x) { 
+#' @export
+characterToNamedVector <- function(x) { 
     Reduce(c, lapply(strsplit(unlist(strsplit(x, '\\|')), '='), 
             FUN=\(x) structure(x[2], .Names=x[1]))) }

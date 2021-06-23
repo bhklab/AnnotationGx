@@ -7,9 +7,8 @@
 getPubChemSubstance(
   ids,
   from = "cid",
-  to = "property",
+  to = "sids",
   ...,
-  properties = "Title",
   batch = TRUE,
   raw = FALSE
 )
@@ -25,24 +24,16 @@ Default is 'cid'. Try using 'sid' if some of your CIDs fail to map.}
 \item{to}{A \code{character(1)} vector with the desired return type. Defaults
 to 'record', which returns all available data from the specified IDs.}
 
-\item{...}{Force subsequent parameters to be named. Not used.}
+\item{batch}{\code{logical(1)} Should the query be run in batches (i.e., multiple
+ids per GET request to the API). Default is \code{TRUE}. Should be set to
+\code{FALSE} when retrying failed queries.}
 
-\item{properties}{A \code{character} vector of properties to return. Only used
-when \code{to='property'}. Common properties of interest are: 'Title' (name),
-'IUPACName', 'CanonicalSMILES', 'IsomericSMILES', 'InChIKey'. The default
-setting will return 'Title'.
-See details for more information.}
+\item{raw}{\code{logical(1)} Should the raw query results be early returned. This
+can be useful for diagnosing issues with failing queries.}
 }
 \value{
 A \code{data.frame} or \code{list} containing results of the query.
 }
 \description{
-getPubChemSubstance
-}
-\details{
-\subsection{\code{properties}}{
-
-For a full list of availabe properties see:
-https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest$_Toc494865556
-}
+Make queries to the PubChem Compound domain.
 }

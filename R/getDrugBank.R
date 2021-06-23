@@ -90,7 +90,7 @@ getDrugTargets <- function(filePath, progressbars=TRUE, ..., BPPARAM=bpparam())
     # -- get target information
     drug_targets <- xml_find_all(drugBank, 'd1:drug/d1:targets')
 
-    targetList <- bplapply(sdrug_targets, FUN=as_list, BPPARAM=BPPARAM)
+    targetList <- bplapply(drug_targets, FUN=as_list, BPPARAM=BPPARAM)
 
     # -- unnested items
     target_tables <- subsublistItemsAsDT(targetList, items=c('id', 'name', 
@@ -193,5 +193,7 @@ if (sys.nframe() == 0) {
     library(xml2)
     library(data.table)
     library(BiocParallel)
+
+    drugTargetDT <- getDrugTargets('local_data/drugbank.xml')
     
 }
