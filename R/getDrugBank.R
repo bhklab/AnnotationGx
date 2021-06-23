@@ -64,20 +64,22 @@ getDrugTargets <- function(filePath, progressbars=TRUE, ..., BPPARAM=bpparam())
     # -- get drug information
     # NOTE: namespace of interest is d1, see xml_ns(drugBank)
     drugs <- xml_find_all(drugBank, 'd1:drug')
-    drug_primary_dbid <- xml_find_all(drugs, 'd1:drugbank-id[@primary="true"]') |>
-        as_list() |> unlist()
-    drug_name <- xml_find_all(drugs, 'd1:name') |> as_list() |> unlist()
-    drug_fda_status <- xml_find_all(drugs, 'd1:groups') |> as_list() |> 
-        lapply(FUN=unlist) |> lapply(FUN=paste0, collapse='|') |> unlist()
+    drug_primary_dbid <- unlist(as_list(xml_find_all(drugs, 'd1:drugbank-id[@primary="true"]')))
+    drug_name <- unlist(as_list(xml_find_all(drugs, 'd1:name')))
+    drug_fda_status <- unlist(lapply(
+        lapply(as_list(xml_find_all(drugs, 'd1:groups')), FUN=unlist), 
+        FUN=paste0, collapse='|')
+        )
 
     # -- extract exteral identifiers
     # extract and parse the identifiers into a character vector
-    drug_ext_ids_list <- xml_find_all(drugs, 'd1:external-identifiers') |> 
-        bplapply(FUN=as_list, BPPARAM=BPPARAM)
-    drug_ext_ids_DTs <- drug_ext_ids_list |> subsublistItemsAsDT()
+    drug_ext_ids_list <- bplapply(xml_find_all(drugs, 'd1:external-identifiers'), 
+        FUN=as_list, BPPARAM=BPPARAM)
+    drug_ext_ids_DTs <- subsublistItemsAsDT(drug_ext_ids_list)
     drug_ext_ids <- unlist(lapply(drug_ext_ids_DTs, 
-        FUN=\(x) paste0(paste(x$resource, x$identifier, sep='='), collapse='|')))
-
+        FUN=function(x) paste0(paste(x$resource, x$identifier, sep='='), 
+            collapse='|')))
+    
     # -- build the drug table
     drug_DT <- data.table(
         drugbank_id=drug_primary_dbid,
@@ -88,7 +90,7 @@ getDrugTargets <- function(filePath, progressbars=TRUE, ..., BPPARAM=bpparam())
     # -- get target information
     drug_targets <- xml_find_all(drugBank, 'd1:drug/d1:targets')
 
-    targetList <- drug_targets |> bplapply(FUN=as_list, BPPARAM=BPPARAM)
+    targetList <- bplapply(sdrug_targets, FUN=as_list, BPPARAM=BPPARAM)
 
     # -- unnested items
     target_tables <- subsublistItemsAsDT(targetList, items=c('id', 'name', 
@@ -96,19 +98,19 @@ getDrugTargets <- function(filePath, progressbars=TRUE, ..., BPPARAM=bpparam())
 
     # -- nested items
     target_actions <-
-        lapply(targetList, FUN=\(x) {
+        lapply(targetList, FUN=function(x) {
             action_list <- lapply(x, FUN=`[[`, i='actions')
-            lapply(action_list, FUN=\(x) paste0(unlist(x), collapse='|'))
+            lapply(action_list, FUN=function(x) paste0(unlist(x), collapse='|'))
         })
 
     # -- build the target tables
     target_tables <- mapply(FUN=`[[<-`, x=target_tables, i='actions', value=target_actions)
     target_tables <- lapply(target_tables, 
-        FUN=\(x) { colnames(x) <- paste0('target_', colnames(x)); x})
+        FUN=function(x) { colnames(x) <- paste0('target_', colnames(x)); x})
 
     # -- parse polypeptide tables
     polypeptideListList <- lapply(targetList,
-        FUN=\(x) lapply(x, FUN=`[[`, i='polypeptide'))
+        FUN=function(x) lapply(x, FUN=`[[`, i='polypeptide'))
 
     # -- unnested items
     polypetpide_items <- c('name', 'general-function', 'specific-function', 
@@ -120,30 +122,38 @@ getDrugTargets <- function(filePath, progressbars=TRUE, ..., BPPARAM=bpparam())
     # -- nested items
     polypeptide_ext_id_list <- lapply(polypeptideListList, 
         FUN=extractSublistItem, item='external-identifiers')
-    polypeptide_ext_DTs <- polypeptide_ext_id_list |> lapply(FUN=subsublistItemsAsDT)
-    .collapseToString <- function(x) { if(length(x) > 1) paste0(unlist(paste(x[[1]], x[[2]], sep='=')), collapse='|') else unlist(x) }
-    polypeptide_ext_ids <- lapply(polypeptide_ext_DTs, FUN=\(x) unlist(lapply(x, .collapseToString)))
+    polypeptide_ext_DTs <- lapply(polypeptide_ext_id_list, 
+        FUN=subsublistItemsAsDT)
+    .collapseToString <- function(x) { 
+        if (length(x) > 1)
+            paste0(unlist(paste(x[[1]], x[[2]], sep='=')), collapse='|') 
+        else 
+            unlist(x) 
+    }
+    polypeptide_ext_ids <- lapply(polypeptide_ext_DTs, 
+        FUN=function(x) unlist(lapply(x, .collapseToString)))
 
     polypeptide_pfam_list <- lapply(polypeptideListList, 
         FUN=extractSublistItem, item='pfams')
-    polypeptide_pfam_DTs <- polypeptide_pfam_list |> lapply(FUN=subsublistItemsAsDT)
-    .collapseToString <- function(x) { if(length(x) > 1) paste0(unlist(paste(x[[1]], x[[2]], sep='=')), collapse='|') else unlist(x) }
-    polypeptide_pfams <- lapply(polypeptide_pfam_DTs, FUN=\(x) unlist(lapply(x, .collapseToString)))
+    polypeptide_pfam_DTs <- lapply(polypeptide_pfam_list, FUN=subsublistItemsAsDT)
+    polypeptide_pfams <- lapply(polypeptide_pfam_DTs, 
+        FUN=function(x) unlist(lapply(x, .collapseToString)))
 
     polypeptide_GO_list <- lapply(polypeptideListList, 
         FUN=extractSublistItem, item='go-classifiers')
-    polypeptide_GO_DTs <- polypeptide_GO_list |> lapply(FUN=subsublistItemsAsDT)
-    .collapseToString <- function(x) { if(length(x) > 1) paste0(unlist(paste(x[[1]], x[[2]], sep='=')), collapse='|') else unlist(x) }
-    polypeptide_go_classes <- lapply(polypeptide_GO_DTs, FUN=\(x) unlist(lapply(x, .collapseToString)))
+    polypeptide_GO_DTs <- lapply(polypeptide_GO_list, FUN=subsublistItemsAsDT)
+    polypeptide_go_classes <- lapply(polypeptide_GO_DTs, 
+        FUN=function(x) unlist(lapply(x, .collapseToString)))
 
     polypeptideNestedTables <- mapply(data.table, 
         peptide_ext_ids=polypeptide_ext_ids, pfams=polypeptide_pfams, 
         go_classifers=polypeptide_go_classes)
     
     # -- assemble drug data.table
-    polypeptideTableList <- mapply(cbind, polypetideTables, polypeptideNestedTables)
+    polypeptideTableList <- mapply(cbind, polypetideTables, 
+        polypeptideNestedTables)
     polypeptideTableList <- lapply(polypeptideTableList, 
-        FUN=\(x) { if (ncol(x) > 0) { 
+        FUN=function(x) { if (ncol(x) > 0) { 
             colnames(x) <- paste0('peptide_', colnames(x)); x} else x})
 
     targetTableList <- mapply(cbind, target_tables, polypeptideTableList)
@@ -159,6 +169,7 @@ getDrugTargets <- function(filePath, progressbars=TRUE, ..., BPPARAM=bpparam())
     drugTargetDT <- drugTargetDT[, 
         lapply(.SD, unlist), .SDcols=is.list, 
         by=names(which(!vapply(drugTargetDT, is.list, logical(1))))]
+    
     return(drugTargetDT)
 }
 
@@ -176,125 +187,11 @@ listColToDT <- function(col) {
     }
 }
 
+# Function testing scripts, not run unless this file is called as a script
 if (sys.nframe() == 0) {
     library(AnnotationGx)
     library(xml2)
     library(data.table)
     library(BiocParallel)
-
-    # -- read in the data
-
-    # load the xml file
-    filePath <- 'local_data/drugbank.xml'
-    drugBank <- read_xml(filePath)
-
-    # -- helper methods
-    listItemsAsDT <- function(list, items=names(list)) as.data.table(lapply(list[items], unlist))
-    sublistItemsAsDT <- function(list, ...)
-        lapply(list, listItemsAsDT, ...)
-    rbindSublistItemsAsDT <- function(list, ..., fill=TRUE)
-        rbindlist(sublistItemsAsDT(list, ...), fill=fill)
-    subsublistItemsAsDT <- function(list, ...) lapply(list, FUN=rbindSublistItemsAsDT, ...)
-    extractSublistItem <- function(list, item='') lapply(list, FUN=`[[`, i=item)
-    
-    # -- get drug information
-    # NOTE: namespace of interest is d1, see xml_ns(drugBank)
-    drugs <- xml_find_all(drugBank, 'd1:drug')
-    drug_primary_dbid <- xml_find_all(drugs, 'd1:drugbank-id[@primary="true"]') |>
-        as_list() |> unlist()
-    drug_name <- xml_find_all(drugs, 'd1:name') |> as_list() |> unlist()
-    drug_fda_status <- xml_find_all(drugs, 'd1:groups') |> as_list() |> 
-        lapply(FUN=unlist) |> lapply(FUN=paste0, collapse='|') |> unlist()
-
-    # -- extract exteral identifiers
-    # configure paralellization
-    bpparam <- MulticoreParam(progressbar=TRUE)
-    # extract and parse the identifiers into a character vector
-    drug_ext_ids_list <- xml_find_all(drugs, 'd1:external-identifiers') |> 
-        bplapply(FUN=as_list, BPPARAM=bpparam)
-    drug_ext_ids_DTs <- drug_ext_ids_list |> subsublistItemsAsDT()
-    drug_ext_ids <- unlist(lapply(drug_ext_ids_DTs, 
-        FUN=\(x) paste0(paste(x$resource, x$identifier, sep='='), collapse='|')))
-
-    # -- build the drug table
-    drug_DT <- data.table(
-        drugbank_id=drug_primary_dbid,
-        drug_name=drug_name,
-        drug_external_ids=drug_ext_ids,
-        drug_fda_status=drug_fda_status)
-
-    # -- get target information
-    drug_targets <- xml_find_all(drugBank, 'd1:drug/d1:targets')
-
-    targetList <- drug_targets |> bplapply(FUN=as_list, BPPARAM=bpparam)
-
-    # -- unnested items
-    target_tables <- subsublistItemsAsDT(targetList, items=c('id', 'name', 
-        'organism', 'known-action'))
-
-    # -- nested items
-    target_actions <-
-        lapply(targetList, FUN=\(x) {
-            action_list <- lapply(x, FUN=`[[`, i='actions')
-            lapply(action_list, FUN=\(x) paste0(unlist(x), collapse='|'))
-        })
-
-    # -- build the target tables
-    target_tables <- mapply(FUN=`[[<-`, x=target_tables, i='actions', value=target_actions)
-    target_tables <- lapply(target_tables, 
-        FUN=\(x) { colnames(x) <- paste0('target_', colnames(x)); x})
-
-    # -- parse polypeptide tables
-    polypeptideListList <- lapply(targetList,
-        FUN=\(x) lapply(x, FUN=`[[`, i='polypeptide'))
-
-    # -- unnested items
-    polypetpide_items <- c('name', 'general-function', 'specific-function', 
-        'gene-name', 'chromosome-location', 'locus', 'cellular-location', 
-        'organism')
-    polypetideTables <- subsublistItemsAsDT(polypeptideListList, 
-        items=polypetpide_items)
-
-    # -- nested items
-    polypeptide_ext_id_list <- lapply(polypeptideListList, 
-        FUN=extractSublistItem, item='external-identifiers')
-    polypeptide_ext_DTs <- polypeptide_ext_id_list |> lapply(FUN=subsublistItemsAsDT)
-    .collapseToString <- function(x) { if(length(x) > 1) paste0(unlist(paste(x[[1]], x[[2]], sep='=')), collapse='|') else unlist(x) }
-    polypeptide_ext_ids <- lapply(polypeptide_ext_DTs, FUN=\(x) unlist(lapply(x, .collapseToString)))
-
-    polypeptide_pfam_list <- lapply(polypeptideListList, 
-        FUN=extractSublistItem, item='pfams')
-    polypeptide_pfam_DTs <- polypeptide_pfam_list |> lapply(FUN=subsublistItemsAsDT)
-    .collapseToString <- function(x) { if(length(x) > 1) paste0(unlist(paste(x[[1]], x[[2]], sep='=')), collapse='|') else unlist(x) }
-    polypeptide_pfams <- lapply(polypeptide_pfam_DTs, FUN=\(x) unlist(lapply(x, .collapseToString)))
-
-    polypeptide_GO_list <- lapply(polypeptideListList, 
-        FUN=extractSublistItem, item='go-classifiers')
-    polypeptide_GO_DTs <- polypeptide_GO_list |> lapply(FUN=subsublistItemsAsDT)
-    .collapseToString <- function(x) { if(length(x) > 1) paste0(unlist(paste(x[[1]], x[[2]], sep='=')), collapse='|') else unlist(x) }
-    polypeptide_go_classes <- lapply(polypeptide_GO_DTs, FUN=\(x) unlist(lapply(x, .collapseToString)))
-
-    polypeptideNestedTables <- mapply(data.table, 
-        peptide_ext_ids=polypeptide_ext_ids, pfams=polypeptide_pfams, 
-        go_classifers=polypeptide_go_classes)
-    
-    # -- assemble drug data.table
-    polypeptideTableList <- mapply(cbind, polypetideTables, polypeptideNestedTables)
-    polypeptideTableList <- lapply(polypeptideTableList, 
-        FUN=\(x) { if (ncol(x) > 0) { 
-            colnames(x) <- paste0('peptide_', colnames(x)); x} else x})
-
-    targetTableList <- mapply(cbind, target_tables, polypeptideTableList)
-
-    names(targetTableList) <- drug_DT$drugbank_id
-    targetDT <- rbindlist(targetTableList, fill=TRUE, idcol='drugbank_id')
-
-    drugTargetDT <- merge.data.table(targetDT, drug_DT, by='drugbank_id')
-    colnames(drugTargetDT) <- gsub('-', '_', colnames(drugTargetDT))
-
-    # -- remove any stragler list columns
-    drugTargetDT <- drugTargetDT[, 
-        lapply(.SD, unlist), .SDcols=is.list, 
-        by=names(which(!vapply(drugTargetDT, is.list, logical(1))))]
     
 }

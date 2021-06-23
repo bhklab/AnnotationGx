@@ -73,3 +73,9 @@ https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest$_Toc494865565 for details.}
 \description{
 queryPubChem
 }
+\details{
+This function automatically parses the results of the
+}
+\seealso{
+\code{\link{getRequestPubChem}}
+}

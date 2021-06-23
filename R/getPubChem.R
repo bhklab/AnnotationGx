@@ -174,8 +174,13 @@ getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=
 
 #' @title queryPubChem
 #'
+#' @details 
+#' This function automatically parses the results of the 
+#' 
 #' @inheritParams getRequestPubChem
 #' @param ... Fall through parameters to `bpmapply`.
+#' 
+#' @seealso [`getRequestPubChem`]
 #'
 #' @md
 #' @importFrom BiocParallel bplapply bpparam bpnworkers bpworkers<- 
@@ -337,7 +342,6 @@ querySynonymsFromName <- function(drugNames) {
 #' @param ... Fall through arguments to bpmapply. Use this to pass in BPPARAM
 #'   parameter to customize parellization settings. Alternatively, just call
 #'   `register()` with your desired parallel backend configuration. 
-#' @param raw
 #' @param raw A `logical(1)` vector specifying whether to early return the raw
 #'   query results. Use this if specifying an unimplemented return to the `to`
 #'   parameter.
@@ -414,10 +418,14 @@ getPubChemFromNSC <- function(ids, to='cids', ..., batch=TRUE, raw=FALSE) {
     return(unlistQueryRes)
 }
 
-#' @title getPubChemFromCID
+#' @title getPubChemCompound
 #'
-#' @param ids A `character` or `numeric` vector of valid PubChem CIDs to use
-#'   for the query.
+#' @description
+#' Make queries to the PubChem Compound domain.
+#' 
+#' @param ids A `character` or `numeric` vector of valid PubChem identifiers
+#'   to use for the query. Which identifier is being used must be specified in
+#'   the `from` parameter.
 #' @param from A `character(1)` vector with the desired namespace to query.
 #'   Default is 'cid'. Try using 'sid' if some of your CIDs fail to map.
 #' @param to A `character(1)` vector with the desired return type. Defaults
@@ -426,10 +434,17 @@ getPubChemFromNSC <- function(ids, to='cids', ..., batch=TRUE, raw=FALSE) {
 #' @param properties A `character` vector of properties to return. Only used
 #'   when `to='property'`. Common properties of interest are: 'Title' (name), 
 #'   'IUPACName', 'CanonicalSMILES', 'IsomericSMILES', 'InChIKey'. The default
-#'   setting with return all of these.
+#'   setting will return 'Title'.
 #'   See details for more information.
+#' @param batch `logical(1)` Should the query be run in batches (i.e., multiple
+#'   ids per GET request to the API). Default is `TRUE`. Should be set to 
+#'   `FALSE` when retrying failed queries.
+#' @param raw `logical(1)` Should the raw query results be early returned. This
+#'   can be useful for diagnosing issues with failing queries.
 #'
-#' @return A `data.frame` or `list` containing results of the query.
+#' @return A `data.table` containing results of the query, or a list if `raw`
+#'   is set to `TRUE`. Failed queries are available as an attribute of the 
+#'   returned object, see `attributes(object)`.
 #'
 #' @details
 #' ## `properties`
@@ -459,7 +474,7 @@ getPubChemCompound <- function(ids, from='cid', to='property', ...,
 
     # TODO:: Determine if all results are wrapped in two lists? If not this may 
     #>break the function.
-    .parseQueryToDT <- function(queryRes) as.data.table(queryRes)[[1]][[1]]
+    .parseQueryToDT <- function(queryRes) as.data.table(queryRes[[1]][[1]])
     queryRes <- lapply(queryRes, FUN=.parseQueryToDT)
     queryRes <- rbindlist(queryRes)
 
@@ -469,6 +484,64 @@ getPubChemCompound <- function(ids, from='cid', to='property', ...,
     return(queryRes)
 }
 
+#' @title getPubChemSubstance
+#'
+#' @description
+#' Make queries to the PubChem Compound domain.
+#' 
+#' @param ids A `character` or `numeric` vector of valid PubChem identifiers
+#'   to use for the query. Which identifier is being used must be specified in
+#'   the `from` parameter.
+#' @param from A `character(1)` vector with the desired namespace to query.
+#'   Default is 'cid'. Try using 'sid' if some of your CIDs fail to map.
+#' @param to A `character(1)` vector with the desired return type. Defaults
+#'   to 'record', which returns all available data from the specified IDs.
+#' @param batch `logical(1)` Should the query be run in batches (i.e., multiple
+#'   ids per GET request to the API). Default is `TRUE`. Should be set to 
+#'   `FALSE` when retrying failed queries.
+#' @param raw `logical(1)` Should the raw query results be early returned. This
+#'   can be useful for diagnosing issues with failing queries.
+#'
+#' @return A `data.frame` or `list` containing results of the query.
+#'
+#' @md
+#' @export
+getPubChemSubstance <- function(ids, from='cid', to='sids', ..., 
+    batch=TRUE, raw=FALSE)
+{
+    if (!is.character(ids)) ids <- as.character(ids)
+    if (to == 'property')
+        to <- paste0(to, '/', paste0(properties, collapse=','))
+    queryRes <- queryPubChem(ids, domain='substance', 
+        namespace='cid', operation=to, batch=batch, raw=raw)
+
+    # -- early return option
+    if (raw) return(queryRes)
+
+    # -- deal with failed queries
+    failedQueries <- attributes(queryRes)$failed
+
+    # -- process the results
+    .replace_NULL_NA <- function(DT) lapply(DT, function(x) { 
+        ifelse(is.null(x), rep(NA_integer_, length(x)), x) })
+
+    # TODO:: Determine if all results are wrapped in two lists? If not this may 
+    #>break the function.
+    .parseQueryToDT <- function(queryRes) as.data.table(queryRes[[1]][[1]])
+    queryRes <- lapply(queryRes, FUN=.parseQueryToDT)
+    queryRes <- rbindlist(queryRes)
+
+    if (from == 'sid') setcolnames(queryRes, 'CID', 'SID')
+    if (length(failedQueries) > 1) attributes(queryRes)$failed <- failedQueries
+    
+    return(queryRes)
+}
+
+#'
+#' 
+#' 
+#' @export
+getPubChemAnnotations <- function(header='', type='') {}
 
 if (sys.nframe() == 0) {
     library(AnnotationGx)

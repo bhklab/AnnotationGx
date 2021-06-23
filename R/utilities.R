@@ -84,3 +84,7 @@
 }
 #' @noRd
 .context <- .getExecutionContext
+
+characterToNamedList <- function(x) { 
+    Reduce(c, lapply(strsplit(unlist(strsplit(x, '\\|')), '='), 
+            FUN=\(x) structure(x[2], .Names=x[1]))) }
