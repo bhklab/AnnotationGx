@@ -205,15 +205,17 @@ queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
 
     ## TODO:: Retrieve PubChem server status to dynamically set query spacing
     ##>based on server load
+    ## TODO:: Make the query away for server load status in response header
     .queryPubChemSleep <- function(x, ...) {
         t1 <- Sys.time()
         queryRes <- tryCatch({
             queryRequestPubChem(x, ...) 
         },
         error=function(e) list('Error'=paste0('queryPubChemError: ', e, collapse=' ')))
+
         t2 <- Sys.time()
         queryTime <- t2 - t1
-        if (queryTime < 0.21) Sys.sleep(0.21 <- queryTime)
+        if (queryTime < 0.21) Sys.sleep(0.21 - queryTime)
         return(queryRes)
     }
 
