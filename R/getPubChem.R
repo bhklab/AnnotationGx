@@ -537,15 +537,34 @@ getPubChemSubstance <- function(ids, from='cid', to='sids', ...,
     return(queryRes)
 }
 
-#' Get annotations for the entire PubChem database
+#' Get a selected annotation for all PubChem entries
+#' 
+#' @description 
+#' Queries the PubChem PUG VIEW API to all annotations for the specified 
+#'   header. Results will be mapped to CID or SID.
 #' 
 #' @param header `character(1)` A valid header name for the PUG VIEW annotations
 #'   API. Default is 'Available', which will return a list of available
 #'   headers as a `data.frame`.
 #' @param type `character(1)` The header type. Default is 'Compound'. Make
 #'   sure ot change this if your header of interest isn't type compouns.
+#' @param parseFUN `character(1)` or `function` A custom function to parse
+#'   the results returned from this function for unkown header arguments. 
+#'   Defaults to identity, i.e., it returned the results unparsed. Some
+#'   default parsing is implemented inside the function for 'ATC Code' and 
+#'   'Drug Induced Liver Injury' headers.
 #' @param ... Force subsequent parameters to be named. Not used.
+#' @param output `character(1)` The output format. Defaults to 'JSON'. For
+#'   options other than 'JSON', you must set `raw=TRUE` or the fuction will
+#'   fail.
+#' @param url `character(1)` The URL to perform API queries on. This is for
+#'   developer use only and should not be changed.
 #' 
+#' @return A `data.table` of resulting annotations. If the header is not
+#'   one of those mentioned in `parseFUN` documentation, then it will returned
+#'   an unparsed `data.table` which will need to be futher processed to get
+#'   the data interest.
+#'  
 #' @details
 #' # API Documentation
 #' For detailed documentation of the annotations API see:
@@ -555,15 +574,15 @@ getPubChemSubstance <- function(ids, from='cid', to='sids', ...,
 #' @importFrom jsonlite fromJSON
 #' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
 #' @export
-getPubChemAnnotations <- function(header='Available', type='Compound', ..., 
-    output='JSON', raw=FALSE,
+getPubChemAnnotations <- function(header='Available', type='Compound', 
+    parseFUN=identity, ..., output='JSON', raw=FALSE,
     url='https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/annotations/heading',
-    parseFUN=identity)
+    )
 {
     funContext <- .funContext('::getPubChemAnnotations')
-    if (header == 'Available') return(fromJSON(paste0(
+    if (header == 'Available') return(as.data.table(fromJSON(paste0(
         'https://pubchem.ncbi.nlm.nih.gov/rest/pug/annotations/headings/', 
-        output))[[1]][[1]])
+        output))[[1]][[1]]))
 
     queryURL <- paste0(.buildURL(url, header, output), '?heading_type=', type)
     encodedQueryURL <- URLencode(queryURL)
@@ -585,10 +604,12 @@ getPubChemAnnotations <- function(header='Available', type='Compound', ...,
     }
 
     annotationDT <- rbindlist(pageList, fill=TRUE, use.names=TRUE)
+    annotationDT[, Data := lapply(Data, as.data.table)]
 
     # parse the results to a user friendly format
     switch(header,
         'ATC Code'=return(.parseATCannotations(annotationDT)),
+        'Drug Induced Liver Injury'=return(.parseDILIannotations(annotationDT)),
         tryCatch({
             parseFUN(annotationDT)
         }, 
@@ -603,7 +624,6 @@ getPubChemAnnotations <- function(header='Available', type='Compound', ...,
 
 #' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
 .parseATCannotations <- function(DT) {
-        DT[, Data := lapply(Data, as.data.table)]
         dataL <- DT$Data
         names(dataL) <- DT$SourceID
         dataDT <- rbindlist(dataL, fill=TRUE, use.names=TRUE, idcol='SourceID')
@@ -616,6 +636,23 @@ getPubChemAnnotations <- function(header='Available', type='Compound', ...,
         )
         DT <- annotationDT[, .(CID=unlist(LinkedRecords)), 
             by=.(SourceName, SourceID, ATC_code)]
+        return(DT)
+}
+
+#' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
+.parseDILIannotations <- function(DT) {
+        dataL <- DT$Data
+        names(dataL) <- DT$SourceID
+        dataL <- lapply(dataL, FUN=`[`, i=Name %like% 'DILI')
+        dataDT <- rbindlist(dataL, fill=TRUE, use.names=TRUE, idcol='SourceID')
+        dataDT[, DILI := unlist(Value.StringWithMarkup)]
+        annotationDT <- merge.data.table(
+            dataDT[, .(SourceID, DILI)],
+            DT[, .(SourceID, SourceName, Name, LinkedRecords.CID, 
+                LinkedRecords.SID)],
+            by='SourceID')
+        DT <- annotationDT[, .(CID=unlist(LinkedRecords.CID), SID=unlist(LinkedRecords.SID)), 
+            by=.(SourceName, SourceID, Name, DILI)]
         return(DT)
 }
 
