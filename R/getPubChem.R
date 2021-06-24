@@ -537,16 +537,94 @@ getPubChemSubstance <- function(ids, from='cid', to='sids', ...,
     return(queryRes)
 }
 
-#'
+#' Get annotations for the entire PubChem database
 #' 
+#' @param header `character(1)` A valid header name for the PUG VIEW annotations
+#'   API. Default is 'Available', which will return a list of available
+#'   headers as a `data.frame`.
+#' @param type `character(1)` The header type. Default is 'Compound'. Make
+#'   sure ot change this if your header of interest isn't type compouns.
+#' @param ... Force subsequent parameters to be named. Not used.
 #' 
+#' @details
+#' # API Documentation
+#' For detailed documentation of the annotations API see:
+#' https://pubchemdocs.ncbi.nlm.nih.gov/pug-view$_Toc495044630
+#' 
+#' @importFrom httr GET
+#' @importFrom jsonlite fromJSON
+#' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
 #' @export
-getPubChemAnnotations <- function(header='', type='') {}
+getPubChemAnnotations <- function(header='Available', type='Compound', ..., 
+    output='JSON', raw=FALSE,
+    url='https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/annotations/heading',
+    parseFUN=identity)
+{
+    funContext <- .funContext('::getPubChemAnnotations')
+    if (header == 'Available') return(fromJSON(paste0(
+        'https://pubchem.ncbi.nlm.nih.gov/rest/pug/annotations/headings/', 
+        output))[[1]][[1]])
+
+    queryURL <- paste0(.buildURL(url, header, output), '?heading_type=', type)
+    encodedQueryURL <- URLencode(queryURL)
+
+    queryRes <- GET(encodedQueryURL)
+    if (isTRUE(raw)) return(queryRes)
+
+    resultDT <- as.data.table(parseJSON(queryRes)[[1]][[1]])
+
+    numPages <- as.numeric(content(queryRes)[[1]]$TotalPages)
+    pageList <- vector(mode='list', length=numPages)
+    pageList[[1]] <- resultDT
+    if (numPages > 1) {
+        for (i in seq(2, numPages)) {
+            Sys.sleep(0.2)
+            page <- parseJSON(GET(URLencode(paste0(queryURL, '&page=', i))))
+            pageList[[i]] <- as.data.table(page[[1]][[1]])
+        }
+    }
+
+    annotationDT <- rbindlist(pageList, fill=TRUE, use.names=TRUE)
+
+    # parse the results to a user friendly format
+    switch(header,
+        'ATC Code'=return(.parseATCannotations(annotationDT)),
+        tryCatch({
+            parseFUN(annotationDT)
+        }, 
+        error=function(e) {
+            .warning(funContext, 'The parseFUN function failed: ', e, 
+                '. Returning unparsed results instead. Please test the function
+                on the returned data.')
+            return(annotationDT)
+        })
+    )
+}
+
+#' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
+.parseATCannotations <- function(DT) {
+        DT[, Data := lapply(Data, as.data.table)]
+        dataL <- DT$Data
+        names(dataL) <- DT$SourceID
+        dataDT <- rbindlist(dataL, fill=TRUE, use.names=TRUE, idcol='SourceID')
+        dataDT[, ATC_code := unlist(lapply(Value.StringWithMarkup, 
+            function(x) last(x)[[1]]))]
+        annotationDT <- merge.data.table(
+            dataDT[, .(SourceID, ATC_code)],
+            DT[, .(SourceName, SourceID, LinkedRecords)],
+            by='SourceID'
+        )
+        DT <- annotationDT[, .(CID=unlist(LinkedRecords)), 
+            by=.(SourceName, SourceID, ATC_code)]
+        return(DT)
+}
+
 
 if (sys.nframe() == 0) {
     library(AnnotationGx)
     library(data.table)
 
+    # -- mapping NSC numbers to CIDs and drug names
     ids <- unique(na.omit(fread('local_data/DTP_NCI60_RAW.csv')[[1]]))
     NSCtoCID <- getPubChemFromNSC(ids)
 
@@ -571,6 +649,8 @@ if (sys.nframe() == 0) {
 
     retryAgain <- getPubChemFromNSC(failed_to_map, to='sids', batch=FALSE)
     SIDtoName <- getPubChemCompound(sids, from='sid')
+
+    # -- fetching annotation from PubChem
 
     # GDSC <- readRDS(list.files('../PSets', pattern = 'GDSC.*v2.*', full.names=TRUE))
     # drugInfo <- drugInfo(GDSC)
