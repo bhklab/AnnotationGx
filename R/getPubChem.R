@@ -605,6 +605,7 @@ getPubChemAnnotations <- function(header='Available', type='Compound',
     resultDT <- as.data.table(parseJSON(queryRes)[[1]][[1]])
 
     numPages <- as.numeric(content(queryRes)[[1]]$TotalPages)
+    if (header == 'CAS') numPages <- 10
     if (numPages > 1) {
         tryCatch({ 
             bpworkers(BPPARAM) <- 5
@@ -613,6 +614,8 @@ getPubChemAnnotations <- function(header='Available', type='Compound',
             parameters! Please configure them yourself and pass in as the 
             BPPARAM argument.'))
         pageList <- bplapply(seq(2, numPages), function(i, queryURL, numPages) {
+            message(i)
+            print(i)
             t1 <- Sys.time()
             encodedURL <- URLencode(paste0(queryURL, '&page=', i))
             queryRes <- RETRY('GET', encodedURL, timeout(29), times=3)
@@ -641,6 +644,7 @@ getPubChemAnnotations <- function(header='Available', type='Compound',
         'ATC Code'=return(.parseATCannotations(annotationDT)),
         'Drug Induced Liver Injury'=return(.parseDILIannotations(annotationDT)),
         'NSC Number'=return(.parseNSCannotations(annotationDT)),
+        'CTD Chemical-Gene Interactions'=return(.parseCTDannotations(annotationDT)),
         tryCatch({
             parseFUN(annotationDT)
         }, 
@@ -653,8 +657,8 @@ getPubChemAnnotations <- function(header='Available', type='Compound',
     )
 }
 
-# ----------------------------
-# getPubChemAnnotation Helpers
+# -----------------------------
+# getPubChemAnnotations Helpers
 
 #' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
 .parseATCannotations <- function(DT) {
@@ -694,9 +698,17 @@ getPubChemAnnotations <- function(header='Available', type='Compound',
 .parseNSCannotations <- function(DT) {
     DT[, NSC := unlist(lapply(Data, `[[`, i=4))]
     annoationDT <- DT[, 
-        .(CID=unlist(LinkedIdentifier.CID), SID=unlist(LinkedIdentifier.SID)), 
+        .(CID=unlist(LinkedRecords.CID), SID=unlist(LinkedRecords.SID)), 
         by=.(SourceName, SourceID, NSC)]
     return(annoationDT)
+}
+
+#' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
+.parseCTDannotations <- function(DT) {
+    annotationDT <- DT[, .(CID=unlist(LinkedRecords)), 
+        by=.(SourceName, SourceID, URL)]
+    annotationDT[, CTD := gsub('::.*$', '', SourceID)]
+    return(annotationDT)
 }
 
 
