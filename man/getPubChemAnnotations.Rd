@@ -2,16 +2,16 @@
 % Please edit documentation in R/getPubChem.R
 \name{getPubChemAnnotations}
 \alias{getPubChemAnnotations}
-\title{Get annotations for the entire PubChem database}
+\title{Get a selected annotation for all PubChem entries}
 \usage{
 getPubChemAnnotations(
   header = "Available",
   type = "Compound",
+  parseFUN = identity,
   ...,
   output = "JSON",
   raw = FALSE,
-  url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/annotations/heading",
-  parseFUN = identity
+  url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/annotations/heading"
 )
 }
 \arguments{
@@ -22,10 +22,30 @@ headers as a \code{data.frame}.}
 \item{type}{\code{character(1)} The header type. Default is 'Compound'. Make
 sure ot change this if your header of interest isn't type compouns.}
 
+\item{parseFUN}{\code{character(1)} or \code{function} A custom function to parse
+the results returned from this function for unkown header arguments.
+Defaults to identity, i.e., it returned the results unparsed. Some
+default parsing is implemented inside the function for 'ATC Code' and
+'Drug Induced Liver Injury' headers.}
+
 \item{...}{Force subsequent parameters to be named. Not used.}
+
+\item{output}{\code{character(1)} The output format. Defaults to 'JSON'. For
+options other than 'JSON', you must set \code{raw=TRUE} or the fuction will
+fail.}
+
+\item{url}{\code{character(1)} The URL to perform API queries on. This is for
+developer use only and should not be changed.}
+}
+\value{
+A \code{data.table} of resulting annotations. If the header is not
+one of those mentioned in \code{parseFUN} documentation, then it will returned
+an unparsed \code{data.table} which will need to be futher processed to get
+the data interest.
 }
 \description{
-Get annotations for the entire PubChem database
+Queries the PubChem PUG VIEW API to all annotations for the specified
+header. Results will be mapped to CID or SID.
 }
 \section{API Documentation}{
 For detailed documentation of the annotations API see:

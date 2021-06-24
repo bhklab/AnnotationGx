@@ -206,9 +206,15 @@ queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
     ## TODO:: Retrieve PubChem server status to dynamically set query spacing
     ##>based on server load
     .queryPubChemSleep <- function(x, ...) {
-        if (is(bpparam(), 'SerialParam')) { Sys.sleep(0.2) }
-        tryCatch(queryRequestPubChem(x, ...),
-            error=function(e) list('Error'=paste0('queryPubChemError: ', e, collapse=' ')))
+        t1 <- Sys.time()
+        queryRes <- tryCatch({
+            queryRequestPubChem(x, ...) 
+        },
+        error=function(e) list('Error'=paste0('queryPubChemError: ', e, collapse=' ')))
+        t2 <- Sys.time()
+        queryTime <- t2 - t1
+        if (queryTime < 0.21) Sys.sleep(0.21 <- queryTime)
+        return(queryRes)
     }
 
     # -- make queries
@@ -576,7 +582,7 @@ getPubChemSubstance <- function(ids, from='cid', to='sids', ...,
 #' @export
 getPubChemAnnotations <- function(header='Available', type='Compound', 
     parseFUN=identity, ..., output='JSON', raw=FALSE,
-    url='https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/annotations/heading',
+    url='https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/annotations/heading'
     )
 {
     funContext <- .funContext('::getPubChemAnnotations')
