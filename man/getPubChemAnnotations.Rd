@@ -11,7 +11,8 @@ getPubChemAnnotations(
   ...,
   output = "JSON",
   raw = FALSE,
-  url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/annotations/heading"
+  url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/annotations/heading",
+  BPPARAM = bpparam()
 )
 }
 \arguments{
@@ -36,6 +37,9 @@ fail.}
 
 \item{url}{\code{character(1)} The URL to perform API queries on. This is for
 developer use only and should not be changed.}
+
+\item{BPPARAM}{\code{BiocParallelParam} A BiocParallel back-end to parallelize
+with. Defaults to \code{bpparam()}. To run in serial, set to \code{SerialParam()}.}
 }
 \value{
 A \code{data.table} of resulting annotations. If the header is not

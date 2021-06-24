@@ -203,22 +203,6 @@ queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
         bpprogressbar(BPPARAM) <- TRUE
     }
 
-    ## TODO:: Retrieve PubChem server status to dynamically set query spacing
-    ##>based on server load
-    ## TODO:: Make the query away for server load status in response header
-    .queryPubChemSleep <- function(x, ...) {
-        t1 <- Sys.time()
-        queryRes <- tryCatch({
-            queryRequestPubChem(x, ...) 
-        },
-        error=function(e) list('Error'=paste0('queryPubChemError: ', e, collapse=' ')))
-
-        t2 <- Sys.time()
-        queryTime <- t2 - t1
-        if (queryTime < 0.21) Sys.sleep(0.21 - queryTime)
-        return(queryRes)
-    }
-
     # -- make queries
     # TODO:: Throw errors in getPubChem for bad HTTP request to allow use
     ##>of BPREDO feature
@@ -258,6 +242,22 @@ queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
     # -- Attach query metadata to the returned list
     attributes(queryRes)$queries <- queries
 
+    return(queryRes)
+}
+
+## TODO:: Retrieve PubChem server status to dynamically set query spacing
+##>based on server load
+## TODO:: Make the query away for server load status in response header
+.queryPubChemSleep <- function(x, ...) {
+    t1 <- Sys.time()
+    queryRes <- tryCatch({
+        queryRequestPubChem(x, ...) 
+    },
+    error=function(e) list('Error'=paste0('queryPubChemError: ', e, collapse=' ')))
+    if (is(queryRes, 'httr'))
+    t2 <- Sys.time()
+    queryTime <- t2 - t1
+    if (queryTime < 0.21) Sys.sleep(0.21 - queryTime)
     return(queryRes)
 }
 
@@ -567,6 +567,8 @@ getPubChemSubstance <- function(ids, from='cid', to='sids', ...,
 #'   fail.
 #' @param url `character(1)` The URL to perform API queries on. This is for
 #'   developer use only and should not be changed.
+#' @param BPPARAM `BiocParallelParam` A BiocParallel back-end to parallelize
+#'   with. Defaults to `bpparam()`. To run in serial, set to `SerialParam()`.
 #' 
 #' @return A `data.table` of resulting annotations. If the header is not
 #'   one of those mentioned in `parseFUN` documentation, then it will returned
@@ -581,10 +583,12 @@ getPubChemSubstance <- function(ids, from='cid', to='sids', ...,
 #' @importFrom httr GET
 #' @importFrom jsonlite fromJSON
 #' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
+#' @importFrom BiocParallel bpparam bpworkers bpprogressbar bptry
 #' @export
 getPubChemAnnotations <- function(header='Available', type='Compound', 
     parseFUN=identity, ..., output='JSON', raw=FALSE,
-    url='https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/annotations/heading'
+    url='https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/annotations/heading',
+    BPPARAM=bpparam()
     )
 {
     funContext <- .funContext('::getPubChemAnnotations')
@@ -595,21 +599,39 @@ getPubChemAnnotations <- function(header='Available', type='Compound',
     queryURL <- paste0(.buildURL(url, header, output), '?heading_type=', type)
     encodedQueryURL <- URLencode(queryURL)
 
-    queryRes <- GET(encodedQueryURL)
+    queryRes <- RETRY('GET', encodedQueryURL, timeout(29), times=3)
     if (isTRUE(raw)) return(queryRes)
 
     resultDT <- as.data.table(parseJSON(queryRes)[[1]][[1]])
 
     numPages <- as.numeric(content(queryRes)[[1]]$TotalPages)
-    pageList <- vector(mode='list', length=numPages)
-    pageList[[1]] <- resultDT
     if (numPages > 1) {
-        for (i in seq(2, numPages)) {
-            Sys.sleep(0.2)
-            page <- parseJSON(GET(URLencode(paste0(queryURL, '&page=', i))))
-            pageList[[i]] <- as.data.table(page[[1]][[1]])
-        }
+        tryCatch({ 
+            bpworkers(BPPARAM) <- 5
+            bpprogressbar(BPPARAM) <- TRUE
+        }, error=function(e) .warning(funConext, 'Failed to set parallelzation
+            parameters! Please configure them yourself and pass in as the 
+            BPPARAM argument.'))
+        pageList <- bplapply(seq(2, numPages), function(i, queryURL, numPages) {
+            t1 <- Sys.time()
+            encodedURL <- URLencode(paste0(queryURL, '&page=', i))
+            queryRes <- RETRY('GET', encodedURL, timeout(29), times=3)
+            tryCatch({
+                page <- as.data.table(parseJSON(queryRes)[[1]][[1]])
+            }, error=function(e) {
+                .warning(funContext, 'Parsing to JSON failed! Returning empty
+                    data.table.')
+                return(data.table)
+            })
+            t2 <- Sys.time()
+            queryTime <- t2 - t1
+            if (queryTime < 0.21) Sys.sleep(0.21 - queryTime)
+            return(page)
+        }, BPPARAM=BPPARAM, queryURL=queryURL, numPages=numPages)
     }
+    pageList <- c(list(resultDT), pageList)
+
+    return(pageList)
 
     annotationDT <- rbindlist(pageList, fill=TRUE, use.names=TRUE)
     annotationDT[, Data := lapply(Data, as.data.table)]
@@ -618,6 +640,7 @@ getPubChemAnnotations <- function(header='Available', type='Compound',
     switch(header,
         'ATC Code'=return(.parseATCannotations(annotationDT)),
         'Drug Induced Liver Injury'=return(.parseDILIannotations(annotationDT)),
+        'NSC Number'=return(.parseNSCannotations(annotationDT)),
         tryCatch({
             parseFUN(annotationDT)
         }, 
@@ -630,38 +653,50 @@ getPubChemAnnotations <- function(header='Available', type='Compound',
     )
 }
 
+# ----------------------------
+# getPubChemAnnotation Helpers
+
 #' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
 .parseATCannotations <- function(DT) {
-        dataL <- DT$Data
-        names(dataL) <- DT$SourceID
-        dataDT <- rbindlist(dataL, fill=TRUE, use.names=TRUE, idcol='SourceID')
-        dataDT[, ATC_code := unlist(lapply(Value.StringWithMarkup, 
-            function(x) last(x)[[1]]))]
-        annotationDT <- merge.data.table(
-            dataDT[, .(SourceID, ATC_code)],
-            DT[, .(SourceName, SourceID, LinkedRecords)],
-            by='SourceID'
-        )
-        DT <- annotationDT[, .(CID=unlist(LinkedRecords)), 
-            by=.(SourceName, SourceID, ATC_code)]
-        return(DT)
+    dataL <- DT$Data
+    names(dataL) <- DT$SourceID
+    dataDT <- rbindlist(dataL, fill=TRUE, use.names=TRUE, idcol='SourceID')
+    dataDT[, ATC_code := unlist(lapply(Value.StringWithMarkup, 
+        function(x) last(x)[[1]]))]
+    annotationDT <- merge.data.table(
+        dataDT[, .(SourceID, ATC_code)],
+        DT[, .(SourceName, SourceID, LinkedRecords)],
+        by='SourceID'
+    )
+    DT <- annotationDT[, .(CID=unlist(LinkedRecords)), 
+        by=.(SourceName, SourceID, ATC_code)]
+    return(DT)
 }
 
 #' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
 .parseDILIannotations <- function(DT) {
-        dataL <- DT$Data
-        names(dataL) <- DT$SourceID
-        dataL <- lapply(dataL, FUN=`[`, i=Name %like% 'DILI')
-        dataDT <- rbindlist(dataL, fill=TRUE, use.names=TRUE, idcol='SourceID')
-        dataDT[, DILI := unlist(Value.StringWithMarkup)]
-        annotationDT <- merge.data.table(
-            dataDT[, .(SourceID, DILI)],
-            DT[, .(SourceID, SourceName, Name, LinkedRecords.CID, 
-                LinkedRecords.SID)],
-            by='SourceID')
-        DT <- annotationDT[, .(CID=unlist(LinkedRecords.CID), SID=unlist(LinkedRecords.SID)), 
-            by=.(SourceName, SourceID, Name, DILI)]
-        return(DT)
+    dataL <- DT$Data
+    names(dataL) <- DT$SourceID
+    dataL <- lapply(dataL, FUN=`[`, i=Name %like% 'DILI')
+    dataDT <- rbindlist(dataL, fill=TRUE, use.names=TRUE, idcol='SourceID')
+    dataDT[, DILI := unlist(Value.StringWithMarkup)]
+    annotationDT <- merge.data.table(
+        dataDT[, .(SourceID, DILI)],
+        DT[, .(SourceID, SourceName, Name, LinkedRecords.CID, 
+            LinkedRecords.SID)],
+        by='SourceID')
+    DT <- annotationDT[, .(CID=unlist(LinkedRecords.CID), SID=unlist(LinkedRecords.SID)), 
+        by=.(SourceName, SourceID, Name, DILI)]
+    return(DT)
+}
+
+#' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
+.parseNSCannotations <- function(DT) {
+    DT[, NSC := unlist(lapply(Data, `[[`, i=4))]
+    annoationDT <- DT[, 
+        .(CID=unlist(LinkedIdentifier.CID), SID=unlist(LinkedIdentifier.SID)), 
+        by=.(SourceName, SourceID, NSC)]
+    return(annoationDT)
 }
 
 
