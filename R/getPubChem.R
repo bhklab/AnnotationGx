@@ -451,7 +451,7 @@ getPubChemCompound <- function(ids, from='cid', to='property', ...,
     names(queryRes) <- queries
     queryRes <- rbindlist(queryRes, idcol=from)
 
-    setnames(queryRes, 'V1', 'to', skip_absent=TRUE)
+    setnames(queryRes, 'V1', to, skip_absent=TRUE)
     if (from == 'sid') setnames(queryRes, 'CID', 'SID')
     if (length(failedQueries) > 1) attributes(queryRes)$failed <- failedQueries
     
@@ -510,8 +510,8 @@ getPubChemSubstance <- function(ids, from='cid', to='property', ...,
     names(queryRes) <- queries
     queryRes <- rbindlist(queryRes, idcol=from)
 
-    setcolnames(queryRes, 'V1', to, skip_absent=TRUE)
-    if (from == 'sid') setcolnames(queryRes, 'CID', 'SID')
+    setnames(queryRes, 'V1', to, skip_absent=TRUE)
+    if (from == 'sid') setnames(queryRes, 'CID', 'SID')
     if (length(failedQueries) > 1) attributes(queryRes)$failed <- failedQueries
     
     return(queryRes)
