@@ -192,6 +192,8 @@ queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
     operation_options=NA, batch=TRUE, raw=FALSE)
 {
     if (!is.character(id)) id <- as.character(id)
+    if (namespace %in% c('name', 'xref', 'smiles', 'inchi', 'sdf')) 
+        batch <- FALSE
     
     # Cap parallelization at 5 cores to prevent excessive requests
     BPPARAM <- list(...)[['BPPARAM']]
@@ -318,7 +320,7 @@ queryRequestPubChem <- function(...) parseJSON(getRequestPubChem(...))
 #'   the second column is the results specified in `to`.
 #'
 #' @md
-#' @importFrom data.table data.table as.data.table
+#' @importFrom data.table data.table as.data.table setcolorder
 #' @export
 getPubChemFromNSC <- function(ids, to='cids', ..., batch=TRUE, raw=FALSE) {
     
@@ -427,7 +429,8 @@ getPubChemCompound <- function(ids, from='cid', to='property', ...,
     properties='Title', batch=TRUE, raw=FALSE) 
 {
     if (!is.character(ids)) ids <- as.character(ids)
-    if (from == 'name') batch <- FALSE
+    if (from %in% c('name', 'xref', 'smiles', 'inchi', 'sdf')) 
+        batch <- FALSE
     if (to == 'property')
         to <- paste0(to, '/', paste0(properties, collapse=','))
     queryRes <- queryPubChem(ids, domain='compound', 
@@ -448,8 +451,12 @@ getPubChemCompound <- function(ids, from='cid', to='property', ...,
     #>break the function.
     .parseQueryToDT <- function(queryRes) as.data.table(queryRes[[1]][[1]])
     queryRes <- lapply(queryRes, FUN=.parseQueryToDT)
-    names(queryRes) <- queries
-    queryRes <- rbindlist(queryRes, idcol=from)
+    if (isFALSE(batch)) {
+        names(queryRes) <- queries
+        queryRes <- rbindlist(queryRes, idcol=from)
+    } else {
+        queryRes <- rbindlist(queryRes)
+    }
 
     setnames(queryRes, 'V1', to, skip_absent=TRUE)
     if (from == 'sid') setnames(queryRes, 'CID', 'SID')
@@ -486,7 +493,9 @@ getPubChemSubstance <- function(ids, from='cid', to='property', ...,
     properties='Title', batch=TRUE, raw=FALSE) 
 {
     if (!is.character(ids)) ids <- as.character(ids)
-    if (from == 'name') batch <- FALSE
+    if (from %in% c('name', 'xref', 'smiles', 'inchi', 'sdf')) 
+        batch <- FALSE
+    if (from %in% c()) batch <- FALSE
     if (to == 'property')
         to <- paste0(to, '/', paste0(properties, collapse=','))
     queryRes <- queryPubChem(ids, domain='substance', 
@@ -507,8 +516,12 @@ getPubChemSubstance <- function(ids, from='cid', to='property', ...,
     #>break the function.
     .parseQueryToDT <- function(queryRes) as.data.table(queryRes[[1]][[1]])
     queryRes <- lapply(queryRes, FUN=.parseQueryToDT)
-    names(queryRes) <- queries
-    queryRes <- rbindlist(queryRes, idcol=from)
+    if (isFALSE(batch)) {
+        names(queryRes) <- queries
+        queryRes <- rbindlist(queryRes, idcol=from)
+    } else {
+        queryRes <- rbindlist(queryRes)
+    }
 
     setnames(queryRes, 'V1', to, skip_absent=TRUE)
     if (from == 'sid') setnames(queryRes, 'CID', 'SID')
@@ -709,7 +722,7 @@ getPubChemAnnotations <- function(header='Available', type='Compound',
         by=.(SourceName, SourceID, Name, URL, Synonyms)]
     return(annotationDT)
 }
- 
+
 
 
 

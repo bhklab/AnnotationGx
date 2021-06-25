@@ -1,0 +1,162 @@
+---
+title: "Querying PubChem with AnnotationGx"
+author: "Christopher Eeles"
+package: AnnotationGx
+output: 
+  BiocStyle::html_document
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}  
+---
+
+# Introduction to PubChem APIs
+
+PubChem provides two publicly available RESTful APIs for programatically
+accessing data in their databases. The first of these, the PubChem PUG REST API,
+is designed to make specific queries based on some input identifier and return
+data which PubChem has labelled or computed internally [1]. This API can be used 
+to do things like get standardized PubChem identifiers CID or SID from 
+drug names, external database identifiers, etc. The second is the PubChem PUG 
+VIEW API [2]. This interface allows access to a variety of data which are 
+aggregated by PubChem to display along with their own records, but are not 
+curated by PubChem itself.
+
+## PubChem PUG REST API
+
+This package inlcudes functions for making arbitrary queries to the PubChem
+REST API. The most fundamental of these is the `getRequestPubChem` function, 
+which uses its parameters to construct a single GET request to the PUG REST API, 
+returning an `httr::response` object. The documentation for this function
+also includes the most detail about the structure of the PUG REST API, and
+developers wishing to write custom queries for this package should review
+the documentation with `?getRequestPubChem`.
+
+For convenience, a wrapper function, `queryRequestPubChem`, is available which 
+automatically converts the results to a `data.frame` using `jsonlite::fromJSON`. 
+This function only works when `output` parameter is set to `JSON`. 
+
+The major workhorse for PubChem queries in this package is the `queryPubChem` 
+function. This function is able to batch queries such that multiple identifiers 
+are mapped per GET request. It also implementes parallelized queries as well as
+query throttling to ensure users do not exceed the 5 query per second, 400
+query per minute limits imposed by PubChem. Both 
+`queryRequestPubChem` use the `...` parameter to pass
+arguments through to `getRequestPubChem`. As such, users should review the
+`getRequestPubChem` documentation prior to using either query functions.
+
+Two additional parameters are added in `queryPubChem`. The `batch` query 
+tells the function whether to use multiple identifiers per GET request. This
+parameter should be set to `TRUE` (the default) unless you are retrying failed 
+queries. This is because batch queries fail completely if ANY of their
+their ids fail to map. The `raw` parameter is included for debugging purposes,
+This can be used to diagnose HTTP errors using the `headers(response)` function.
+
+Use of `queryPubChem` is mainly intended for developer use, and beginners
+with this package should focus on using the more specialized functions described
+below. It is worth noting, however, that all specialized functions were 
+constructed using `queryPubChem`.
+
+The PUG REST API is divided into multiple domains, each representing a distinct
+entity in the PubChem Schema. Details of these domains can be found in 
+`?getRequestPubChem`. The three most important domains are discussed below.
+
+### Querying the Compound Domain
+
+The compound domain allows users to make queries on pharmacologically relevant
+entities such as drugs. The main PubChem id for compounds is Compound IDentifier 
+(CID). Each CID may map to one or more Substance IDentifiers (SID). In this
+context, SID is a less stable identifier, possibly only contributed
+by a single source and not yet standardized. CIDs on the otherhand, have stable
+PubChem entries and normalized names which are generally supported accross 
+multiple data sources. As such, newly discovered or rarely used chemicals
+may have an SID but not a CID.
+
+For most users, the compound domain will provide the bulk of the information
+they need about their drugs of interest. The `getPubChemCompound` function
+has been included to allow users to easily query this domain.
+
+#### Common Use Cases
+
+1. Get CID from Drug Names
+
+```{r eval=FALSE}
+library(AnnotationGx)
+drugs <- c("Erlotinib", "Acadesine", "Camptothecin", "Vincaleukoblastine", 
+"Cisplatin")
+namesToCID <- getPubChemCompound(drugs, from='name', to='cids')
+```
+
+
+2. Get SID from Drug Names
+```{r eval=FALSE}
+namesToSID <- getPubChemCompound(drugs, from='name', to='sids')
+```
+
+
+3. Get Synonyms from Drug Names
+```{r eval=FALSE}
+namesToSynonyms <- getPubChemCompound(drugs, from='name', to='synonyms')
+```
+
+
+4. Get Properties from CIDs
+```{r eval=FALSE}
+cids <- namesToCID$cids
+propertiesFromCID <- getPubChemCompound(cids, 
+    properties=c('Title', 'InChIKey', 'CanonicalSMILES'))
+```
+
+A short-list of properties are available in the function documentation, see
+`?getPubChemCompound`. A link in the DETAILS section will take you to a full
+list of available compound properties.
+
+### Querying the Substance Domain
+
+The substance domain allows users to query a broader range of chemicals than
+the compounds domain. This can be useful if mappings from name or CID failed
+to get the information you are interested in.
+
+### Querying the Assay Domain
+
+A functions for making specific queries to the assay domain on the PUG REST API
+has not been implemented yet. A user could implement their own using the
+`queryPubChem` functions and knowledge of the PubChem API.
+
+### Specialized functions
+
+To make the package more user friendly, we have included a number of convenience
+functions which further limit the scope of queries, but require less knowledge
+of the underlying concepts of the PubChem API.
+
+1. Mapping from NSC Number to CIDs
+
+```{r eval=FALSE}
+NSC_numbers <- c(1026L, 1027L, 1042L, 1059L, 1063L, 1139L)
+NSCtoCID <- getPubChemFromNSC(NSC_numbers, to='cids')
+```
+
+## PubChem PUG VIEW API
+
+
+
+
+### Querying Annotations
+
+1. Getting All ATC Codes
+
+```{r eval=FALSE}
+```
+
+2. Getting All NSC Numbers
+
+```{r eval=FALSE}
+```
+
+3. Getting All CTD Codes
+
+
+
+# References
+1. PUG REST. PubChem Docs [website]. Retrieved from https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest.
+2. PUG VIEW. PubChem Docs [webiste]. Retrieved from https://pubchemdocs.ncbi.nlm.nih.gov/pug-view.
