@@ -552,8 +552,7 @@ getPubChemSubstance <- function(ids, from='cid', to='sids', ...,
 getPubChemAnnotations <- function(header='Available', type='Compound', 
     parseFUN=identity, ..., output='JSON', raw=FALSE,
     url='https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/annotations/heading',
-    BPPARAM=bpparam()
-    )
+    BPPARAM=bpparam())
 {
     funContext <- .funContext('::getPubChemAnnotations')
     if (header == 'Available') return(as.data.table(fromJSON(paste0(
@@ -606,6 +605,8 @@ getPubChemAnnotations <- function(header='Available', type='Compound',
         'Drug Induced Liver Injury'=return(.parseDILIannotations(annotationDT)),
         'NSC Number'=return(.parseNSCannotations(annotationDT)),
         'CTD Chemical-Gene Interactions'=return(.parseCTDannotations(annotationDT)),
+        'Names and Synonyms'=return(.parseNamesAndSynonyms(annotationDT)),
+        'Synonyms and Identifiers'=return(.parseSynonymsAndIdentifiers(annotationDT)),
         tryCatch({
             parseFUN(annotationDT)
         }, 
@@ -680,12 +681,29 @@ getPubChemAnnotations <- function(header='Available', type='Compound',
 #' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
 .parseSynonymsAndIdentifiers <- function(DT) {
     DT[, Synonyms := lapply(Data, function(x) x$Value[[1]][[1]])]
-    DT[, Synonyms := unlist(lapply(synonyms, FUN=paste0, collapse='|'))]
-    annotationDT <- DT[, .(CID=unlist(LinkedRecords)), by=.(SourceName, SourceID,
+    DT[, Synonyms := unlist(lapply(Synonyms, FUN=paste0, collapse='|'))]
+    # fix NULL list items
+    DT[, CID := lapply(LinkedRecords, function(x) if(is.null(x)) NA_integer_ else x)]
+    annotationDT <- DT[, .(CID=unlist(CID)), by=.(SourceName, SourceID,
         Name, URL, Synonyms)]
     return(annotationDT)
 }
+
+#' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
+.parseNamesAndSynonyms <- function(DT) {
+    DT[, Synonyms := lapply(Data, function(x) x[2, ]$Value[[1]][[1]])]
+    # Remove the weird annotation from the end of the synonym
+    DT[, Synonyms := lapply(Synonyms, FUN=gsub, pattern=' - .*$', replacement='')]
+    DT[, Synonyms := unlist(lapply(Synonyms, FUN=paste0, collapse='|'))]
+    # fix NULL list itemss
+    DT[, CID := lapply(LinkedRecords, function(x) if(is.null(x)) NA_integer_ else x)]
+    annotationDT <- DT[, .(CID=unlist(CID)), 
+        by=.(SourceName, SourceID, Name, URL, Synonyms)]
+    return(annotationDT)
+}
  
+
+
 
 if (sys.nframe() == 0) {
     library(AnnotationGx)

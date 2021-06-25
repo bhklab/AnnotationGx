@@ -48,8 +48,8 @@ an unparsed \code{data.table} which will need to be futher processed to get
 the data interest.
 }
 \description{
-Queries the PubChem PUG VIEW API to all annotations for the specified
-header. Results will be mapped to CID or SID.
+Queries the PubChem PUG VIEW API to get all annotations for the specified
+header. Results will be mapped to CID and/or SID.
 }
 \section{API Documentation}{
 For detailed documentation of the annotations API see:
