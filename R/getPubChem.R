@@ -208,7 +208,6 @@ queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
     ##>of BPREDO feature
     if (batch) {
         # determine how many queries to make, with a max 4000 characters per query
-    
         # add 2 characters for conversion of ',' as '%2C' after URL encoding
         maxNChars <- max(vapply(id, FUN=nchar, numeric(1)), na.rm=TRUE) + 2
         totalLength <- length(id) * maxNChars
@@ -254,7 +253,6 @@ queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
         queryRequestPubChem(x, ...) 
     },
     error=function(e) list('Error'=paste0('queryPubChemError: ', e, collapse=' ')))
-    if (is(queryRes, 'httr'))
     t2 <- Sys.time()
     queryTime <- t2 - t1
     if (queryTime < 0.21) Sys.sleep(0.21 - queryTime)
@@ -423,20 +421,23 @@ getPubChemFromNSC <- function(ids, to='cids', ..., batch=TRUE, raw=FALSE) {
 #' https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest$_Toc494865556
 #'
 #' @md
+#' @importFrom data.table setnames as.data.table rbindlist
 #' @export
 getPubChemCompound <- function(ids, from='cid', to='property', ..., 
     properties='Title', batch=TRUE, raw=FALSE) 
 {
     if (!is.character(ids)) ids <- as.character(ids)
+    if (from == 'name') batch <- FALSE
     if (to == 'property')
         to <- paste0(to, '/', paste0(properties, collapse=','))
     queryRes <- queryPubChem(ids, domain='compound', 
-        namespace='cid', operation=to, batch=batch, raw=raw)
+        namespace=from, operation=to, batch=batch, raw=raw)
 
     # -- early return option
     if (raw) return(queryRes)
 
     # -- deal with failed queries
+    queries <- attributes(queryRes)$queries
     failedQueries <- attributes(queryRes)$failed
 
     # -- process the results
@@ -447,9 +448,11 @@ getPubChemCompound <- function(ids, from='cid', to='property', ...,
     #>break the function.
     .parseQueryToDT <- function(queryRes) as.data.table(queryRes[[1]][[1]])
     queryRes <- lapply(queryRes, FUN=.parseQueryToDT)
-    queryRes <- rbindlist(queryRes)
+    names(queryRes) <- queries
+    queryRes <- rbindlist(queryRes, idcol=from)
 
-    if (from == 'sid') setcolnames(queryRes, 'CID', 'SID')
+    setnames(queryRes, 'V1', 'to', skip_absent=TRUE)
+    if (from == 'sid') setnames(queryRes, 'CID', 'SID')
     if (length(failedQueries) > 1) attributes(queryRes)$failed <- failedQueries
     
     return(queryRes)
@@ -477,20 +480,23 @@ getPubChemCompound <- function(ids, from='cid', to='property', ...,
 #' @return A `data.frame` or `list` containing results of the query.
 #'
 #' @md
+#' @importFrom data.table setnames as.data.table rbindlist
 #' @export
-getPubChemSubstance <- function(ids, from='cid', to='sids', ..., 
-    batch=TRUE, raw=FALSE)
+getPubChemSubstance <- function(ids, from='cid', to='property', ..., 
+    properties='Title', batch=TRUE, raw=FALSE) 
 {
     if (!is.character(ids)) ids <- as.character(ids)
+    if (from == 'name') batch <- FALSE
     if (to == 'property')
         to <- paste0(to, '/', paste0(properties, collapse=','))
     queryRes <- queryPubChem(ids, domain='substance', 
-        namespace='cid', operation=to, batch=batch, raw=raw)
+        namespace=from, operation=to, batch=batch, raw=raw)
 
     # -- early return option
     if (raw) return(queryRes)
 
     # -- deal with failed queries
+    queries <- attributes(queryRes)$queries
     failedQueries <- attributes(queryRes)$failed
 
     # -- process the results
@@ -501,8 +507,10 @@ getPubChemSubstance <- function(ids, from='cid', to='sids', ...,
     #>break the function.
     .parseQueryToDT <- function(queryRes) as.data.table(queryRes[[1]][[1]])
     queryRes <- lapply(queryRes, FUN=.parseQueryToDT)
-    queryRes <- rbindlist(queryRes)
+    names(queryRes) <- queries
+    queryRes <- rbindlist(queryRes, idcol=from)
 
+    setcolnames(queryRes, 'V1', to, skip_absent=TRUE)
     if (from == 'sid') setcolnames(queryRes, 'CID', 'SID')
     if (length(failedQueries) > 1) attributes(queryRes)$failed <- failedQueries
     

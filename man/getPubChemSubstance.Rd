@@ -7,8 +7,9 @@
 getPubChemSubstance(
   ids,
   from = "cid",
-  to = "sids",
+  to = "property",
   ...,
+  properties = "Title",
   batch = TRUE,
   raw = FALSE
 )
