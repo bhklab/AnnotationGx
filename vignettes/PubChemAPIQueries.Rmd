@@ -100,7 +100,7 @@ namesToSynonyms <- getPubChemCompound(drugs, from='name', to='synonyms')
 ```
 
 
-4. Get Properties from CIDs
+4. Get Compound Properties from CIDs
 ```{r eval=FALSE}
 cids <- namesToCID$cids
 propertiesFromCID <- getPubChemCompound(cids, 
@@ -127,7 +127,9 @@ has not been implemented yet. A user could implement their own using the
 
 To make the package more user friendly, we have included a number of convenience
 functions which further limit the scope of queries, but require less knowledge
-of the underlying concepts of the PubChem API.
+of the underlying concepts of the PubChem API. We hope that this will allow
+users with no knowledge or interest in the PubChem API to retrieve useful
+information nonetheless.
 
 1. Mapping from NSC Number to CIDs
 
@@ -138,25 +140,38 @@ NSCtoCID <- getPubChemFromNSC(NSC_numbers, to='cids')
 
 ## PubChem PUG VIEW API
 
-
-
+The PUG View API is primarily designed to complete summary reports on individual
+PubChem records.
 
 ### Querying Annotations
+
+The PubChem PUG View Annotations API provides summaries of third-party 
+annotations accross all PubChem records. These annotations are linked To
+PubChem compounds via CID and/or SID. This API does not allow specific
+input queries, instead returning the entire record for the user to parse
+and extract relevant information.
 
 1. Getting All ATC Codes
 
 ```{r eval=FALSE}
+CIDtoATC <- getPubChemAnnotations('ATC Codes')
 ```
 
 2. Getting All NSC Numbers
 
 ```{r eval=FALSE}
+CIDtoNSC <- getPubChemAnnotations('NSC Number')
 ```
 
 3. Getting All CTD Codes
 
+```{r }
+CIDtoNSC <- getPubChemAnnotations('NSC Number')
+```
 
 
 # References
 1. PUG REST. PubChem Docs [website]. Retrieved from https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest.
-2. PUG VIEW. PubChem Docs [webiste]. Retrieved from https://pubchemdocs.ncbi.nlm.nih.gov/pug-view.
+2. Kim S, Thiessen PA, Cheng T, Yu B, Bolton EE. An update on PUG-REST: RESTful interface for programmatic access to PubChem. Nucleic Acids Res. 2018 July 2; 46(W1):W563-570. doi:10.1093/nar/gky294.
+4. PUG VIEW. PubChem Docs [webiste]. Retrieved from https://pubchemdocs.ncbi.nlm.nih.gov/pug-view.
+3. Kim S, Thiessen PA, Cheng T, Zhang J, Gindulyte A, Bolton EE. PUG-View: programmatic access to chemical annotations integrated in PubChem. J Cheminform. 2019 Aug 9; 11:56. doi:10.1186/s13321-019-0375-2.

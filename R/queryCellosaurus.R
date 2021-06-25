@@ -25,7 +25,6 @@
 #' @md
 #' @importFrom xml2 read_xml xml_find_all xml_find_first xml_text xml_add_child
 #' @export
-
 queryCellosaurus <-
     function(url = "https://ftp.expasy.org/databases/cellosaurus/cellosaurus.xml",
              cellline_input,
