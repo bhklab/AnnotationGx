@@ -298,44 +298,6 @@ queryRequestPubChem <- function(...) parseJSON(getRequestPubChem(...))
 ## REST API to use.
 
 
-#' Build a `data.table` of assay ids from the a PubChem query list.
-#' 
-#' @param A
-#' 
-#' 
-#' 
-#' 
-#' 
-#' 
-#' 
-buildAIDTable <- function(list) {
-    as.data.table(list$InformationList$Information)
-}
-
-#'
-#'
-#'
-#' 
-querySynonymsFromName <- function(drugNames) {
-    ## TODO:: Design a general mechanism for correcting special character
-    safeDrugNames <- drugNames
-    results <- vector(mode='list', length(drugNames))
-    names(results) <- safeDrugNames
-    # Quote all drug names for safety
-    for (drug in safeDrugNames) {
-        results[[drug]] <- content(
-            getRequestPubChem(
-                id=drug, 
-                namespace='Name',
-                operation='synonyms'),
-            'parsed'
-        )
-        Sys.sleep(0.17) # prevent making more than 5 requests per second
-                        # also prevents more than 400 requests per minute
-    }
-    return(results)
-}
-
 #' @title getPubChemFromNSC
 #' 
 #' @description
@@ -426,6 +388,7 @@ getPubChemFromNSC <- function(ids, to='cids', ..., batch=TRUE, raw=FALSE) {
     return(unlistQueryRes)
 }
 
+
 #' @title getPubChemCompound
 #'
 #' @description
@@ -492,6 +455,7 @@ getPubChemCompound <- function(ids, from='cid', to='property', ...,
     return(queryRes)
 }
 
+
 #' @title getPubChemSubstance
 #'
 #' @description
@@ -548,8 +512,8 @@ getPubChemSubstance <- function(ids, from='cid', to='sids', ...,
 #' Get a selected annotation for all PubChem entries
 #' 
 #' @description 
-#' Queries the PubChem PUG VIEW API to all annotations for the specified 
-#'   header. Results will be mapped to CID or SID.
+#' Queries the PubChem PUG VIEW API to get all annotations for the specified 
+#'   header. Results will be mapped to CID and/or SID.
 #' 
 #' @param header `character(1)` A valid header name for the PUG VIEW annotations
 #'   API. Default is 'Available', which will return a list of available
@@ -605,36 +569,33 @@ getPubChemAnnotations <- function(header='Available', type='Compound',
     resultDT <- as.data.table(parseJSON(queryRes)[[1]][[1]])
 
     numPages <- as.numeric(content(queryRes)[[1]]$TotalPages)
-    if (header == 'CAS') numPages <- 10
     if (numPages > 1) {
         tryCatch({ 
             bpworkers(BPPARAM) <- 5
             bpprogressbar(BPPARAM) <- TRUE
-        }, error=function(e) .warning(funConext, 'Failed to set parallelzation
+        }, error=function(e) .warning(funContext, 'Failed to set parallelzation
             parameters! Please configure them yourself and pass in as the 
             BPPARAM argument.'))
         pageList <- bplapply(seq(2, numPages), function(i, queryURL, numPages) {
-            message(i)
-            print(i)
             t1 <- Sys.time()
             encodedURL <- URLencode(paste0(queryURL, '&page=', i))
-            queryRes <- RETRY('GET', encodedURL, timeout(29), times=3)
-            tryCatch({
-                page <- as.data.table(parseJSON(queryRes)[[1]][[1]])
+            queryRes <- RETRY('GET', encodedURL, timeout(29), times=5)
+            page <- tryCatch({
+                as.data.table(parseJSON(queryRes)[[1]][[1]])
             }, error=function(e) {
                 .warning(funContext, 'Parsing to JSON failed! Returning empty
                     data.table.')
-                return(data.table)
+                return(data.table())
             })
             t2 <- Sys.time()
             queryTime <- t2 - t1
             if (queryTime < 0.21) Sys.sleep(0.21 - queryTime)
             return(page)
         }, BPPARAM=BPPARAM, queryURL=queryURL, numPages=numPages)
+        pageList <- c(list(resultDT), pageList)
+    } else {
+        pageList <- list(resultDT)
     }
-    pageList <- c(list(resultDT), pageList)
-
-    return(pageList)
 
     annotationDT <- rbindlist(pageList, fill=TRUE, use.names=TRUE)
     annotationDT[, Data := lapply(Data, as.data.table)]
@@ -711,6 +672,20 @@ getPubChemAnnotations <- function(header='Available', type='Compound',
     return(annotationDT)
 }
 
+#' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
+.parseCASannotations <- function(DT) {
+
+}
+
+#' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
+.parseSynonymsAndIdentifiers <- function(DT) {
+    DT[, Synonyms := lapply(Data, function(x) x$Value[[1]][[1]])]
+    DT[, Synonyms := unlist(lapply(synonyms, FUN=paste0, collapse='|'))]
+    annotationDT <- DT[, .(CID=unlist(LinkedRecords)), by=.(SourceName, SourceID,
+        Name, URL, Synonyms)]
+    return(annotationDT)
+}
+ 
 
 if (sys.nframe() == 0) {
     library(AnnotationGx)

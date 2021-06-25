@@ -25,6 +25,11 @@ Imports:
     rlang,
     CoreGx,
     crayon
+Suggests:
+    rmarkdown,
+    knitr,
+    pandoc,
+    BiocStyle
 License: `use_mit_license()`
 Encoding: UTF-8
 LazyData: true
