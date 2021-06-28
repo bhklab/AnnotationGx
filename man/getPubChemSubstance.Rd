@@ -7,9 +7,8 @@
 getPubChemSubstance(
   ids,
   from = "cid",
-  to = "property",
+  to = "sids",
   ...,
-  properties = "Title",
   batch = TRUE,
   raw = FALSE
 )
@@ -27,7 +26,9 @@ to 'record', which returns all available data from the specified IDs.}
 
 \item{batch}{\code{logical(1)} Should the query be run in batches (i.e., multiple
 ids per GET request to the API). Default is \code{TRUE}. Should be set to
-\code{FALSE} when retrying failed queries.}
+\code{FALSE} when retrying failed queries. Batch queries are not supported when
+\code{from} is one of 'name', 'xref', 'smiles', 'inchi' or 'sdf'. In these
+cases, batch will automatically be set to \code{FALSE} with a warning.}
 
 \item{raw}{\code{logical(1)} Should the raw query results be early returned. This
 can be useful for diagnosing issues with failing queries.}

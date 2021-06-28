@@ -82,23 +82,62 @@ has been included to allow users to easily query this domain.
 
 ```{r eval=FALSE}
 library(AnnotationGx)
+library(data.table)
 drugs <- c("Erlotinib", "Acadesine", "Camptothecin", "Vincaleukoblastine", 
 "Cisplatin")
 namesToCID <- getPubChemCompound(drugs, from='name', to='cids')
 ```
 
+It is possible for names to multimap to CIDs. This is the case for 
+'Vincaleukoblastine' in the above query. In cases of multimapping, usually
+the first entry has the highest similarity to the requested drug. To subset 
+to only the first occurrence of each of drug name:
+
+```{r eval=FALSE}
+# Using duplicated function
+noDuplicatesNamesToCID <- namesToCID[!duplicated(name), ]
+# Using group-by operations
+noDuplicatesNamesToCID <- namesToCID[, first(.SD), by=name]
+```
+
+In cases with multimapping, we highly recommend you manually check that the
+CID you select is optimal. This can be done with a simple look up in PubChem
+via your web browser if there are only few multimapped drugs. You can also
+keep all duplicates, then decide on the best option when fetching compound
+properties like this:
+
+```{r eval=FALSE}
+multiIDs <- namesToCID[name == 'Vincaleukoblastine', ]$cids
+CIDtoTitle <- getPubChemCompound(multiIDs, from='cid', to='property', 
+  properties='Title')
+```
+
+Viewing the results, we can see that indeed the first CID is the best,
+as the Title of the PubChem entry is exactly our original query. Multimapping
+occurs because PubChem look-ups by name also consider synonyms.
+
+For this reason, we recommend mapping from names to CID or SID first, then
+using those official PubChem identifiers to fetch additional information about 
+your compound of interest.
+
+```{r eval=FALSE}
+# Extract the mutlimapped IDs
+multiIDs <- namesToCID[name == 'Vincaleukoblastine', ]$cids
+```
 
 2. Get SID from Drug Names
 ```{r eval=FALSE}
 namesToSID <- getPubChemCompound(drugs, from='name', to='sids')
 ```
 
+Multimapping is an even greater concern when fetching SIDs, since a single CID 
+can map to many SIDs. As a result, we only recommend using SIDs for 
+compounds which have no available CID.
 
 3. Get Synonyms from Drug Names
 ```{r eval=FALSE}
 namesToSynonyms <- getPubChemCompound(drugs, from='name', to='synonyms')
 ```
-
 
 4. Get Compound Properties from CIDs
 ```{r eval=FALSE}
@@ -107,9 +146,9 @@ propertiesFromCID <- getPubChemCompound(cids,
     properties=c('Title', 'InChIKey', 'CanonicalSMILES'))
 ```
 
-A short-list of properties are available in the function documentation, see
+A short-list of properties is available in the function documentation, see
 `?getPubChemCompound`. A link in the DETAILS section will take you to a full
-list of available compound properties.
+list of available compound properties in the PubChem API documentation.
 
 ### Querying the Substance Domain
 
@@ -121,15 +160,17 @@ to get the information you are interested in.
 
 A functions for making specific queries to the assay domain on the PUG REST API
 has not been implemented yet. A user could implement their own using the
-`queryPubChem` functions and knowledge of the PubChem API.
+`queryPubChem` functions and knowledge of the PubChem API. It is possible
+we will add additional methods to query this domain to retrieve information
+such as drug targets or doseresponse metrics.
 
 ### Specialized functions
 
 To make the package more user friendly, we have included a number of convenience
 functions which further limit the scope of queries, but require less knowledge
-of the underlying concepts of the PubChem API. We hope that this will allow
-users with no knowledge or interest in the PubChem API to retrieve useful
-information nonetheless.
+of the underlying structure of the PubChem API. We hope that this will allow
+users with no knowledge or interest in details of the PubChem API to retrieve 
+useful information nonetheless.
 
 1. Mapping from NSC Number to CIDs
 
@@ -138,18 +179,51 @@ NSC_numbers <- c(1026L, 1027L, 1042L, 1059L, 1063L, 1139L)
 NSCtoCID <- getPubChemFromNSC(NSC_numbers, to='cids')
 ```
 
+Additional functions mapping from external identifiers will be added as the 
+need arises. Additional documentation will be added to this section at that 
+time.
+
+### Handling Failed queries
+
+Queries to the PubChem API can fail for various reasons. Maybe there is a typo
+in your query identifiers, maybe some of the identifiers don't map to any
+PubChem enteries, maybe there was a connection interuption during your query.
+
+The functions in this package should provide a warning whenever queries fail.
+The identifiers for failed queries will be available as an attribute on the
+returned results.
+
 ## PubChem PUG VIEW API
 
-The PUG View API is primarily designed to complete summary reports on individual
-PubChem records.
+The PUG View API is primarily designed to provide summary reports of all 
+external identifiers for a given PubChem entry. Each summary provides the
+values of external annotations, as well as links to their source database.
+
+### Querying Individual Records
+
+A function for querying individual PUG VIEW records has not been implemented yet.
+We will update this documentation as soon as we have the feature avaiable.
 
 ### Querying Annotations
 
 The PubChem PUG View Annotations API provides summaries of third-party 
-annotations accross all PubChem records. These annotations are linked To
+annotations across all PubChem records. These annotations are linked To
 PubChem compounds via CID and/or SID. This API does not allow specific
 input queries, instead returning the entire record for the user to parse
 and extract relevant information.
+
+To determine what kind of annotations are available, you can get a list
+of headers by calling the function with no arguments:
+
+```{r eval=FALSE}
+headers <- getPubChemAnnotations()
+# %like% is a convenient way to do regex subsets on a data.table
+#>it is equivalent to grepl('ATC', Heading)
+headers[Heading %like% 'ATC', ]
+```
+
+You can see additional documentation for this function using 
+`?getPubChemAnnotations` from the R console.
 
 1. Getting All ATC Codes
 
@@ -165,10 +239,67 @@ CIDtoNSC <- getPubChemAnnotations('NSC Number')
 
 3. Getting All CTD Codes
 
-```{r }
-CIDtoNSC <- getPubChemAnnotations('NSC Number')
+```{r eval=FALSE}
+CIDtoCTD <- getPubChemAnnotations('CTD Chemical-Gene Interactions')
 ```
 
+4. Getting All DILI Statuses
+
+```{r eval=FALSE}
+CIDtoDILI <- getPubChemAnnotations('Drug Induced Liver Injury')
+```
+
+5. Getting All CAS Registry Numbers
+
+The PubChem PUG VIEW API has many records with valid CAS identifiers, therefore
+this function can be very slow. Since it returns values for ALL PubChem records,
+it should only need to be run one. Subsequent look-ups can be done from the
+resulting `data.table` based on CID or SID. Make sure to save the failed
+as soon as this function returns to prevent having to run it again.
+
+```{r eval=FALSE}
+CIDtoCAS <- getPubChemAnnotations('CAS')
+```
+
+6. Getting All Compound Synonyms
+
+While it is generally faster and more efficient to use the `getPubChemCompound`
+function to look up synonyms based on some known identifier, it may be useful
+to get an exaustive list of synonyms when other mapping methods fail.
+
+```{r eval=FALSE}
+headers[Heading %like% 'Syn']
+```
+
+Here we can see that there are two options for looking up compound synonyms
+available via the PUG VIEW API. We can get results for both.
+
+```{r eval=FALSE}
+CIDtoNamesAndSyn <- getPubChemAnnotations('Names and Synonyms')
+```
+
+```{r eval=FALSE}
+CIDtoSynAndIDs <- getPubChemAnnotations('Synonyms and Identifiers')
+```
+
+7. Other Annotations
+
+The `getPubChemAnnotations` function supports arbitrary annotation headers.
+We have included default parsing function to take the raw query results
+for the use cases above and return a well formatted table of results data.
+
+However, users wishing to retrieve other annotations can do so. By defaults
+the results will be returned as single `data.table` which the user will need
+to process into something usable. If you find you are often retreiving the
+same kind of annotations, it is also possible for developers to write a custom
+parser function which will automatically format the results before they are
+returned.
+
+This function should be passed to the `parseFUN` parameter, and should accept
+the unparsed return of the function and process it to the desired output. If
+you have some efficient parse functions you would like to see added as
+defaults in the package please feel free to open an Issue or Pull Request
+on our GitHub page.
 
 # References
 1. PUG REST. PubChem Docs [website]. Retrieved from https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest.

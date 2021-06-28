@@ -409,7 +409,9 @@ getPubChemFromNSC <- function(ids, to='cids', ..., batch=TRUE, raw=FALSE) {
 #'   See details for more information.
 #' @param batch `logical(1)` Should the query be run in batches (i.e., multiple
 #'   ids per GET request to the API). Default is `TRUE`. Should be set to 
-#'   `FALSE` when retrying failed queries.
+#'   `FALSE` when retrying failed queries. Batch queries are not supported when
+#'   `from` is one of 'name', 'xref', 'smiles', 'inchi' or 'sdf'. In these 
+#'   cases, batch will automatically be set to `FALSE` with a warning.
 #' @param raw `logical(1)` Should the raw query results be early returned. This
 #'   can be useful for diagnosing issues with failing queries.
 #'
@@ -429,8 +431,12 @@ getPubChemCompound <- function(ids, from='cid', to='property', ...,
     properties='Title', batch=TRUE, raw=FALSE) 
 {
     if (!is.character(ids)) ids <- as.character(ids)
-    if (from %in% c('name', 'xref', 'smiles', 'inchi', 'sdf')) 
+    if (from %in% c('name', 'xref', 'smiles', 'inchi', 'sdf')) {
+        if (isTRUE(batch)) .warning('Batch queries cannot be used when mapping 
+            from name, xref, smiles, inchi or sdf. Setting to FALSE.')
         batch <- FALSE
+    }
+
     if (to == 'property')
         to <- paste0(to, '/', paste0(properties, collapse=','))
     queryRes <- queryPubChem(ids, domain='compound', 
@@ -480,7 +486,9 @@ getPubChemCompound <- function(ids, from='cid', to='property', ...,
 #'   to 'record', which returns all available data from the specified IDs.
 #' @param batch `logical(1)` Should the query be run in batches (i.e., multiple
 #'   ids per GET request to the API). Default is `TRUE`. Should be set to 
-#'   `FALSE` when retrying failed queries.
+#'   `FALSE` when retrying failed queries. Batch queries are not supported when
+#'   `from` is one of 'name', 'xref', 'smiles', 'inchi' or 'sdf'. In these 
+#'   cases, batch will automatically be set to `FALSE` with a warning.
 #' @param raw `logical(1)` Should the raw query results be early returned. This
 #'   can be useful for diagnosing issues with failing queries.
 #'
@@ -489,15 +497,15 @@ getPubChemCompound <- function(ids, from='cid', to='property', ...,
 #' @md
 #' @importFrom data.table setnames as.data.table rbindlist
 #' @export
-getPubChemSubstance <- function(ids, from='cid', to='property', ..., 
-    properties='Title', batch=TRUE, raw=FALSE) 
+getPubChemSubstance <- function(ids, from='cid', to='sids', ..., 
+    batch=TRUE, raw=FALSE) 
 {
     if (!is.character(ids)) ids <- as.character(ids)
-    if (from %in% c('name', 'xref', 'smiles', 'inchi', 'sdf')) 
+    if (from %in% c('name', 'xref', 'smiles', 'inchi', 'sdf')) {
+        if (isTRUE(batch)) .warning('Batch queries cannot be used when mapping 
+            from name, xref, smiles, inchi or sdf. Setting to batch=FALSE.')
         batch <- FALSE
-    if (from %in% c()) batch <- FALSE
-    if (to == 'property')
-        to <- paste0(to, '/', paste0(properties, collapse=','))
+    }
     queryRes <- queryPubChem(ids, domain='substance', 
         namespace=from, operation=to, batch=batch, raw=raw)
 
@@ -559,7 +567,7 @@ getPubChemSubstance <- function(ids, from='cid', to='property', ...,
 #'   one of those mentioned in `parseFUN` documentation, then it will returned
 #'   an unparsed `data.table` which will need to be futher processed to get
 #'   the data interest.
-#'  
+#' 
 #' @details
 #' # API Documentation
 #' For detailed documentation of the annotations API see:
@@ -617,8 +625,11 @@ getPubChemAnnotations <- function(header='Available', type='Compound',
         pageList <- list(resultDT)
     }
 
-    annotationDT <- rbindlist(pageList, fill=TRUE, use.names=TRUE)
-    annotationDT[, Data := lapply(Data, as.data.table)]
+
+    if (header != 'CAS') {
+        annotationDT <- rbindlist(pageList, fill=TRUE, use.names=TRUE)
+        annotationDT[, Data := lapply(Data, as.data.table)]
+    }
 
     # parse the results to a user friendly format
     switch(header,
@@ -628,12 +639,13 @@ getPubChemAnnotations <- function(header='Available', type='Compound',
         'CTD Chemical-Gene Interactions'=return(.parseCTDannotations(annotationDT)),
         'Names and Synonyms'=return(.parseNamesAndSynonyms(annotationDT)),
         'Synonyms and Identifiers'=return(.parseSynonymsAndIdentifiers(annotationDT)),
+        'CAS'=return(.parseCASannotations(pageList)),
         tryCatch({
             parseFUN(annotationDT)
         }, 
         error=function(e) {
             .warning(funContext, 'The parseFUN function failed: ', e, 
-                '. Returning unparsed results instead. Please test the function
+                '. Returning unparsed results instead. Please test the paresFUN
                 on the returned data.')
             return(annotationDT)
         })
@@ -680,10 +692,10 @@ getPubChemAnnotations <- function(header='Available', type='Compound',
 #' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
 .parseNSCannotations <- function(DT) {
     DT[, NSC := unlist(lapply(Data, `[[`, i=4))]
-    annoationDT <- DT[, 
+    annotationDT <- DT[, 
         .(CID=unlist(LinkedRecords.CID), SID=unlist(LinkedRecords.SID)), 
         by=.(SourceName, SourceID, NSC)]
-    return(annoationDT)
+    return(annotationDT)
 }
 
 #' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
@@ -694,9 +706,21 @@ getPubChemAnnotations <- function(header='Available', type='Compound',
     return(annotationDT)
 }
 
-#' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
-.parseCASannotations <- function(DT) {
-
+#' @importFrom data.table data.table as.data.table merge.data.table last rbindlist setnames
+.parseCASannotations <- function(list) {
+    # Make sure CIDs all go in the same column
+    CAS_list <- lapply(list, setnames, old='LinkedRecords.CID', new='LinkedRecords', 
+        skip_absent=TRUE)
+    DT <- rbindlist(CAS_list, fill=TRUE, use.names=TRUE)
+    DT[, CAS := unlist(lapply(Data, function(x) unlist(x[[2]])))]
+    CAS_DT <- DT[, .(CAS=unlist(CAS)), by=.(SourceName, SourceID, Name)]
+    ID_DT <- DT[, .(
+        CID=unlist(lapply(LinkedRecords, function(x) if(is.null(x)) NA_integer_ else x)), 
+        SID=unlist(lapply(LinkedRecords.SID, function(x) if(is.null(x)) NA_integer_ else x)))
+        , by=.(SourceName, SourceID, Name, URL)]
+    annotationDT <- merge.data.table(CAS_DT, ID_DT, 
+        by=c('SourceName', 'SourceID', 'Name'), all.x=TRUE)
+    return(annotationDT)
 }
 
 #' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
@@ -707,6 +731,7 @@ getPubChemAnnotations <- function(header='Available', type='Compound',
     DT[, CID := lapply(LinkedRecords, function(x) if(is.null(x)) NA_integer_ else x)]
     annotationDT <- DT[, .(CID=unlist(CID)), by=.(SourceName, SourceID,
         Name, URL, Synonyms)]
+    
     return(annotationDT)
 }
 
