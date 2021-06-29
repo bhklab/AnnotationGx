@@ -84,7 +84,7 @@ has been included to allow users to easily query this domain.
 library(AnnotationGx)
 library(data.table)
 drugs <- c("Erlotinib", "Acadesine", "Camptothecin", "Vincaleukoblastine", 
-"Cisplatin")
+    "Cisplatin")
 namesToCID <- getPubChemCompound(drugs, from='name', to='cids')
 ```
 
@@ -109,7 +109,7 @@ properties like this:
 ```{r eval=FALSE}
 multiIDs <- namesToCID[name == 'Vincaleukoblastine', ]$cids
 CIDtoTitle <- getPubChemCompound(multiIDs, from='cid', to='property', 
-  properties='Title')
+    properties='Title')
 ```
 
 Viewing the results, we can see that indeed the first CID is the best,
@@ -253,8 +253,8 @@ CIDtoDILI <- getPubChemAnnotations('Drug Induced Liver Injury')
 
 The PubChem PUG VIEW API has many records with valid CAS identifiers, therefore
 this function can be very slow. Since it returns values for ALL PubChem records,
-it should only need to be run one. Subsequent look-ups can be done from the
-resulting `data.table` based on CID or SID. Make sure to save the failed
+it should only need to be run once. Subsequent look-ups can be done from the
+resulting `data.table` based on CID or SID. Make sure to save the file
 as soon as this function returns to prevent having to run it again.
 
 ```{r eval=FALSE}
@@ -285,8 +285,8 @@ CIDtoSynAndIDs <- getPubChemAnnotations('Synonyms and Identifiers')
 7. Other Annotations
 
 The `getPubChemAnnotations` function supports arbitrary annotation headers.
-We have included default parsing function to take the raw query results
-for the use cases above and return a well formatted table of results data.
+We have included default parsing functions to take the raw query results
+for the use cases above and return a well formatted table of result data.
 
 However, users wishing to retrieve other annotations can do so. By defaults
 the results will be returned as single `data.table` which the user will need

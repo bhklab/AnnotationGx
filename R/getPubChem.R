@@ -625,7 +625,6 @@ getPubChemAnnotations <- function(header='Available', type='Compound',
         pageList <- list(resultDT)
     }
 
-
     if (header != 'CAS') {
         annotationDT <- rbindlist(pageList, fill=TRUE, use.names=TRUE)
         annotationDT[, Data := lapply(Data, as.data.table)]
@@ -712,7 +711,7 @@ getPubChemAnnotations <- function(header='Available', type='Compound',
     CAS_list <- lapply(list, setnames, old='LinkedRecords.CID', new='LinkedRecords', 
         skip_absent=TRUE)
     DT <- rbindlist(CAS_list, fill=TRUE, use.names=TRUE)
-    DT[, CAS := unlist(lapply(Data, function(x) unlist(x[[2]])))]
+    DT[, CAS := lapply(Data, function(x) unlist(x[[2]]))]
     CAS_DT <- DT[, .(CAS=unlist(CAS)), by=.(SourceName, SourceID, Name)]
     ID_DT <- DT[, .(
         CID=unlist(lapply(LinkedRecords, function(x) if(is.null(x)) NA_integer_ else x)), 
