@@ -41,7 +41,7 @@ getGuideToPharm <- function(ids=NA, service='ligands', id_type='name',
     failedQueries <- statusCodes != 200
     if (any(failedQueries)) {
         failed <- Map(list, query=queries[failedQueries], 
-            response=queryRes[failedQueires])
+            response=queryRes[failedQueries])
         queries <- queries[!failedQueries]
         ids <- ids[!failedQueries]
     }
