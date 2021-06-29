@@ -191,7 +191,25 @@ PubChem enteries, maybe there was a connection interuption during your query.
 
 The functions in this package should provide a warning whenever queries fail.
 The identifiers for failed queries will be available as an attribute on the
-returned results.
+returned results. Retrying failed queries is particularly important when
+executing functions with `batch=TRUE`, since any failed mappings in a batch
+query will result in the entire query failing. 
+
+An example of extracting failed IDs and retrying with `batch=FALSE` is shown
+below.
+
+```{r eval=FALSE}
+NSC_numbers <- seq(756453, 761266)
+NSCtoCID <- getPubChemFromNSC(NSC_numbers, batch=TRUE)
+
+# extract the failed queries
+failed <- attributes(NSCtoCID)$failed
+failedQueries <- lapply(failed, FUN=`[[`, i='query')
+failedIDs <- unlist(failedQueries)
+
+# retry with batch=FALSE
+retryNSCtoCID <- getPubChemFromNSC(failedIDs[1:10], batch=FALSE)
+```
 
 ## PubChem PUG VIEW API
 

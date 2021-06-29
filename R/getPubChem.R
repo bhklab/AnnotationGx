@@ -378,13 +378,13 @@ getPubChemFromNSC <- function(ids, to='cids', ..., batch=TRUE, raw=FALSE) {
         .error('The operation ', to, ' has not been implemented yet!',  
             ' To return the unprocessed results of the query, set `raw=TRUE`.')
     )
+    # rearrange columns so that NSC_id is first
+    setcolorder(unlistQueryRes, rev(colnames(unlistQueryRes)))
     if (length(failedQueries) > 0) {
         .warning(funContext, 'One or more queries failed, please see 
             `attributes(<result>)$failed` for more information.')
         attributes(unlistQueryRes)$failed <- failedQueries
     }
-    # rearrange columns so that NSC_id is first
-    setcolorder(unlistQueryRes, rev(colnames(unlistQueryRes)))
     return(unlistQueryRes)
 }
 
