@@ -49,7 +49,7 @@ getGuideToPharm <- function(ids=NA, service='ligands', id_type='name',
     names(resultList) <- ids
     resultDT <- rbindlist(resultList, fill=TRUE, use.names=TRUE, idcol='query')
     if (exists('failed')) {
-        attributes(resultDT)$failedQueries <- failed
+        attributes(resultDT)$failed <- failed
     }
     return(resultDT)
 }
