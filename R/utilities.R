@@ -92,3 +92,11 @@
 characterToNamedVector <- function(x) { 
     Reduce(c, lapply(strsplit(unlist(strsplit(x, '\\|')), '='), 
             FUN=\(x) structure(x[2], .Names=x[1]))) }
+
+#' @export
+failedToDT <- function(x) {
+    if (is.null(attributes(x)$failed)) stop("There is no 'failed' attribute?")
+    DtL <- Map(as.data.table, attributes(x)$failed)
+    DT <- rbindlist(DtL)
+    return(DT[, rbindlist(lapply(failure, as.data.table), fill=TRUE), by=query])
+}

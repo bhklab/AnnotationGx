@@ -644,7 +644,7 @@ getPubChemAnnotations <- function(header='Available', type='Compound',
         }, 
         error=function(e) {
             .warning(funContext, 'The parseFUN function failed: ', e, 
-                '. Returning unparsed results instead. Please test the paresFUN
+                '. Returning unparsed results instead. Please test the parseFUN
                 on the returned data.')
             return(annotationDT)
         })
@@ -717,7 +717,7 @@ getPubChemAnnotations <- function(header='Available', type='Compound',
         CID=unlist(lapply(LinkedRecords, function(x) if(is.null(x)) NA_integer_ else x)), 
         SID=unlist(lapply(LinkedRecords.SID, function(x) if(is.null(x)) NA_integer_ else x)))
         , by=.(SourceName, SourceID, Name, URL)]
-    annotationDT <- merge.data.table(CAS_DT, ID_DT, 
+    annotationDT <- merge.data.table(CAS_DT, ID_DT,
         by=c('SourceName', 'SourceID', 'Name'), all.x=TRUE)
     return(annotationDT)
 }
@@ -746,8 +746,6 @@ getPubChemAnnotations <- function(header='Available', type='Compound',
         by=.(SourceName, SourceID, Name, URL, Synonyms)]
     return(annotationDT)
 }
-
-
 
 
 if (sys.nframe() == 0) {
