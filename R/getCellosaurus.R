@@ -25,7 +25,6 @@
 
 getCelloxml <-
     function(url = "https://ftp.expasy.org/databases/cellosaurus/cellosaurus.xml", verbose = TRUE) {
-      #TO DO : fix verbose issue and 4 spaces
       if (verbose) {
         message(paste(
           "xml read started from",
@@ -43,6 +42,35 @@ getCelloxml <-
       return(main_xml)
     }
 
+#' @md
+#' @importFrom xml2 read_xml xml_find_all
+#' @export
+#########ADD DOCS
+cleanCellnames <-
+  function(main_xml, verbose = TRUE) {
+    if (verbose) {
+      message(paste(
+        "Started removing special characters from cell line names in the xml",
+        format(Sys.time(), "%Y-%m-%d %H:%M:%S")
+      ))
+    }
+    matching <- xml_find_all(main_xml, "//cell-line/name-list/name/text()")
+    badchars <- "[\xb5]|[]|[ ,]|[;]|[:]|[-]|[+]|[*]|[%]|[$]|[#]|[{]|[}]|[[]|[]]|[|]|[\\^]|[/]|[\\]|[.]|[_]|[ ]|[(]|[)]"
+    for(i in 1:length(matching)){
+      node1 <- matching[[i]]
+      node1text <- xml_text(node1) 
+      xml_par <- xml_find_first(node1, "parent::*")
+      xml_set_attr(xml_par, "cleanname", gsub(badchars,"",ignore.case = TRUE, node1text))
+    }
+    if (verbose) {
+      message(paste(
+        "Removed special characters from cell line names in the xml",
+        format(Sys.time(), "%Y-%m-%d %H:%M:%S")
+      ))
+    }
+    return(main_xml)
+  }
+
 #' Filter parent node cell-line and parse child nodes for required annotations
 #' @param cell_ip is either cell name or cvcl id.
 #' @param main_xml is read xml object from getCelloxml
@@ -53,18 +81,32 @@ getCelloxml <-
 #' @importFrom xml2 xml_find_all xml_find_first xml_text
 #' @export
 getInfoFromCelllineInput <-
-    function(cell_ip, main_xml, input_type) {
+    function(cell_ip, main_xml, input_type, remove = FALSE) {
       if (input_type == "name") {
-        xmlObject <-
-          xml_find_first(
-            main_xml,
-            paste(
-              "//cell-line/name-list/name[normalize-space(text()) = '",
-              cell_ip,
-              "']/../..",
-              sep = ""
+        if(remove == TRUE){
+          xmlObject <-
+            xml_find_first(
+              main_xml,
+              paste(
+                "//cell-line/name-list/name[@cleanname = '",
+                cell_ip,
+                "']/../..",
+                sep = ""
+              )
             )
-          )
+        }
+        else {
+          xmlObject <-
+            xml_find_first(
+              main_xml,
+              paste(
+                "//cell-line/name-list/name[normalize-space(text()) = '",
+                cell_ip,
+                "']/../..",
+                sep = ""
+              )
+            )
+        }
       }
       else if (input_type == "cvclid") {
         xmlObject <-
@@ -78,6 +120,27 @@ getInfoFromCelllineInput <-
             )
           )
       }
+    xml_exist <- xml_find_first(xmlObject, ".//name-list/name[@type = 'identifier']")
+    if(class(xml_exist) == "xml_missing"){
+        message(paste(
+          "Cell line '", cell_ip, "' not found in xml",
+          sep = ""
+        ))
+      op_list <-
+        list(
+          std_name = cell_ip,
+          syno = NA,
+          cvcl = NA,
+          dis = NA,
+          ncit = NA,
+          cat = NA,
+          dep = NA,
+          sex = NA,
+          age = NA,
+          meta = NA
+        )
+      return(op_list)
+    }
     std_name <-
       xml_text(xml_find_first(xmlObject, ".//name-list/name[@type = 'identifier']"))
     syno_list <-
@@ -142,6 +205,7 @@ getCellosaurus <-
     function(cellline_input,
              namespace = "name",
              url = "https://ftp.expasy.org/databases/cellosaurus/cellosaurus.xml",
+             remove_char = FALSE,
              verbose = TRUE) {
       if (namespace != "name" & namespace != "cvclid") {
         if (verbose) {
@@ -158,7 +222,12 @@ getCellosaurus <-
         ))
       }
       cellline_input <- cellline_input[!is.na(cellline_input)]
-      main_xml <- getCelloxml(url)
+      main_xml <- getCelloxml(url, verbose)
+      if(remove_char == TRUE){
+        main_xml <- cleanCellnames(main_xml, verbose)
+        badchars <- "[\xb5]|[]|[ ,]|[;]|[:]|[-]|[+]|[*]|[%]|[$]|[#]|[{]|[}]|[[]|[]]|[|]|[\\^]|[/]|[\\]|[.]|[_]|[ ]|[(]|[)]"
+        cellline_input <- gsub(badchars,"",ignore.case = TRUE, cellline_input)
+      }
       op_dt <-
         data.table(
           standard_name = character(),
@@ -178,9 +247,9 @@ getCellosaurus <-
       for (nm in 1:length(cellline_input)) {
         if (namespace == "name") {
           op_list <-
-          getInfoFromCelllineInput(cell_ip = cellline_input[nm],
-                                   main_xml = main_xml,
-                                   input_type = "name")
+            getInfoFromCelllineInput(cell_ip = cellline_input[nm],
+                                     main_xml = main_xml,
+                                     input_type = "name", remove = remove_char) 
       }
       else if (namespace == "cvclid") {
         op_list <-
@@ -212,3 +281,4 @@ getCellosaurus <-
     }
     return(op_dt)
     }
+

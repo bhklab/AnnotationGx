@@ -34,3 +34,5 @@ output/.*
 # Local data
 local_data
 local_data/.*
+^.*\.Rproj$
+^\.Rproj\.user$
