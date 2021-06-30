@@ -174,8 +174,13 @@ getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=
 
 #' @title queryPubChem
 #'
+#' @details 
+#' This function automatically parses the results of the 
+#' 
 #' @inheritParams getRequestPubChem
 #' @param ... Fall through parameters to `bpmapply`.
+#' 
+#' @seealso [`getRequestPubChem`]
 #'
 #' @md
 #' @importFrom BiocParallel bplapply bpparam bpnworkers bpworkers<- 
@@ -187,6 +192,8 @@ queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
     operation_options=NA, batch=TRUE, raw=FALSE)
 {
     if (!is.character(id)) id <- as.character(id)
+    if (namespace %in% c('name', 'xref', 'smiles', 'inchi', 'sdf')) 
+        batch <- FALSE
     
     # Cap parallelization at 5 cores to prevent excessive requests
     BPPARAM <- list(...)[['BPPARAM']]
@@ -198,20 +205,11 @@ queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
         bpprogressbar(BPPARAM) <- TRUE
     }
 
-    ## TODO:: Retrieve PubChem server status to dynamically set query spacing
-    ##>based on server load
-    .queryPubChemSleep <- function(x, ...) {
-        if (is(bpparam(), 'SerialParam')) { Sys.sleep(0.2) }
-        tryCatch(queryRequestPubChem(x, ...),
-            error=function(e) list('Error'=paste0('queryPubChemError: ', e, collapse=' ')))
-    }
-
     # -- make queries
     # TODO:: Throw errors in getPubChem for bad HTTP request to allow use
     ##>of BPREDO feature
     if (batch) {
         # determine how many queries to make, with a max 4000 characters per query
-    
         # add 2 characters for conversion of ',' as '%2C' after URL encoding
         maxNChars <- max(vapply(id, FUN=nchar, numeric(1)), na.rm=TRUE) + 2
         totalLength <- length(id) * maxNChars
@@ -245,6 +243,21 @@ queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
     # -- Attach query metadata to the returned list
     attributes(queryRes)$queries <- queries
 
+    return(queryRes)
+}
+
+## TODO:: Retrieve PubChem server status to dynamically set query spacing
+##>based on server load
+## TODO:: Make the query away for server load status in response header
+.queryPubChemSleep <- function(x, ...) {
+    t1 <- Sys.time()
+    queryRes <- tryCatch({
+        queryRequestPubChem(x, ...) 
+    },
+    error=function(e) list('Error'=paste0('queryPubChemError: ', e, collapse=' ')))
+    t2 <- Sys.time()
+    queryTime <- t2 - t1
+    if (queryTime < 0.21) Sys.sleep(0.21 - queryTime)
     return(queryRes)
 }
 
@@ -285,44 +298,6 @@ queryRequestPubChem <- function(...) parseJSON(getRequestPubChem(...))
 ## REST API to use.
 
 
-#' Build a `data.table` of assay ids from the a PubChem query list.
-#' 
-#' @param A
-#' 
-#' 
-#' 
-#' 
-#' 
-#' 
-#' 
-buildAIDTable <- function(list) {
-    as.data.table(list$InformationList$Information)
-}
-
-#'
-#'
-#'
-#' 
-querySynonymsFromName <- function(drugNames) {
-    ## TODO:: Design a general mechanism for correcting special character
-    safeDrugNames <- drugNames
-    results <- vector(mode='list', length(drugNames))
-    names(results) <- safeDrugNames
-    # Quote all drug names for safety
-    for (drug in safeDrugNames) {
-        results[[drug]] <- content(
-            getRequestPubChem(
-                id=drug, 
-                namespace='Name',
-                operation='synonyms'),
-            'parsed'
-        )
-        Sys.sleep(0.17) # prevent making more than 5 requests per second
-                        # also prevents more than 400 requests per minute
-    }
-    return(results)
-}
-
 #' @title getPubChemFromNSC
 #' 
 #' @description
@@ -337,7 +312,6 @@ querySynonymsFromName <- function(drugNames) {
 #' @param ... Fall through arguments to bpmapply. Use this to pass in BPPARAM
 #'   parameter to customize parellization settings. Alternatively, just call
 #'   `register()` with your desired parallel backend configuration. 
-#' @param raw
 #' @param raw A `logical(1)` vector specifying whether to early return the raw
 #'   query results. Use this if specifying an unimplemented return to the `to`
 #'   parameter.
@@ -346,7 +320,7 @@ querySynonymsFromName <- function(drugNames) {
 #'   the second column is the results specified in `to`.
 #'
 #' @md
-#' @importFrom data.table data.table as.data.table
+#' @importFrom data.table data.table as.data.table setcolorder
 #' @export
 getPubChemFromNSC <- function(ids, to='cids', ..., batch=TRUE, raw=FALSE) {
     
@@ -404,20 +378,25 @@ getPubChemFromNSC <- function(ids, to='cids', ..., batch=TRUE, raw=FALSE) {
         .error('The operation ', to, ' has not been implemented yet!',  
             ' To return the unprocessed results of the query, set `raw=TRUE`.')
     )
+    # rearrange columns so that NSC_id is first
+    setcolorder(unlistQueryRes, rev(colnames(unlistQueryRes)))
     if (length(failedQueries) > 0) {
         .warning(funContext, 'One or more queries failed, please see 
             `attributes(<result>)$failed` for more information.')
         attributes(unlistQueryRes)$failed <- failedQueries
     }
-    # rearrange columns so that NSC_id is first
-    setcolorder(unlistQueryRes, rev(colnames(unlistQueryRes)))
     return(unlistQueryRes)
 }
 
-#' @title getPubChemFromCID
+
+#' @title getPubChemCompound
 #'
-#' @param ids A `character` or `numeric` vector of valid PubChem CIDs to use
-#'   for the query.
+#' @description
+#' Make queries to the PubChem Compound domain.
+#' 
+#' @param ids A `character` or `numeric` vector of valid PubChem identifiers
+#'   to use for the query. Which identifier is being used must be specified in
+#'   the `from` parameter.
 #' @param from A `character(1)` vector with the desired namespace to query.
 #'   Default is 'cid'. Try using 'sid' if some of your CIDs fail to map.
 #' @param to A `character(1)` vector with the desired return type. Defaults
@@ -426,10 +405,19 @@ getPubChemFromNSC <- function(ids, to='cids', ..., batch=TRUE, raw=FALSE) {
 #' @param properties A `character` vector of properties to return. Only used
 #'   when `to='property'`. Common properties of interest are: 'Title' (name), 
 #'   'IUPACName', 'CanonicalSMILES', 'IsomericSMILES', 'InChIKey'. The default
-#'   setting with return all of these.
+#'   setting will return 'Title'.
 #'   See details for more information.
+#' @param batch `logical(1)` Should the query be run in batches (i.e., multiple
+#'   ids per GET request to the API). Default is `TRUE`. Should be set to 
+#'   `FALSE` when retrying failed queries. Batch queries are not supported when
+#'   `from` is one of 'name', 'xref', 'smiles', 'inchi' or 'sdf'. In these 
+#'   cases, batch will automatically be set to `FALSE` with a warning.
+#' @param raw `logical(1)` Should the raw query results be early returned. This
+#'   can be useful for diagnosing issues with failing queries.
 #'
-#' @return A `data.frame` or `list` containing results of the query.
+#' @return A `data.table` containing results of the query, or a list if `raw`
+#'   is set to `TRUE`. Failed queries are available as an attribute of the 
+#'   returned object, see `attributes(object)`.
 #'
 #' @details
 #' ## `properties`
@@ -437,20 +425,28 @@ getPubChemFromNSC <- function(ids, to='cids', ..., batch=TRUE, raw=FALSE) {
 #' https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest$_Toc494865556
 #'
 #' @md
+#' @importFrom data.table setnames as.data.table rbindlist
 #' @export
 getPubChemCompound <- function(ids, from='cid', to='property', ..., 
     properties='Title', batch=TRUE, raw=FALSE) 
 {
     if (!is.character(ids)) ids <- as.character(ids)
+    if (from %in% c('name', 'xref', 'smiles', 'inchi', 'sdf')) {
+        if (isTRUE(batch)) .warning('Batch queries cannot be used when mapping 
+            from name, xref, smiles, inchi or sdf. Setting to FALSE.')
+        batch <- FALSE
+    }
+
     if (to == 'property')
         to <- paste0(to, '/', paste0(properties, collapse=','))
     queryRes <- queryPubChem(ids, domain='compound', 
-        namespace='cid', operation=to, batch=batch, raw=raw)
+        namespace=from, operation=to, batch=batch, raw=raw)
 
     # -- early return option
     if (raw) return(queryRes)
 
     # -- deal with failed queries
+    queries <- attributes(queryRes)$queries
     failedQueries <- attributes(queryRes)$failed
 
     # -- process the results
@@ -459,14 +455,296 @@ getPubChemCompound <- function(ids, from='cid', to='property', ...,
 
     # TODO:: Determine if all results are wrapped in two lists? If not this may 
     #>break the function.
-    .parseQueryToDT <- function(queryRes) as.data.table(queryRes)[[1]][[1]]
+    .parseQueryToDT <- function(queryRes) as.data.table(queryRes[[1]][[1]])
     queryRes <- lapply(queryRes, FUN=.parseQueryToDT)
-    queryRes <- rbindlist(queryRes)
+    if (isFALSE(batch)) {
+        names(queryRes) <- queries
+        queryRes <- rbindlist(queryRes, idcol=from)
+    } else {
+        queryRes <- rbindlist(queryRes)
+    }
 
-    if (from == 'sid') setcolnames(queryRes, 'CID', 'SID')
+    setnames(queryRes, 'V1', to, skip_absent=TRUE)
+    if (from == 'sid') setnames(queryRes, 'CID', 'SID')
     if (length(failedQueries) > 1) attributes(queryRes)$failed <- failedQueries
     
     return(queryRes)
+}
+
+
+#' @title getPubChemSubstance
+#'
+#' @description
+#' Make queries to the PubChem Compound domain.
+#' 
+#' @param ids A `character` or `numeric` vector of valid PubChem identifiers
+#'   to use for the query. Which identifier is being used must be specified in
+#'   the `from` parameter.
+#' @param from A `character(1)` vector with the desired namespace to query.
+#'   Default is 'cid'. Try using 'sid' if some of your CIDs fail to map.
+#' @param to A `character(1)` vector with the desired return type. Defaults
+#'   to 'record', which returns all available data from the specified IDs.
+#' @param batch `logical(1)` Should the query be run in batches (i.e., multiple
+#'   ids per GET request to the API). Default is `TRUE`. Should be set to 
+#'   `FALSE` when retrying failed queries. Batch queries are not supported when
+#'   `from` is one of 'name', 'xref', 'smiles', 'inchi' or 'sdf'. In these 
+#'   cases, batch will automatically be set to `FALSE` with a warning.
+#' @param raw `logical(1)` Should the raw query results be early returned. This
+#'   can be useful for diagnosing issues with failing queries.
+#'
+#' @return A `data.frame` or `list` containing results of the query.
+#'
+#' @md
+#' @importFrom data.table setnames as.data.table rbindlist
+#' @export
+getPubChemSubstance <- function(ids, from='cid', to='sids', ..., 
+    batch=TRUE, raw=FALSE) 
+{
+    if (!is.character(ids)) ids <- as.character(ids)
+    if (from %in% c('name', 'xref', 'smiles', 'inchi', 'sdf')) {
+        if (isTRUE(batch)) .warning('Batch queries cannot be used when mapping 
+            from name, xref, smiles, inchi or sdf. Setting to batch=FALSE.')
+        batch <- FALSE
+    }
+    queryRes <- queryPubChem(ids, domain='substance', 
+        namespace=from, operation=to, batch=batch, raw=raw)
+
+    # -- early return option
+    if (raw) return(queryRes)
+
+    # -- deal with failed queries
+    queries <- attributes(queryRes)$queries
+    failedQueries <- attributes(queryRes)$failed
+
+    # -- process the results
+    .replace_NULL_NA <- function(DT) lapply(DT, function(x) { 
+        ifelse(is.null(x), rep(NA_integer_, length(x)), x) })
+
+    # TODO:: Determine if all results are wrapped in two lists? If not this may 
+    #>break the function.
+    .parseQueryToDT <- function(queryRes) as.data.table(queryRes[[1]][[1]])
+    queryRes <- lapply(queryRes, FUN=.parseQueryToDT)
+    if (isFALSE(batch)) {
+        names(queryRes) <- queries
+        queryRes <- rbindlist(queryRes, idcol=from)
+    } else {
+        queryRes <- rbindlist(queryRes)
+    }
+
+    setnames(queryRes, 'V1', to, skip_absent=TRUE)
+    if (from == 'sid') setnames(queryRes, 'CID', 'SID')
+    if (length(failedQueries) > 1) attributes(queryRes)$failed <- failedQueries
+    
+    return(queryRes)
+}
+
+#' Get a selected annotation for all PubChem entries
+#' 
+#' @description 
+#' Queries the PubChem PUG VIEW API to get all annotations for the specified 
+#'   header. Results will be mapped to CID and/or SID.
+#' 
+#' @param header `character(1)` A valid header name for the PUG VIEW annotations
+#'   API. Default is 'Available', which will return a list of available
+#'   headers as a `data.frame`.
+#' @param type `character(1)` The header type. Default is 'Compound'. Make
+#'   sure ot change this if your header of interest isn't type compouns.
+#' @param parseFUN `character(1)` or `function` A custom function to parse
+#'   the results returned from this function for unkown header arguments. 
+#'   Defaults to identity, i.e., it returned the results unparsed. Some
+#'   default parsing is implemented inside the function for 'ATC Code' and 
+#'   'Drug Induced Liver Injury' headers.
+#' @param ... Force subsequent parameters to be named. Not used.
+#' @param output `character(1)` The output format. Defaults to 'JSON'. For
+#'   options other than 'JSON', you must set `raw=TRUE` or the fuction will
+#'   fail.
+#' @param url `character(1)` The URL to perform API queries on. This is for
+#'   developer use only and should not be changed.
+#' @param BPPARAM `BiocParallelParam` A BiocParallel back-end to parallelize
+#'   with. Defaults to `bpparam()`. To run in serial, set to `SerialParam()`.
+#' 
+#' @return A `data.table` of resulting annotations. If the header is not
+#'   one of those mentioned in `parseFUN` documentation, then it will returned
+#'   an unparsed `data.table` which will need to be futher processed to get
+#'   the data interest.
+#' 
+#' @details
+#' # API Documentation
+#' For detailed documentation of the annotations API see:
+#' https://pubchemdocs.ncbi.nlm.nih.gov/pug-view$_Toc495044630
+#' 
+#' @importFrom httr GET
+#' @importFrom jsonlite fromJSON
+#' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
+#' @importFrom BiocParallel bpparam bpworkers bpprogressbar bptry
+#' @export
+getPubChemAnnotations <- function(header='Available', type='Compound', 
+    parseFUN=identity, ..., output='JSON', raw=FALSE,
+    url='https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/annotations/heading',
+    BPPARAM=bpparam())
+{
+    funContext <- .funContext('::getPubChemAnnotations')
+    if (header == 'Available') return(as.data.table(fromJSON(paste0(
+        'https://pubchem.ncbi.nlm.nih.gov/rest/pug/annotations/headings/', 
+        output))[[1]][[1]]))
+
+    queryURL <- paste0(.buildURL(url, header, output), '?heading_type=', type)
+    encodedQueryURL <- URLencode(queryURL)
+
+    queryRes <- RETRY('GET', encodedQueryURL, timeout(29), times=3)
+    if (isTRUE(raw)) return(queryRes)
+
+    resultDT <- as.data.table(parseJSON(queryRes)[[1]][[1]])
+
+    numPages <- as.numeric(content(queryRes)[[1]]$TotalPages)
+    if (numPages > 1) {
+        tryCatch({ 
+            bpworkers(BPPARAM) <- 5
+            bpprogressbar(BPPARAM) <- TRUE
+        }, error=function(e) .warning(funContext, 'Failed to set parallelzation
+            parameters! Please configure them yourself and pass in as the 
+            BPPARAM argument.'))
+        pageList <- bplapply(seq(2, numPages), function(i, queryURL, numPages) {
+            t1 <- Sys.time()
+            encodedURL <- URLencode(paste0(queryURL, '&page=', i))
+            queryRes <- RETRY('GET', encodedURL, timeout(29), times=5)
+            page <- tryCatch({
+                as.data.table(parseJSON(queryRes)[[1]][[1]])
+            }, error=function(e) {
+                .warning(funContext, 'Parsing to JSON failed! Returning empty
+                    data.table.')
+                return(data.table())
+            })
+            t2 <- Sys.time()
+            queryTime <- t2 - t1
+            if (queryTime < 0.21) Sys.sleep(0.21 - queryTime)
+            return(page)
+        }, BPPARAM=BPPARAM, queryURL=queryURL, numPages=numPages)
+        pageList <- c(list(resultDT), pageList)
+    } else {
+        pageList <- list(resultDT)
+    }
+
+    if (header != 'CAS') {
+        annotationDT <- rbindlist(pageList, fill=TRUE, use.names=TRUE)
+        annotationDT[, Data := lapply(Data, as.data.table)]
+    }
+
+    # parse the results to a user friendly format
+    switch(header,
+        'ATC Code'=return(.parseATCannotations(annotationDT)),
+        'Drug Induced Liver Injury'=return(.parseDILIannotations(annotationDT)),
+        'NSC Number'=return(.parseNSCannotations(annotationDT)),
+        'CTD Chemical-Gene Interactions'=return(.parseCTDannotations(annotationDT)),
+        'Names and Synonyms'=return(.parseNamesAndSynonyms(annotationDT)),
+        'Synonyms and Identifiers'=return(.parseSynonymsAndIdentifiers(annotationDT)),
+        'CAS'=return(.parseCASannotations(pageList)),
+        tryCatch({
+            parseFUN(annotationDT)
+        }, 
+        error=function(e) {
+            .warning(funContext, 'The parseFUN function failed: ', e, 
+                '. Returning unparsed results instead. Please test the parseFUN
+                on the returned data.')
+            return(annotationDT)
+        })
+    )
+}
+
+# -----------------------------
+# getPubChemAnnotations Helpers
+
+#' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
+.parseATCannotations <- function(DT) {
+    dataL <- DT$Data
+    names(dataL) <- DT$SourceID
+    dataDT <- rbindlist(dataL, fill=TRUE, use.names=TRUE, idcol='SourceID')
+    dataDT[, ATC_code := unlist(lapply(Value.StringWithMarkup, 
+        function(x) last(x)[[1]]))]
+    annotationDT <- merge.data.table(
+        dataDT[, .(SourceID, ATC_code)],
+        DT[, .(SourceName, SourceID, LinkedRecords)],
+        by='SourceID'
+    )
+    DT <- annotationDT[, .(CID=unlist(LinkedRecords)), 
+        by=.(SourceName, SourceID, ATC_code)]
+    return(DT)
+}
+
+#' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
+.parseDILIannotations <- function(DT) {
+    dataL <- DT$Data
+    names(dataL) <- DT$SourceID
+    dataL <- lapply(dataL, FUN=`[`, i=Name %like% 'DILI')
+    dataDT <- rbindlist(dataL, fill=TRUE, use.names=TRUE, idcol='SourceID')
+    dataDT[, DILI := unlist(Value.StringWithMarkup)]
+    annotationDT <- merge.data.table(
+        dataDT[, .(SourceID, DILI)],
+        DT[, .(SourceID, SourceName, Name, LinkedRecords.CID, 
+            LinkedRecords.SID)],
+        by='SourceID')
+    DT <- annotationDT[, .(CID=unlist(LinkedRecords.CID), SID=unlist(LinkedRecords.SID)), 
+        by=.(SourceName, SourceID, Name, DILI)]
+    return(DT)
+}
+
+#' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
+.parseNSCannotations <- function(DT) {
+    DT[, NSC := unlist(lapply(Data, `[[`, i=4))]
+    annotationDT <- DT[, 
+        .(CID=unlist(LinkedRecords.CID), SID=unlist(LinkedRecords.SID)), 
+        by=.(SourceName, SourceID, NSC)]
+    return(annotationDT)
+}
+
+#' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
+.parseCTDannotations <- function(DT) {
+    annotationDT <- DT[, .(CID=unlist(LinkedRecords)), 
+        by=.(SourceName, SourceID, URL)]
+    annotationDT[, CTD := gsub('::.*$', '', SourceID)]
+    return(annotationDT)
+}
+
+#' @importFrom data.table data.table as.data.table merge.data.table last rbindlist setnames
+.parseCASannotations <- function(list) {
+    # Make sure CIDs all go in the same column
+    CAS_list <- lapply(list, setnames, old='LinkedRecords.CID', new='LinkedRecords', 
+        skip_absent=TRUE)
+    DT <- rbindlist(CAS_list, fill=TRUE, use.names=TRUE)
+    DT[, CAS := lapply(Data, function(x) unlist(x[[2]]))]
+    CAS_DT <- DT[, .(CAS=unlist(CAS)), by=.(SourceName, SourceID, Name)]
+    ID_DT <- DT[, .(
+        CID=unlist(lapply(LinkedRecords, function(x) if(is.null(x)) NA_integer_ else x)), 
+        SID=unlist(lapply(LinkedRecords.SID, function(x) if(is.null(x)) NA_integer_ else x)))
+        , by=.(SourceName, SourceID, Name, URL)]
+    annotationDT <- merge.data.table(CAS_DT, ID_DT,
+        by=c('SourceName', 'SourceID', 'Name'), all.x=TRUE)
+    return(annotationDT)
+}
+
+#' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
+.parseSynonymsAndIdentifiers <- function(DT) {
+    DT[, Synonyms := lapply(Data, function(x) x$Value[[1]][[1]])]
+    DT[, Synonyms := unlist(lapply(Synonyms, FUN=paste0, collapse='|'))]
+    # fix NULL list items
+    DT[, CID := lapply(LinkedRecords, function(x) if(is.null(x)) NA_integer_ else x)]
+    annotationDT <- DT[, .(CID=unlist(CID)), by=.(SourceName, SourceID,
+        Name, URL, Synonyms)]
+    
+    return(annotationDT)
+}
+
+#' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
+.parseNamesAndSynonyms <- function(DT) {
+    DT[, Synonyms := lapply(Data, function(x) x[2, ]$Value[[1]][[1]])]
+    # Remove the weird annotation from the end of the synonym
+    DT[, Synonyms := lapply(Synonyms, FUN=gsub, pattern=' - .*$', replacement='')]
+    DT[, Synonyms := unlist(lapply(Synonyms, FUN=paste0, collapse='|'))]
+    # fix NULL list itemss
+    DT[, CID := lapply(LinkedRecords, function(x) if(is.null(x)) NA_integer_ else x)]
+    annotationDT <- DT[, .(CID=unlist(CID)), 
+        by=.(SourceName, SourceID, Name, URL, Synonyms)]
+    return(annotationDT)
 }
 
 
@@ -474,6 +752,7 @@ if (sys.nframe() == 0) {
     library(AnnotationGx)
     library(data.table)
 
+    # -- mapping NSC numbers to CIDs and drug names
     ids <- unique(na.omit(fread('local_data/DTP_NCI60_RAW.csv')[[1]]))
     NSCtoCID <- getPubChemFromNSC(ids)
 
@@ -498,6 +777,8 @@ if (sys.nframe() == 0) {
 
     retryAgain <- getPubChemFromNSC(failed_to_map, to='sids', batch=FALSE)
     SIDtoName <- getPubChemCompound(sids, from='sid')
+
+    # -- fetching annotation from PubChem
 
     # GDSC <- readRDS(list.files('../PSets', pattern = 'GDSC.*v2.*', full.names=TRUE))
     # drugInfo <- drugInfo(GDSC)

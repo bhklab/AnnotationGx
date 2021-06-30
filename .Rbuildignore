@@ -34,5 +34,10 @@ output/.*
 # Local data
 local_data
 local_data/.*
+<<<<<<< HEAD
 ^.*\.Rproj$
 ^\.Rproj\.user$
+=======
+scripts
+scripts/.*
+>>>>>>> 05e5e8a1d783527a35571d2a641dc40235b5058d

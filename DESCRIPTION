@@ -19,11 +19,18 @@ Depends: R (>= 4.0)
 Imports:
     httr,
     xml2,
+    BiocParallel,
     jsonlite,
     data.table,
     rlang,
     CoreGx,
     crayon
+Suggests:
+    rmarkdown,
+    knitr,
+    pandoc,
+    BiocStyle
+VignetteBuilder: knitr
 License: `use_mit_license()`
 Encoding: UTF-8
 LazyData: true
