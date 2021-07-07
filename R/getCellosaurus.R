@@ -120,8 +120,8 @@ getInfoFromCelllineInput <-
             )
           )
       }
-    xml_exist <- xml_find_first(xmlObject, ".//name-list/name[@type = 'identifier']")
-    if(class(xml_exist) == "xml_missing"){
+    #xml_exist <- xml_find_first(xmlObject, ".//name-list/name[@type = 'identifier']")
+    if(class(xmlObject) == "xml_missing"){
         message(paste(
           "Cell line '", cell_ip, "' not found in xml",
           sep = ""
