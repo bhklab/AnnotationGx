@@ -166,7 +166,7 @@ getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=
             while(isFALSE(result)) {
                 proxy <- unlist(proxyDT[sample(.N, 1), ])
                 result <- tryCatch({
-                    RETRY('GET', encodedQuery, timeout(29), times=3, quiet=TRUE
+                    RETRY('GET', encodedQuery, timeout(29), times=3, quiet=TRUE,
                         terminate_on=c(400, 404, 503), 
                         use_proxy(proxy[1], port=as.integer(proxy[2])))
                 }, error=function(e) FALSE)
@@ -174,7 +174,7 @@ getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=
                     proxyDT <- proxyDT[ip != proxy[1] & port != proxy[2], ]
                 }
                 count <- count + 1
-                if (count > 10) .errpr(funContext, 'Infinite retry loop
+                if (count > 10) .error(funContext, 'Infinite retry loop
                     due to failed proxy requests!')
             }
             fwrite(proxyDT, file=file.path(tempdir(), 'proxy.csv'))
@@ -287,7 +287,7 @@ queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
     }
 
     # -- early return option
-    if (raw)  return(queryRes)
+    if (raw) return(queryRes)
 
     # -- deal with failed queries
     failed <- unlist(lapply(queryRes, names)) %in% c("Fault", "Bad", "Error")
@@ -480,6 +480,8 @@ getPubChemFromNSC <- function(ids, to='cids', ..., batch=TRUE, raw=FALSE,
 #'   cases, batch will automatically be set to `FALSE` with a warning.
 #' @param raw `logical(1)` Should the raw query results be early returned. This
 #'   can be useful for diagnosing issues with failing queries.
+#' @param proxy `logical(1)` Route API queries through random proxy servers?
+#'   this can increase query length, but it useful if you have been blacklisted.
 #'
 #' @return A `data.table` containing results of the query, or a list if `raw`
 #'   is set to `TRUE`. Failed queries are available as an attribute of the 
@@ -494,7 +496,7 @@ getPubChemFromNSC <- function(ids, to='cids', ..., batch=TRUE, raw=FALSE,
 #' @importFrom data.table setnames as.data.table rbindlist
 #' @export
 getPubChemCompound <- function(ids, from='cid', to='property', ..., 
-    properties='Title', batch=TRUE, raw=FALSE) 
+    properties='Title', batch=TRUE, raw=FALSE, proxy=FALSE) 
 {
     if (!is.character(ids)) ids <- as.character(ids)
     if (from %in% c('name', 'xref', 'smiles', 'inchi', 'sdf')) {
@@ -505,8 +507,8 @@ getPubChemCompound <- function(ids, from='cid', to='property', ...,
 
     if (to == 'property')
         to <- paste0(to, '/', paste0(properties, collapse=','))
-    queryRes <- queryPubChem(ids, domain='compound', 
-        namespace=from, operation=to, batch=batch, raw=raw)
+    queryRes <- queryPubChem(ids, domain='compound', namespace=from, 
+        operation=to, batch=batch, raw=raw, proxy=proxy)
 
     # -- early return option
     if (raw) return(queryRes)
@@ -673,7 +675,7 @@ getPubChemAnnotations <- function(header='Available', type='Compound',
         pageList <- bplapply(seq(2, numPages), function(i, queryURL, numPages) {
             t1 <- Sys.time()
             encodedURL <- URLencode(paste0(queryURL, '&page=', i))
-            queryRes <- RETRY('GET', encodedURL, timeout(29), times=5)
+            queryRes <- RETRY('GET', encodedURL, timeout(29), times=5, quiet=TRUE)
             page <- tryCatch({
                 as.data.table(parseJSON(queryRes)[[1]][[1]])
             }, error=function(e) {

@@ -1,4 +1,0 @@
-#' @ 
-getProxyList <- function() {
-    memoise
-}
