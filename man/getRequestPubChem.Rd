@@ -12,7 +12,8 @@ getRequestPubChem(
   output = "JSON",
   ...,
   url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug",
-  operation_options = NA
+  operation_options = NA,
+  proxy = FALSE
 )
 }
 \arguments{
@@ -59,7 +60,7 @@ Common options for the 'assay' domain include 'concise', 'summary' and
 other common options include 'XML', 'CSV' and 'TXT'. For a complete list of
 output format options, plase see the PubChem PUG REST API documentation.}
 
-\item{...}{Force subsequent arguments to be named. Not used.}
+\item{...}{Fall through arguments to \code{\link[httr:GET]{httr::GET}}.}
 
 \item{url}{The URL of the PubChem REST API. Probably don't change this.}
 
@@ -67,6 +68,10 @@ output format options, plase see the PubChem PUG REST API documentation.}
 this is specific to the selected operation. This is appended as a string
 after '?' at the end of the query. See
 https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest$_Toc494865565 for details.}
+
+\item{proxy}{\code{logical(1)} Should a random proxy server be used for the
+get request. Default is \code{FALSE}. This is useful to avoid getting
+black-listed from the API.}
 }
 \value{
 A \code{httr::response} object with the results of the GET request.

@@ -22,9 +22,8 @@
 #' @md
 #' @importFrom xml2 read_xml
 #' @export
-
 getCelloxml <-
-    function(url = "https://ftp.expasy.org/databases/cellosaurus/cellosaurus.xml", verbose = TRUE) {
+    memoise::memoise(function(url = "https://ftp.expasy.org/databases/cellosaurus/cellosaurus.xml", verbose = TRUE) {
       if (verbose) {
         message(paste(
           "xml read started from",
@@ -40,7 +39,7 @@ getCelloxml <-
         ))
       }
       return(main_xml)
-    }
+    })
 
 #' @md
 #' @importFrom xml2 read_xml xml_find_all
@@ -55,7 +54,8 @@ cleanCellnames <-
       ))
     }
     matching <- xml_find_all(main_xml, "//cell-line/name-list/name/text()")
-    badchars <- "[\xb5]|[]|[ ,]|[;]|[:]|[-]|[+]|[*]|[%]|[$]|[#]|[{]|[}]|[[]|[]]|[|]|[\\^]|[/]|[\\]|[.]|[_]|[ ]|[(]|[)]"
+    # A raw string, added in R 4.0 will excape characters for you: r"{ <string> }"
+    badchars <- r"{[\xb5]|[]|[ ,]|[;]|[:]|[-]|[+]|[*]|[%]|[$]|[#]|[{]|[}]|[[]|[]]|[|]|[^]|[/]|[\]|[.]|[_]|[ ]|[(]|[)]}"
     for(i in 1:length(matching)){
       node1 <- matching[[i]]
       node1text <- xml_text(node1) 

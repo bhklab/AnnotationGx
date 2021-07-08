@@ -88,13 +88,25 @@
 #' @noRd
 .context <- .getExecutionContext
 
+#' @importFrom httr RETRY GET
+.testProxyGetRequest <- memoise::memoise(function(ip, port, raw=FALSE) {
+    queryRes <- tryCatch({
+        GET(url='https://httpbin.org/ip', timeout(10), 
+            use_proxy(ip, port=as.integer(port)))
+    },
+    error=function(e) { print(e); FALSE })
+    if (isFALSE(queryRes) || isTRUE(raw)) return(queryRes)
+    res <- tryCatch({ parseJSON(queryRes) }, error=function(e) list())
+    return(length(res) == 1)
+})
+
 #' @export
 characterToNamedVector <- function(x) { 
     Reduce(c, lapply(strsplit(unlist(strsplit(x, '\\|')), '='), 
             FUN=\(x) structure(x[2], .Names=x[1]))) }
 
 #' @export
-failedToDT <- function(x) {
+failedAsDT <- function(x) {
     if (is.null(attributes(x)$failed)) stop("There is no 'failed' attribute?")
     DtL <- Map(as.data.table, attributes(x)$failed)
     DT <- rbindlist(DtL)

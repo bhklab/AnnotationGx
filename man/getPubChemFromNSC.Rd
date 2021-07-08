@@ -4,7 +4,14 @@
 \alias{getPubChemFromNSC}
 \title{getPubChemFromNSC}
 \usage{
-getPubChemFromNSC(ids, to = "cids", ..., batch = TRUE, raw = FALSE)
+getPubChemFromNSC(
+  ids,
+  to = "cids",
+  ...,
+  batch = TRUE,
+  raw = FALSE,
+  proxy = FALSE
+)
 }
 \arguments{
 \item{ids}{A \code{character} or \code{numeric} vector of valid NSC ids to use for the
@@ -22,6 +29,10 @@ parameter to customize parellization settings. Alternatively, just call
 \item{raw}{A \code{logical(1)} vector specifying whether to early return the raw
 query results. Use this if specifying an unimplemented return to the \code{to}
 parameter.}
+
+\item{proxy}{\code{logical(1)} Should the query be routed through a random
+proxy server. This is useful to keep trying queries if a user gets
+blacklisted.}
 }
 \value{
 A \code{data.table} where the first column is the specified NSC ids and

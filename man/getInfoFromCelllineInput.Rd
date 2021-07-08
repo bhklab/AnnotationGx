@@ -4,7 +4,7 @@
 \alias{getInfoFromCelllineInput}
 \title{Filter parent node cell-line and parse child nodes for required annotations}
 \usage{
-getInfoFromCelllineInput(cell_ip, main_xml, input_type)
+getInfoFromCelllineInput(cell_ip, main_xml, input_type, remove = FALSE)
 }
 \arguments{
 \item{cell_ip}{is either cell name or cvcl id.}

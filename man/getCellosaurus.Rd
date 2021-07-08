@@ -8,6 +8,7 @@ getCellosaurus(
   cellline_input,
   namespace = "name",
   url = "https://ftp.expasy.org/databases/cellosaurus/cellosaurus.xml",
+  remove_char = FALSE,
   verbose = TRUE
 )
 }

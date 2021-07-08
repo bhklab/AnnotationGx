@@ -113,12 +113,15 @@
 #' @param output What format should the data be returned in? Default is 'JSON'.
 #'   other common options include 'XML', 'CSV' and 'TXT'. For a complete list of 
 #'   output format options, plase see the PubChem PUG REST API documentation.
-#' @param ... Force subsequent arguments to be named. Not used.
+#' @param ... Fall through arguments to [`httr::GET`].
 #' @param url The URL of the PubChem REST API. Probably don't change this.
 #' @param operation_options Further optional arguments for the selected operation.
 #'   this is specific to the selected operation. This is appended as a string
 #'   after '?' at the end of the query. See 
 #'   https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest$_Toc494865565 for details.
+#' @param proxy `logical(1)` Should a random proxy server be used for the
+#'   get request. Default is `FALSE`. This is useful to avoid getting 
+#'   black-listed from the API.
 #'
 #' @return A `httr::response` object with the results of the GET request.
 #'
@@ -132,18 +135,21 @@
 #' Kim S, Thiessen PA, Bolton EE. Programmatic Retrieval of Small Molecule Information from PubChem Using PUG-REST. In Kutchukian PS, ed. Chemical Biology Informatics and Modeling. Methods in Pharmacology and Toxicology. New York, NY: Humana Press, 2018, pp. 1-24. doi:10.1007/7653_2018_30.
 #'
 #' @md
-#' @importFrom jsonlite toJSON
-#' @importFrom httr RETRY GET timeout
+#' @importFrom jsonlite toJSON fromJSON
+#' @importFrom httr RETRY GET timeout use_proxy
+#' @importFrom data.table data.table fread
 #' @export
 getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
     output='JSON', ..., url='https://pubchem.ncbi.nlm.nih.gov/rest/pug',
-    operation_options=NA)
+    operation_options=NA, proxy=FALSE)
 {
+    funContext <- .funContext('::getRequestPubChem')
+    
     # handle list or vector inputs for id
     if (length(id) > 1) id <- paste0(na.omit(id), collapse=',')
 
     # replace special characters in id
-    id <- URLencode(id, reserved=TRUE)
+    id <- URLencode(id, reserved=TRUE, repeated=TRUE)
 
     # build query URL
     query <- .buildURL(url, domain, namespace, id, operation, output)
@@ -153,23 +159,75 @@ getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=
 
     # get HTTP response, respecting the 30s max query time of PubChem API
     tryCatch({
-        result <- RETRY('GET', encodedQuery, timeout(29), times=3, 
-            terminate_on=c(400, 404, 503))
+        if (isTRUE(proxy)) {
+            proxyDT <- fread(file.path(tempdir(), 'proxy.csv'))
+            result <- FALSE
+            count <- 1
+            while(isFALSE(result)) {
+                proxy <- unlist(proxyDT[sample(.N, 1), ])
+                result <- tryCatch({
+                    RETRY('GET', encodedQuery, timeout(29), times=3, quiet=TRUE
+                        terminate_on=c(400, 404, 503), 
+                        use_proxy(proxy[1], port=as.integer(proxy[2])))
+                }, error=function(e) FALSE)
+                if (isFALSE(result)) {
+                    proxyDT <- proxyDT[ip != proxy[1] & port != proxy[2], ]
+                }
+                count <- count + 1
+                if (count > 10) .errpr(funContext, 'Infinite retry loop
+                    due to failed proxy requests!')
+            }
+            fwrite(proxyDT, file=file.path(tempdir(), 'proxy.csv'))
+        } else {
+            result <- RETRY('GET', encodedQuery, timeout(29), times=3, 
+                quiet=TRUE, terminate_on=c(400, 404, 503))
+        }
+
+        .checkThrottlingStatus(result)
+
         canParse <- tryCatch({ parseJSON(result); TRUE }, error=function(e) FALSE)
         if (output == 'JSON' && !canParse) stop('Parsing to JSON failed') else 
             result
         },
+        warning=function(w) .warning(w),
         error=function(e) { 
             message(e);
             # return a response JSON with the error if the query fails
             if (output == 'JSON') {
                 return(httr:::response(
-                    header=list(`Content-Type`='JSON'),
-                    # url=encodedQuery,
+                    header=headers(result),
+                    url=encodedQuery,
                     content=paste0('{Error: "', paste0(e, collapse=' '), '"}'),
                     status_code=400))
             }
         })
+}
+
+#' Checks to see if the PubChem query is exceeding the throttling limit
+#' @param response `httr::response` 
+.checkThrottlingStatus <- function(response) {
+        throttling_control <- headers(response)$`x-throttling-control`
+        throttling_state <- max(which(vapply(
+            c('Green', 'Yellow', 'Red', 'Black', 'blacklisted'), 
+            FUN=grepl, x=throttling_control, FUN.VALUE=logical(1))))
+        if (throttling_state == 2) {
+            .warning('PubChem Server returned Yellow status! Sleeping to compensate.')
+            Sys.sleep(0.31)
+        } else if (throttling_state == 3) {
+            .warning('PubChem Server returend Red status! Sleeping to compensate.')
+            Sys.sleep(0.62)
+        } else if (throttling_state == 4) {
+            .error('PubChem Server returned Black status! You could be
+                black listed.The returned state message is: ', 
+                throttling_control, ,'. Please see 
+                https://pubchemdocs.ncbi.nlm.nih.gov/dynamic-request-throttling.
+                for information on interpreting the result.')
+        } else if (throttling_state == 5) {
+            .error('PubChem server indicated: too many queries per second
+                or you may be blacklisted. If you are blacklisted you need
+                to wait 24 hrs before trying any queries from your current IP
+                address.')
+        }
 }
 
 #' @title queryPubChem
@@ -189,7 +247,7 @@ getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=
 #' @export
 queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
     output='JSON', ..., url='https://pubchem.ncbi.nlm.nih.gov/rest/pug',
-    operation_options=NA, batch=TRUE, raw=FALSE)
+    operation_options=NA, batch=TRUE, raw=FALSE, proxy=FALSE)
 {
     if (!is.character(id)) id <- as.character(id)
     if (namespace %in% c('name', 'xref', 'smiles', 'inchi', 'sdf')) 
@@ -200,7 +258,8 @@ queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
     if (is.null(BPPARAM)) {
         BPPARAM <- bpparam()
         if (class(BPPARAM) %in% c('MulticoreParam', 'SnowParam')) {
-            if (bpnworkers(BPPARAM) > 5) bpworkers(BPPARAM) <- 5
+            if (isFALSE(proxy) && bpnworkers(BPPARAM) > 5) 
+                bpworkers(BPPARAM) <- 5
         }
         bpprogressbar(BPPARAM) <- TRUE
     }
@@ -219,11 +278,11 @@ queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
 
         queryRes <- bplapply(queries, FUN=.queryPubChemSleep, domain=domain, 
             namespace=namespace, operation=operation, output=output, url=url, 
-            operation_options=operation_options, BPPARAM=BPPARAM) 
+            operation_options=operation_options, BPPARAM=BPPARAM, proxy=proxy) 
     } else {
         queryRes <- bplapply(id, FUN=.queryPubChemSleep, domain=domain, 
             namespace=namespace, operation=operation, output=output, url=url, 
-            operation_options=operation_options, BPPARAM=BPPARAM)
+            operation_options=operation_options, BPPARAM=BPPARAM, proxy=proxy)
         queries <- as.list(id)
     }
 
@@ -250,6 +309,7 @@ queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
 ##>based on server load
 ## TODO:: Make the query away for server load status in response header
 .queryPubChemSleep <- function(x, ...) {
+    proxy <- list(...)$proxy
     t1 <- Sys.time()
     queryRes <- tryCatch({
         queryRequestPubChem(x, ...) 
@@ -257,7 +317,7 @@ queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
     error=function(e) list('Error'=paste0('queryPubChemError: ', e, collapse=' ')))
     t2 <- Sys.time()
     queryTime <- t2 - t1
-    if (queryTime < 0.21) Sys.sleep(0.21 - queryTime)
+    if (!isTRUE(proxy) && queryTime < 0.31) Sys.sleep(0.31 - queryTime)
     return(queryRes)
 }
 
@@ -315,6 +375,9 @@ queryRequestPubChem <- function(...) parseJSON(getRequestPubChem(...))
 #' @param raw A `logical(1)` vector specifying whether to early return the raw
 #'   query results. Use this if specifying an unimplemented return to the `to`
 #'   parameter.
+#' @param proxy `logical(1)` Should the query be routed through a random
+#'   proxy server. This is useful to keep trying queries if a user gets
+#'   blacklisted.
 #'
 #' @return A `data.table` where the first column is the specified NSC ids and 
 #'   the second column is the results specified in `to`.
@@ -322,13 +385,16 @@ queryRequestPubChem <- function(...) parseJSON(getRequestPubChem(...))
 #' @md
 #' @importFrom data.table data.table as.data.table setcolorder
 #' @export
-getPubChemFromNSC <- function(ids, to='cids', ..., batch=TRUE, raw=FALSE) {
+getPubChemFromNSC <- function(ids, to='cids', ..., batch=TRUE, raw=FALSE, 
+    proxy=FALSE) 
+{
     
     funContext <- .funContext('::getPubChemFromNSC')
 
     # -- make the GET request
-    queryRes <- queryPubChem(ids, domain='substance', ...,
-        namespace='sourceid/DTP.NCI', operation=to, batch=batch, raw=raw)
+    queryRes <- queryPubChem(ids, domain='substance', ..., 
+        namespace='sourceid/DTP.NCI', operation=to, batch=batch, raw=raw, 
+        proxy=proxy)
 
     # -- early return option
     if (raw) return(queryRes)
@@ -591,7 +657,7 @@ getPubChemAnnotations <- function(header='Available', type='Compound',
     queryURL <- paste0(.buildURL(url, header, output), '?heading_type=', type)
     encodedQueryURL <- URLencode(queryURL)
 
-    queryRes <- RETRY('GET', encodedQueryURL, timeout(29), times=3)
+    queryRes <- RETRY('GET', encodedQueryURL, timeout(29), times=3, quiet=TRUE)
     if (isTRUE(raw)) return(queryRes)
 
     resultDT <- as.data.table(parseJSON(queryRes)[[1]][[1]])
@@ -617,7 +683,7 @@ getPubChemAnnotations <- function(header='Available', type='Compound',
             })
             t2 <- Sys.time()
             queryTime <- t2 - t1
-            if (queryTime < 0.21) Sys.sleep(0.21 - queryTime)
+            if (queryTime < 0.25) Sys.sleep(0.25 - queryTime)
             return(page)
         }, BPPARAM=BPPARAM, queryURL=queryURL, numPages=numPages)
         pageList <- c(list(resultDT), pageList)
@@ -754,14 +820,18 @@ if (sys.nframe() == 0) {
 
     # -- mapping NSC numbers to CIDs and drug names
     ids <- unique(na.omit(fread('local_data/DTP_NCI60_RAW.csv')[[1]]))
-    NSCtoCID <- getPubChemFromNSC(ids)
+    NSCtoCID <- getPubChemFromNSC(ids, proxy=TRUE)
 
     failed <- attributes(NSCtoCID)$failed
     failedQueries <- lapply(failed, FUN=`[[`, i='query')
     failedIDs <- unlist(failedQueries)
 
-    retryQueries <- getPubChemFromNSC(failedIDs, batch=FALSE)
+    retryQueries <- getPubChemFromNSC(failedIDs, batch=FALSE, proxy=TRUE)
     NSCtoCID <- rbind(NSCtoCID, retryQueries[!is.na(SID), ])
+
+    stillFailed <- attributes(retryQueries)$failed
+    stillFailedQueries <- lapply(stillFailed, FUN=`[[`, i='query')
+    stillFailedIDs <- unlist(stillFailedQueries)
 
     cids <- na.omit(NSCtoCID$CID)
     compoundProperties <- getPubChemCompound(cids)
