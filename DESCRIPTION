@@ -25,7 +25,10 @@ Imports:
     rlang,
     CoreGx,
     crayon,
-    memoise
+    memoise,
+    R6,
+    R6P,
+    listenv
 Suggests:
     rmarkdown,
     knitr,

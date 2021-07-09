@@ -39,6 +39,7 @@
         message(blue$bold(.formatMessage(...)))
 }
 
+#' @importFrom crayon magenta blue cyan bold
 .formatMessage <- function (..., collapse = ", ") {
     paste0(strwrap(paste0(..., collapse = collapse)), collapse = "\n")
 }
@@ -106,9 +107,16 @@ characterToNamedVector <- function(x) {
             FUN=\(x) structure(x[2], .Names=x[1]))) }
 
 #' @export
-failedAsDT <- function(x) {
+getFailureMessages <- function(x) {
     if (is.null(attributes(x)$failed)) stop("There is no 'failed' attribute?")
     DtL <- Map(as.data.table, attributes(x)$failed)
-    DT <- rbindlist(DtL)
-    return(DT[, rbindlist(lapply(failure, as.data.table), fill=TRUE), by=query])
+    DT <- rbindlist(DtL, fill=TRUE)
+    failedDT <- rbindlist(lapply(DT$failure, as.data.table), fill=TRUE)
+    return(cbind(DT[, 'query'], failedDT))
 }
+
+#' @export
+getFailed <- function(x) attributes(x)$failed
+
+#' @export 
+getFailedIDs <- function(x) unlist(lapply(getFailed(x), `[[`, i='query'))

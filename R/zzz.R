@@ -1,12 +1,10 @@
-#' @importFrom data.table data.table fwrite :=
 .onLoad <- function(libname, packagename) {
-    # Get a list of proxies to use
-    request <- httr::GET('https://api.proxyscrape.com/v2/?request=getproxies&protocol=http&timeoust=10000&country=all&ssl=yes&anonymity=all&simplified=true')
-    proxyDT <- data.table::fread(httr::content(request), header=FALSE)
-    proxyDT <- data.table::as.data.table(
-        data.table::tstrsplit(proxyDT$V1, ':'))
-    colnames(proxyDT) <- c('ip', 'port')
-    proxyDT[['ip']] <- paste0('http://', proxyDT$ip)
-    data.table::fwrite(proxyDT, 
-        file=file.path(tempdir(), 'proxy.csv'))
+    # initialize the proxy manager reference class in the pkg namespace
+    assign('proxyManager', value=AnnotationGx:::ProxyManager$new(),
+        envir=asNamespace(packagename))
+
+    # old implementation of proxies
+    response <- httr::GET('https://api.proxyscrape.com/v2/?request=getproxies&protocol=http&timeoust=10000&country=all&ssl=yes&anonymity=all&simplified=true')
+    proxy <- AnnotationGx:::parse_text_response_to_datatable(response)
+    data.table::fwrite(proxy, file=file.path(tempdir(), 'proxy.csv'))
 }

@@ -11,7 +11,8 @@ getPubChemCompound(
   ...,
   properties = "Title",
   batch = TRUE,
-  raw = FALSE
+  raw = FALSE,
+  proxy = FALSE
 )
 }
 \arguments{
@@ -41,6 +42,9 @@ cases, batch will automatically be set to \code{FALSE} with a warning.}
 
 \item{raw}{\code{logical(1)} Should the raw query results be early returned. This
 can be useful for diagnosing issues with failing queries.}
+
+\item{proxy}{\code{logical(1)} Route API queries through random proxy servers?
+this can increase query length, but it useful if you have been blacklisted.}
 }
 \value{
 A \code{data.table} containing results of the query, or a list if \code{raw}

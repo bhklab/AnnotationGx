@@ -189,15 +189,19 @@ getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=
         if (output == 'JSON' && !canParse) stop('Parsing to JSON failed') else 
             result
         },
-        warning=function(w) .warning(w),
+        warning=function(w) print(w),
         error=function(e) { 
-            message(e);
+            print(e);
             # return a response JSON with the error if the query fails
             if (output == 'JSON') {
                 return(httr:::response(
                     header=headers(result),
                     url=encodedQuery,
-                    content=paste0('{Error: "', paste0(e, collapse=' '), '"}'),
+                    content=toJSON(list(
+                        Error=list(
+                            Code='getRequestPubChem.ERROR', 
+                            Message='See Details for error message', 
+                            Details=paste0(e, collapse=' ')))),
                     status_code=400))
             }
         })
@@ -212,13 +216,13 @@ getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=
             FUN=grepl, x=throttling_control, FUN.VALUE=logical(1))))
         if (throttling_state == 2) {
             .warning('PubChem Server returned Yellow status! Sleeping to compensate.')
-            Sys.sleep(0.31)
+            Sys.sleep(1)
         } else if (throttling_state == 3) {
             .warning('PubChem Server returend Red status! Sleeping to compensate.')
-            Sys.sleep(0.62)
+            Sys.sleep(5)
         } else if (throttling_state == 4) {
             .error('PubChem Server returned Black status! You could be
-                black listed.The returned state message is: ', 
+                black listed. The returned state message is: ', 
                 throttling_control, ,'. Please see 
                 https://pubchemdocs.ncbi.nlm.nih.gov/dynamic-request-throttling.
                 for information on interpreting the result.')
@@ -314,7 +318,11 @@ queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
     queryRes <- tryCatch({
         queryRequestPubChem(x, ...) 
     },
-    error=function(e) list('Error'=paste0('queryPubChemError: ', e, collapse=' ')))
+    error=function(e) list(Error=list(
+        Code='.queryPubChemSleep.ERROR',
+        Message='See Details for error msg',
+        Details=paste0(e, collapse=' ')
+    )))
     t2 <- Sys.time()
     queryTime <- t2 - t1
     if (!isTRUE(proxy) && queryTime < 0.31) Sys.sleep(0.31 - queryTime)
@@ -821,20 +829,34 @@ if (sys.nframe() == 0) {
     library(data.table)
 
     # -- mapping NSC numbers to CIDs and drug names
-    ids <- unique(na.omit(fread('local_data/DTP_NCI60_RAW.csv')[[1]]))
-    NSCtoCID <- getPubChemFromNSC(ids, proxy=TRUE)
+    NCI60 <- fread('local_data/DTP_NCI60_RAW.csv')
+    NCI60[`PubChem SID` == -1, `PubChem SID` := NA]
+    ids <- unique(na.omit(NCI60[[1]]))
+    NSCtoCID <- getPubChemFromNSC(ids, proxy=FALSE)
 
-    failed <- attributes(NSCtoCID)$failed
-    failedQueries <- lapply(failed, FUN=`[[`, i='query')
-    failedIDs <- unlist(failedQueries)
+    failed <- getFailed(NSCtoCID)
+    failedIDs <- getFailedIDs(NSCtoCID)
+    if (length(failedIDs > 1)) {
+        retryQueries <- getPubChemFromNSC(failedIDs)
+        NSCtoCID <- rbind(NSCtoCID, retryQueries)
+        while (nrow(retryQueries) > 0) {
+            failedIDs <- getFailedIDs(retryQueries)
+            retryQueries <- getPubChemFromNSC(failedIDs)
+            NSCtoCID <- rbind(NSCtoCID, retryQueries)
+        }
+    }
+    failedIDs <- getFailedIDs(retryQueries)
+    failedMsg <- getFailureMessages(retryQueries)
+    if (all.equal(failedMsg[, unique(Code)], 'PUGREST.BadRequest'))
+    if (length(failedIDs > 1)) {
+        retryQueries2 <- getPubChemFromNSC(failedIDs, batch=FALSE)
+        NSCtoCID <- rbind(NSCtoCID, retryQueries2)
+    }
+    
+    
 
-    retryQueries <- getPubChemFromNSC(failedIDs, batch=FALSE, proxy=TRUE)
-    NSCtoCID <- rbind(NSCtoCID, retryQueries[!is.na(SID), ])
 
-    stillFailed <- attributes(retryQueries)$failed
-    stillFailedQueries <- lapply(stillFailed, FUN=`[[`, i='query')
-    stillFailedIDs <- unlist(stillFailedQueries)
-
+    
     cids <- na.omit(NSCtoCID$CID)
     compoundProperties <- getPubChemCompound(cids)
 
