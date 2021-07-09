@@ -183,7 +183,6 @@ getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=
             result <- RETRY('GET', encodedQuery, timeout(29), times=3, 
                 quiet=TRUE, terminate_on=c(400, 404, 503))
         }
-
         .checkThrottlingStatus(result)
 
         canParse <- tryCatch({ parseJSON(result); TRUE }, error=function(e) FALSE)
@@ -225,14 +224,10 @@ getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=
         } else if (throttling_state == 4) {
             .error('PubChem Server returned Black status! You could be
                 black listed. The returned state message is: ', 
-                throttling_control, ,'. Please see 
-                https://pubchemdocs.ncbi.nlm.nih.gov/dynamic-request-throttling.
-                for information on interpreting the result.')
+                throttling_control, ,'.')
         } else if (throttling_state == 5) {
             .error('PubChem server indicated: too many queries per second
-                or you may be blacklisted. If you are blacklisted you need
-                to wait 24 hrs before trying any queries from your current IP
-                address.')
+                or you may be blacklisted.')
         }
 }
 
@@ -396,7 +391,7 @@ queryRequestPubChem <- function(...) parseJSON(getRequestPubChem(...))
 #' @importFrom data.table data.table as.data.table setcolorder
 #' @export
 getPubChemFromNSC <- function(ids, to='cids', ..., batch=TRUE, raw=FALSE, 
-    proxy=FALSE) 
+    proxy=FALSE, options=NA) 
 {
     
     funContext <- .funContext('::getPubChemFromNSC')
@@ -404,7 +399,7 @@ getPubChemFromNSC <- function(ids, to='cids', ..., batch=TRUE, raw=FALSE,
     # -- make the GET request
     queryRes <- queryPubChem(ids, domain='substance', ..., 
         namespace='sourceid/DTP.NCI', operation=to, batch=batch, raw=raw, 
-        proxy=proxy)
+        proxy=proxy, operation_options=options)
 
     # -- early return option
     if (raw) return(queryRes)
@@ -506,7 +501,7 @@ getPubChemFromNSC <- function(ids, to='cids', ..., batch=TRUE, raw=FALSE,
 #' @importFrom data.table setnames as.data.table rbindlist
 #' @export
 getPubChemCompound <- function(ids, from='cid', to='property', ..., 
-    properties='Title', batch=TRUE, raw=FALSE, proxy=FALSE)
+    properties='Title', batch=TRUE, raw=FALSE, proxy=FALSE, options=NA)
 {
     if (!is.character(ids)) ids <- as.character(ids)
     if (from %in% c('name', 'xref', 'smiles', 'inchi', 'sdf')) {
@@ -518,7 +513,8 @@ getPubChemCompound <- function(ids, from='cid', to='property', ...,
     if (to == 'property')
         to <- paste0(to, '/', paste0(properties, collapse=','))
     queryRes <- queryPubChem(ids, domain='compound', namespace=from, 
-        operation=to, batch=batch, raw=raw, proxy=proxy)
+        operation=to, batch=batch, raw=raw, proxy=proxy, 
+        operation_options=options)
 
     # -- early return option
     if (raw) return(queryRes)
@@ -526,6 +522,9 @@ getPubChemCompound <- function(ids, from='cid', to='property', ...,
     # -- deal with failed queries
     queries <- attributes(queryRes)$queries
     failedQueries <- attributes(queryRes)$failed
+    for (i in seq_along(queries)) {
+        queryRes[[i]][[from]] <- queries
+    }
 
     # -- process the results
     .replace_NULL_NA <- function(DT) lapply(DT, function(x) { 
@@ -545,8 +544,6 @@ getPubChemCompound <- function(ids, from='cid', to='property', ...,
     setnames(queryRes, 'V1', to, skip_absent=TRUE)
     if (from == 'sid') setnames(queryRes, 'CID', 'SID')
     if (length(failedQueries) > 1) attributes(queryRes)$failed <- failedQueries
-    queryRes <- cbind(as.data.table(ids), queryRes)
-    setnames(queryRes, 'ids', from)
 
     return(queryRes)
 }
@@ -836,7 +833,7 @@ if (sys.nframe() == 0) {
     NCI60 <- fread('local_data/DTP_NCI60_RAW.csv')
     NCI60[`PubChem SID` == -1, `PubChem SID` := NA]
     ids <- unique(na.omit(NCI60[[1]]))
-    NSCtoCID <- getPubChemFromNSC(ids, proxy=FALSE)
+    NSCtoCID <- getPubChemFromNSC(ids[1:1000], proxy=FALSE)
 
     # -- retry batch queries until no more matches are returned
     failed <- getFailed(NSCtoCID)
@@ -870,7 +867,6 @@ if (sys.nframe() == 0) {
     colnames(NCI60) <- gsub('_#', '', gsub(' ', '_', colnames(NCI60)))
     oldSIDs <- 
 
-    
     cids <- na.omit(NSCtoCID$CID)
     compoundProperties <- getPubChemCompound(cids)
 
@@ -888,13 +884,7 @@ if (sys.nframe() == 0) {
 
 
 
-    # ---- Annotating lab standardized compound .csv
-    compound <- fread('local_data/drugs_with_ids.csv')
-    ids <- compound$unique.drugid
-    inchikeys <- compound$inchikey
 
-    CIDfromInchikey <- getPubChemCompound(inchikeys, from='inchikey', to='cids', proxy=TRUE)
-    CIDfromName <- getPubChemCompound(ids, from='name', to='cids')
     
 
     # -- fetching annotation from PubChem

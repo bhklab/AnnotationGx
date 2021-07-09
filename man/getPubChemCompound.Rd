@@ -12,7 +12,8 @@ getPubChemCompound(
   properties = "Title",
   batch = TRUE,
   raw = FALSE,
-  proxy = FALSE
+  proxy = FALSE,
+  options = NA
 )
 }
 \arguments{
