@@ -506,7 +506,7 @@ getPubChemFromNSC <- function(ids, to='cids', ..., batch=TRUE, raw=FALSE,
 #' @importFrom data.table setnames as.data.table rbindlist
 #' @export
 getPubChemCompound <- function(ids, from='cid', to='property', ..., 
-    properties='Title', batch=TRUE, raw=FALSE, proxy=FALSE) 
+    properties='Title', batch=TRUE, raw=FALSE, proxy=FALSE)
 {
     if (!is.character(ids)) ids <- as.character(ids)
     if (from %in% c('name', 'xref', 'smiles', 'inchi', 'sdf')) {
@@ -545,7 +545,9 @@ getPubChemCompound <- function(ids, from='cid', to='property', ...,
     setnames(queryRes, 'V1', to, skip_absent=TRUE)
     if (from == 'sid') setnames(queryRes, 'CID', 'SID')
     if (length(failedQueries) > 1) attributes(queryRes)$failed <- failedQueries
-    
+    queryRes <- cbind(as.data.table(ids), queryRes)
+    setnames(queryRes, 'ids', from)
+
     return(queryRes)
 }
 
@@ -649,7 +651,7 @@ getPubChemSubstance <- function(ids, from='cid', to='sids', ...,
 #' @details
 #' # API Documentation
 #' For detailed documentation of the annotations API see:
-#' https://pubchemdocs.ncbi.nlm.nih.gov/pug-view$_Toc495044630
+#' https://pubchemdocs.ncbi.nlm.nih.gov/Dpug-view$_Toc495044630
 #' 
 #' @importFrom httr GET
 #' @importFrom jsonlite fromJSON
@@ -883,6 +885,17 @@ if (sys.nframe() == 0) {
 
     retryAgain <- getPubChemFromNSC(failed_to_map, to='sids', batch=FALSE)
     SIDtoName <- getPubChemCompound(sids, from='sid')
+
+
+
+    # ---- Annotating lab standardized compound .csv
+    compound <- fread('local_data/drugs_with_ids.csv')
+    ids <- compound$unique.drugid
+    inchikeys <- compound$inchikey
+
+    CIDfromInchikey <- getPubChemCompound(inchikeys, from='inchikey', to='cids', proxy=TRUE)
+    CIDfromName <- getPubChemCompound(ids, from='name', to='cids')
+    
 
     # -- fetching annotation from PubChem
 

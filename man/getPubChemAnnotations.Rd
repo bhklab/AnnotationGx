@@ -53,6 +53,6 @@ header. Results will be mapped to CID and/or SID.
 }
 \section{API Documentation}{
 For detailed documentation of the annotations API see:
-https://pubchemdocs.ncbi.nlm.nih.gov/pug-view$_Toc495044630
+https://pubchemdocs.ncbi.nlm.nih.gov/Dpug-view$_Toc495044630
 }
 
