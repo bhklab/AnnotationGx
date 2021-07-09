@@ -146,6 +146,7 @@ getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=
     funContext <- .funContext('::getRequestPubChem')
     
     # handle list or vector inputs for id
+    if (all(is.na(id))) .error(funContext, 'All ids are NA!')
     if (length(id) > 1) id <- paste0(na.omit(id), collapse=',')
 
     # replace special characters in id
@@ -211,9 +212,10 @@ getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=
 #' @param response `httr::response` 
 .checkThrottlingStatus <- function(response) {
         throttling_control <- headers(response)$`x-throttling-control`
+        any_grepl <- function(...) any(grepl(...))
         throttling_state <- max(which(vapply(
             c('Green', 'Yellow', 'Red', 'Black', 'blacklisted'), 
-            FUN=grepl, x=throttling_control, FUN.VALUE=logical(1))))
+            FUN=any_grepl, x=throttling_control, FUN.VALUE=logical(1))))
         if (throttling_state == 2) {
             .warning('PubChem Server returned Yellow status! Sleeping to compensate.')
             Sys.sleep(1)
@@ -834,6 +836,7 @@ if (sys.nframe() == 0) {
     ids <- unique(na.omit(NCI60[[1]]))
     NSCtoCID <- getPubChemFromNSC(ids, proxy=FALSE)
 
+    # -- retry batch queries until no more matches are returned
     failed <- getFailed(NSCtoCID)
     failedIDs <- getFailedIDs(NSCtoCID)
     if (length(failedIDs > 1)) {
@@ -845,16 +848,25 @@ if (sys.nframe() == 0) {
             NSCtoCID <- rbind(NSCtoCID, retryQueries)
         }
     }
+
+    # -- retry non-batch queries until no matches are returned
     failedIDs <- getFailedIDs(retryQueries)
     failedMsg <- getFailureMessages(retryQueries)
     if (all.equal(failedMsg[, unique(Code)], 'PUGREST.BadRequest'))
     if (length(failedIDs > 1)) {
         retryQueries2 <- getPubChemFromNSC(failedIDs, batch=FALSE)
-        NSCtoCID <- rbind(NSCtoCID, retryQueries2)
+        failedIDs <- getFailedIDs(retryQueries)
+        while (nrow(retryQueries2) > 0) {
+            retryQueries2 <- getPubChemFromNSC(failedIDs, batch=FALSE)
+            failedIDs <- getFailedIDs(retryQueries2)
+            NSCtoCID <- rbind(NSCtoCID, retryQueries2)
+        }
     }
+    failedIDs <- getFailedIDs(retryQueries2)
     
-    
-
+    # -- try to 
+    colnames(NCI60) <- gsub('_#', '', gsub(' ', '_', colnames(NCI60)))
+    oldSIDs <- 
 
     
     cids <- na.omit(NSCtoCID$CID)

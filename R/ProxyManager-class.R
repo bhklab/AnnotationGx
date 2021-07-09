@@ -55,7 +55,8 @@ ProxyManager <- R6::R6Class('ProxyManager',
         },
         update_failed_proxies=function(new_data) {
             stopifnot(is.numeric(new_data))
-            private$failed_proxies[, failed := c(failed, as.integer(new_data))]
+            private$failed_proxies <- private$failed_proxies[, 
+                failed = c(failed, as.integer(new_data))]
         },
         get_failed_proxies=function() {
             unique(unlist(private$failed_proxies))
