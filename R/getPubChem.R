@@ -138,6 +138,7 @@
 #' @importFrom jsonlite toJSON fromJSON
 #' @importFrom httr RETRY GET timeout use_proxy
 #' @importFrom data.table data.table fread
+#' @importFrom crayon strip_style
 #' @export
 getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
     output='JSON', ..., url='https://pubchem.ncbi.nlm.nih.gov/rest/pug',
@@ -189,20 +190,22 @@ getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=
         if (output == 'JSON' && !canParse) stop('Parsing to JSON failed') else 
             result
         },
-        warning=function(w) print(w),
-        error=function(e) { 
-            print(e);
+        warning=function(w) { cat('\r'); print(w); cat('\n') },
+        error=function(e) {
+            cat('\r')
+            print(e)
+            cat('\n')
             # return a response JSON with the error if the query fails
             if (output == 'JSON') {
-                return(httr:::response(
+                httr:::response(
                     header=headers(result),
                     url=encodedQuery,
                     content=toJSON(list(
                         Error=list(
                             Code='getRequestPubChem.ERROR', 
                             Message='See Details for error message', 
-                            Details=paste0(e, collapse=' ')))),
-                    status_code=400))
+                            Details=paste0(strip_style(e), collapse=' ')))),
+                    status_code=400)
             }
         })
 }
@@ -217,17 +220,17 @@ getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=
             FUN=any_grepl, x=throttling_control, FUN.VALUE=logical(1))))
         if (throttling_state == 2) {
             .warning('PubChem Server returned Yellow status! Sleeping to compensate.')
-            Sys.sleep(1)
+            Sys.sleep(5)
         } else if (throttling_state == 3) {
             .warning('PubChem Server returend Red status! Sleeping to compensate.')
-            Sys.sleep(5)
+            Sys.sleep(10)
         } else if (throttling_state == 4) {
-            .error('PubChem Server returned Black status! You could be
-                black listed. The returned state message is: ', 
-                throttling_control, ,'.')
+            .error('PubChem Server returned Black status! You could be ',
+                'black listed. The returned state message is: ', 
+                throttling_control, '.')
         } else if (throttling_state == 5) {
-            .error('PubChem server indicated: too many queries per second
-                or you may be blacklisted.')
+            .error('PubChem server indicated: too many queries per second',
+                ' or you may be blacklisted.')
         }
 }
 
@@ -309,17 +312,23 @@ queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
 ## TODO:: Retrieve PubChem server status to dynamically set query spacing
 ##>based on server load
 ## TODO:: Make the query away for server load status in response header
+#' @importFrom crayon strip_style
 .queryPubChemSleep <- function(x, ...) {
     proxy <- list(...)$proxy
     t1 <- Sys.time()
     queryRes <- tryCatch({
         queryRequestPubChem(x, ...) 
     },
-    error=function(e) list(Error=list(
-        Code='.queryPubChemSleep.ERROR',
-        Message='See Details for error msg',
-        Details=paste0(e, collapse=' ')
-    )))
+    error=function(e) {
+        cat('\r')
+        print(e)
+        cat('\n')
+        list(Error=list(
+            Code='.queryPubChemSleep.ERROR',
+            Message='See Details for error msg',
+            Details=paste0(strip_style(e), collapse=' ')
+        ))
+    })
     t2 <- Sys.time()
     queryTime <- t2 - t1
     if (!isTRUE(proxy) && queryTime < 0.31) Sys.sleep(0.31 - queryTime)
@@ -339,8 +348,8 @@ queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
 #' @importFrom jsonlite fromJSON
 #' @importFrom httr content
 #' @export
-parseJSON <- function(response, as='text', ..., encoding='UTF-8') {
-    fromJSON(content(response, as=as, ..., type='JSON', encoding=encoding))
+parseJSON <- function(response, ..., encoding='UTF-8') {
+    fromJSON(content(response, ..., type='JSON', encoding=encoding))
 }
 
 #' Query the PubChem REST API, with the result automatically converted from
@@ -826,66 +835,6 @@ getPubChemAnnotations <- function(header='Available', type='Compound',
 
 
 if (sys.nframe() == 0) {
-    library(AnnotationGx)
-    library(data.table)
-
-    # -- mapping NSC numbers to CIDs and drug names
-    NCI60 <- fread('local_data/DTP_NCI60_RAW.csv')
-    NCI60[`PubChem SID` == -1, `PubChem SID` := NA]
-    ids <- unique(na.omit(NCI60[[1]]))
-    NSCtoCID <- getPubChemFromNSC(ids[1:1000], proxy=FALSE)
-
-    # -- retry batch queries until no more matches are returned
-    failed <- getFailed(NSCtoCID)
-    failedIDs <- getFailedIDs(NSCtoCID)
-    if (length(failedIDs > 1)) {
-        retryQueries <- getPubChemFromNSC(failedIDs)
-        NSCtoCID <- rbind(NSCtoCID, retryQueries)
-        while (nrow(retryQueries) > 0) {
-            failedIDs <- getFailedIDs(retryQueries)
-            retryQueries <- getPubChemFromNSC(failedIDs)
-            NSCtoCID <- rbind(NSCtoCID, retryQueries)
-        }
-    }
-
-    # -- retry non-batch queries until no matches are returned
-    failedIDs <- getFailedIDs(retryQueries)
-    failedMsg <- getFailureMessages(retryQueries)
-    if (all.equal(failedMsg[, unique(Code)], 'PUGREST.BadRequest'))
-    if (length(failedIDs > 1)) {
-        retryQueries2 <- getPubChemFromNSC(failedIDs, batch=FALSE)
-        failedIDs <- getFailedIDs(retryQueries)
-        while (nrow(retryQueries2) > 0) {
-            retryQueries2 <- getPubChemFromNSC(failedIDs, batch=FALSE)
-            failedIDs <- getFailedIDs(retryQueries2)
-            NSCtoCID <- rbind(NSCtoCID, retryQueries2)
-        }
-    }
-    failedIDs <- getFailedIDs(retryQueries2)
-    
-    # -- try to 
-    colnames(NCI60) <- gsub('_#', '', gsub(' ', '_', colnames(NCI60)))
-    oldSIDs <- 
-
-    cids <- na.omit(NSCtoCID$CID)
-    compoundProperties <- getPubChemCompound(cids)
-
-    unmapped_sids <- NSCtoCID[!(CID %chin% compoundProperties$CID), ]$SID
-    compoundPropertiesSID <- getPubChemCompound(unmapped_sids, from='sid')
-
-    NSCtoName <- merge.data.table(NSCtoCID, compoundProperties, by='CID', all.x=TRUE)
-    NSCtoNameSID <- merge.data.table(NSCtoCID, compoundPropertiesSID, by='SID')
-    NSCtoName[NSCtoNameSID, Title := i.Title, on=c('SID', 'NSC_id')]
-
-    failed_to_map <- setdiff(ids, NSCtoName$NSC_id)
-
-    retryAgain <- getPubChemFromNSC(failed_to_map, to='sids', batch=FALSE)
-    SIDtoName <- getPubChemCompound(sids, from='sid')
-
-
-
-
-    
 
     # -- fetching annotation from PubChem
 
