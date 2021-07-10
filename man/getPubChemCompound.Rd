@@ -27,7 +27,7 @@ Default is 'cid'. Try using 'sid' if some of your CIDs fail to map.}
 \item{to}{A \code{character(1)} vector with the desired return type. Defaults
 to 'record', which returns all available data from the specified IDs.}
 
-\item{...}{Force subsequent parameters to be named. Not used.}
+\item{...}{Fallthrough arguments to \code{BiocParallel::bmapply}.}
 
 \item{properties}{A \code{character} vector of properties to return. Only used
 when \code{to='property'}. Common properties of interest are: 'Title' (name),

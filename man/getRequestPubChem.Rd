@@ -13,7 +13,8 @@ getRequestPubChem(
   ...,
   url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug",
   operation_options = NA,
-  proxy = FALSE
+  proxy = FALSE,
+  raw = FALSE
 )
 }
 \arguments{

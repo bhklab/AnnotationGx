@@ -12,7 +12,8 @@ getPubChemAnnotations(
   output = "JSON",
   raw = FALSE,
   url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/annotations/heading",
-  BPPARAM = bpparam()
+  BPPARAM = bpparam(),
+  proxy = FALSE
 )
 }
 \arguments{

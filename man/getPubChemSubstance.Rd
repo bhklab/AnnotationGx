@@ -10,7 +10,8 @@ getPubChemSubstance(
   to = "sids",
   ...,
   batch = TRUE,
-  raw = FALSE
+  raw = FALSE,
+  proxy = FALSE
 )
 }
 \arguments{
@@ -32,6 +33,8 @@ cases, batch will automatically be set to \code{FALSE} with a warning.}
 
 \item{raw}{\code{logical(1)} Should the raw query results be early returned. This
 can be useful for diagnosing issues with failing queries.}
+
+\item{proxy}{}
 }
 \value{
 A \code{data.frame} or \code{list} containing results of the query.
