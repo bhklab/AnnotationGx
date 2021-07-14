@@ -11,7 +11,8 @@ getPubChemFromNSC(
   batch = TRUE,
   raw = FALSE,
   proxy = FALSE,
-  options = NA
+  options = NA,
+  query_only = FALSE
 )
 }
 \arguments{

@@ -122,6 +122,8 @@
 #' @param proxy `logical(1)` Should a random proxy server be used for the
 #'   get request. Default is `FALSE`. This is useful to avoid getting 
 #'   black-listed from the API.
+#' @param query_only `logical(1)` Should this function early return only
+#'   the encoded query?
 #'
 #' @return A `httr::response` object with the results of the GET request.
 #'
@@ -142,7 +144,7 @@
 #' @export
 getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
     output='JSON', ..., url='https://pubchem.ncbi.nlm.nih.gov/rest/pug',
-    operation_options=NA, proxy=FALSE, raw=FALSE)
+    operation_options=NA, proxy=FALSE, raw=FALSE, query_only=FALSE)
 {
     funContext <- .funContext('::getRequestPubChem')
     
@@ -159,6 +161,8 @@ getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=
         query <- paste(query, operation_options, sep='?')
     encodedQuery <- URLencode(query)
 
+    if (isTRUE(query_only)) return(encodedQuery)
+
     # get HTTP response, respecting the 30s max query time of PubChem API
     tryCatch({
         if (isTRUE(proxy)) {
@@ -172,14 +176,10 @@ getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=
                         terminate_on=c(400, 404, 503), 
                         use_proxy(proxy[1], port=as.integer(proxy[2])))
                 }, error=function(e) FALSE)
-                if (isFALSE(result)) {
-                    proxyDT <- proxyDT[ip != proxy[1] & port != proxy[2], ]
-                }
                 count <- count + 1
                 if (count > 10) .error(funContext, 'Infinite retry loop
                     due to failed proxy requests!')
             }
-            fwrite(proxyDT, file=file.path(tempdir(), 'proxy.csv'))
         } else {
             result <- RETRY('GET', encodedQuery, timeout(29), times=3, 
                 quiet=TRUE, terminate_on=c(400, 404, 503))
@@ -254,7 +254,7 @@ getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=
 #' @export
 queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
     output='JSON', ..., url='https://pubchem.ncbi.nlm.nih.gov/rest/pug',
-    operation_options=NA, batch=TRUE, raw=FALSE, proxy=FALSE)
+    operation_options=NA, batch=TRUE, raw=FALSE, proxy=FALSE, query_only=FALSE)
 {
     if (!is.character(id)) id <- as.character(id)
     if (namespace %in% c('name', 'xref', 'smiles', 'inchi', 'sdf')) 
@@ -286,12 +286,12 @@ queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
         queryRes <- bplapply(queries, FUN=.queryPubChemSleep, domain=domain, 
             namespace=namespace, operation=operation, output=output, url=url, 
             operation_options=operation_options, BPPARAM=BPPARAM, proxy=proxy, 
-            raw=raw) 
+            raw=raw, query_only=query_only) 
     } else {
         queryRes <- bplapply(id, FUN=.queryPubChemSleep, domain=domain, 
             namespace=namespace, operation=operation, output=output, url=url, 
             operation_options=operation_options, BPPARAM=BPPARAM, proxy=proxy,
-            raw=raw)
+            raw=raw, query_only=query_only)
         queries <- as.list(id)
     }
 
@@ -318,11 +318,11 @@ queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
 ##>based on server load
 ## TODO:: Make the query away for server load status in response header
 #' @importFrom crayon strip_style
-.queryPubChemSleep <- function(x, ...) {
+.queryPubChemSleep <- function(x, ..., query_only=FALSE) {
     proxy <- list(...)$proxy
     t1 <- Sys.time()
     queryRes <- tryCatch({
-        queryRequestPubChem(x, ...) 
+        queryRequestPubChem(x, ..., query_only=query_only) 
     },
         error=function(e) {
             cat('\r')
@@ -352,7 +352,8 @@ queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
 #' @importFrom jsonlite fromJSON
 #' @importFrom httr content
 #' @export
-parseJSON <- function(response, ..., encoding='UTF-8') {
+parseJSON <- function(response, ..., encoding='UTF-8', query_only=FALSE) {
+    if (isTRUE(query_only)) return(response)
     tryCatch({
         fromJSON(content(response, ..., as='text', type='JSON', 
             encoding=encoding))
@@ -366,10 +367,12 @@ parseJSON <- function(response, ..., encoding='UTF-8') {
 #'   JSON to a list. This only works when `output='JSON'` in `getRequestPubChem`.
 #' 
 #' @param ... Fallthrough arguments to `AnnotationGx::getRequestPubChem` function.
+#' @param query_only
 #' 
 #' @md
 #' @export
-queryRequestPubChem <- function(...) parseJSON(getRequestPubChem(...))
+queryRequestPubChem <- function(..., query_only=FALSE) 
+    parseJSON(getRequestPubChem(..., query_only=query_only), query_only=query_only)
 
 
 ## ============================
@@ -410,7 +413,7 @@ queryRequestPubChem <- function(...) parseJSON(getRequestPubChem(...))
 #' @importFrom data.table data.table as.data.table setcolorder
 #' @export
 getPubChemFromNSC <- function(ids, to='cids', ..., batch=TRUE, raw=FALSE, 
-    proxy=FALSE, options=NA) 
+    proxy=FALSE, options=NA, query_only=FALSE) 
 {
     
     funContext <- .funContext('::getPubChemFromNSC')
@@ -418,10 +421,10 @@ getPubChemFromNSC <- function(ids, to='cids', ..., batch=TRUE, raw=FALSE,
     # -- make the GET request
     queryRes <- queryPubChem(ids, domain='substance', ..., 
         namespace='sourceid/DTP.NCI', operation=to, batch=batch, raw=raw, 
-        proxy=proxy, operation_options=options)
+        proxy=proxy, operation_options=options, query_only=query_only)
 
     # -- early return option
-    if (raw) return(queryRes)
+    if (isTRUE(raw) || isTRUE(query_only)) return(queryRes)
 
     # -- handle failed queries
     failedQueries <- attributes(queryRes)$failed
@@ -520,7 +523,8 @@ getPubChemFromNSC <- function(ids, to='cids', ..., batch=TRUE, raw=FALSE,
 #' @importFrom data.table setnames as.data.table rbindlist
 #' @export
 getPubChemCompound <- function(ids, from='cid', to='property', ..., 
-    properties='Title', batch=TRUE, raw=FALSE, proxy=FALSE, options=NA)
+    properties='Title', batch=TRUE, raw=FALSE, proxy=FALSE, options=NA,
+    query_only=FALSE)
 {
     if (!is.character(ids)) ids <- as.character(ids)
     if (from %in% c('name', 'xref', 'smiles', 'inchi', 'sdf', 'inchikey')) {
@@ -538,10 +542,10 @@ getPubChemCompound <- function(ids, from='cid', to='property', ...,
         to <- paste0(to, '/', paste0(properties, collapse=','))
     queryRes <- queryPubChem(ids, domain='compound', namespace=from, 
         operation=to, batch=batch, raw=raw, proxy=proxy, 
-        operation_options=options, ...)
+        operation_options=options, query_only=query_only, ...)
 
     # -- early return option
-    if (raw) return(queryRes)
+    if (isTRUE(raw) || isTRUE(query_only)) return(queryRes)
 
     # -- deal with failed queries
     queries <- attributes(queryRes)$queries
@@ -566,8 +570,8 @@ getPubChemCompound <- function(ids, from='cid', to='property', ...,
     }
 
     setnames(queryRes, 'V1', to, skip_absent=TRUE)
-    if (from == 'sid') setnames(queryRes, 'CID', 'SID')
-    if (length(failedQueries) > 1) attributes(queryRes)$failed <- failedQueries
+    if (from == 'sid') setnames(queryRes, 'CID', 'SID', skip_absent=TRUE)
+    if (length(failedQueries) > 0) attributes(queryRes)$failed <- failedQueries
 
     return(queryRes)
 }
@@ -609,7 +613,7 @@ getPubChemSubstance <- function(ids, from='cid', to='sids', ...,
         batch <- FALSE
     }
     queryRes <- queryPubChem(ids, domain='substance', 
-        namespace=from, operation=to, batch=batch, raw=raw, proxy=proxy)
+        namespace=from, operation=to, batch=batch, raw=raw, proxy=proxy, ...)
 
     # -- early return option
     if (raw) return(queryRes)
@@ -634,8 +638,8 @@ getPubChemSubstance <- function(ids, from='cid', to='sids', ...,
     }
 
     setnames(queryRes, 'V1', to, skip_absent=TRUE)
-    if (from == 'sid') setnames(queryRes, 'CID', 'SID')
-    if (length(failedQueries) > 1) attributes(queryRes)$failed <- failedQueries
+    if (from == 'sid') setnames(queryRes, 'CID', 'SID', skip_absent=TRUE)
+    if (length(failedQueries) > 0) attributes(queryRes)$failed <- failedQueries
     
     return(queryRes)
 }

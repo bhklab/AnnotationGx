@@ -5,10 +5,12 @@
 \title{Query the PubChem REST API, with the result automatically converted from
 JSON to a list. This only works when \code{output='JSON'} in \code{getRequestPubChem}.}
 \usage{
-queryRequestPubChem(...)
+queryRequestPubChem(..., query_only = FALSE)
 }
 \arguments{
 \item{...}{Fallthrough arguments to \code{AnnotationGx::getRequestPubChem} function.}
+
+\item{query_only}{}
 }
 \description{
 Query the PubChem REST API, with the result automatically converted from

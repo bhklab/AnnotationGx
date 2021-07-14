@@ -102,7 +102,7 @@ noDuplicatesNamesToCID <- namesToCID[, first(.SD), by=name]
 
 In cases with multimapping, we highly recommend you manually check that the
 CID you select is optimal. This can be done with a simple look up in PubChem
-via your web browser if there are only few multimapped drugs. You can also
+via your web browser if there are only a few multimapped drugs. You can also
 keep all duplicates, then decide on the best option when fetching compound
 properties like this:
 

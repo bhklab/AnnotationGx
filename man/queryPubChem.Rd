@@ -15,7 +15,8 @@ queryPubChem(
   operation_options = NA,
   batch = TRUE,
   raw = FALSE,
-  proxy = FALSE
+  proxy = FALSE,
+  query_only = FALSE
 )
 }
 \arguments{
@@ -74,6 +75,9 @@ https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest$_Toc494865565 for details.}
 \item{proxy}{\code{logical(1)} Should a random proxy server be used for the
 get request. Default is \code{FALSE}. This is useful to avoid getting
 black-listed from the API.}
+
+\item{query_only}{\code{logical(1)} Should this function early return only
+the encoded query?}
 }
 \description{
 queryPubChem

@@ -14,7 +14,8 @@ getRequestPubChem(
   url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug",
   operation_options = NA,
   proxy = FALSE,
-  raw = FALSE
+  raw = FALSE,
+  query_only = FALSE
 )
 }
 \arguments{
@@ -73,6 +74,9 @@ https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest$_Toc494865565 for details.}
 \item{proxy}{\code{logical(1)} Should a random proxy server be used for the
 get request. Default is \code{FALSE}. This is useful to avoid getting
 black-listed from the API.}
+
+\item{query_only}{\code{logical(1)} Should this function early return only
+the encoded query?}
 }
 \value{
 A \code{httr::response} object with the results of the GET request.
