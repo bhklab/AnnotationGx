@@ -13,7 +13,7 @@ getBiomaRt <- function() {
 
     # function to query biomaRt
     .getBM <- function(filter, attributes, values, mart)
-        getBM(filter=filter, attributes=attributes,values=values, mart=mart)
+        getBM(filter=filter, attributes=attributes, values=values, mart=mart)
 
     # parallelize queries on each symbol
     humanMapping <- rbindlist(bplapply(humanSymbols, .getBM,

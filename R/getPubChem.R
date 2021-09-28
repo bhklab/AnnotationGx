@@ -214,7 +214,7 @@ getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=
 }
 
 #' Checks to see if the PubChem query is exceeding the throttling limit
-#' @param response `httr::response` 
+#' @param response `httr::response`
 .checkThrottlingStatus <- function(response) {
         throttling_control <- headers(response)$`x-throttling-control`
         any_grepl <- function(...) any(grepl(...))
@@ -248,7 +248,7 @@ getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=
 #' @seealso [`getRequestPubChem`]
 #'
 #' @md
-#' @importFrom BiocParallel bplapply bpparam bpnworkers bpworkers<- 
+#' @importFrom BiocParallel bplapply bpparam bpnworkers bpworkers<-
 #'   bpprogressbar<- bplog<-
 #' @importFrom jsonlite toJSON
 #' @export
@@ -259,13 +259,13 @@ queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
     if (!is.character(id)) id <- as.character(id)
     if (namespace %in% c('name', 'xref', 'smiles', 'inchi', 'sdf')) 
         batch <- FALSE
-    
+
     # Cap parallelization at 5 cores to prevent excessive requests
     BPPARAM <- list(...)[['BPPARAM']]
     if (is.null(BPPARAM)) {
         BPPARAM <- bpparam()
         if (class(BPPARAM) %in% c('MulticoreParam', 'SnowParam')) {
-            if (isFALSE(proxy) && bpnworkers(BPPARAM) > 5) 
+            if (isFALSE(proxy) && bpnworkers(BPPARAM) > 5)
                 bpworkers(BPPARAM) <- 5
         }
         bpprogressbar(BPPARAM) <- TRUE
