@@ -344,7 +344,7 @@ queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
 #' @param response A `response` object as returned by `httr::GET`
 #' @param as A `character` vector indicating the return type. Options are 'raw', 
 #    'text' or 'parsed'. Default is 'text'.
-#' @param ... Additional arguments to the `httr::content` function. 
+#' @param ... Additional arguments to the `httr::content` function.
 #' 
 #' @seelalso [httr::content]
 #' 
