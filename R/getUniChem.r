@@ -65,47 +65,32 @@ NULL
 #' @return A `character` vector which is the src_compound_id for the target_name
 #' 
 #' 
-#' 
-
-library(httr)
-library(jsonlite)
-
+#' @export
 mapBetweenSources <- function(chemical_id, 
-                              src_name, target_name, end_point="src_compound_id") {
+                              src_name, target_name, ..., end_point="src_compound_id", 
+                              base_url = "https://www.ebi.ac.uk/unichem/rest") {
   
-  # A data frame storing all the short names of the sources/databases with the 
-  # corresponding src_id
-  name_to_id <- data.frame(row.names = c("chembl", "drugbank", "pdb", "gtopdb",
-                                         "pubchem_dotf", "kegg_ligand", "chebi",
-                                         "nih_ncc", "zinc", "emolecules", "ibm",
-                                         "atlas", "fdasrs", "surechembl", "pharmgkb",
-                                         "hmdb", "selleck", "pubchem_tpharma",
-                                         "pubchem", "mcule", "nmrshiftdb2", "lincs",
-                                         "actor", "recon", "molport", "nikkaji",
-                                         "bindingDB", "comptox", "lipidmaps",
-                                         "drugcentral", "carotenoiddb", "metabolights",
-                                         "brenda", "rhea", "chemicalbook", "dailymed_old",
-                                         "swiss_lipids", "dailymed", "clinicaltrials",
-                                         "rxnorm",
-                                         "MedChemExpress"),
-                           val = c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
-                                   "11", "12", "14", "15", "17", "18", "20", "21",
-                                   "22", "23", "24", "25", "26", "27", "28", "29",
-                                   "31", "32", "33", "34", "35", "36", "37", "38",
-                                   "39", "40", "41", "45", "46", "47", "48"))
+# A list mapping from data source names to their associated UniChem source ids
+name_to_id <-  list(chembl = "1", drugbank = "2", pdb = "3", gtopdb = "4", pubchem_dotf = "5", 
+                               kegg_ligand = "6", chebi = "7", nih_ncc = "8", zinc = "9", emolecules = "10", 
+                               ibm = "11", atlas = "12", fdasrs = "14", surechembl = "15", pharmgkb = "17", 
+                               hmdb = "18", selleck = "20", pubchem_tpharma = "21", pubchem = "22", 
+                               mcule = "23", nmrshiftdb2 = "24", lincs = "25", actor = "26", recon = "27", 
+                               molport = "28", nikkaji = "29", bindingDB = "31", comptox = "32", 
+                               lipidmaps = "33", drugcentral = "34", carotenoiddb = "35", metabolights = "36", 
+                               brenda = "37", rhea = "38", chemicalbook = "39", dailymed_old = "40", 
+                               swiss_lipids = "41", dailymed = "45", clinicaltrials = "46", rxnorm = "47", 
+                               MedChemExpress = "48")
   
   # stores the src_id for the target_name database
-  target_id <- name_to_id[target_name,]
+  target_id <- name_to_id[[target_name]]
   
   # stores the src_id for the src_name database
-  src_id <- name_to_id[src_name,]
+  src_id <- name_to_id[[src_name]]
   
-  # Base url for the UniChem REST API
-  base_url <- "https://www.ebi.ac.uk/unichem/rest"
   
   #Generate the complete url for the get request
-  result <- paste0(base_url, "/", end_point, "/", chemical_id, "/", src_id, "/",
-                   target_id)
+  result <- .buildURL(base_url, end_point, chemical_id, src_id, target_id)
   #Encode the complete url
   encoded <- URLencode(result)
   
