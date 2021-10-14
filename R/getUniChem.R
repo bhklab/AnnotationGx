@@ -67,21 +67,21 @@ NULL
 #' 
 #' 
 #' @export
-mapBetweenSources <- function(chemical_id, 
-                              src_name, target_name, ..., end_point="src_compound_id", 
-                              base_url = "https://www.ebi.ac.uk/unichem/rest") {
+mapBetweenSources <- function(chemical_id, src_name, target_name, ..., 
+                              end_point="src_compound_id", 
+                              base_url="https://www.ebi.ac.uk/unichem/rest") {
   
-# A list mapping from data source names to their associated UniChem source ids
-name_to_id <-  list(chembl = "1", drugbank = "2", pdb = "3", gtopdb = "4", pubchem_dotf = "5", 
-                               kegg_ligand = "6", chebi = "7", nih_ncc = "8", zinc = "9", emolecules = "10", 
-                               ibm = "11", atlas = "12", fdasrs = "14", surechembl = "15", pharmgkb = "17", 
-                               hmdb = "18", selleck = "20", pubchem_tpharma = "21", pubchem = "22", 
-                               mcule = "23", nmrshiftdb2 = "24", lincs = "25", actor = "26", recon = "27", 
-                               molport = "28", nikkaji = "29", bindingDB = "31", comptox = "32", 
-                               lipidmaps = "33", drugcentral = "34", carotenoiddb = "35", metabolights = "36", 
-                               brenda = "37", rhea = "38", chemicalbook = "39", dailymed_old = "40", 
-                               swiss_lipids = "41", dailymed = "45", clinicaltrials = "46", rxnorm = "47", 
-                               MedChemExpress = "48")
+  # A list mapping from data source names to their associated UniChem source ids
+  name_to_id <-  list(chembl = "1", drugbank = "2", pdb = "3", gtopdb = "4", pubchem_dotf = "5", 
+                      kegg_ligand = "6", chebi = "7", nih_ncc = "8", zinc = "9", emolecules = "10", 
+                      ibm = "11", atlas = "12", fdasrs = "14", surechembl = "15", pharmgkb = "17", 
+                      hmdb = "18", selleck = "20", pubchem_tpharma = "21", pubchem = "22", 
+                      mcule = "23", nmrshiftdb2 = "24", lincs = "25", actor = "26", recon = "27", 
+                      molport = "28", nikkaji = "29", bindingDB = "31", comptox = "32", 
+                      lipidmaps = "33", drugcentral = "34", carotenoiddb = "35", metabolights = "36", 
+                      brenda = "37", rhea = "38", chemicalbook = "39", dailymed_old = "40", 
+                      swiss_lipids = "41", dailymed = "45", clinicaltrials = "46", rxnorm = "47", 
+                      MedChemExpress = "48")
   
   # stores the src_id for the target_name database
   target_id <- name_to_id[[target_name]]
