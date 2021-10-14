@@ -51,16 +51,17 @@ NULL
 #'  47 -> rxnorm
 #'  48 -> MedChemExpress
 #'  
-#' @param end_point A `character` vector which is the src_compound_id, the 
-#'    id of that compound for that particular database/source
 #' @param chemical_id A `character` vector which is the compound identifier for 
 #'    the specified database/source
-#'
 #' @param src_name A `character` vector which is the short name for the database/
 #'    source for which we know the chemical_id
-#'
 #' @param target_name A `character` vector which is the short name for the database/
 #'    source for which we require the compounds end_point
+#' @param ... Force subsequent parameters to be named. Not used.
+#' @param end_point A `character` vector which is the src_compound_id, the 
+#'    id of that compound for that particular database/source
+#' @param base_url A `character` vector specifying the base_url to use when constructing
+#'    API queries. This is for developer use.
 #'
 #' @return A `character` vector which is the src_compound_id for the target_name
 #' 
