@@ -102,10 +102,65 @@ mapBetweenSources <- function(chemical_id, src_name, target_name, ...,
   final <- parse_json(response)
   
   return(final)
-  
 }
 
+#' @description This function takes in inchikey as a parameter and allows to map
+#' to any identifier using the UniChem API
+#' 
+#' @param inchikey A `character` vector which is unique to each compound.
+#' 
+#' @return A data.frame with source id and source compound id.
+#' 
+#' @export
+inchiKeyToIdentifier <- function(inchi_key, ..., base_url ="https://www.ebi.ac.uk/unichem/rest/inchikey/"){
+  
+  # Creates the url with the inchikey 
+  final_url <- .buildURL(base_url, inchi_key)
+  
+  # Encodes the url 
+  encoded <- URLencode(final_url)
+  
+  # Makes a GET request to the UniChem API
+  response <- GET(encoded)
+  
+  # Parse json object 
+  result <- parse_json(response)
+  
+  # Convert to a dataframe
+  final <- as.data.frame(result)
+
+  return(final)
+}
+
+#' @description This function takes in chemical id and source id and returns the
+#' inchi and inchikey structure
+#' 
+#' @param chemical_id A `character` vector which is the src_compound_id
+#' 
+#' @param src_id A `character` vector which is the id for the database/source
+#'
+#' @return A `character` vector with the inchikey and inchi structure
+#'
+#' @export
+identifierToInchikey <- function(chemical_id, src_id, ..., base_url="https://www.ebi.ac.uk/unichem/rest/structure/"){
+  
+  # Creates the url with the inchikey 
+  final_url <- .buildURL(base_url, chemical_id, src_id)
+  
+  # Encodes the url 
+  encoded <- URLencode(final_url)
+  
+  # Makes a GET request to the UniChem API
+  response <- GET(encoded)
+  
+  # Parse json object 
+  final <- parse_json(response)
+
+  return(final)
+}
+  
 if (sys.nframe() == 0) {
   library(jsonlite)
   library(httr)
+
 }
