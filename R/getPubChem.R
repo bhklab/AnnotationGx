@@ -166,7 +166,7 @@ getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=
     # get HTTP response, respecting the 30s max query time of PubChem API
     tryCatch({
         if (isTRUE(proxy)) {
-            proxyDT <- fread(file.path(tempdir(), 'proxy.csv'))
+            proxyDT <- AnnotationGx:::proxyManager$get_proxies()
             result <- FALSE
             count <- 1
             while(isFALSE(result)) {
@@ -339,29 +339,7 @@ queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
     return(queryRes)
 }
 
-#' Parse a JSON into a list
-#' 
-#' @param response A `response` object as returned by `httr::GET`
-#' @param as A `character` vector indicating the return type. Options are 'raw', 
-#    'text' or 'parsed'. Default is 'text'.
-#' @param ... Additional arguments to the `httr::content` function.
-#' 
-#' @seelalso [httr::content]
-#' 
-#' @md
-#' @importFrom jsonlite fromJSON
-#' @importFrom httr content
-#' @export
-parseJSON <- function(response, ..., encoding='UTF-8', query_only=FALSE) {
-    if (isTRUE(query_only)) return(response)
-    tryCatch({
-        fromJSON(content(response, ..., as='text', type='JSON', 
-            encoding=encoding))
-    },
-    error=function(e) {
-        fromJSON(content(response, ..., type='JSON', encoding=encoding))
-    })
-}
+
 
 #' Query the PubChem REST API, with the result automatically converted from
 #'   JSON to a list. This only works when `output='JSON'` in `getRequestPubChem`.

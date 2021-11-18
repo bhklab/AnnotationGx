@@ -40,7 +40,7 @@ The major workhorse for PubChem queries in this package is the `queryPubChem`
 function. This function is able to batch queries such that multiple identifiers 
 are mapped per GET request. It also implementes parallelized queries as well as
 query throttling to ensure users do not exceed the 5 query per second, 400
-query per minute limits imposed by PubChem. Both 
+query per minute limits imposed by PubChem. Both `getRequestPubChem` and
 `queryRequestPubChem` use the `...` parameter to pass
 arguments through to `getRequestPubChem`. As such, users should review the
 `getRequestPubChem` documentation prior to using either query functions.
@@ -50,9 +50,10 @@ tells the function whether to use multiple identifiers per GET request. This
 parameter should be set to `TRUE` (the default) unless you are retrying failed 
 queries. This is because batch queries fail completely if ANY of their
 their ids fail to map. The `raw` parameter is included for debugging purposes,
-This can be used to diagnose HTTP errors using the `headers(response)` function.
+This can be used to diagnose HTTP errors using the `httr::headers(response)` 
+function.
 
-Use of `queryPubChem` is mainly intended for developer use, and beginners
+Use of `queryPubChem` is mainly intended for developers, and beginners
 with this package should focus on using the more specialized functions described
 below. It is worth noting, however, that all specialized functions were 
 constructed using `queryPubChem`.

@@ -18,6 +18,7 @@ NULL
 #' @noRd
 .getDatabaseNameToUniChemID <- function() {
   list(chembl = "1", drugbank = "2", pdb = "3", gtopdb = "4", pubchem_dotf = "5",
+<<<<<<< HEAD
        kegg_ligand = "6", chebi = "7", nih_ncc = "8", zinc = "9", emolecules = "10",
        ibm = "11", atlas = "12", fdasrs = "14", surechembl = "15", pharmgkb = "17",
        hmdb = "18", selleck = "20", pubchem_tpharma = "21", pubchem = "22", 
@@ -27,6 +28,17 @@ NULL
        brenda = "37", rhea = "38", chemicalbook = "39", dailymed_old = "40",
        swiss_lipids = "41", dailymed = "45", clinicaltrials = "46", rxnorm = "47",
        MedChemExpress = "48")
+=======
+    kegg_ligand = "6", chebi = "7", nih_ncc = "8", zinc = "9", emolecules = "10",
+    ibm = "11", atlas = "12", fdasrs = "14", surechembl = "15", pharmgkb = "17",
+    hmdb = "18", selleck = "20", pubchem_tpharma = "21", pubchem = "22", 
+    mcule = "23", nmrshiftdb2 = "24", lincs = "25", actor = "26", recon = "27",
+    molport = "28", nikkaji = "29", bindingDB = "31", comptox = "32", 
+    lipidmaps = "33", drugcentral = "34", carotenoiddb = "35", metabolights = "36",
+    brenda = "37", rhea = "38", chemicalbook = "39", dailymed_old = "40",
+    swiss_lipids = "41", dailymed = "45", clinicaltrials = "46", rxnorm = "47",
+    MedChemExpress = "48")
+>>>>>>> 3e4a46a8de3bd30acabedc5ea343654a3d40b194
 }
 
 #' @description This function allows to map between external databases identifiers using the UniChem API.
@@ -34,6 +46,7 @@ NULL
 #'  src_id and short name.
 #'  
 #'  # TODO:: Convert this list into a markdown table (see https://www.tablesgenerator.com/markdown_tables)
+<<<<<<< HEAD
 #'  |src#| src_name        |
 #'  | 1  | chembl          |
 #'  | 2  | drugbank        |
@@ -76,6 +89,49 @@ NULL
 #'  | 46 | clinicaltrials  |
 #'  | 47 | rxnorm          |
 #'  | 48 | MedChemExpress  |
+=======
+#'  1 -> chembl
+#'  2 -> drugbank
+#'  3 -> pdb
+#'  4 -> gtopdb
+#'  5 -> pubchem_dotf
+#'  6 -> kegg_ligand
+#'  7 -> chebi
+#'  8 -> nih_ncc
+#'  9 -> zinc
+#'  10 -> emolecules
+#'  11 -> ibm
+#'  12 -> atlas
+#'  14 -> fdasrs
+#'  15 -> surechembl
+#'  17 -> pharmgkb
+#'  18 -> hmdb
+#'  20 -> selleck
+#'  21 -> pubchem_tpharma
+#'  22 -> pubchem
+#'  23 -> mcule
+#'  24 -> nmrshiftdb2
+#'  25 -> lincs
+#'  26 -> actor
+#'  27 -> recon
+#'  28 -> molport
+#'  29 -> nikkaji
+#'  31 -> bindingDB
+#'  32 -> comptox
+#'  33 -> lipidmaps
+#'  34 -> drugcentral
+#'  35 -> carotenoiddb
+#'  36 -> metabolights
+#'  37 -> brenda
+#'  38 -> rhea
+#'  39 -> chemicalbook
+#'  40 -> dailymed_old
+#'  41 -> swiss_lipids
+#'  45 -> dailymed
+#'  46 -> clinicaltrials
+#'  47 -> rxnorm
+#'  48 -> MedChemExpress
+>>>>>>> 3e4a46a8de3bd30acabedc5ea343654a3d40b194
 #'
 #' @param chemical_id A `character` vector which is the compound identifier for 
 #'    the specified database/source
@@ -95,27 +151,27 @@ NULL
 mapBetweenSources <- function(chemical_id, src_name, target_name, ..., 
                               end_point="src_compound_id", 
                               base_url="https://www.ebi.ac.uk/unichem/rest") {
-  
+
   # A list mapping from data source names to their associated UniChem source ids
   name_to_id <- .getDatabaseNameToUniChemID()
-  
+
   # stores the src_id for the target_name database
   target_id <- name_to_id[[target_name]]
-  
+
   # stores the src_id for the src_name database
   src_id <- name_to_id[[src_name]]
-  
+
   #Generate the complete url for the get request
   result <- .buildURL(base_url, end_point, chemical_id, src_id, target_id)
   #Encode the complete url
   encoded <- URLencode(result)
-  
+
   #Make a get request to the UniChem REST API
   response <- GET(encoded)
-  
+
   #Parse the json object to get an array
   final <- parse_json(response)
-  
+
   return(final)
 }
 
@@ -171,10 +227,17 @@ identifierToInchikey <- function(chemical_id, src_id, ..., base_url="https://www
   
   # Parse json object 
   final <- parseJSON(response)
+<<<<<<< HEAD
   
   return(final)
 }
 
+=======
+
+  return(final)
+}
+  
+>>>>>>> 3e4a46a8de3bd30acabedc5ea343654a3d40b194
 
 ## TODO:: Determine if this function specification is correct, update as needed to work with the UniChem API
 #' 
@@ -188,37 +251,65 @@ identifierToInchikey <- function(chemical_id, src_id, ..., base_url="https://www
 #' @export
 inchiToDatabaseID <- function(inchi, target_names, ..., type=c("key", "structure",),
                               base_url="https://www.ebi.ac.uk/unichem/rest") {
+<<<<<<< HEAD
   
   ## TODO:: Maybe it is better to make .getDatabaseNameToUniChemID return a data.frame?
   dbname_to_id <- .getDatabaseNameToUniChemID()
   dbname_df <- data.frame(src_id=unlist(dbname_to_id),
                           database_id=names(dbname_to_id))
   
+=======
+
+  ## TODO:: Maybe it is better to make .getDatabaseNameToUniChemID return a data.frame?
+  dbname_to_id <- .getDatabaseNameToUniChemID()
+  dbname_df <- data.frame(src_id=unlist(dbname_to_id),
+    database_id=names(dbname_to_id))
+
+>>>>>>> 3e4a46a8de3bd30acabedc5ea343654a3d40b194
   if (!missing(target_names)) {
     valid_target_names <- target_names %in% dbname_df$database_id
     if (!all(valid_target_names)) {
       stop("One or more specificed target databases do not exist: ",
+<<<<<<< HEAD
            paste0(target_names[!valid_target_names], collapse=", "))
     }
   }
   
+=======
+        paste0(target_names[!valid_target_names], collapse=", "))
+    }
+  }
+
+>>>>>>> 3e4a46a8de3bd30acabedc5ea343654a3d40b194
   # build the API query
   query <- .buildURL(base_url, "inchikey", inchi)
   encoded <- URLencode(query)
   response <- GET(encoded)
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> 3e4a46a8de3bd30acabedc5ea343654a3d40b194
   # Parse to a data frame
   result <- parseJSON(response)
   # Merge does a SQL style left join between two data.frames on the specified
   #  by shared column (see ?merge for more details)
   result <- merge(dbname_df, result, by="src_id")
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> 3e4a46a8de3bd30acabedc5ea343654a3d40b194
   if (!missing(target_names)) {
     # Not using rownames here incase the input is a data.table, which never
     #  has rownames
     result <- result[result$database_id %in% target_names, ]
   }
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> 3e4a46a8de3bd30acabedc5ea343654a3d40b194
   # return to the user
   return(result)
 }
@@ -238,15 +329,24 @@ if (sys.nframe() == 0) {
   # Source utility functions
   source("R/utilities.R")
   source("R/parseJSON.R")
+<<<<<<< HEAD
   
   # Load required libraries
   library(jsonlite)
   library(httr)
   
+=======
+
+  # Load required libraries
+  library(jsonlite)
+  library(httr)
+
+>>>>>>> 3e4a46a8de3bd30acabedc5ea343654a3d40b194
   # Example code
   inchi <- "AAKJLRGGTJKAMG-UHFFFAOYSA-N"
   target_names <- c("chembl", "pubchem")
   type <- "key"
+<<<<<<< HEAD
   
   # Specified target names
   database_specific_ids <- inchiToDatabaseID(inchi=inchi,
@@ -255,3 +355,13 @@ if (sys.nframe() == 0) {
   # All database identifiers
   database_ids <- inchiToDatabaseID(inchi=inchi)
 }
+=======
+
+  # Specified target names
+  database_specific_ids <- inchiToDatabaseID(inchi=inchi,
+    target_names=target_names)
+  
+  # All database identifiers
+  database_ids <- inchiToDatabaseID(inchi=inchi)
+}
+>>>>>>> 3e4a46a8de3bd30acabedc5ea343654a3d40b194
