@@ -158,10 +158,15 @@ inchiKeyToIdentifier <- function(inchi_key, ..., base_url ="https://www.ebi.ac.u
 #' @return A `character` vector with the inchikey and inchi structure
 #'
 #' @export
-identifierToInchikey <- function(chemical_id, src_id, ..., base_url="https://www.ebi.ac.uk/unichem/rest/structure/"){
+identifierToInchikey <- function(chemical_id, target_names, ...,
+                                 base_url="https://www.ebi.ac.uk/unichem/rest/structure/", inchikey=TRUE){
+  
+  dbname_to_id <- .getDatabaseNameToUniChemID()
+  
+  sr_id <- dbname_to_id[[target_names]]
   
   # Creates the url with the inchikey 
-  final_url <- .buildURL(base_url, chemical_id, src_id)
+  final_url <- .buildURL(base_url, chemical_id, sr_id)
   
   # Encodes the url 
   encoded <- URLencode(final_url)
@@ -172,7 +177,11 @@ identifierToInchikey <- function(chemical_id, src_id, ..., base_url="https://www
   # Parse json object 
   final <- parseJSON(response)
   
-  return(final)
+  if (inchikey == TRUE){
+    return(final$standardinchikey)
+  }else{
+    return(final$standardinchi)
+  }
 }
 
 ## TODO:: Determine if this function specification is correct, update as needed to work with the UniChem API
@@ -255,4 +264,5 @@ if (sys.nframe() == 0) {
   
   # All database identifiers
   database_ids <- inchiToDatabaseID(inchi=inchi)
+  test <- identifierToInchikey("CHEMBL12", "chembl")
 }
