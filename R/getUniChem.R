@@ -111,7 +111,8 @@ mapBetweenSources <- function(chemical_id, src_name, target_name, ...,
   encoded <- URLencode(result)
 
   #Make a get request to the UniChem REST API
-  response <- GET(encoded)
+  response <- httr::RETRY("GET", encoded, timeout(29), times=3, quite=TRUE,
+                          terminate_on = c(400, 404, 503))
 
   #Parse the json object to get an array
   final <- parse_json(response)
@@ -136,7 +137,8 @@ inchiKeyToIdentifier <- function(inchi_key, ..., base_url ="https://www.ebi.ac.u
   encoded <- URLencode(final_url)
   
   # Makes a GET request to the UniChem API
-  response <- GET(encoded)
+  response <- httr::RETRY("GET", encoded, timeout(29), times=3, quite=TRUE,
+                          terminate_on = c(400, 404, 503))
   
   # Parse json object 
   result <- parse_json(response)
@@ -172,7 +174,8 @@ identifierToInchikey <- function(chemical_id, target_names, ...,
   encoded <- URLencode(final_url)
   
   # Makes a GET request to the UniChem API
-  response <- GET(encoded)
+  response <- httr::RETRY("GET", encoded, timeout(29), times=3, quite=TRUE,
+                          terminate_on = c(400, 404, 503))
   
   # Parse json object 
   final <- parseJSON(response)
@@ -215,7 +218,8 @@ inchiToDatabaseID <- function(inchi, target_names, ..., type=c("key", "structure
   # build the API query
   query <- .buildURL(base_url, "inchikey", inchi)
   encoded <- URLencode(query)
-  response <- GET(encoded)
+  response <- httr::RETRY("GET", encoded, timeout(29), times=3, quite=TRUE,
+                          terminate_on = c(400, 404, 503))
 
   # Parse to a data frame
   result <- parseJSON(response)
@@ -237,6 +241,22 @@ inchiToDatabaseID <- function(inchi, target_names, ..., type=c("key", "structure
 ## functions which do look ups from a vector of database IDs or InchiKeys
 ## This should be parallelized using BiocParallel, probably with bplapply\
 
+wInchiToDatabaseID <- function(inchis, target_names) {
+  result <- bplapply(X = inchis, FUN = inchiToDatabaseID, target_names=target_names)
+  return(result)
+}
+
+wIdentifierToInchiKey <- function(chemical_ids, target_names) {
+  result <- bplapply(X = chemical_ids, FUN = identifierToInchikey, target_names=target_names)
+  return(result)
+}
+
+wMapBetweenSources <- function(chemical_ids, src_name, target_name) {
+  result <- bplapply(X = chemical_ids, FUN = mapBetweenSources, src_name=src_name, target_name=target_name)
+  return(result)
+}
+  
+
 ## Once the function is working, we may need to use the ProxyManager class
 ## to proxy massively parallel API queries, this prevents IP blocking when
 ## too many requests originate from a single IP in a short amount of time
@@ -252,12 +272,15 @@ if (sys.nframe() == 0) {
   # Load required libraries
   library(jsonlite)
   library(httr)
+  library(BiocParallel)
   
   # Example code
   inchi <- "AAKJLRGGTJKAMG-UHFFFAOYSA-N"
   target_names <- c("chembl", "pubchem")
   type <- "key"
-
+  ve <- c("AAKJLRGGTJKAMG-UHFFFAOYSA-N", "AAKJLRGGTJKAMG-UHFFFAOYSA-N")
+  ve2 <- c("CHEMBL12", "CHEMBL11")
+  ve3 <- c("CHEMBL12", "CHEMBL11")
   # Specified target names
   database_specific_ids <- inchiToDatabaseID(inchi=inchi,
     target_names=target_names)
@@ -265,4 +288,7 @@ if (sys.nframe() == 0) {
   # All database identifiers
   database_ids <- inchiToDatabaseID(inchi=inchi)
   test <- identifierToInchikey("CHEMBL12", "chembl")
+  test2 <- wInchiToDatabaseID(ve, target_names = target_names)
+  test3 <- wIdentifierToInchiKey(ve2, target_names = "chembl")
+  test4 <- wMapBetweenSources(ve3, src_name="chembl", target_name="pubchem")
 }
