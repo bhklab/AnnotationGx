@@ -33,7 +33,6 @@ NULL
 #'  The UniChem database gathers its data from 48 different sources/databases. All sources are listed with their
 #'  src_id and short name.
 #'  
-#'  # TODO:: Convert this list into a markdown table (see https://www.tablesgenerator.com/markdown_tables)
 #'  |src#| src_name        |
 #'  | 1  | chembl          |
 #'  | 2  | drugbank        |
@@ -77,7 +76,7 @@ NULL
 #'  | 47 | rxnorm          |
 #'  | 48 | MedChemExpress  |
 #'
-#' @param chemical_id A `character` vector which is the compound identifier for 
+#' @param chemical_id A `character` vector which is the compound identifier for
 #'    the specified database/source
 #' @param src_name A `character` vector which is the short name for the database/
 #'    source for which we know the chemical_id
@@ -167,7 +166,7 @@ identifierToInchikey <- function(chemical_id, target_names, ...,
   
   sr_id <- dbname_to_id[[target_names]]
   
-  # Creates the url with the inchikey 
+  # Creates the url with the inchikey
   final_url <- .buildURL(base_url, chemical_id, sr_id)
   
   # Encodes the url 
@@ -239,7 +238,7 @@ inchiToDatabaseID <- function(inchi, target_names, ..., type=c("key", "structure
 
 ## TODO:: After this structure based query is done, we need to write wrapper
 ## functions which do look ups from a vector of database IDs or InchiKeys
-## This should be parallelized using BiocParallel, probably with bplapply\
+## This should be parallelized using BiocParallel, probably with bplapply
 
 wInchiToDatabaseID <- function(inchis, target_names) {
   result <- bplapply(X = inchis, FUN = inchiToDatabaseID, target_names=target_names)
@@ -278,7 +277,7 @@ if (sys.nframe() == 0) {
   inchi <- "AAKJLRGGTJKAMG-UHFFFAOYSA-N"
   target_names <- c("chembl", "pubchem")
   type <- "key"
-  ve <- c("AAKJLRGGTJKAMG-UHFFFAOYSA-N", "AAKJLRGGTJKAMG-UHFFFAOYSA-N")
+  ve <- c("AAKJLRGGTJKAMG-UHFFFAOYSA-N", "BCFGMOOMADDAQU-UHFFFAOYSA-N")
   ve2 <- c("CHEMBL12", "CHEMBL11")
   ve3 <- c("CHEMBL12", "CHEMBL11")
   # Specified target names
