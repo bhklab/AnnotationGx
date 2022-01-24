@@ -291,4 +291,6 @@ if (sys.nframe() == 0) {
   test2 <- wInchiToDatabaseID(ve, target_names = target_names)
   test3 <- wIdentifierToInchiKey(ve2, target_names = "chembl")
   test4 <- wMapBetweenSources(ve3, src_name="chembl", target_name="pubchem")
+  test5 <- identifierToInchikey("CHEMBL12", "chembl")
+  test6 <- mapBetweenSources("CHEMBL12", "chembl", "pubchem")
 }

@@ -33,10 +33,12 @@ Suggests:
     rmarkdown,
     knitr,
     pandoc,
-    BiocStyle
+    BiocStyle,
+    testthat (>= 3.0.0)
 VignetteBuilder: knitr
 License: `use_mit_license()`
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
+Config/testthat/edition: 3
