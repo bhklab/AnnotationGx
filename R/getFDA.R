@@ -21,9 +21,9 @@ downloadFDAOrangeBook <- function(url="https://www.fda.gov/media/76860/download"
 #' @return `data.table` FDA OrangeBook products table.
 #'
 #' @export
-getFDAOrangeBookProducts <- function(file_path, ...) {
+getFDAOrangeBookProducts <- function(file_path) {
     if (missing(file_path))
         file_path <- grep("products.txt", downloadFDAOrangeBook(), value=TRUE)
-    products_df <- fread(file_path)
+    products_df <- fread(file_path, sep="~")
     return(products_df)
 }
