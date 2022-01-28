@@ -1,8 +1,7 @@
 
 ## ---- Public utilities
 
-#' Download a compressed file from a remote URL and extract it to the specified
-#'   directory.
+#' Download a compressed file from a remote URL and extract it.
 #'
 #' @param url `character(1)` URL of the compressed file to download.
 #' @param extract_fun `character(1)` or `function` to unzip the downloaded
@@ -11,7 +10,8 @@
 #'   the specified `extract_fun` for more details.
 #'
 #' @return `character` vector of unzipped file paths when `extract_fun` is
-#'   `unzip`, otherwise the return value of the specified `extract_fun`.
+#'   `unzip` (default), otherwise the return value of the specified
+#'   `extract_fun`.
 #'
 #' @seealso
 #' [utils::unzip], [utils::untar], [R.utils::gunzip], [R.utils::bunzip2]
@@ -32,10 +32,12 @@ downloadAndExtract <- function(url, extract_fun=unzip, ...) {
     return(extract_fun_result)
 }
 
+
 #' @export
 characterToNamedVector <- function(x) {
     Reduce(c, lapply(strsplit(unlist(strsplit(x, '\\|')), '='),
             FUN=\(x) structure(x[2], .Names=x[1]))) }
+
 
 #' @export
 getFailureMessages <- function(x) {
@@ -46,8 +48,10 @@ getFailureMessages <- function(x) {
     return(cbind(DT[, 'query'], failedDT))
 }
 
+
 #' @export
 getFailed <- function(x) attributes(x)$failed
+
 
 #' @export
 getFailedIDs <- function(x) unlist(lapply(getFailed(x), `[[`, i='query'))
