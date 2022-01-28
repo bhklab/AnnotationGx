@@ -23,7 +23,7 @@
 
 #' Constructor for an API Connection Class
 #'
-#' @params url `character` the url of the API you wish to connect to
+#' @param url `character` the url of the API you wish to connect to
 #'
 #' @return an `API` object storing the API connection and metadata about it.
 #'

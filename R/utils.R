@@ -1,3 +1,60 @@
+
+## ---- Public utilities
+
+#' Download a compressed file from a remote URL and extract it to the specified
+#'   directory.
+#'
+#' @param url `character(1)` URL of the compressed file to download.
+#' @param extract_fun `character(1)` or `function` to unzip the downloaded
+#'   file with. Default is `utils::unzip`.
+#' @param ... Fall through arguments to `extract_fun`. See documentation of
+#'   the specified `extract_fun` for more details.
+#'
+#' @return `character` vector of unzipped file paths when `extract_fun` is
+#'   `unzip`, otherwise the return value of the specified `extract_fun`.
+#'
+#' @seealso
+#' [utils::unzip], [utils::untar], [R.utils::gunzip], [R.utils::bunzip2]
+#'
+#' @importFrom checkmate assertCharacter assertFunction
+#' @export
+downloadAndExtract <- function(url, extract_fun=unzip, ...) {
+
+    assertCharacter(url, max.len=1)
+    if (is.character(extract_fun)) extract_fun <- get(extract_fun)
+    assertFunction(extract_fun)
+
+    # download to a temporary file
+    temp <- tempfile()
+    download.file(url, destfile=temp)
+    extract_fun_result <- extract_fun(temp, ...)
+    unlink(temp)
+    return(extract_fun_result)
+}
+
+#' @export
+characterToNamedVector <- function(x) {
+    Reduce(c, lapply(strsplit(unlist(strsplit(x, '\\|')), '='),
+            FUN=\(x) structure(x[2], .Names=x[1]))) }
+
+#' @export
+getFailureMessages <- function(x) {
+    if (is.null(attributes(x)$failed)) stop("There is no 'failed' attribute?")
+    DtL <- Map(as.data.table, attributes(x)$failed)
+    DT <- rbindlist(DtL, fill=TRUE)
+    failedDT <- rbindlist(lapply(DT$failure, as.data.table), fill=TRUE)
+    return(cbind(DT[, 'query'], failedDT))
+}
+
+#' @export
+getFailed <- function(x) attributes(x)$failed
+
+#' @export
+getFailedIDs <- function(x) unlist(lapply(getFailed(x), `[[`, i='query'))
+
+
+## ---- Private utilites
+
 #' Helper function to connect
 #'
 #' @param ... Arguments passed through to `paste`. The `sep` arguement is
@@ -35,7 +92,7 @@
     optionName <- paste0(packageName(), ".verbose")
     optionIsTRUE <- !is.null(getOption(optionName)) && getOption(optionName)
     verboseIsTRUE <- getOption("verbose")
-    if (optionIsTRUE || verboseIsTRUE) 
+    if (optionIsTRUE || verboseIsTRUE)
         message(blue$bold(.formatMessage(...)))
 }
 
@@ -92,7 +149,7 @@
 #' @importFrom httr RETRY GET
 .testProxyGetRequest <- memoise::memoise(function(ip, port, raw=FALSE) {
     queryRes <- tryCatch({
-        GET(url='https://httpbin.org/ip', timeout(10), 
+        GET(url='https://httpbin.org/ip', timeout(10),
             use_proxy(ip, port=as.integer(port)))
     },
     error=function(e) { print(e); FALSE })
@@ -100,23 +157,3 @@
     res <- tryCatch({ parseJSON(queryRes) }, error=function(e) list())
     return(length(res) == 1)
 })
-
-#' @export
-characterToNamedVector <- function(x) { 
-    Reduce(c, lapply(strsplit(unlist(strsplit(x, '\\|')), '='), 
-            FUN=\(x) structure(x[2], .Names=x[1]))) }
-
-#' @export
-getFailureMessages <- function(x) {
-    if (is.null(attributes(x)$failed)) stop("There is no 'failed' attribute?")
-    DtL <- Map(as.data.table, attributes(x)$failed)
-    DT <- rbindlist(DtL, fill=TRUE)
-    failedDT <- rbindlist(lapply(DT$failure, as.data.table), fill=TRUE)
-    return(cbind(DT[, 'query'], failedDT))
-}
-
-#' @export
-getFailed <- function(x) attributes(x)$failed
-
-#' @export 
-getFailedIDs <- function(x) unlist(lapply(getFailed(x), `[[`, i='query'))

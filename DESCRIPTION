@@ -8,6 +8,7 @@ Authors@R: c(
     person("Sisira", "Nair", role = c("aut"),
         email="sisira.nair@uhnresearch.ca"),
     person("Petr", "Smirnov", role=c("aut")),
+    person("Shahzada", "Farooq", role=c("ctb")),
     person("Benjamin", "Haibe-Kains", role=c("aut", "cre"),
         email = "benjamin.haibe.kains@utoronto.ca"))
 Description: A package for building, updating and querying an
@@ -22,6 +23,7 @@ Imports:
     BiocParallel,
     jsonlite,
     data.table,
+    checkmate,
     rlang,
     CoreGx,
     crayon,
@@ -40,5 +42,5 @@ License: `use_mit_license()`
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Config/testthat/edition: 3
