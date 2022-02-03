@@ -1,10 +1,11 @@
-## =========================================
 ## Make GET Requests to the ChemBl REST API
+## =========================================
 ## -----------------------------------------
 
 #' @importFrom httr GET
 #' @importFrom jsonlite fromJSON
 NULL
+
 
 #'
 getRequestChembl <- function(compound_name,
@@ -15,7 +16,7 @@ getRequestChembl <- function(compound_name,
 
     # Generates a complete url taking the value from the parameter of the function
     # compound_name
-    full_url <- (paste(url, compound_name))
+    full_url <- paste0(url, compound_name)
 
     # Encoded the url to avoid html error
     encoded <- URLencode(full_url)
@@ -42,6 +43,40 @@ getChemblMolecule <- function(molecule_name, raw=FALSE,
     ## TODO: Unnest the data.frame
     return(response_list)
 }
+
+#' Retrieve a `data.table` of all molecule mechanisms of action from ChEMBL
+#'
+#' @param url `character(1)` Base URL of ChEMBL API.
+#' @param query `character(1)` ChEMBL API query.
+#'
+#' @return `data.table` A table containing all mechanism of action entries
+#'   availble in ChEMBL.
+#'
+#' @importFrom httr GET status_code
+#' @importFrom data.table as.data.table rbindlist
+#' @export
+getChemblAllMechanisms <- function(url="https://www.ebi.ac.uk",
+        query="/chembl/api/data/mechanism.json?limit=1000") {
+    mechanism_list <- list()
+    i <- 1
+    while (is.character(query)) {
+        response <- GET(URLencode(paste0(url, query)))
+        if (status_code(response) != 200) {
+            warning("Query failed")
+            return(mechanism_list)
+        }
+        response_list <- parseJSON(response)
+        mechanism_list[[i]] <- response_list$mechanisms
+        query <- response_list$page_meta$`next`
+        print(query)
+        i <- i + 1
+    }
+    mechanism_df <- rbindlist(lapply(mechanism_list, FUN=as.data.table),
+        fill=TRUE)
+    return(mechanism_df)
+}
+
+
 
 
 # Write testing code here, this is only executed if the file is run as a script
