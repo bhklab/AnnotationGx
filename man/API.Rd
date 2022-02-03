@@ -6,6 +6,9 @@
 \usage{
 API(url)
 }
+\arguments{
+\item{url}{\code{character} the url of the API you wish to connect to}
+}
 \value{
 an \code{API} object storing the API connection and metadata about it.
 }

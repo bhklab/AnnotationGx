@@ -58,7 +58,7 @@ cleanCellnames <-
     badchars <- r"{[\xb5]|[]|[ ,]|[;]|[:]|[-]|[+]|[*]|[%]|[$]|[#]|[{]|[}]|[[]|[]]|[|]|[^]|[/]|[\]|[.]|[_]|[ ]|[(]|[)]}"
     for(i in 1:length(matching)){
       node1 <- matching[[i]]
-      node1text <- xml_text(node1) 
+      node1text <- xml_text(node1)
       xml_par <- xml_find_first(node1, "parent::*")
       xml_set_attr(xml_par, "cleanname", gsub(badchars,"",ignore.case = TRUE, node1text))
     }
@@ -249,7 +249,7 @@ getCellosaurus <-
           op_list <-
             getInfoFromCelllineInput(cell_ip = cellline_input[nm],
                                      main_xml = main_xml,
-                                     input_type = "name", remove = remove_char) 
+                                     input_type = "name", remove = remove_char)
       }
       else if (namespace == "cvclid") {
         op_list <-
@@ -282,3 +282,10 @@ getCellosaurus <-
     return(op_dt)
     }
 
+
+#'
+#'
+#' @export
+getCellosaurusDataFrame <- function(url) {
+
+}
