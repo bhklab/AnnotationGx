@@ -68,7 +68,6 @@ getChemblAllMechanisms <- function(url="https://www.ebi.ac.uk",
         response_list <- parseJSON(response)
         mechanism_list[[i]] <- response_list$mechanisms
         query <- response_list$page_meta$`next`
-        print(query)
         i <- i + 1
     }
     mechanism_df <- rbindlist(lapply(mechanism_list, FUN=as.data.table),
