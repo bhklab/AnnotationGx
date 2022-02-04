@@ -242,17 +242,20 @@ inchiToDatabaseID <- function(inchi, target_names, ..., type=c("key", "structure
 
 wInchiToDatabaseID <- function(inchis, target_names) {
   result <- bplapply(X = inchis, FUN = inchiToDatabaseID, target_names=target_names)
-  return(result)
+  f_res <- rbindlist(result)
+  return(f_res)
 }
 
 wIdentifierToInchiKey <- function(chemical_ids, target_names) {
   result <- bplapply(X = chemical_ids, FUN = identifierToInchikey, target_names=target_names)
-  return(result)
+  f_res <- unlist(result)
+  return(f_res)
 }
 
 wMapBetweenSources <- function(chemical_ids, src_name, target_name) {
   result <- bplapply(X = chemical_ids, FUN = mapBetweenSources, src_name=src_name, target_name=target_name)
-  return(result)
+  f_res <- unlist(result)
+  return(f_res)
 }
 
 
