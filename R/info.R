@@ -8,11 +8,16 @@ drugbankAndPubchem <- function() {
   ## We can use Chembl ID or the Inchikeys 
   
   target_names <- c("drugbank", "pubchem")
+  
+  # InChI column is chosen
   r <- (metadata$InChI)
-  r <- r[1:10]
+  
+  # data frame created using the wrapper function
   result <- wInchiToDatabaseID(r, target_names = target_names)
+  
+  # output cleaned
   result <- subset(result, select = -c(src_id))
-  to_merge <- data.frame(inchikey=metadata$InChI[1:10], fimm_id=metadata$ID_Drug[1:10])
+  to_merge <- data.frame(inchikey=metadata$InChI, fimm_id=metadata$ID_Drug)
   #final <- subset(result, select = -c(src_id))
   result <- merge(result, to_merge, by="inchikey")
   return(result)
