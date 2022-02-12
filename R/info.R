@@ -38,13 +38,20 @@ chemblComparison <- function() {
   
   r2 <- wInchiToDatabaseID(df$InChI, target_names = t2)
   
+  r2 <- subset(r2, select = -c(src_id, database_id))
+  
+  colnames(df) <- c("inchikey", "v1")
+  
   ## Comparing all the chembl ids
-  final_result <- r2$src_compound_id==df$V1
+  #final_result <- r2$src_compound_id==df$V1
   
   # The following two lines are casuing issues, df2 becomes a data frame with 1111 rows
   # instead of staying at 621 rows
   #df2 <- merge(df, r2, by.x = "InChI", by.y = "inchikey")
   #df2[, length(intersect(V1, src_compound_id)), by=inchikey]
+  
+  df2 <- merge(r2, df, by="inchikey")
+  final_result <- lk[, length(intersect(v1, src_compound_id)), by="inchikey"]
   
   return(final_result)
 }
