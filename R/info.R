@@ -47,7 +47,7 @@ chemblComparison <- function() {
   
   
   df2 <- merge(r2, df, by="inchikey")
-  final_result <- lk[, length(intersect(v1, src_compound_id)), by="inchikey"]
+  final_result <- df2[, length(intersect(v1, src_compound_id)), by="inchikey"]
   
   return(final_result)
 }
