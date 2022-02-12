@@ -227,6 +227,7 @@ inchiToDatabaseID <- function(inchi, target_names, ..., type=c("key", "structure
     quick_res <- data.frame(src_id="N/A", database_id="N/A", src_compound_id="N/A")
     return(quick_res)
   }
+  
   # Merge does a SQL style left join between two data.frames on the specified
   #  by shared column (see ?merge for more details)
   result <- merge(dbname_df, result, by="src_id")
@@ -237,6 +238,10 @@ inchiToDatabaseID <- function(inchi, target_names, ..., type=c("key", "structure
     result <- result[result$database_id %in% target_names, ]
   }
   
+  if (nrow(result) == 0){
+    quick_res <- data.frame(src_id="N/A", database_id="N/A", src_compound_id="N/A")
+    return(quick_res)
+  }
   
   # return to the user
   return(result)

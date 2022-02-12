@@ -40,6 +40,12 @@ chemblComparison <- function() {
   
   ## Comparing all the chembl ids
   final_result <- r2$src_compound_id==df$V1
+  
+  # The following two lines are casuing issues, df2 becomes a data frame with 1111 rows
+  # instead of staying at 621 rows
+  #df2 <- merge(df, r2, by.x = "InChI", by.y = "inchikey")
+  #df2[, length(intersect(V1, src_compound_id)), by=inchikey]
+  
   return(final_result)
 }
 
