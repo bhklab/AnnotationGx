@@ -18,8 +18,11 @@ drugbankAndPubchem <- function() {
   # output cleaned
   result <- subset(result, select = -c(src_id))
   to_merge <- data.frame(inchikey=metadata$InChI, fimm_id=metadata$ID_Drug)
+  result <- na.omit(result)
+  to_merge <- na.omit(to_merge)
   #final <- subset(result, select = -c(src_id))
   result <- merge(result, to_merge, by="inchikey")
+  result <- data.frame(result$fimm_id, result$database_id, result$src_compound_id, result$inchikey)
   return(result)
 }
 
@@ -48,6 +51,19 @@ chemblComparison <- function() {
   
   df2 <- merge(r2, df, by="inchikey")
   final_result <- df2[, length(intersect(v1, src_compound_id)), by="inchikey"]
+  
+  #Shows the data frame with all inchikeys which did not have same chembl ids
+  # as in data (after querying Unichem API)
+  #zero_val <- final_result %>% filter(V1 == 0)
+  
+  #Shows queries from Unichem Api for inchikeys which did not match
+  #actual <- wInchiToDatabaseID(zero_val$inchikey, "chembl")
+  
+  #The queries which did not return "N/A" chembl ids
+  #not_na <- actual %>% filter(src_compound_id != "N/A")
+  
+  #The #queries which returned "N/A" chenbl ids
+  #na <- actual %>% filter(src_compound_id == "N/A")
   
   return(final_result)
 }
