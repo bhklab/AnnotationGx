@@ -76,13 +76,14 @@ getChemblAllMechanisms <- function(url="https://www.ebi.ac.uk",
     return(mechanism_df)
 }
 
+#' A general function for creating Queries to the ChEMBL API
 #'
-#' @description A general function for creating Queries to the ChEMBL API 
+#' @description A general function for creating Queries to the ChEMBL API
 #'
 #' |       Resource Name       |                                                                                                   Description                                                                                                   |
 #' |:-------------------------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
 #' | activity                  | Activity values recorded in an Assay                                                                                                                                                                            |
-#' | assay                     | Assay details as reported in source Document/Dataset 
+#' | assay                     | Assay details as reported in source Document/Dataset
 #' | atc_class                 | WHO ATC Classification for drugs                                                                                                                                                                                |                                                                                                                                                           |
 #' | binding_site              | WHO ATC Classification for drugs                                                                                                                                                                                |
 #' | biotherapeutic            | Biotherapeutic molecules, which includes HELM notation and sequence data                                                                                                                                        |
@@ -131,20 +132,22 @@ getChemblAllMechanisms <- function(url="https://www.ebi.ac.uk",
 #'| search                   | Special type of filter allowing a full text search based on elastic search queries                           |
 #'| only                     | Select specific properties from the original endpoint and returns only the desired properties on each record |                                                                                                         |
 #'
-#'
+#' @md
+#' @export
 constructChemblQuery <- function(resource, field, filter_type, value){
-    
+
     url <- "https://www.ebi.ac.uk/chembl/api/data/"
-    
+
     final <- paste0(url, resource, ".json", "?", field, "__", filter_type, "=", value)
-    
+
     return (final)
 }
 
-#' 
+#' Query the ChEMBL compound API end-point
+#'
 #' @description A specialised function for querying the compund_record resource
 #' from the ChEMBL API
-#' 
+#'
 #'    |       Field        |
 #'    |--------------------|
 #'    | compound_key       |
@@ -152,19 +155,22 @@ constructChemblQuery <- function(resource, field, filter_type, value){
 #'    | document_chembl_id |
 #'    | record_id          |
 #'    | src_id             |
-#'    
+#'
+#' @md
+#' @export
 compoundQuery <- function(field, filter_type, value){
     url <- constructChemblQuery("compound_record.json", field, filter_type, value)
     url <- URLencode(url)
-    
+
     response <- GET(url)
-    response <- parse_json(response)
+    response <- parseJSON(response)
     return (response)
-    
+
 }
 
+#' Query the ChEMBL molecule API end-point
 #'
-#'
+#' @description
 #' |         Field        |                                                                                                                                        Subfields                                                                                                                                       |
 #' |:--------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
 #' | atc_classifications  |                                                                                                                                                                                                                                                                                        |
@@ -206,13 +212,14 @@ compoundQuery <- function(field, filter_type, value){
 #' | withdrawn_reason     |                                                                                                                                                                                                                                                                                        |
 #' | withdrawn_year       |                                                                                                                                                                                                                                                                                        |                                                                                                                                                                                                                                                                                   |
 #'
-#'
+#' @md
+#' @export
 moleculeQuery <- function(field, filter_type, value){
     url <- constructChemblQuery("molecule.json", field, filter_type, value)
     url <- URLencode(url)
-    
+
     response <- GET(url)
-    response <- parse_json(response)
+    response <- parseJSON(response)
     return (response)
 }
 
