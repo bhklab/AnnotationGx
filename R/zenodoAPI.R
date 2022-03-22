@@ -35,7 +35,8 @@ zenodoMetadata <- function(title="New Upload", upload_type="dataset",
     checkmate::assert_character(names, min.len=1)
     checkmate::assert(
         checkmate::check_list(affiliations, types="character", len=1),
-        checkmate::check_list(affiliations, types="character", len=length(names))
+        checkmate::check_list(affiliations, types="character",
+            len=length(names))
     )
 
     c(list(title=title, upload_type=upload_type, description=description,
@@ -51,16 +52,28 @@ zenodoMetadata <- function(title="New Upload", upload_type="dataset",
 #'
 #' @param metadata `list` Named list
 #' @param file_path `character(1)` Path to the file to upload to Zenodo.
-#' @param ... Fall through parameters to the `httr::POST` method.
+#' @param publish `logical(1)` Should the Zenodo entry be published, assuming
+#'   the upload succeeds? Default is `FALSE`.
+#' @param ... Fall through parameters to the `httr::POST` and `httr::PUT`
+#'   method calls inside this function.
 #' @param url `character(1)` URL string for the API. Do not change unless you
 #' know what you are doing.
-#' @param access_token `character(1)` Zendo access token. By deafult tries to
+#' @param access_token `character(1)` Zenodo access token. By deafult tries to
 #' read this from the ZENODO_TOKEN environmet variable via `Sys.getenv`.
 #' See details for more information.
 #'
-#' @return None, uploads a file.
+#' @return If all HTTP requests succeed, returns the details of the Zenodo entry
+#'   as a list invisiblty. If any of the requests fail, it returns the failed
+#'   request object for ease of debugging.
 #'
 #' @details
+#'
+#' ## Caveats
+#' This function is an early prototype and is not very polished. The current
+#'   version will create a new entry everytime the function is called, even
+#'   if some of the steps succeeded. For now, you will need to manually delete
+#'   these entries from you Zenodo account. However, this will be corrected in
+#'   future updates.
 #'
 #' ## `access_token`
 #'
@@ -75,13 +88,18 @@ zenodoMetadata <- function(title="New Upload", upload_type="dataset",
 #' work the token needs to provide both upload and publish permissions on your
 #' Zenodo account.
 #'
+#' ## Trouble Shooting
+#' If your request keep failing with 405 error, it is possible that you need to
+#' verify the email for your Zenodo account.
+#'
 #' @seealso
 #' [httr::POST], [httr::upload_file]
 #'
 #' @md
 #' @aliases deposit_zenodo
 #' @export
-depositZenodo <- function(file_path, metadata=zenodoMetadata(), ...,
+depositZenodo <- function(file_path, metadata=zenodoMetadata(), publish=FALSE,
+        ...,
         url="https://zenodo.org/api/deposit/depositions",
         access_token=Sys.getenv("ZENODO_TOKEN")) {
 
@@ -95,8 +113,9 @@ depositZenodo <- function(file_path, metadata=zenodoMetadata(), ...,
     query <- list(access_token=access_token)
     create_entry_request <- POST(url, query=query,
         body=setNames(list(), character(0)),
-        encode="json") #,
-        #...)
+        encode="json",
+        ...
+    )
     if (!http_status(create_entry_request)$category == "Success") {
         warn_for_status(create_entry_request)
         return(create_entry_request)
@@ -106,24 +125,41 @@ depositZenodo <- function(file_path, metadata=zenodoMetadata(), ...,
     # PUT request to upload the data for the entry
     deposit_file <- basename(file_path)
     bucket_url <- zenodo_entry$links$bucket
-    bucket_file <- build_url(list(bucket_url, deposit_file))
-    upload_request <- PUT(bucket_file, query=query, body=upload_file(file_path))
+    # FIXME:: more robust URL parsing!
+    bucket_file <- paste0(bucket_url, "/", deposit_file)
+    upload_request <- PUT(bucket_file,
+        query=query,
+        body=upload_file(file_path),
+        if (...length()) ... else progress()
+    )
 
     # PUT request to create the object metadata
-    metadata_request <- PUT(bucket_url, query=query, body=metadata, encode="json") #, ...)
+    deposition_url <- zenodo_entry$links$self
+    metadata_request <- PUT(deposition_url, query=query,
+        body=list(metadata=metadata), encode="json",
+        ...
+    )
     if (!http_status(metadata_request)$category == "Success") {
         warn_for_status(metadata_request)
         return(metadata_request)
     }
 
+    # Optional POST request to publish the dataset
+    if (isTRUE(publish)) {
+        publish_url <- zenodo_entry$links$publish
+        publish_request <- POST(publish_url, query=query)
+        if (!http_status(publish_request)$category == "Success") {
+            warn_for_status(publish_request)
+            warning("Publication failed!")
+            return(zenodo_entry)
+        }
+    }
 
+    #
+    message("Zenodo upload successful! You can view it at:\n  ",
+        zenodo_entry$links$html)
 
-
-    # Optional POST request to publish the data
-    # if (isTRUE(publish)) {
-    #     publish_request <- POST(url, query=query, ...)
-    # }
-
+    return(invisible(zenodo_entry))
 }
 
 
