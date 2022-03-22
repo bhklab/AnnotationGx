@@ -1,5 +1,5 @@
 #' @import checkmate
-#' @importFrom httr POST PUT content upload_file warn_for_status
+#' @importFrom httr POST PUT content upload_file warn_for_status progress
 NULL
 
 
@@ -45,13 +45,16 @@ zenodoMetadata <- function(title="New Upload", upload_type="dataset",
 }
 
 
-#' Make a POST request to Zenodo
+#' Upload and optionally publish data to Zenodo
 #'
 #' @description
-#' Make a POST request to Zenodo to upload a data set.
+#' Make the PUT and POST request necessary to upload and optionally publish
+#'   a file to Zenodo.
 #'
-#' @param metadata `list` Named list
 #' @param file_path `character(1)` Path to the file to upload to Zenodo.
+#' @param metadata `list` Named list of metadata required to publish publish
+#'   a Zenodo entry, as returned by the `zenodoMetadata` function. See
+#'   `?zenodoMetadata` for documentation of the correct format.
 #' @param publish `logical(1)` Should the Zenodo entry be published, assuming
 #'   the upload succeeds? Default is `FALSE`.
 #' @param ... Fall through parameters to the `httr::POST` and `httr::PUT`
@@ -111,6 +114,7 @@ depositZenodo <- function(file_path, metadata=zenodoMetadata(), publish=FALSE,
 
     # POST request to create Zenodo entry with associated metadata
     query <- list(access_token=access_token)
+    message("Creating Zenodo entry...")
     create_entry_request <- POST(url, query=query,
         body=setNames(list(), character(0)),
         encode="json",
@@ -120,6 +124,7 @@ depositZenodo <- function(file_path, metadata=zenodoMetadata(), publish=FALSE,
         warn_for_status(create_entry_request)
         return(create_entry_request)
     }
+    message("...COMPLETE\n")
     zenodo_entry <- content(create_entry_request, "parsed")
 
     # PUT request to upload the data for the entry
@@ -127,14 +132,17 @@ depositZenodo <- function(file_path, metadata=zenodoMetadata(), publish=FALSE,
     bucket_url <- zenodo_entry$links$bucket
     # FIXME:: more robust URL parsing!
     bucket_file <- paste0(bucket_url, "/", deposit_file)
+    message("Uploading data file to Zenodo...")
     upload_request <- PUT(bucket_file,
         query=query,
         body=upload_file(file_path),
-        if (...length()) ... else progress()
+        if (...length()) ... else progress("up")
     )
+    message("...COMPLETE\n")
 
     # PUT request to create the object metadata
     deposition_url <- zenodo_entry$links$self
+    message("Updating Zenodo entry metadata...")
     metadata_request <- PUT(deposition_url, query=query,
         body=list(metadata=metadata), encode="json",
         ...
@@ -143,21 +151,29 @@ depositZenodo <- function(file_path, metadata=zenodoMetadata(), publish=FALSE,
         warn_for_status(metadata_request)
         return(metadata_request)
     }
+    message("...COMPLETE\n")
 
     # Optional POST request to publish the dataset
     if (isTRUE(publish)) {
         publish_url <- zenodo_entry$links$publish
+        message("Publishing Zenodo entry...")
         publish_request <- POST(publish_url, query=query)
         if (!http_status(publish_request)$category == "Success") {
             warn_for_status(publish_request)
             warning("Publication failed!")
             return(zenodo_entry)
         }
+        message("...COMPLETE!\n")
     }
 
-    #
-    message("Zenodo upload successful! You can view it at:\n  ",
-        zenodo_entry$links$html)
+    # Inform user of status
+    if (isTRUE(publish)) {
+        message("Zenodo publication successful! You can view it at:\n  ",
+            zenodo_entry$links$html)
+    } else {
+        message("Zenodo upload successful! You can view it at:\n  ",
+            zenodo_entry$links$html)
+    }
 
     return(invisible(zenodo_entry))
 }
@@ -184,5 +200,5 @@ if (sys.nframe() == 0) {
     file_path <- list.files("local_data", pattern="TCGA_2.0.1_SARC.rds",
         full.names=TRUE)
 
-    depositZenodo(file_path=file_path)
+    depositZenodo(file_path=file_path, metadata=zenodoMetadata(title="API Publish Test"))
 }
