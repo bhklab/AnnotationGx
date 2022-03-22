@@ -15,17 +15,24 @@ The UniChem database provides a publicly available RESTful web service API for
 the retrieval of data in a programmatic fashion. All RESTful queries are constructed
 using a base url. There are three types of input data for the UniChem API;
 src_compound_id, src_id and InChIKey. src_id is the source which is represented by
+<<<<<<< HEAD
 an Integer. src_compound_id is the compound represented by an identifier for that
 specific source. We can use the API to map between external databases identifiers,
 take inchikey as a parameter and map to any identifier, take in chemical id and
+=======
+an Integer. src_compound_id is the compound represented by an identifier for that 
+specific source [1] . We can use the API to map between external databases identifiers,
+take inchikey as a parameter and map to any identifier, take in chemical id and 
+>>>>>>> 8ef1eb4899807481e59edbea03e404cc4e629726
 source id and return the inchi and inchikey structure and  takes in inchikey and
-names of databases and return the appropriate chemical source ids.
+names of databases and return the appropriate chemical source ids. 
 
 ## Mapping Between sources
 
 Using the UniChem API we can take a Chemical ID which is the identifier for a
 compound for a specific source and get the Chemical Id for a different source by
-specifying which source we require.
+specifying which source we require. The sources provided by Unichem API are; 
+1. chembl, 2. drugbank, 3. pdb, 4. gtopdb, e.t.c.
 
 `mapBetweenSources` function can be used to achieve this goal on a single Chemical Id,
 however if we have a list of Chemical Ids for which we can use the
@@ -46,7 +53,12 @@ result <- mapBetweenSources(chemicalID, source, target_source)
 ```
 
 2. For a list of Chemical IDs
+<<<<<<< HEAD
 ```{r}
+=======
+```{r eval=FALSE}
+
+>>>>>>> 8ef1eb4899807481e59edbea03e404cc4e629726
 chemicalIDs <- c("CHEMBL12", "CHEMBL11")
 source <- "chembl"
 target_source <- "pubchem"
@@ -63,7 +75,12 @@ have multiple InchiKeys we can use the `wInchiToDatabaseID` function.
 ### Use Cases
 
 1. Single Inchikey or Inchi
+<<<<<<< HEAD
 ```{r}
+=======
+```{r eval=FALSE}
+
+>>>>>>> 8ef1eb4899807481e59edbea03e404cc4e629726
 inchi <- "AAKJLRGGTJKAMG-UHFFFAOYSA-N"
 target_name <- "pubchem"
 
@@ -71,7 +88,12 @@ target_name <- "pubchem"
 ```
 
 2. Single Inchikey or Inchi with multiple target source names
+<<<<<<< HEAD
 ```{r}
+=======
+```{r eval=FALSE}
+
+>>>>>>> 8ef1eb4899807481e59edbea03e404cc4e629726
 inchi <- "AAKJLRGGTJKAMG-UHFFFAOYSA-N"
 target_names <- c("pubchem", "chembl")
 
@@ -79,7 +101,12 @@ target_names <- c("pubchem", "chembl")
 ```
 
 3. Multiple Inchikey or Inchi
+<<<<<<< HEAD
 ```{r}
+=======
+```{r eval=FALSE}
+
+>>>>>>> 8ef1eb4899807481e59edbea03e404cc4e629726
 inchis <- c("AAKJLRGGTJKAMG-UHFFFAOYSA-N", "BCFGMOOMADDAQU-UHFFFAOYSA-N")
 target_names <- c("pubchem", "chembl")
 
@@ -94,8 +121,13 @@ corresponding src_id we can use `wIdentifierToInchiKey`.
 
 ### Use Cases
 
+<<<<<<< HEAD
 1. Single src_compound_id
 ```{r}
+=======
+1. Single src_compound_id 
+```{r eval=FALSE}
+>>>>>>> 8ef1eb4899807481e59edbea03e404cc4e629726
 src_compound_id <- "CHEMBL12"
 src_id <- "chembl"
 
@@ -103,9 +135,23 @@ src_id <- "chembl"
 ```
 
 2. Multiple src_compound_ids
+<<<<<<< HEAD
 ```{r}
 src_compound_ids <- c("CHEMBL12", "CHEMBL11")
 src_id <- "chembl"
 
 #(result <- wIdentifierToInchiKey(ve2, target_names = src_id))
 ```
+=======
+```{r eval=FALSE}
+
+src_compound_ids <- c("CHEMBL12", "CHEMBL11")
+src_id <- "chembl"
+
+result <- wIdentifierToInchiKey(ve2, target_names = src_id)
+```
+
+# References
+1. Chambers, J., Davies, M., Gaulton, A. et al. UniChem: a unified chemical structure cross-referencing and identifier tracking system.
+   Cheminform 5, 3 (2013). https://doi.org/10.1186/1758-2946-5-3
+>>>>>>> 8ef1eb4899807481e59edbea03e404cc4e629726
