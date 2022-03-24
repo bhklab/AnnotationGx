@@ -68,9 +68,11 @@ Zenodo account.
 }
 
 \subsection{Trouble Shooting}{
-
-If your request keep failing with 405 error, it is possible that you need to
-verify the email for your Zenodo account.
+\itemize{
+\item \emph{405 Errors}: Ensure that you have verified your Zenodo account email.
+\item \emph{403 Errors}: Ensure you have checked both the \code{publish:actions} and
+\code{publish:write} boxes for your Zenodo access token.
+}
 }
 }
 \seealso{

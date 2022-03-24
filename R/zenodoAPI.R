@@ -92,8 +92,9 @@ zenodoMetadata <- function(title="New Upload", upload_type="dataset",
 #' Zenodo account.
 #'
 #' ## Trouble Shooting
-#' If your request keep failing with 405 error, it is possible that you need to
-#' verify the email for your Zenodo account.
+#' - *405 Errors*: Ensure that you have verified your Zenodo account email.
+#' - *403 Errors*: Ensure you have checked both the `publish:actions` and
+#'   `publish:write` boxes for your Zenodo access token.
 #'
 #' @seealso
 #' [httr::POST], [httr::upload_file]
