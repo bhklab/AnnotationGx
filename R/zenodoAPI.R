@@ -58,7 +58,8 @@ zenodoMetadata <- function(title="New Upload", upload_type="dataset",
 #' @param publish `logical(1)` Should the Zenodo entry be published, assuming
 #'   the upload succeeds? Default is `FALSE`.
 #' @param ... Fall through parameters to the `httr::POST` and `httr::PUT`
-#'   method calls inside this function.
+#'   method calls inside this function. Pass `httr::verbose()` to get detailed
+#'   information about your API requests, useful for debugging.
 #' @param url `character(1)` URL string for the API. Do not change unless you
 #' know what you are doing.
 #' @param access_token `character(1)` Zenodo access token. By deafult tries to
