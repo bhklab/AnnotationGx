@@ -26,6 +26,7 @@ output/
 
 # Spreadsheets
 *.csv
+!inst/*
 
 # R Object Files
 *.rds

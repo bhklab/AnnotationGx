@@ -186,7 +186,8 @@ identifierToInchikey <- function(chemical_id, target_names, ...,
   }
 }
 
-## TODO:: Determine if this function specification is correct, update as needed to work with the UniChem API
+#' @description This function takes in inchikey and names of databases and returns the
+#' appropriate chemical source ids
 #'
 #' @param inchi A `character(1)` vector containing the InchiKey if `type`="key"
 #' @param target_names A `character()` vector specifying the name of the target
@@ -222,6 +223,11 @@ inchiToDatabaseID <- function(inchi, target_names, ..., type=c("key", "structure
 
   # Parse to a data frame
   result <- parseJSON(response)
+  if (is.null(ncol(result))){
+    quick_res <- data.frame(src_id="N/A", database_id="N/A", src_compound_id="N/A")
+    return(quick_res)
+  }
+  
   # Merge does a SQL style left join between two data.frames on the specified
   #  by shared column (see ?merge for more details)
   result <- merge(dbname_df, result, by="src_id")
@@ -231,28 +237,67 @@ inchiToDatabaseID <- function(inchi, target_names, ..., type=c("key", "structure
     #  has rownames
     result <- result[result$database_id %in% target_names, ]
   }
-
+  
+  if (nrow(result) == 0){
+    quick_res <- data.frame(src_id="N/A", database_id="N/A", src_compound_id="N/A")
+    return(quick_res)
+  }
+  
   # return to the user
   return(result)
 }
 
-## TODO:: After this structure based query is done, we need to write wrapper
-## functions which do look ups from a vector of database IDs or InchiKeys
-## This should be parallelized using BiocParallel, probably with bplapply
-
+#' @description Wrapper function takes in vector of inchikeys and target names and
+#' returns the appropriate chemical source id using parallel computation
+#'
+#' @param inchis A `character(1)` vector containing the InchiKey if `type`="key"
+#' @param target_names A `character()` vector specifying the name of the target
+#'   database id to return. If missing, returns all
+#'
+#' @return A `data.frame` mapping from the inchi or inchikey to the chemical source ids
+#'
+#' @importFrom httr GET
+#' @export
 wInchiToDatabaseID <- function(inchis, target_names) {
-  result <- bplapply(X = inchis, FUN = inchiToDatabaseID, target_names=target_names)
-  return(result)
+  #param <- SerialParam(stop.on.error = FALSE)
+  result <- (bplapply(X = inchis, FUN = tryCatch(inchiToDatabaseID), target_names=target_names))
+  names(result) <- inchis
+  result_df <- rbindlist(result, idcol="inchikey")
+  return(result_df)
 }
 
+#' @description Wrapper function takes in vector of chemical ids and source ids and returns the
+#' inchi and inchikey structure using parallel computation
+#'
+#' @param chemical_ids  `character` vector which is the src_compound_id
+#'
+#' @param target_names  `character` vector which is the id for the database/source
+#'
+#' @return  `character` vector with the inchikey and inchi structure
+#'
+#' @export
 wIdentifierToInchiKey <- function(chemical_ids, target_names) {
   result <- bplapply(X = chemical_ids, FUN = identifierToInchikey, target_names=target_names)
-  return(result)
+  f_res <- unlist(result)
+  return(f_res)
 }
 
+#' @description Wrapper function which returns the source compound ids for specific
+#' database_id using parallel computation.
+#' @param chemical_ids `character` vector which is the compound identifier for
+#'    the specified database/source
+#' @param src_name  `character` vector which is the short name for the database/
+#'    source for which we know the chemical_id
+#' @param target_name  `character` vector which is the short name for the database/
+#'    source for which we require the compounds end_point
+#'
+#' @return A `character` vector which is the src_compound_id for the target_name
+#'
+#' @export
 wMapBetweenSources <- function(chemical_ids, src_name, target_name) {
   result <- bplapply(X = chemical_ids, FUN = mapBetweenSources, src_name=src_name, target_name=target_name)
-  return(result)
+  f_res <- unlist(result)
+  return(f_res)
 }
 
 
@@ -272,12 +317,13 @@ if (sys.nframe() == 0) {
   library(jsonlite)
   library(httr)
   library(BiocParallel)
+  library(data.table)
 
   # Example code
   inchi <- "AAKJLRGGTJKAMG-UHFFFAOYSA-N"
   target_names <- c("chembl", "pubchem")
   type <- "key"
-  ve <- c("AAKJLRGGTJKAMG-UHFFFAOYSA-N", "BCFGMOOMADDAQU-UHFFFAOYSA-N")
+  ve <- c("LSXUTRRVVSPWDZ-WOTGAKFBSA-N", "AAKJLRGGTJKAMG-UHFFFAOYSA-N", "BCFGMOOMADDAQU-UHFFFAOYSA-N")
   ve2 <- c("CHEMBL12", "CHEMBL11")
   ve3 <- c("CHEMBL12", "CHEMBL11")
   # Specified target names
@@ -292,4 +338,5 @@ if (sys.nframe() == 0) {
   test4 <- wMapBetweenSources(ve3, src_name="chembl", target_name="pubchem")
   test5 <- identifierToInchikey("CHEMBL12", "chembl")
   test6 <- mapBetweenSources("CHEMBL12", "chembl", "pubchem")
+  #test7 <- inchiToDatabaseID("LSXUTRRVVSPWDZ-WOTGAKFBSA-N", "chembl")
 }

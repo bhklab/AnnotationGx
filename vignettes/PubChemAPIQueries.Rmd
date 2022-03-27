@@ -2,12 +2,12 @@
 title: "Querying PubChem with AnnotationGx"
 author: "Christopher Eeles"
 package: AnnotationGx
-output: 
+output:
   BiocStyle::html_document
 vignette: >
   %\VignetteIndexEntry{Querying PubChem with AnnotationGx}
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}  
+  %\VignetteEncoding{UTF-8}
 ---
 
 # Introduction to PubChem APIs
@@ -15,61 +15,61 @@ vignette: >
 PubChem provides two publicly available RESTful APIs for programatically
 accessing data in their databases. The first of these, the PubChem PUG REST API,
 is designed to make specific queries based on some input identifier and return
-data which PubChem has labelled or computed internally [1]. This API can be used 
-to do things like get standardized PubChem identifiers CID or SID from 
-drug names, external database identifiers, etc. The second is the PubChem PUG 
-VIEW API [2]. This interface allows access to a variety of data which are 
-aggregated by PubChem to display along with their own records, but are not 
+data which PubChem has labelled or computed internally [1]. This API can be used
+to do things like get standardized PubChem identifiers CID or SID from
+drug names, external database identifiers, etc. The second is the PubChem PUG
+VIEW API [2]. This interface allows access to a variety of data which are
+aggregated by PubChem to display along with their own records, but are not
 curated by PubChem itself.
 
 ## PubChem PUG REST API
 
 This package inlcudes functions for making arbitrary queries to the PubChem
-REST API. The most fundamental of these is the `getRequestPubChem` function, 
-which uses its parameters to construct a single GET request to the PUG REST API, 
+REST API. The most fundamental of these is the `getRequestPubChem` function,
+which uses its parameters to construct a single GET request to the PUG REST API,
 returning an `httr::response` object. The documentation for this function
 also includes the most detail about the structure of the PUG REST API, and
 developers wishing to write custom queries for this package should review
 the documentation with `?getRequestPubChem`.
 
-For convenience, a wrapper function, `queryRequestPubChem`, is available which 
-automatically converts the results to a `data.frame` using `jsonlite::fromJSON`. 
-This function only works when `output` parameter is set to `JSON`. 
+For convenience, a wrapper function, `queryRequestPubChem`, is available which
+automatically converts the results to a `data.frame` using `jsonlite::fromJSON`.
+This function only works when `output` parameter is set to `JSON`.
 
-The major workhorse for PubChem queries in this package is the `queryPubChem` 
-function. This function is able to batch queries such that multiple identifiers 
-are mapped per GET request. It also implementes parallelized queries as well as
+The major workhorse for PubChem queries in this package is the `queryPubChem`
+function. This function is able to batch queries such that multiple identifiers
+are mapped per GET request. It also implements parallelized queries as well as
 query throttling to ensure users do not exceed the 5 query per second, 400
 query per minute limits imposed by PubChem. Both `getRequestPubChem` and
 `queryRequestPubChem` use the `...` parameter to pass
 arguments through to `getRequestPubChem`. As such, users should review the
 `getRequestPubChem` documentation prior to using either query functions.
 
-Two additional parameters are added in `queryPubChem`. The `batch` query 
+Two additional parameters are added in `queryPubChem`. The `batch` query
 tells the function whether to use multiple identifiers per GET request. This
-parameter should be set to `TRUE` (the default) unless you are retrying failed 
+parameter should be set to `TRUE` (the default) unless you are retrying failed
 queries. This is because batch queries fail completely if ANY of their
 their ids fail to map. The `raw` parameter is included for debugging purposes,
-This can be used to diagnose HTTP errors using the `httr::headers(response)` 
+This can be used to diagnose HTTP errors using the `httr::headers(response)`
 function.
 
 Use of `queryPubChem` is mainly intended for developers, and beginners
 with this package should focus on using the more specialized functions described
-below. It is worth noting, however, that all specialized functions were 
+below. It is worth noting, however, that all specialized functions were
 constructed using `queryPubChem`.
 
 The PUG REST API is divided into multiple domains, each representing a distinct
-entity in the PubChem Schema. Details of these domains can be found in 
+entity in the PubChem Schema. Details of these domains can be found in
 `?getRequestPubChem`. The three most important domains are discussed below.
 
 ### Querying the Compound Domain
 
 The compound domain allows users to make queries on pharmacologically relevant
-entities such as drugs. The main PubChem id for compounds is Compound IDentifier 
+entities such as drugs. The main PubChem id for compounds is Compound IDentifier
 (CID). Each CID may map to one or more Substance IDentifiers (SID). In this
 context, SID is a less stable identifier, possibly only contributed
 by a single source and not yet standardized. CIDs on the otherhand, have stable
-PubChem entries and normalized names which are generally supported accross 
+PubChem entries and normalized names which are generally supported accross
 multiple data sources. As such, newly discovered or rarely used chemicals
 may have an SID but not a CID.
 
@@ -84,14 +84,14 @@ has been included to allow users to easily query this domain.
 ```{r eval=FALSE}
 library(AnnotationGx)
 library(data.table)
-drugs <- c("Erlotinib", "Acadesine", "Camptothecin", "Vincaleukoblastine", 
+drugs <- c("Erlotinib", "Acadesine", "Camptothecin", "Vincaleukoblastine",
     "Cisplatin")
 namesToCID <- getPubChemCompound(drugs, from='name', to='cids')
 ```
 
-It is possible for names to multimap to CIDs. This is the case for 
+It is possible for names to multimap to CIDs. This is the case for
 'Vincaleukoblastine' in the above query. In cases of multimapping, usually
-the first entry has the highest similarity to the requested drug. To subset 
+the first entry has the highest similarity to the requested drug. To subset
 to only the first occurrence of each of drug name:
 
 ```{r eval=FALSE}
@@ -109,7 +109,7 @@ properties like this:
 
 ```{r eval=FALSE}
 multiIDs <- namesToCID[name == 'Vincaleukoblastine', ]$cids
-CIDtoTitle <- getPubChemCompound(multiIDs, from='cid', to='property', 
+CIDtoTitle <- getPubChemCompound(multiIDs, from='cid', to='property',
     properties='Title')
 ```
 
@@ -118,7 +118,7 @@ as the Title of the PubChem entry is exactly our original query. Multimapping
 occurs because PubChem look-ups by name also consider synonyms.
 
 For this reason, we recommend mapping from names to CID or SID first, then
-using those official PubChem identifiers to fetch additional information about 
+using those official PubChem identifiers to fetch additional information about
 your compound of interest.
 
 ```{r eval=FALSE}
@@ -131,8 +131,8 @@ multiIDs <- namesToCID[name == 'Vincaleukoblastine', ]$cids
 namesToSID <- getPubChemCompound(drugs, from='name', to='sids')
 ```
 
-Multimapping is an even greater concern when fetching SIDs, since a single CID 
-can map to many SIDs. As a result, we only recommend using SIDs for 
+Multimapping is an even greater concern when fetching SIDs, since a single CID
+can map to many SIDs. As a result, we only recommend using SIDs for
 compounds which have no available CID.
 
 3. Get Synonyms from Drug Names
@@ -143,7 +143,7 @@ namesToSynonyms <- getPubChemCompound(drugs, from='name', to='synonyms')
 4. Get Compound Properties from CIDs
 ```{r eval=FALSE}
 cids <- namesToCID$cids
-propertiesFromCID <- getPubChemCompound(cids, 
+propertiesFromCID <- getPubChemCompound(cids,
     properties=c('Title', 'InChIKey', 'CanonicalSMILES'))
 ```
 
@@ -170,7 +170,7 @@ such as drug targets or doseresponse metrics.
 To make the package more user friendly, we have included a number of convenience
 functions which further limit the scope of queries, but require less knowledge
 of the underlying structure of the PubChem API. We hope that this will allow
-users with no knowledge or interest in details of the PubChem API to retrieve 
+users with no knowledge or interest in details of the PubChem API to retrieve
 useful information nonetheless.
 
 1. Mapping from NSC Number to CIDs
@@ -180,8 +180,8 @@ NSC_numbers <- c(1026L, 1027L, 1042L, 1059L, 1063L, 1139L)
 NSCtoCID <- getPubChemFromNSC(NSC_numbers, to='cids')
 ```
 
-Additional functions mapping from external identifiers will be added as the 
-need arises. Additional documentation will be added to this section at that 
+Additional functions mapping from external identifiers will be added as the
+need arises. Additional documentation will be added to this section at that
 time.
 
 ### Handling Failed queries
@@ -194,7 +194,7 @@ The functions in this package should provide a warning whenever queries fail.
 The identifiers for failed queries will be available as an attribute on the
 returned results. Retrying failed queries is particularly important when
 executing functions with `batch=TRUE`, since any failed mappings in a batch
-query will result in the entire query failing. 
+query will result in the entire query failing.
 
 An example of extracting failed IDs and retrying with `batch=FALSE` is shown
 below.
@@ -214,7 +214,7 @@ retryNSCtoCID <- getPubChemFromNSC(failedIDs[1:10], batch=FALSE)
 
 ## PubChem PUG VIEW API
 
-The PUG View API is primarily designed to provide summary reports of all 
+The PUG View API is primarily designed to provide summary reports of all
 external identifiers for a given PubChem entry. Each summary provides the
 values of external annotations, as well as links to their source database.
 
@@ -225,7 +225,7 @@ We will update this documentation as soon as we have the feature avaiable.
 
 ### Querying Annotations
 
-The PubChem PUG View Annotations API provides summaries of third-party 
+The PubChem PUG View Annotations API provides summaries of third-party
 annotations across all PubChem records. These annotations are linked To
 PubChem compounds via CID and/or SID. This API does not allow specific
 input queries, instead returning the entire record for the user to parse
@@ -241,7 +241,7 @@ headers <- getPubChemAnnotations()
 headers[Heading %like% 'ATC', ]
 ```
 
-You can see additional documentation for this function using 
+You can see additional documentation for this function using
 `?getPubChemAnnotations` from the R console.
 
 1. Getting All ATC Codes

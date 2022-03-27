@@ -2,8 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{downloadAndExtract}
 \alias{downloadAndExtract}
-\title{Download a compressed file from a remote URL and extract it to the specified
-directory.}
+\title{Download a compressed file from a remote URL and extract it.}
 \usage{
 downloadAndExtract(url, extract_fun = unzip, ...)
 }
@@ -18,11 +17,11 @@ the specified \code{extract_fun} for more details.}
 }
 \value{
 \code{character} vector of unzipped file paths when \code{extract_fun} is
-\code{unzip}, otherwise the return value of the specified \code{extract_fun}.
+\code{unzip} (default), otherwise the return value of the specified
+\code{extract_fun}.
 }
 \description{
-Download a compressed file from a remote URL and extract it to the specified
-directory.
+Download a compressed file from a remote URL and extract it.
 }
 \seealso{
 \link[utils:unzip]{utils::unzip}, \link[utils:untar]{utils::untar}, \link[R.utils:compressFile]{R.utils::gunzip}, \link[R.utils:compressFile]{R.utils::bunzip2}
