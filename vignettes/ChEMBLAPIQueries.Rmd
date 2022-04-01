@@ -6,23 +6,23 @@ output: html_document
 vignette: >
   %\VignetteIndexEntry{Querying UniChem with AnnotationGx}
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}  
+  %\VignetteEncoding{UTF-8}
 ---
 
 # Introduction to ChEMBL API
 
 The ChEMBL database contains information on bioactive drug-like small molecules.
 The information includes 2-D structures, calculated properties; logP, Molecular
-Weight, Lipinski Parameters, e.t.c. , nd abstracted bioactivities; binding 
+Weight, Lipinski Parameters, e.t.c. , nd abstracted bioactivities; binding
 constants and ADMET data. The data is curated from primary scientific literature.
-The ChEMBL API allows for the data to be made available for retrieval in a 
+The ChEMBL API allows for the data to be made available for retrieval in a
 programmatic fashion. We can use the API to query CHEMBL ID of a compound, retrieve
-all molecule mechanisms of action, query compound_record resource and molecule 
+all molecule mechanisms of action, query compound_record resource and molecule
 resource from the ChEMBL database.
 
 ## Retrieve molecule mechanisms of action from ChEMBL
 
-We can retrieve a data frame of all molecule mechanisms of action from the 
+We can retrieve a data frame of all molecule mechanisms of action from the
 ChEMBL database using the `getChemblAllMechanisms` function.
 
 ### Use Case
@@ -33,10 +33,10 @@ library(AnnotationGx)
 result <- getChemblAllMechanisms()
 ```
 
-## Construct ChEMBL Query 
+## Construct ChEMBL Query
 
 A general url can be constructed to query the ChEMBL API through the `constructChEMBLQuery`
-function. This function is used as a helper function in other functions. We can 
+function. This function is used as a helper function in other functions. We can
 input the different resources which are available through the ChEMBL API. Examples
 include; activity, assay, atc_class, binding site, biotherapeutic, cell_line, chembl_id_lookup,
 e.t.c . We can also input the type of filter which are also available through the ChEMBL
@@ -44,20 +44,20 @@ API. Filter types include; exact, contains, startswith, e.t.c.
 
 ### Use Case
 ```{r eval=FALSE}
-general <- constructChemblQuery("target", "pref_name", "contains", "kinase") 
+general <- constructChemblQuery("target", "pref_name", "contains", "kinase")
 ```
 
 ## Query compound_record resource
 
-We can query the compound resource available through the ChEMBL API using the 
+We can query the compound resource available through the ChEMBL API using the
 `compoundQuery` function. There are different fields which we can input in the
 function (for each resource there are differing fields). Fields for the compound
-resource include: compound_key, compound_name, document_chembl_id, record_id, 
+resource include: compound_key, compound_name, document_chembl_id, record_id,
 src_id.
 
 ### Use Case
 ```{r eval=FALSE}
-compoundQuery <- compoundQuery() 
+compoundQuery <- compoundQuery()
 ```
 
 ## Query molecule resource
@@ -65,11 +65,10 @@ compoundQuery <- compoundQuery()
 We can query the molecule resource through the ChEMBL API using the `moleculeQuery`
 function. for the molecule there are different fields that are available such as:
 atc_classification, availability_type, biotherapeutic, black_box_warning e.t.c. Some
-fields also contain subfields. The molecule_hierarchy field has the following 
-subfields: molecule_chembl_id and parent_chembl_id. 
+fields also contain subfields. The molecule_hierarchy field has the following
+subfields: molecule_chembl_id and parent_chembl_id.
 
 ### Use Case
 ```{r eval=FALSE}
-moleculeQuery <- moleculeQuery() 
+moleculeQuery <- moleculeQuery()
 ```
-
