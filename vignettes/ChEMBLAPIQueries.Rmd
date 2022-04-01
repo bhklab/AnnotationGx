@@ -4,7 +4,7 @@ author: "Shahzada Muhammad Shameel Farooq and Christopher Eeles"
 package: AnnotationGx
 output: html_document
 vignette: >
-  %\VignetteIndexEntry{Querying UniChem with AnnotationGx}
+  %\VignetteIndexEntry{Querying ChEMBL with AnnotationGx}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -27,10 +27,10 @@ ChEMBL database using the `getChemblAllMechanisms` function.
 
 ### Use Case
 
-```{r eval=FALSE}
+```{r}
 library(AnnotationGx)
 
-result <- getChemblAllMechanisms()
+(result <- getChemblAllMechanisms())
 ```
 
 ## Construct ChEMBL Query
@@ -43,8 +43,8 @@ e.t.c . We can also input the type of filter which are also available through th
 API. Filter types include; exact, contains, startswith, e.t.c.
 
 ### Use Case
-```{r eval=FALSE}
-general <- constructChemblQuery("target", "pref_name", "contains", "kinase")
+```{r}
+(general <- constructChemblQuery("target", "pref_name", "contains", "kinase"))
 ```
 
 ## Query compound_record resource
@@ -57,7 +57,7 @@ src_id.
 
 ### Use Case
 ```{r eval=FALSE}
-compoundQuery <- compoundQuery()
+(compoundQuery <- compoundQuery())
 ```
 
 ## Query molecule resource
@@ -69,6 +69,6 @@ fields also contain subfields. The molecule_hierarchy field has the following
 subfields: molecule_chembl_id and parent_chembl_id.
 
 ### Use Case
-```{r eval=FALSE}
-moleculeQuery <- moleculeQuery()
+```{r, eval=FALSE}
+(moleculeQuery <- moleculeQuery())
 ```

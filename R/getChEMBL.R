@@ -214,7 +214,7 @@ compoundQuery <- function(field, filter_type, value){
 #'
 #' @md
 #' @export
-moleculeQuery <- function(field, filter_type, value){
+moleculeQuery <- function(field, filter_type, value) {
     url <- constructChemblQuery("molecule.json", field, filter_type, value)
     url <- URLencode(url)
 

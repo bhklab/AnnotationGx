@@ -43,7 +43,6 @@ source <- "chembl"
 target_source <- "pubchem"
 
 result <- mapBetweenSources(chemicalID, source, target_source)
-
 ```
 
 2. For a list of Chemical IDs
@@ -97,7 +96,6 @@ corresponding src_id we can use `wIdentifierToInchiKey`.
 
 1. Single src_compound_id
 ```{r}
-
 src_compound_id <- "CHEMBL12"
 src_id <- "chembl"
 
@@ -106,11 +104,10 @@ src_id <- "chembl"
 
 2. Multiple src_compound_ids
 ```{r}
-
 src_compound_ids <- c("CHEMBL12", "CHEMBL11")
 src_id <- "chembl"
 
-result <- wIdentifierToInchiKey(ve2, target_names = src_id)
+(result <- wIdentifierToInchiKey(src_compound_ids, target_names = src_id))
 ```
 
 # References
