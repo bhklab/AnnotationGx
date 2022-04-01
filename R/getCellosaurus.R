@@ -8,7 +8,6 @@
 #' @description
 #' This function reads Cellosaurus XML and parses nodes for cell line annotations based on input parameters, returning a data.table object
 #'
-#'
 #' @details
 #'
 #' @return An `XML` document of Cellosaurus
