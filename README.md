@@ -15,7 +15,7 @@ remotes::install_github("bhklab/AnnotationGx@development", build_manual=TRUE, bu
 
 ## Package Documentation
 
-To view and index of package documentation, run:
+To view an index of package documentation, run:
 ```r
 help(package="AnnotationGx")
 ```
