@@ -11,6 +11,7 @@ remotes::install_github("bhklab/AnnotationGx", build_manual=TRUE, build_vignette
 If you want to use the development version, run:
 ```r
 remotes::install_github("bhklab/AnnotationGx@development", build_manual=TRUE, build_vignettes=TRUE)
+```
 
 ## Package Documentation
 
