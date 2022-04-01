@@ -29,6 +29,8 @@ NULL
     MedChemExpress = "48")
 }
 
+#' @title Map from one database ID to another database ID via the UniChem API
+#'
 #' @description This function allows to map between external databases identifiers using the UniChem API.
 #'  The UniChem database gathers its data from 48 different sources/databases. All sources are listed with their
 #'  src_id and short name.
@@ -119,6 +121,8 @@ mapBetweenSources <- function(chemical_id, src_name, target_name, ...,
   return(final)
 }
 
+#' @title Map from InchiKey to a database specific identifier via the UniChem API
+#'
 #' @description This function takes in inchikey as a parameter and allows to map
 #' to any identifier using the UniChem API
 #'
@@ -126,6 +130,7 @@ mapBetweenSources <- function(chemical_id, src_name, target_name, ...,
 #'
 #' @return A data.frame with source id and source compound id.
 #'
+#' @md
 #' @export
 inchiKeyToIdentifier <- function(inchi_key, ..., base_url ="https://www.ebi.ac.uk/unichem/rest/inchikey/"){
 
@@ -149,6 +154,8 @@ inchiKeyToIdentifier <- function(inchi_key, ..., base_url ="https://www.ebi.ac.u
 }
 
 
+#' @title Map from a database identifier to an InchiKey via the UniChem API
+#'
 #' @description This function takes in chemical id and source id and returns the
 #' inchi and inchikey structure
 #'
@@ -158,9 +165,10 @@ inchiKeyToIdentifier <- function(inchi_key, ..., base_url ="https://www.ebi.ac.u
 #'
 #' @return A `character` vector with the inchikey and inchi structure
 #'
+#' @md
 #' @export
 identifierToInchikey <- function(chemical_id, target_names, ...,
-                                 base_url="https://www.ebi.ac.uk/unichem/rest/structure/", inchikey=TRUE){
+      base_url="https://www.ebi.ac.uk/unichem/rest/structure/", inchikey=TRUE){
 
   dbname_to_id <- .getDatabaseNameToUniChemID()
 
@@ -186,6 +194,8 @@ identifierToInchikey <- function(chemical_id, target_names, ...,
   }
 }
 
+#' @title Map from an InchiKey to a database ID using the UniChem API
+#'
 #' @description This function takes in inchikey and names of databases and returns the
 #' appropriate chemical source ids
 #'
@@ -227,7 +237,7 @@ inchiToDatabaseID <- function(inchi, target_names, ..., type=c("key", "structure
     quick_res <- data.frame(src_id="N/A", database_id="N/A", src_compound_id="N/A")
     return(quick_res)
   }
-  
+
   # Merge does a SQL style left join between two data.frames on the specified
   #  by shared column (see ?merge for more details)
   result <- merge(dbname_df, result, by="src_id")
@@ -237,16 +247,18 @@ inchiToDatabaseID <- function(inchi, target_names, ..., type=c("key", "structure
     #  has rownames
     result <- result[result$database_id %in% target_names, ]
   }
-  
+
   if (nrow(result) == 0){
     quick_res <- data.frame(src_id="N/A", database_id="N/A", src_compound_id="N/A")
     return(quick_res)
   }
-  
+
   # return to the user
   return(result)
 }
 
+#' @title Parallelized wrapper for inchiToDatabaseID function
+#'
 #' @description Wrapper function takes in vector of inchikeys and target names and
 #' returns the appropriate chemical source id using parallel computation
 #'
@@ -266,6 +278,8 @@ wInchiToDatabaseID <- function(inchis, target_names) {
   return(result_df)
 }
 
+#' @title Parallelized wrapper for identifierToInchiKey function
+#'
 #' @description Wrapper function takes in vector of chemical ids and source ids and returns the
 #' inchi and inchikey structure using parallel computation
 #'
@@ -275,6 +289,7 @@ wInchiToDatabaseID <- function(inchis, target_names) {
 #'
 #' @return  `character` vector with the inchikey and inchi structure
 #'
+#' @md
 #' @export
 wIdentifierToInchiKey <- function(chemical_ids, target_names) {
   result <- bplapply(X = chemical_ids, FUN = identifierToInchikey, target_names=target_names)
@@ -282,6 +297,8 @@ wIdentifierToInchiKey <- function(chemical_ids, target_names) {
   return(f_res)
 }
 
+#' @title Parallelized wrapper for mapBetweenSources function
+#'
 #' @description Wrapper function which returns the source compound ids for specific
 #' database_id using parallel computation.
 #' @param chemical_ids `character` vector which is the compound identifier for
@@ -293,6 +310,7 @@ wIdentifierToInchiKey <- function(chemical_ids, target_names) {
 #'
 #' @return A `character` vector which is the src_compound_id for the target_name
 #'
+#' @md
 #' @export
 wMapBetweenSources <- function(chemical_ids, src_name, target_name) {
   result <- bplapply(X = chemical_ids, FUN = mapBetweenSources, src_name=src_name, target_name=target_name)
