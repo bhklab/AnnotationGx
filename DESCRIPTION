@@ -30,7 +30,8 @@ Imports:
     memoise,
     R6,
     R6P,
-    listenv
+    listenv,
+    rvest
 Suggests:
     rmarkdown,
     knitr,

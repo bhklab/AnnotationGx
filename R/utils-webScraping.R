@@ -1,4 +1,5 @@
 #' @importFrom rvest read_html html_elements html_table
+#' @importFrom checkmate assert_character
 NULL
 
 
@@ -42,7 +43,6 @@ get_remote_table <- function(url) {
 #'
 #' @return `character()` vector of remote file URLs to download from.
 #'
-#' @importFrom checkmate assert_character
 #' @export
 find_remote_files_recursive <- function(url, column="Name", extensions="[[:alnum:]]{2,5}") {
     # input validation
