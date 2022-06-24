@@ -216,25 +216,25 @@ getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=
 #' Checks to see if the PubChem query is exceeding the throttling limit
 #' @param response `httr::response`
 .checkThrottlingStatus <- function(response) {
-        throttling_control <- headers(response)$`x-throttling-control`
-        any_grepl <- function(...) any(grepl(...))
-        throttling_state <- max(which(vapply(
-            c('Green', 'Yellow', 'Red', 'Black', 'blacklisted'),
-            FUN=any_grepl, x=throttling_control, FUN.VALUE=logical(1))))
-        if (throttling_state == 2) {
-            .warning('PubChem Server returned Yellow status! Sleeping to compensate.')
-            Sys.sleep(5)
-        } else if (throttling_state == 3) {
-            .warning('PubChem Server returend Red status! Sleeping to compensate.')
-            Sys.sleep(10)
-        } else if (throttling_state == 4) {
-            .error('PubChem Server returned Black status! You could be ',
-                'black listed. The returned state message is: ',
-                throttling_control, '.')
-        } else if (throttling_state == 5) {
-            .error('PubChem server indicated: too many queries per second',
-                ' or you may be blacklisted.')
-        }
+    throttling_control <- headers(response)$`x-throttling-control`
+    any_grepl <- function(...) any(grepl(...))
+    throttling_state <- max(which(vapply(
+        c('Green', 'Yellow', 'Red', 'Black', 'blacklisted'),
+        FUN=any_grepl, x=throttling_control, FUN.VALUE=logical(1))))
+    if (throttling_state == 2) {
+        .warning('PubChem Server returned Yellow status! Sleeping to compensate.')
+        Sys.sleep(5)
+    } else if (throttling_state == 3) {
+        .warning('PubChem Server returend Red status! Sleeping to compensate.')
+        Sys.sleep(10)
+    } else if (throttling_state == 4) {
+        .error('PubChem Server returned Black status! You could be ',
+            'black listed. The returned state message is: ',
+            throttling_control, '.')
+    } else if (throttling_state == 5) {
+        .error('PubChem server indicated: too many queries per second',
+            ' or you may be blacklisted.')
+    }
 }
 
 #' @title queryPubChem

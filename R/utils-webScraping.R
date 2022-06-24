@@ -14,7 +14,7 @@ grep_directory_names <- function(x) {
 #' @export
 grep_file_names <- function(x, extensions="[[:alnum:]]{2,5}$") {
     checkmate::assert_character(extensions, max.len=1)
-    grep(paste0(*".*\\.", x, value=TRUE)
+    grep(paste0(".*\\.", x, value=TRUE))
 }
 
 #' @param url `character(1)` URL to scrape all HTML tables from.

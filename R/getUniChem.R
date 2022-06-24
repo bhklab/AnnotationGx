@@ -97,6 +97,8 @@ mapBetweenSources <- function(chemical_id, src_name, target_name, ...,
                               end_point="src_compound_id",
                               base_url="https://www.ebi.ac.uk/unichem/rest") {
 
+  stop("These functions are currently broken due to a change the UniChem API!")
+
   # A list mapping from data source names to their associated UniChem source ids
   name_to_id <- .getDatabaseNameToUniChemID()
 
@@ -134,6 +136,8 @@ mapBetweenSources <- function(chemical_id, src_name, target_name, ...,
 #' @export
 inchiKeyToIdentifier <- function(inchi_key, ..., base_url ="https://www.ebi.ac.uk/unichem/rest/inchikey/"){
 
+  stop("These functions are currently broken due to a change the UniChem API!")
+
   # Creates the url with the inchikey
   final_url <- .buildURL(base_url, inchi_key)
 
@@ -169,6 +173,9 @@ inchiKeyToIdentifier <- function(inchi_key, ..., base_url ="https://www.ebi.ac.u
 #' @export
 identifierToInchikey <- function(chemical_id, target_names, ...,
       base_url="https://www.ebi.ac.uk/unichem/rest/structure/", inchikey=TRUE){
+
+  stop("These functions are currently broken due to a change the UniChem API!")
+
 
   dbname_to_id <- .getDatabaseNameToUniChemID()
 
@@ -209,6 +216,9 @@ identifierToInchikey <- function(chemical_id, target_names, ...,
 #' @export
 inchiToDatabaseID <- function(inchi, target_names, ..., type=c("key", "structure",),
                               base_url="https://www.ebi.ac.uk/unichem/rest") {
+
+  stop("These functions are currently broken due to a change the UniChem API!")
+
 
   ## TODO:: Maybe it is better to make .getDatabaseNameToUniChemID return a data.frame?
   dbname_to_id <- .getDatabaseNameToUniChemID()
@@ -271,6 +281,8 @@ inchiToDatabaseID <- function(inchi, target_names, ..., type=c("key", "structure
 #' @importFrom httr GET
 #' @export
 wInchiToDatabaseID <- function(inchis, target_names) {
+  stop("These functions are currently broken due to a change the UniChem API!")
+
   #param <- SerialParam(stop.on.error = FALSE)
   result <- (bplapply(X = inchis, FUN = tryCatch(inchiToDatabaseID), target_names=target_names))
   names(result) <- inchis
@@ -292,6 +304,8 @@ wInchiToDatabaseID <- function(inchis, target_names) {
 #' @md
 #' @export
 wIdentifierToInchiKey <- function(chemical_ids, target_names) {
+  stop("These functions are currently broken due to a change the UniChem API!")
+
   result <- bplapply(X = chemical_ids, FUN = identifierToInchikey, target_names=target_names)
   f_res <- unlist(result)
   return(f_res)
@@ -313,6 +327,7 @@ wIdentifierToInchiKey <- function(chemical_ids, target_names) {
 #' @md
 #' @export
 wMapBetweenSources <- function(chemical_ids, src_name, target_name) {
+  stop("These functions are currently broken due to a change the UniChem API!")
   result <- bplapply(X = chemical_ids, FUN = mapBetweenSources, src_name=src_name, target_name=target_name)
   f_res <- unlist(result)
   return(f_res)
