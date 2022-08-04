@@ -78,6 +78,7 @@ getUniChemSources <- function(metadata=FALSE, ...) {
     return(source_dt[, keep_cols, with=FALSE])
 }
 
+
 ## TODO:: Remove the sourceID and allow this to be specified via type!
 
 #' Query the UniChem 2.0 compounds endpoint using POST requests
@@ -103,9 +104,9 @@ getUniChemSources <- function(metadata=FALSE, ...) {
 #' constructed.
 #'
 #' @return A `data.table` of database specific compound identifiers for the
-#'     queried `compound`. Also attaches the query parameters ("query") and
-#'     detailed InChi strutural information ("inchi") in the table attributes.
-#'     See `attributes()` of the returned object for this information.
+#' queried `compound`. Also attaches the query parameters ("query") and
+#' detailed InChi strutural information ("inchi") in the table attributes.
+#' See `attributes()` of the returned object for this information.
 #'
 #' @details
 #' For cases where sourceID is character but is not in the "name" column of
@@ -123,11 +124,10 @@ getUniChemSources <- function(metadata=FALSE, ...) {
 #' @examples
 #' \donttest{
 #'   # Look up for Erlotinib via DrugBank ID
-#'   (res <- queryUniChemCompounds(compound="DB00530", type="sourceID",
-#'       sourceID="drugbank"))
+#'   erl_drugbank <- queryUniChemCompounds(compound="DB00530", type="sourceID", sourceID="drugbank")
 #'   # Now do backwards look ups with the results
-#'   (erl <- queryUniChemCompounds(compound=unique(res$uci), type="uci"))
-#'   (erl <- queryUniChemCompounds(compound=unique(res$inchikey), type="inchikey"))
+#'   erl_uci <- queryUniChemCompounds(compound=unique(erl_drugbank$uci), type="uci")
+#'   erl_ichikey <- queryUniChemCompounds(compound=unique(erl_drugbank$inchikey), type="inchikey")
 #' }
 #'
 #' @export
@@ -199,10 +199,7 @@ queryUniChemCompounds <- function(compound,
 #'
 #' @export
 queryUniChemConnectivity <- function(...) {
-    body <- list(
 
-    )
-    response <- queryUniChem(endpoint="connectivity", body=body, ...)
 }
 
 
