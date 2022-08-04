@@ -83,7 +83,7 @@ getUniChemSources <- function(metadata=FALSE, ...) {
 #' Query the UniChem 2.0 compounds endpoint using POST requests
 #'
 #' @description
-#' Retrieve database specific identifiers from all the database available in
+#' Retrieve database specific identifiers from all the databases available in
 #' UniChem based on some query compound. These identifiers can then be used
 #' to reliably look up the compound in any of the included databases.
 #'
@@ -112,6 +112,8 @@ getUniChemSources <- function(metadata=FALSE, ...) {
 #' the source database table then we try to coerce to integer under the
 #' assumption that you accidentally specified the sourceID as a string.
 #'
+#' When `type="uci"`, `compound` is automatically coerced to character.
+#'
 #' Full documentation:
 #' https://chembl.gitbook.io/unichem/unichem-2.0/unichem-2.0-beta/api/compound-search
 #'
@@ -119,11 +121,11 @@ getUniChemSources <- function(metadata=FALSE, ...) {
 #' Christopher Eeles (christopher.eeles@uhnresearch.ca)
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #'   # Look up for Erlotinib via DrugBank ID
 #'   (res <- queryUniChemCompounds(compound="DB00530", type="sourceID",
 #'       sourceID="drugbank"))
-#'   # Now to backwards look ups with the results
+#'   # Now do backwards look ups with the results
 #'   (erl <- queryUniChemCompounds(compound=unique(res$uci), type="uci"))
 #'   (erl <- queryUniChemCompounds(compound=unique(res$inchikey), type="inchikey"))
 #' }
@@ -131,10 +133,12 @@ getUniChemSources <- function(metadata=FALSE, ...) {
 #' @export
 queryUniChemCompounds <- function(compound,
         type=c("uci", "inchi", "inchikey", "sourceID"), sourceID="pubchem", ...) {
+    # input validation
     type <- match.arg(type)
     if (type == "uci") compound <- as.character(compound)
     stopifnot(is.character(compound) && length(compound) == 1)
 
+    # construct the API query
     if (type == "sourceID") {
         suppressWarnings({
             src_tbl <- getUniChemSources()
@@ -156,13 +160,22 @@ queryUniChemCompounds <- function(compound,
         if (type == "sourceID") list(sourceID=src_id)
     )
 
+    # query the API
     response <- queryUniChem(endpoint="compounds", body=body, encode="json",
         ...)
     res_list <- jsonlite::parse_json(response, encoding="UTF-8")
 
+    if (res_list$response == "Not found") {
+        stop("Query succeeded with no matching compounds found!")
+    }
+
     # test some assumptions about the returned data
-    stopifnot(length(res_list[[1]]) == 1)
-    stopifnot(names(res_list[[1]][[1]]) == c("inchi", "sources", "standardInchiKey", "uci"))
+    stopifnot(
+        length(res_list[[1]]) == 1
+    )
+    stopifnot(
+        names(res_list[[1]][[1]]) == c("inchi", "sources", "standardInchiKey", "uci")
+    )
 
     # parse into a table
     res_dt <- rbindlist(res_list[[1]][[1]][["sources"]])

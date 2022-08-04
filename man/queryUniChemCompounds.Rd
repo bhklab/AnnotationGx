@@ -37,7 +37,7 @@ detailed InChi strutural information ("inchi") in the table attributes.
 See \code{attributes()} of the returned object for this information.
 }
 \description{
-Retrieve database specific identifiers from all the database available in
+Retrieve database specific identifiers from all the databases available in
 UniChem based on some query compound. These identifiers can then be used
 to reliably look up the compound in any of the included databases.
 }
@@ -46,15 +46,17 @@ For cases where sourceID is character but is not in the "name" column of
 the source database table then we try to coerce to integer under the
 assumption that you accidentally specified the sourceID as a string.
 
+When \code{type="uci"}, \code{compound} is automatically coerced to character.
+
 Full documentation:
 https://chembl.gitbook.io/unichem/unichem-2.0/unichem-2.0-beta/api/compound-search
 }
 \examples{
-\dontrun{
+\donttest{
   # Look up for Erlotinib via DrugBank ID
   (res <- queryUniChemCompounds(compound="DB00530", type="sourceID",
       sourceID="drugbank"))
-  # Now to backwards look ups with the results
+  # Now do backwards look ups with the results
   (erl <- queryUniChemCompounds(compound=unique(res$uci), type="uci"))
   (erl <- queryUniChemCompounds(compound=unique(res$inchikey), type="inchikey"))
 }
