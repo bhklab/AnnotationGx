@@ -16,3 +16,7 @@ to the ENSG version for Ensembl IDs.}
 \description{
 Retrieve a table of all available CDF files from BrainArray
 }
+\examples{
+brain_array <- getBrainArrayTable()
+
+}

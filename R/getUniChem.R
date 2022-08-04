@@ -1,344 +1,124 @@
-## =========================================
-## Make GET Requests to the UniChem REST API
-## -----------------------------------------
+## =====================================================
+## Make GET and POST Requests to the UniChem 2.0 REST API
+## -----------------------------------------------------
 
-#' @importFrom httr GET
-#' @importFrom jsonlite fromJSON
+#' @importFrom httr GET POST RETRY verbose timeout headers upload_file content
+#'     http_status warn_for_status stop_for_status
+#' @importFrom jsonlite fromJSON parse_json
 NULL
 
-#' Returns a list mapping from database name to database ID for the UniChem API
+#' Generic helper method to make arbitary REST API request to UniChem v2
 #'
-#' @description
-#' For mapping between the name of a database and its integer indentifier when
-#' making API queries to the EMBL UniChem API
+#' @param endpoint `character(1)` The endpoint to query. Valid endpoints at
+#' time of writing are "sources", "compounds" and "connectivity".
+#' Appended to the end of `url` with "/".
+#' @param ... Fall through arguments to `httr::RETRY`.
+#' @param url `character(1)` UniChem API URL. Don't change unless you know what
+#' you are doing.
+#' @param verb `character(1)` HTTP verb to query the API with. Valid options
+#' for UniChem are "GET" and "POST".
 #'
-#' @return A `list` where names are shortened database names used in UniChem and
-#' values are the associated integer identifier in the UniChem database
-#'
-#' @noRd
-.getDatabaseNameToUniChemID <- function() {
-  list(chembl = "1", drugbank = "2", pdb = "3", gtopdb = "4", pubchem_dotf = "5",
-    kegg_ligand = "6", chebi = "7", nih_ncc = "8", zinc = "9", emolecules = "10",
-    ibm = "11", atlas = "12", fdasrs = "14", surechembl = "15", pharmgkb = "17",
-    hmdb = "18", selleck = "20", pubchem_tpharma = "21", pubchem = "22",
-    mcule = "23", nmrshiftdb2 = "24", lincs = "25", actor = "26", recon = "27",
-    molport = "28", nikkaji = "29", bindingDB = "31", comptox = "32",
-    lipidmaps = "33", drugcentral = "34", carotenoiddb = "35", metabolights = "36",
-    brenda = "37", rhea = "38", chemicalbook = "39", dailymed_old = "40",
-    swiss_lipids = "41", dailymed = "45", clinicaltrials = "46", rxnorm = "47",
-    MedChemExpress = "48")
-}
-
-#' @title Map from one database ID to another database ID via the UniChem API
-#'
-#' @description This function allows to map between external databases identifiers using the UniChem API.
-#'  The UniChem database gathers its data from 48 different sources/databases. All sources are listed with their
-#'  src_id and short name.
-#'
-#'  |src#| src_name        |
-#'  | 1  | chembl          |
-#'  | 2  | drugbank        |
-#'  | 3  | pdb             |
-#'  | 4  | gtopdb          |
-#'  | 5  | pubchem_dotf    |
-#'  | 6  | kegg_ligand     |
-#'  | 7  | chebi           |
-#'  | 8  | nih_ncc         |
-#'  | 9  | zinc            |
-#'  | 10 | emolecules      |
-#'  | 11 | ibm             |
-#'  | 12 | atlas           |
-#'  | 14 | fdasrs          |
-#'  | 15 | surechembl      |
-#'  | 17 | pharmakb        |
-#'  | 18 | hmdb            |
-#'  | 20 | selleck         |
-#'  | 21 | pubchem_tpharma |
-#'  | 22 | pubchem         |
-#'  | 23 | mcule           |
-#'  | 24 | nmrshiftdb2     |
-#'  | 25 | lincs           |
-#'  | 26 | actor           |
-#'  | 27 | recon           |
-#'  | 28 | molport         |
-#'  | 29 | nikkaji         |
-#'  | 31 | bindingDB       |
-#'  | 32 | comptox         |
-#'  | 33 | lipidmaps       |
-#'  | 34 | drugcentral     |
-#'  | 35 | carotenoiddb    |
-#'  | 36 | metabolights    |
-#'  | 37 | brenda          |
-#'  | 38 | rhea            |
-#'  | 39 | chemicalbook    |
-#'  | 40 | dailymed_old    |
-#'  | 41 | swiss_lipids    |
-#'  | 45 | dailymed        |
-#'  | 46 | clinicaltrials  |
-#'  | 47 | rxnorm          |
-#'  | 48 | MedChemExpress  |
-#'
-#' @param chemical_id A `character` vector which is the compound identifier for
-#'    the specified database/source
-#' @param src_name A `character` vector which is the short name for the database/
-#'    source for which we know the chemical_id
-#' @param target_name A `character` vector which is the short name for the database/
-#'    source for which we require the compounds end_point
-#' @param ... Force subsequent parameters to be named. Not used.
-#' @param end_point A `character` vector which is the src_compound_id, the
-#'    id of that compound for that particular database/source
-#' @param base_url A `character` vector specifying the base_url to use when constructing
-#'    API queries. This is for developer use.
-#'
-#' @return A `character` vector which is the src_compound_id for the target_name
+#' @return `httr::response` object with the result of your query.
 #'
 #' @export
-mapBetweenSources <- function(chemical_id, src_name, target_name, ...,
-                              end_point="src_compound_id",
-                              base_url="https://www.ebi.ac.uk/unichem/rest") {
-
-  stop("These functions are currently broken due to a change the UniChem API!")
-
-  # A list mapping from data source names to their associated UniChem source ids
-  name_to_id <- .getDatabaseNameToUniChemID()
-
-  # stores the src_id for the target_name database
-  target_id <- name_to_id[[target_name]]
-
-  # stores the src_id for the src_name database
-  src_id <- name_to_id[[src_name]]
-
-  #Generate the complete url for the get request
-  result <- .buildURL(base_url, end_point, chemical_id, src_id, target_id)
-  #Encode the complete url
-  encoded <- URLencode(result)
-
-  #Make a get request to the UniChem REST API
-  response <- httr::RETRY("GET", encoded, timeout(29), times=3, quite=TRUE,
-                          terminate_on = c(400, 404, 503))
-
-  #Parse the json object to get an array
-  final <- parse_json(response)
-
-  return(final)
+queryUniChem <- function(endpoint, ..., verb="POST",
+        url="https://www.ebi.ac.uk/unichem/api/v1") {
+    stopifnot(is.character(endpoint) && length(endpoint) == 1)
+    stopifnot(is.character(url) && length(url) == 1)
+    stopifnot(is.character(verb) && length(verb) == 1)
+    if (!endpoint %in% c("sources", "compounds", "connectivity"))
+        warning("Unknown API endpoint specified: ", endpoint,
+            ". Your query will likely fail!")
+    switch(endpoint,
+        "sources"=stopifnot(verb == "GET"),
+        "compounds"=stopifnot(verb == "POST"),
+        "connectivity"=stopifnot(verb == "POST")
+    )
+    endpoint_url <- paste0(url, "/", endpoint)
+    RETRY(verb=verb, url=endpoint_url, ...)
 }
 
-#' @title Map from InchiKey to a database specific identifier via the UniChem API
+#' Fetch a list of cheminformatic databases which can be mapped between using
+#' the UniChem 2.0 API
 #'
-#' @description This function takes in inchikey as a parameter and allows to map
-#' to any identifier using the UniChem API
+#' @param metadata `logical(1)` Should all the columns of the table be returned?
+#' Default is `FALSE`, which selects only the database name ("name") and
+#' UniChem source identifier ("sourceID") columns. When `TRUE` includes all
+#' available source metadata, including long form descriptions of the databases,
+#' their respective URLs, and much more.
+#' @param ... `pairlist` Fall through parameters to `httr::GET` via `httr:RETRY`.
+#' Pass `httr::verbose()` to see full details of the query being constructed.
+#' @param endpoint `character(1)` API endpoint to query. Don't change this
+#' unless you know what you are doing!
+#' @param url `character(1)` URL to query. Don't change this unless you know
+#' what you are doing!
 #'
-#' @param inchikey A `character` vector which is unique to each compound.
+#' @return `data.table` Table of UniChem source databases which can be mapped
+#' between. The "name" column is the database name, and the "sourceID" column
+#' is its unique integer ID in UniChem. When `metadata=TRUE` also includes
+#' additional source database metadata.
 #'
-#' @return A data.frame with source id and source compound id.
+#' @details
+#' For more details see the Unichem 2.0 API documentation at:
+#' https://chembl.gitbook.io/unichem/unichem-2.0/unichem-2.0-beta/whats-new
 #'
-#' @md
+#' @author
+#' Christopher Eeles (christopher.eeles@uhnresearch.ca)
+#'
 #' @export
-inchiKeyToIdentifier <- function(inchi_key, ..., base_url ="https://www.ebi.ac.uk/unichem/rest/inchikey/"){
-
-  stop("These functions are currently broken due to a change the UniChem API!")
-
-  # Creates the url with the inchikey
-  final_url <- .buildURL(base_url, inchi_key)
-
-  # Encodes the url
-  encoded <- URLencode(final_url)
-
-  # Makes a GET request to the UniChem API
-  response <- httr::RETRY("GET", encoded, timeout(29), times=3, quite=TRUE,
-                          terminate_on = c(400, 404, 503))
-
-  # Parse json object
-  result <- parse_json(response)
-
-  # Convert to a dataframe
-  final <- as.data.frame(result)
-
-  return(final)
+getUniChemSources <- function(metadata=FALSE, ...,
+        endpoint="sources", url="https://www.ebi.ac.uk/unichem/api/v1") {
+    stopifnot(is.logical(metadata))
+    stopifnot(is.character(endpoint) && length(endpoint) == 1)
+    response <- queryUniChem(endpoint=endpoint, ..., url=url, verb="GET")
+    response_list <- parse_json(response)
+    source_dt <- rbindlist(
+        response_list[[2]],
+        fill=TRUE,
+        use.names=TRUE
+    )
+    keep_cols <- if (metadata) colnames(source_dt) else c("name", "sourceID")
+    return(source_dt[, keep_cols, with=FALSE])
 }
 
 
-#' @title Map from a database identifier to an InchiKey via the UniChem API
+#' Query the UniChem 2.0 compounds endpoint using POST requests
 #'
-#' @description This function takes in chemical id and source id and returns the
-#' inchi and inchikey structure
+#' @param ... `pairlist` Fall through parameters to `httr::POST` via
+#' `httr:RETRY`. Pass `httr::verbose()` to see full details of the query being
+#' constructed.
+#' @param url `character(1)` URL to query. Don't change this unless you know
+#' what you are doing!
 #'
-#' @param chemical_id A `character` vector which is the src_compound_id
+#' @author
+#' Christopher Eeles (christopher.eeles@uhnresearch.ca)
 #'
-#' @param src_id A `character` vector which is the id for the database/source
-#'
-#' @return A `character` vector with the inchikey and inchi structure
-#'
-#' @md
 #' @export
-identifierToInchikey <- function(chemical_id, target_names, ...,
-      base_url="https://www.ebi.ac.uk/unichem/rest/structure/", inchikey=TRUE){
+queryUniChemCompound <- function(...) {
+    body <- list(
 
-  stop("These functions are currently broken due to a change the UniChem API!")
-
-
-  dbname_to_id <- .getDatabaseNameToUniChemID()
-
-  sr_id <- dbname_to_id[[target_names]]
-
-  # Creates the url with the inchikey
-  final_url <- .buildURL(base_url, chemical_id, sr_id)
-
-  # Encodes the url
-  encoded <- URLencode(final_url)
-
-  # Makes a GET request to the UniChem API
-  response <- httr::RETRY("GET", encoded, timeout(29), times=3, quite=TRUE,
-                          terminate_on = c(400, 404, 503))
-
-  # Parse json object
-  final <- parseJSON(response)
-
-  if (inchikey == TRUE){
-    return(final$standardinchikey)
-  }else{
-    return(final$standardinchi)
-  }
+    )
+    response <- queryUniChem(endpoint="compounds", body=body, ...)
 }
 
-#' @title Map from an InchiKey to a database ID using the UniChem API
+
+#' Query the UniChem 2.0 connectivity endpoint using POST requests
 #'
-#' @description This function takes in inchikey and names of databases and returns the
-#' appropriate chemical source ids
+#' @param ... `pairlist` Fall through parameters to `httr::POST` via
+#' `httr:RETRY`. Pass `httr::verbose()` to see full details of the query being
+#' constructed.
 #'
-#' @param inchi A `character(1)` vector containing the InchiKey if `type`="key"
-#' @param target_names A `character()` vector specifying the name of the target
-#'   database id to return. If missing, returns all
+#' @author
+#' Christopher Eeles (christopher.eeles@uhnresearch.ca)
 #'
-#' @return A `data.frame` mapping from the inchi or inchikey to the
-#'
-#' @importFrom httr GET
 #' @export
-inchiToDatabaseID <- function(inchi, target_names, ..., type=c("key", "structure",),
-                              base_url="https://www.ebi.ac.uk/unichem/rest") {
+queryUniChemConnectivity <- function(...) {
+    body <- list(
 
-  stop("These functions are currently broken due to a change the UniChem API!")
-
-
-  ## TODO:: Maybe it is better to make .getDatabaseNameToUniChemID return a data.frame?
-  dbname_to_id <- .getDatabaseNameToUniChemID()
-  dbname_df <- data.frame(src_id=unlist(dbname_to_id),
-                          database_id=names(dbname_to_id))
-
-
-  if (!missing(target_names)) {
-    valid_target_names <- target_names %in% dbname_df$database_id
-    if (!all(valid_target_names)) {
-      stop("One or more specificed target databases do not exist: ",
-
-        paste0(target_names[!valid_target_names], collapse=", "))
-    }
-  }
-
-  # build the API query
-  query <- .buildURL(base_url, "inchikey", inchi)
-  encoded <- URLencode(query)
-  response <- httr::RETRY("GET", encoded, timeout(29), times=3, quite=TRUE,
-                          terminate_on = c(400, 404, 503))
-
-  # Parse to a data frame
-  result <- parseJSON(response)
-  if (is.null(ncol(result))){
-    quick_res <- data.frame(src_id="N/A", database_id="N/A", src_compound_id="N/A")
-    return(quick_res)
-  }
-
-  # Merge does a SQL style left join between two data.frames on the specified
-  #  by shared column (see ?merge for more details)
-  result <- merge(dbname_df, result, by="src_id")
-
-  if (!missing(target_names)) {
-    # Not using rownames here incase the input is a data.table, which never
-    #  has rownames
-    result <- result[result$database_id %in% target_names, ]
-  }
-
-  if (nrow(result) == 0){
-    quick_res <- data.frame(src_id="N/A", database_id="N/A", src_compound_id="N/A")
-    return(quick_res)
-  }
-
-  # return to the user
-  return(result)
+    )
+    response <- queryUniChem(endpoint="connectivity", body=body, ...)
 }
 
-#' @title Parallelized wrapper for inchiToDatabaseID function
-#'
-#' @description Wrapper function takes in vector of inchikeys and target names and
-#' returns the appropriate chemical source id using parallel computation
-#'
-#' @param inchis A `character(1)` vector containing the InchiKey if `type`="key"
-#' @param target_names A `character()` vector specifying the name of the target
-#'   database id to return. If missing, returns all
-#'
-#' @return A `data.frame` mapping from the inchi or inchikey to the chemical source ids
-#'
-#' @importFrom httr GET
-#' @export
-wInchiToDatabaseID <- function(inchis, target_names) {
-  stop("These functions are currently broken due to a change the UniChem API!")
-
-  #param <- SerialParam(stop.on.error = FALSE)
-  result <- (bplapply(X = inchis, FUN = tryCatch(inchiToDatabaseID), target_names=target_names))
-  names(result) <- inchis
-  result_df <- rbindlist(result, idcol="inchikey")
-  return(result_df)
-}
-
-#' @title Parallelized wrapper for identifierToInchiKey function
-#'
-#' @description Wrapper function takes in vector of chemical ids and source ids and returns the
-#' inchi and inchikey structure using parallel computation
-#'
-#' @param chemical_ids  `character` vector which is the src_compound_id
-#'
-#' @param target_names  `character` vector which is the id for the database/source
-#'
-#' @return  `character` vector with the inchikey and inchi structure
-#'
-#' @md
-#' @export
-wIdentifierToInchiKey <- function(chemical_ids, target_names) {
-  stop("These functions are currently broken due to a change the UniChem API!")
-
-  result <- bplapply(X = chemical_ids, FUN = identifierToInchikey, target_names=target_names)
-  f_res <- unlist(result)
-  return(f_res)
-}
-
-#' @title Parallelized wrapper for mapBetweenSources function
-#'
-#' @description Wrapper function which returns the source compound ids for specific
-#' database_id using parallel computation.
-#' @param chemical_ids `character` vector which is the compound identifier for
-#'    the specified database/source
-#' @param src_name  `character` vector which is the short name for the database/
-#'    source for which we know the chemical_id
-#' @param target_name  `character` vector which is the short name for the database/
-#'    source for which we require the compounds end_point
-#'
-#' @return A `character` vector which is the src_compound_id for the target_name
-#'
-#' @md
-#' @export
-wMapBetweenSources <- function(chemical_ids, src_name, target_name) {
-  stop("These functions are currently broken due to a change the UniChem API!")
-  result <- bplapply(X = chemical_ids, FUN = mapBetweenSources, src_name=src_name, target_name=target_name)
-  f_res <- unlist(result)
-  return(f_res)
-}
-
-
-## Once the function is working, we may need to use the ProxyManager class
-## to proxy massively parallel API queries, this prevents IP blocking when
-## too many requests originate from a single IP in a short amount of time
-## This will depend on whether or not they enforce any query speed limits for
-## the Unichem API, please consult the API documentation to find out
 
 
 if (sys.nframe() == 0) {

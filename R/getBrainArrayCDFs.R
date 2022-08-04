@@ -3,6 +3,9 @@
 #' @param `character(1)` URL to a page listing CDF files on BrainArray. Defaults
 #'   to the ENSG version for Ensembl IDs.
 #'
+#' @examples
+#' brain_array <- getBrainArrayTable()
+#'
 #' @importFrom rvest read_html html_table
 #' @importFrom data.table as.data.table tstrsplit
 #' @export
@@ -33,16 +36,18 @@ getBrainArrayTable <- function(url="http://brainarray.mbni.med.umich.edu/Brainar
     # remove the header
     brain_array <- dt[-(1:2), -1, with=FALSE]
     # parse the header into nice column names
+    .format_html_header <- function(x) {
+        x |>
+        gsub("<[^<>]*>|\n", "", x=_) |>
+        gsub(" ", "", x=_) |>
+        gsub("%", "Pct", x=_) |>
+        gsub("#", "Num", x=_)
+    }
     top_header <-  unlist(template_table[1, ]) |>
-        gsub("<[^<>]*>|\n", "", x=_) |>
-        gsub(" ", "", x=_) |>
-        gsub("%", "Pct", x=_) |>
-        gsub("#", "Num", x=_)
+        .format_html_header()
+
     lower_header <- unlist(template_table[2, ]) |>
-        gsub("<[^<>]*>|\n", "", x=_) |>
-        gsub(" ", "", x=_) |>
-        gsub("%", "Pct", x=_) |>
-        gsub("#", "Num", x=_)
+        .format_html_header()
 
     header <- Map(
         function(x, y) paste0(unique(c(x, y)), collapse="."),
@@ -82,11 +87,4 @@ getBrainArrayTable <- function(url="http://brainarray.mbni.med.umich.edu/Brainar
         c("RSourcePackage.CP", "RBinaryPackage.CP") := NULL
     ]
     return(brain_array_final[])
-}
-
-if (sys.nframe() == 0) {
-    library(rvest)
-    library(data.table)
-
-
 }

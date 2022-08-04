@@ -1,6 +1,8 @@
 ---
-title: "UniChemAPIQueries.Rmd"
-author: "Shahzada Muhammad Shameel Farooq"
+title: "Querying UniChem with AnnotationG"
+author:
+  - "Shahzada Muhammad Shameel Farooq"
+  - "Christopher Eeles"
 package: AnnotationGx
 output: html_document
 vignette: >
@@ -11,15 +13,20 @@ vignette: >
 
 # Introduction to Unichem API
 
+**WARNING: The UniChem API has been updated to use POST requests and We
+haven't had a chance to update our function yet. Please open an issue
+at bhklab/AnnotationGx if you need these functions fixed!**
+
 The UniChem database provides a publicly available RESTful web service API for
-the retrieval of data in a programmatic fashion. All RESTful queries are constructed
-using a base url. There are three types of input data for the UniChem API;
-src_compound_id, src_id and InChIKey. src_id is the source which is represented by
-an Integer. src_compound_id is the compound represented by an identifier for that
-specific source [1] . We can use the API to map between external databases identifiers,
-take inchikey as a parameter and map to any identifier, take in chemical id and
-source id and return the inchi and inchikey structure and  takes in inchikey and
-names of databases and return the appropriate chemical source ids.
+the retrieval of data in a programmatic fashion. All RESTful queries are
+constructed using a base url. There are three types of input data for the
+UniChem API; src_compound_id, src_id and InChIKey. src_id is the source which
+is represented by an integer. src_compound_id is the compound represented by an
+identifier for that specific source [1] . We can use the API to map between
+external databases identifiers, take inchikey as a parameter and map to any
+identifier, take in chemical id and source id and return the inchi and
+inchikey structure and  takes in inchikey and names of databases and return the
+appropriate chemical source ids.
 
 ## Mapping Between sources
 
@@ -28,8 +35,8 @@ compound for a specific source and get the Chemical Id for a different source by
 specifying which source we require. The sources provided by Unichem API are;
 1. chembl, 2. drugbank, 3. pdb, 4. gtopdb, e.t.c.
 
-`mapBetweenSources` function can be used to achieve this goal on a single Chemical Id,
-however if we have a list of Chemical Ids for which we can use the
+`mapBetweenSources` function can be used to achieve this goal on a single
+Chemical Id, however if we have a list of Chemical Ids for which we can use the
 `wMapBetweenSources` function.
 
 ### Use Cases
