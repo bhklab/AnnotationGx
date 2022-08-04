@@ -35,10 +35,10 @@ queryUniChem <- function(endpoint, ..., verb="POST",
         "connectivity"=stopifnot(verb == "POST")
     )
     endpoint_url <- paste0(url, "/", endpoint)
-    RETRY(verb=verb, url=endpoint_url, ...)
+    httr::RETRY(verb=verb, url=endpoint_url, ...)
 }
 
-#' Fetch a list of cheminformatic databases which can be mapped between using
+#' Fetch a table of cheminformatic databases which can be mapped between using
 #' the UniChem 2.0 API
 #'
 #' @param metadata `logical(1)` Should all the columns of the table be returned?
@@ -48,10 +48,6 @@ queryUniChem <- function(endpoint, ..., verb="POST",
 #' their respective URLs, and much more.
 #' @param ... `pairlist` Fall through parameters to `httr::GET` via `httr:RETRY`.
 #' Pass `httr::verbose()` to see full details of the query being constructed.
-#' @param endpoint `character(1)` API endpoint to query. Don't change this
-#' unless you know what you are doing!
-#' @param url `character(1)` URL to query. Don't change this unless you know
-#' what you are doing!
 #'
 #' @return `data.table` Table of UniChem source databases which can be mapped
 #' between. The "name" column is the database name, and the "sourceID" column
@@ -66,13 +62,11 @@ queryUniChem <- function(endpoint, ..., verb="POST",
 #' Christopher Eeles (christopher.eeles@uhnresearch.ca)
 #'
 #' @export
-getUniChemSources <- function(metadata=FALSE, ...,
-        endpoint="sources", url="https://www.ebi.ac.uk/unichem/api/v1") {
+getUniChemSources <- function(metadata=FALSE, ...) {
     stopifnot(is.logical(metadata))
-    stopifnot(is.character(endpoint) && length(endpoint) == 1)
-    response <- queryUniChem(endpoint=endpoint, ..., url=url, verb="GET")
-    response_list <- parse_json(response)
-    source_dt <- rbindlist(
+    response <- queryUniChem(endpoint="sources", ..., verb="GET")
+    response_list <- jsonlite::parse_json(response)
+    source_dt <- data.table::rbindlist(
         response_list[[2]],
         fill=TRUE,
         use.names=TRUE
@@ -87,14 +81,12 @@ getUniChemSources <- function(metadata=FALSE, ...,
 #' @param ... `pairlist` Fall through parameters to `httr::POST` via
 #' `httr:RETRY`. Pass `httr::verbose()` to see full details of the query being
 #' constructed.
-#' @param url `character(1)` URL to query. Don't change this unless you know
-#' what you are doing!
 #'
 #' @author
 #' Christopher Eeles (christopher.eeles@uhnresearch.ca)
 #'
 #' @export
-queryUniChemCompound <- function(...) {
+queryUniChemCompounds <- function(...) {
     body <- list(
 
     )
