@@ -2,15 +2,10 @@
 % Please edit documentation in R/getUniChem.R
 \name{getUniChemSources}
 \alias{getUniChemSources}
-\title{Fetch a list of cheminformatic databases which can be mapped between using
+\title{Fetch a table of cheminformatic databases which can be mapped between using
 the UniChem 2.0 API}
 \usage{
-getUniChemSources(
-  metadata = FALSE,
-  ...,
-  endpoint = "sources",
-  url = "https://www.ebi.ac.uk/unichem/api/v1"
-)
+getUniChemSources(metadata = FALSE, ...)
 }
 \arguments{
 \item{metadata}{\code{logical(1)} Should all the columns of the table be returned?
@@ -21,12 +16,6 @@ their respective URLs, and much more.}
 
 \item{...}{\code{pairlist} Fall through parameters to \code{httr::GET} via \code{httr:RETRY}.
 Pass \code{httr::verbose()} to see full details of the query being constructed.}
-
-\item{endpoint}{\code{character(1)} API endpoint to query. Don't change this
-unless you know what you are doing!}
-
-\item{url}{\code{character(1)} URL to query. Don't change this unless you know
-what you are doing!}
 }
 \value{
 \code{data.table} Table of UniChem source databases which can be mapped
@@ -35,7 +24,7 @@ is its unique integer ID in UniChem. When \code{metadata=TRUE} also includes
 additional source database metadata.
 }
 \description{
-Fetch a list of cheminformatic databases which can be mapped between using
+Fetch a table of cheminformatic databases which can be mapped between using
 the UniChem 2.0 API
 }
 \details{

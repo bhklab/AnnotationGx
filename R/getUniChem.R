@@ -2,10 +2,12 @@
 ## Make GET and POST Requests to the UniChem 2.0 REST API
 ## -----------------------------------------------------
 
+
 #' @importFrom httr GET POST RETRY verbose timeout headers upload_file content
 #'     http_status warn_for_status stop_for_status
 #' @importFrom jsonlite fromJSON parse_json
 NULL
+
 
 #' Generic helper method to make arbitary REST API request to UniChem v2
 #'
@@ -37,6 +39,7 @@ queryUniChem <- function(endpoint, ..., verb="POST",
     endpoint_url <- paste0(url, "/", endpoint)
     httr::RETRY(verb=verb, url=endpoint_url, ...)
 }
+
 
 #' Fetch a table of cheminformatic databases which can be mapped between using
 #' the UniChem 2.0 API
@@ -78,19 +81,62 @@ getUniChemSources <- function(metadata=FALSE, ...) {
 
 #' Query the UniChem 2.0 compounds endpoint using POST requests
 #'
+#' @param type `character(1)` The kind of compound representation for the
+#' molecule to search. Options are "uci" for UniChem ID, "inchi" for InChI,
+#' "inchikey" for InChiKey or "sourceID" mapping between databases.
+#' @param compound `character(1)` Machine readable compound identifier to the
+#' specified `type`. When `type=="sourceID"` the compound must be a valid
+#' identifer from the
+#' @param sourceID `numeric(1)` or `character(1)` Either a UniChem source database
+#' integer id or the name of a database to look up the key for. This should
+#' match "sourceID" from `getUniChemCompound()` when sourceID is numeric or
+#' "name" when it is character. Default source ID is "pubchem", accepting
+#' valid PubChem compond IDs.
 #' @param ... `pairlist` Fall through parameters to `httr::POST` via
 #' `httr:RETRY`. Pass `httr::verbose()` to see full details of the query being
 #' constructed.
+#'
+#' @return
+#'
+#' @details
+#' For cases where sourceID is character but is not in the "name" column of
+#' the source table then we try to coerce to integer.
+#'
+#' Full documentation:
+#' https://chembl.gitbook.io/unichem/unichem-2.0/unichem-2.0-beta/api/compound-search
 #'
 #' @author
 #' Christopher Eeles (christopher.eeles@uhnresearch.ca)
 #'
 #' @export
-queryUniChemCompounds <- function(...) {
-    body <- list(
-
+queryUniChemCompounds <- function(compound,
+        type=c("uci", "inchi", "inchikey", "sourceID"), sourceID="pubchem", ...) {
+    type <- match.arg(type)
+    stopifnot(is.character(compound) && length(compound) == 1)
+    if (type == "sourceID") {
+        suppressWarnings({
+            src_tbl <- getUniChemSources()
+        })
+        src_id <- sourceID
+        if (!is.numeric(sourceID)) {
+            src_id <- which(src_tbl$name %in% sourceID)
+        }
+        if (!is.numeric(src_id)) {
+            src_id <- as.integer(sourceID)
+        }
+        stopifnot(is.numeric(src_id))
+    }
+    body <- c(
+        list(
+            type=type,
+            compound=compound
+        ),
+        if (type == "sourceID") list(sourceID=src_id)
     )
-    response <- queryUniChem(endpoint="compounds", body=body, ...)
+    response <- queryUniChem(endpoint="compounds", body=body, encode="json",
+        ...)
+    res_list <- parse_json(response)
+    return(res_list)
 }
 
 
