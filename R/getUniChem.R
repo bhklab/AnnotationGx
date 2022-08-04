@@ -121,14 +121,18 @@ getUniChemSources <- function(metadata=FALSE, ...) {
 #' @examples
 #' \dontrun{
 #'   # Look up for Erlotinib via DrugBank ID
-#'   res <- queryUniChemCompounds(compound="DB00530", type="sourceID",
-#'       sourceID="drugbank")
+#'   (res <- queryUniChemCompounds(compound="DB00530", type="sourceID",
+#'       sourceID="drugbank"))
+#'   # Now to backwards look ups with the results
+#'   (erl <- queryUniChemCompounds(compound=unique(res$uci), type="uci"))
+#'   (erl <- queryUniChemCompounds(compound=unique(res$inchikey), type="inchikey"))
 #' }
 #'
 #' @export
 queryUniChemCompounds <- function(compound,
         type=c("uci", "inchi", "inchikey", "sourceID"), sourceID="pubchem", ...) {
     type <- match.arg(type)
+    if (type == "uci") compound <- as.character(compound)
     stopifnot(is.character(compound) && length(compound) == 1)
 
     if (type == "sourceID") {

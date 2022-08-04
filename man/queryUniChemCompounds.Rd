@@ -52,8 +52,11 @@ https://chembl.gitbook.io/unichem/unichem-2.0/unichem-2.0-beta/api/compound-sear
 \examples{
 \dontrun{
   # Look up for Erlotinib via DrugBank ID
-  res <- queryUniChemCompounds(compound="DB00530", type="sourceID",
-      sourceID="drugbank")
+  (res <- queryUniChemCompounds(compound="DB00530", type="sourceID",
+      sourceID="drugbank"))
+  # Now to backwards look ups with the results
+  (erl <- queryUniChemCompounds(compound=unique(res$uci), type="uci"))
+  (erl <- queryUniChemCompounds(compound=unique(res$inchikey), type="inchikey"))
 }
 
 }
