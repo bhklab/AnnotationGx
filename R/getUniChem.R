@@ -90,7 +90,7 @@ getUniChemSources <- function(metadata=FALSE, ...) {
 #'
 #' @param type `character(1)` The kind of compound representation for the
 #' molecule to search. Options are "uci" for UniChem ID, "inchi" for InChI,
-#' "inchikey" for InChiKey or "sourceID" mapping between databases.
+#' "inchikey" for InChIKey or "sourceID" mapping between databases.
 #' @param compound `character(1)` Machine readable compound identifier to the
 #' specified `type`. When `type=="sourceID"` the compound must be a valid
 #' identifer from the
@@ -102,6 +102,10 @@ getUniChemSources <- function(metadata=FALSE, ...) {
 #' @param ... `pairlist` Fall through parameters to `httr::POST` via
 #' `httr:RETRY`. Pass `httr::verbose()` to see full details of the query being
 #' constructed.
+#' @param connectivity `logical(1)` Should the connectivity API be queried
+#' instead? This will treat your compound as a mixture and return sub-components,
+#' isotopes or other slight variations on the query molecule.
+#' Default is `FALSE`, which only matches exactly.
 #'
 #' @return A `data.table` of database specific compound identifiers for the
 #' queried `compound`. Also attaches the query parameters ("query") and
@@ -115,8 +119,13 @@ getUniChemSources <- function(metadata=FALSE, ...) {
 #'
 #' When `type="uci"`, `compound` is automatically coerced to character.
 #'
+#' When `connectivity=TRUE` the connectivity end-point is queried for similar
+#' compounds. The returned table in this case will have a list column which
+#' indicates which criteria were met for the match.
+#'
 #' Full documentation:
 #' https://chembl.gitbook.io/unichem/unichem-2.0/unichem-2.0-beta/api/compound-search
+#' https://chembl.gitbook.io/unichem/unichem-2.0/unichem-2.0-beta/api/connectivity-search
 #'
 #' @author
 #' Christopher Eeles (christopher.eeles@uhnresearch.ca)
@@ -132,7 +141,8 @@ getUniChemSources <- function(metadata=FALSE, ...) {
 #'
 #' @export
 queryUniChemCompounds <- function(compound,
-        type=c("uci", "inchi", "inchikey", "sourceID"), sourceID="pubchem", ...) {
+        type=c("uci", "inchi", "inchikey", "sourceID"), sourceID="pubchem", ...,
+        connectivity=FALSE) {
     # input validation
     type <- match.arg(type)
     if (type == "uci") compound <- as.character(compound)
@@ -157,82 +167,51 @@ queryUniChemCompounds <- function(compound,
             type=type,
             compound=compound
         ),
-        if (type == "sourceID") list(sourceID=src_id)
+        if (type == "sourceID") list(sourceID=src_id),
+        if (isTRUE(connectivity)) list(searchComponents=TRUE)
     )
 
     # query the API
-    response <- queryUniChem(endpoint="compounds", body=body, encode="json",
-        ...)
+    response <- queryUniChem(
+        endpoint=if (isTRUE(connectivity)) "connectivity" else "compounds",
+        body=body,
+        encode="json",
+        ...
+    )
     res_list <- jsonlite::parse_json(response, encoding="UTF-8")
 
-    if (res_list$response == "Not found") {
-        stop("Query succeeded with no matching compounds found!")
+    ## TODO:: Redesign function to remove this branching logic!
+    if (isFALSE(connectivity)) {
+        if (res_list$response == "Not found") {
+            stop("Query succeeded with no matching compounds found!")
+        }
+
+        # test some assumptions about the returned data
+        stopifnot(
+            length(res_list[[1]]) == 1
+        )
+        stopifnot(
+            names(res_list[[1]][[1]]) == c("inchi", "sources", "standardInchiKey", "uci")
+        )
+
+        # parse into a table
+        res_dt <- rbindlist(res_list[[1]][[1]][["sources"]])
+        res_dt$uci <- res_list[[1]][[1]][["uci"]]
+        res_dt$inchikey <- res_list[[1]][[1]][["standardInchiKey"]]
+        attributes(res_dt)$inchi <- res_list[[1]][[1]][["inchi"]]
+    } else {
+        for (i in seq_along(res_list[["sources"]])) {
+            compare <- res_list[["sources"]][[i]][["comparison"]]
+            res_list[["sources"]][[i]][["comparison"]] <-
+                paste0(names(compare)[!unlist(compare)], collapse=";")
+        }
+        res_dt <- rbindlist(res_list[["sources"]])
+        res_dt[compare == "", compare := "exact"]
+        res_dt$uci <- res_list[["searchedCompound"]][["uci"]]
+        res_dt$inchikey <- res_list[["searchedCompound"]][["standardInchiKey"]]
+        attributes(res_dt)$inchi <- res_list[["searchedCompound"]][["inchi"]]
     }
 
-    # test some assumptions about the returned data
-    stopifnot(
-        length(res_list[[1]]) == 1
-    )
-    stopifnot(
-        names(res_list[[1]][[1]]) == c("inchi", "sources", "standardInchiKey", "uci")
-    )
-
-    # parse into a table
-    res_dt <- rbindlist(res_list[[1]][[1]][["sources"]])
-    res_dt$uci <- res_list[[1]][[1]][["uci"]]
-    res_dt$inchikey <- res_list[[1]][[1]][["standardInchiKey"]]
-    attributes(res_dt)$inchi <- res_list[[1]][[1]][["inchi"]]
     attributes(res_dt)$query <- match.call()
-
     return(res_dt)
-}
-
-
-#' Query the UniChem 2.0 connectivity endpoint using POST requests
-#'
-#' @param ... `pairlist` Fall through parameters to `httr::POST` via
-#' `httr:RETRY`. Pass `httr::verbose()` to see full details of the query being
-#' constructed.
-#'
-#' @author
-#' Christopher Eeles (christopher.eeles@uhnresearch.ca)
-#'
-#' @export
-queryUniChemConnectivity <- function(...) {
-
-}
-
-
-
-if (sys.nframe() == 0) {
-  # Source utility functions
-  source("R/utils.R")
-  source("R/parseJSON.R")
-
-  # Load required libraries
-  library(jsonlite)
-  library(httr)
-  library(BiocParallel)
-  library(data.table)
-
-  # Example code
-  inchi <- "AAKJLRGGTJKAMG-UHFFFAOYSA-N"
-  target_names <- c("chembl", "pubchem")
-  type <- "key"
-  ve <- c("LSXUTRRVVSPWDZ-WOTGAKFBSA-N", "AAKJLRGGTJKAMG-UHFFFAOYSA-N", "BCFGMOOMADDAQU-UHFFFAOYSA-N")
-  ve2 <- c("CHEMBL12", "CHEMBL11")
-  ve3 <- c("CHEMBL12", "CHEMBL11")
-  # Specified target names
-  database_specific_ids <- inchiToDatabaseID(inchi=inchi,
-    target_names=target_names)
-
-  # All database identifiers
-  database_ids <- inchiToDatabaseID(inchi=inchi)
-  test <- identifierToInchikey("CHEMBL12", "chembl")
-  test2 <- wInchiToDatabaseID(ve, target_names = target_names)
-  test3 <- wIdentifierToInchiKey(ve2, target_names = "chembl")
-  test4 <- wMapBetweenSources(ve3, src_name="chembl", target_name="pubchem")
-  test5 <- identifierToInchikey("CHEMBL12", "chembl")
-  test6 <- mapBetweenSources("CHEMBL12", "chembl", "pubchem")
-  #test7 <- inchiToDatabaseID("LSXUTRRVVSPWDZ-WOTGAKFBSA-N", "chembl")
 }

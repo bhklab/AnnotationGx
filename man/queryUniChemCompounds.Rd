@@ -8,7 +8,8 @@ queryUniChemCompounds(
   compound,
   type = c("uci", "inchi", "inchikey", "sourceID"),
   sourceID = "pubchem",
-  ...
+  ...,
+  connectivity = FALSE
 )
 }
 \arguments{
@@ -18,7 +19,7 @@ identifer from the}
 
 \item{type}{\code{character(1)} The kind of compound representation for the
 molecule to search. Options are "uci" for UniChem ID, "inchi" for InChI,
-"inchikey" for InChiKey or "sourceID" mapping between databases.}
+"inchikey" for InChIKey or "sourceID" mapping between databases.}
 
 \item{sourceID}{\code{numeric(1)} or \code{character(1)} Either a UniChem source database
 integer id or the name of a database to look up the key for. This should
@@ -29,6 +30,11 @@ valid PubChem compound IDs.}
 \item{...}{\code{pairlist} Fall through parameters to \code{httr::POST} via
 \code{httr:RETRY}. Pass \code{httr::verbose()} to see full details of the query being
 constructed.}
+
+\item{connectivity}{\code{logical(1)} Should the connectivity API be queried
+instead? This will treat your compound as a mixture and return sub-components,
+isotopes or other slight variations on the query molecule.
+Default is \code{FALSE}, which only matches exactly.}
 }
 \value{
 A \code{data.table} of database specific compound identifiers for the
@@ -48,17 +54,20 @@ assumption that you accidentally specified the sourceID as a string.
 
 When \code{type="uci"}, \code{compound} is automatically coerced to character.
 
+When \code{connectivity=TRUE} the connectivity end-point is queried for similar
+compounds.
+
 Full documentation:
 https://chembl.gitbook.io/unichem/unichem-2.0/unichem-2.0-beta/api/compound-search
+https://chembl.gitbook.io/unichem/unichem-2.0/unichem-2.0-beta/api/connectivity-search
 }
 \examples{
 \donttest{
   # Look up for Erlotinib via DrugBank ID
-  (res <- queryUniChemCompounds(compound="DB00530", type="sourceID",
-      sourceID="drugbank"))
+  erl_drugbank <- queryUniChemCompounds(compound="DB00530", type="sourceID", sourceID="drugbank")
   # Now do backwards look ups with the results
-  (erl <- queryUniChemCompounds(compound=unique(res$uci), type="uci"))
-  (erl <- queryUniChemCompounds(compound=unique(res$inchikey), type="inchikey"))
+  erl_uci <- queryUniChemCompounds(compound=unique(erl_drugbank$uci), type="uci")
+  erl_ichikey <- queryUniChemCompounds(compound=unique(erl_drugbank$inchikey), type="inchikey")
 }
 
 }
