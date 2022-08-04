@@ -68,7 +68,7 @@ queryUniChem <- function(endpoint, ..., verb="POST",
 getUniChemSources <- function(metadata=FALSE, ...) {
     stopifnot(is.logical(metadata))
     response <- queryUniChem(endpoint="sources", ..., verb="GET")
-    response_list <- jsonlite::parse_json(response)
+    response_list <- jsonlite::parse_json(response, encoding="UTF-8")
     source_dt <- data.table::rbindlist(
         response_list[[2]],
         fill=TRUE,
@@ -78,8 +78,14 @@ getUniChemSources <- function(metadata=FALSE, ...) {
     return(source_dt[, keep_cols, with=FALSE])
 }
 
+## TODO:: Remove the sourceID and allow this to be specified via type!
 
 #' Query the UniChem 2.0 compounds endpoint using POST requests
+#'
+#' @description
+#' Retrieve database specific identifiers from all the database available in
+#' UniChem based on some query compound. These identifiers can then be used
+#' to reliably look up the compound in any of the included databases.
 #'
 #' @param type `character(1)` The kind of compound representation for the
 #' molecule to search. Options are "uci" for UniChem ID, "inchi" for InChI,
@@ -91,16 +97,20 @@ getUniChemSources <- function(metadata=FALSE, ...) {
 #' integer id or the name of a database to look up the key for. This should
 #' match "sourceID" from `getUniChemCompound()` when sourceID is numeric or
 #' "name" when it is character. Default source ID is "pubchem", accepting
-#' valid PubChem compond IDs.
+#' valid PubChem compound IDs.
 #' @param ... `pairlist` Fall through parameters to `httr::POST` via
 #' `httr:RETRY`. Pass `httr::verbose()` to see full details of the query being
 #' constructed.
 #'
-#' @return
+#' @return A `data.table` of database specific compound identifiers for the
+#'     queried `compound`. Also attaches the query parameters ("query") and
+#'     detailed InChi strutural information ("inchi") in the table attributes.
+#'     See `attributes()` of the returned object for this information.
 #'
 #' @details
 #' For cases where sourceID is character but is not in the "name" column of
-#' the source table then we try to coerce to integer.
+#' the source database table then we try to coerce to integer under the
+#' assumption that you accidentally specified the sourceID as a string.
 #'
 #' Full documentation:
 #' https://chembl.gitbook.io/unichem/unichem-2.0/unichem-2.0-beta/api/compound-search
@@ -108,11 +118,19 @@ getUniChemSources <- function(metadata=FALSE, ...) {
 #' @author
 #' Christopher Eeles (christopher.eeles@uhnresearch.ca)
 #'
+#' @examples
+#' \dontrun{
+#'   # Look up for Erlotinib via DrugBank ID
+#'   res <- queryUniChemCompounds(compound="DB00530", type="sourceID",
+#'       sourceID="drugbank")
+#' }
+#'
 #' @export
 queryUniChemCompounds <- function(compound,
         type=c("uci", "inchi", "inchikey", "sourceID"), sourceID="pubchem", ...) {
     type <- match.arg(type)
     stopifnot(is.character(compound) && length(compound) == 1)
+
     if (type == "sourceID") {
         suppressWarnings({
             src_tbl <- getUniChemSources()
@@ -133,10 +151,23 @@ queryUniChemCompounds <- function(compound,
         ),
         if (type == "sourceID") list(sourceID=src_id)
     )
+
     response <- queryUniChem(endpoint="compounds", body=body, encode="json",
         ...)
-    res_list <- parse_json(response)
-    return(res_list)
+    res_list <- jsonlite::parse_json(response, encoding="UTF-8")
+
+    # test some assumptions about the returned data
+    stopifnot(length(res_list[[1]]) == 1)
+    stopifnot(names(res_list[[1]][[1]]) == c("inchi", "sources", "standardInchiKey", "uci"))
+
+    # parse into a table
+    res_dt <- rbindlist(res_list[[1]][[1]][["sources"]])
+    res_dt$uci <- res_list[[1]][[1]][["uci"]]
+    res_dt$inchikey <- res_list[[1]][[1]][["standardInchiKey"]]
+    attributes(res_dt)$inchi <- res_list[[1]][[1]][["inchi"]]
+    attributes(res_dt)$query <- match.call()
+
+    return(res_dt)
 }
 
 

@@ -4,15 +4,58 @@
 \alias{queryUniChemCompounds}
 \title{Query the UniChem 2.0 compounds endpoint using POST requests}
 \usage{
-queryUniChemCompounds(...)
+queryUniChemCompounds(
+  compound,
+  type = c("uci", "inchi", "inchikey", "sourceID"),
+  sourceID = "pubchem",
+  ...
+)
 }
 \arguments{
+\item{compound}{\code{character(1)} Machine readable compound identifier to the
+specified \code{type}. When \code{type=="sourceID"} the compound must be a valid
+identifer from the}
+
+\item{type}{\code{character(1)} The kind of compound representation for the
+molecule to search. Options are "uci" for UniChem ID, "inchi" for InChI,
+"inchikey" for InChiKey or "sourceID" mapping between databases.}
+
+\item{sourceID}{\code{numeric(1)} or \code{character(1)} Either a UniChem source database
+integer id or the name of a database to look up the key for. This should
+match "sourceID" from \code{getUniChemCompound()} when sourceID is numeric or
+"name" when it is character. Default source ID is "pubchem", accepting
+valid PubChem compound IDs.}
+
 \item{...}{\code{pairlist} Fall through parameters to \code{httr::POST} via
 \code{httr:RETRY}. Pass \code{httr::verbose()} to see full details of the query being
 constructed.}
 }
+\value{
+A \code{data.table} of database specific compound identifiers for the
+queried \code{compound}. Also attaches the query parameters ("query") and
+detailed InChi strutural information ("inchi") in the table attributes.
+See \code{attributes()} of the returned object for this information.
+}
 \description{
-Query the UniChem 2.0 compounds endpoint using POST requests
+Retrieve database specific identifiers from all the database available in
+UniChem based on some query compound. These identifiers can then be used
+to reliably look up the compound in any of the included databases.
+}
+\details{
+For cases where sourceID is character but is not in the "name" column of
+the source database table then we try to coerce to integer under the
+assumption that you accidentally specified the sourceID as a string.
+
+Full documentation:
+https://chembl.gitbook.io/unichem/unichem-2.0/unichem-2.0-beta/api/compound-search
+}
+\examples{
+\dontrun{
+  # Look up for Erlotinib via DrugBank ID
+  res <- queryUniChemCompounds(compound="DB00530", type="sourceID",
+      sourceID="drugbank")
+}
+
 }
 \author{
 Christopher Eeles (christopher.eeles@uhnresearch.ca)
