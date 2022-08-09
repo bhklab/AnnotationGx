@@ -2,31 +2,85 @@
 % Please edit documentation in R/getUniChem.R
 \name{queryUniChem}
 \alias{queryUniChem}
-\title{Generic helper method to make arbitary REST API request to UniChem v2}
+\title{Use the UniChem 2.0 API to map compound identifiers between different public
+databases}
 \usage{
 queryUniChem(
-  endpoint,
+  compound,
+  type = c("sourceID", "uci", "inchi", "inchikey"),
+  sourceID = "pubchem",
   ...,
-  verb = "POST",
-  url = "https://www.ebi.ac.uk/unichem/api/v1"
+  connectivity = FALSE,
+  BPPARAM = BiocParallel::bpparam()
 )
 }
 \arguments{
-\item{endpoint}{\code{character(1)} The endpoint to query. Valid endpoints at
-time of writing are "sources", "compounds" and "connectivity".
-Appended to the end of \code{url} with "/".}
+\item{compound}{\code{character()} Vector of machine readable compound identifiers
+for the specified \code{type}. When \code{type="sourceID"} the compounds must be valid
+identifers from the from specified \code{sourceID} database. When compound is omitted
+this function calls \code{getUniChemSources} and displays available databases to
+map between.}
 
-\item{...}{Fall through arguments to \code{httr::RETRY}.}
+\item{type}{\code{character(1)} The kind of compound representation for the
+molecule to search. Options are "uci" for UniChem ID, "inchi" for InChI,
+"inchikey" for InChIKey or "sourceID" mapping between databases. Default
+is "sourceID".}
 
-\item{verb}{\code{character(1)} HTTP verb to query the API with. Valid options
-for UniChem are "GET" and "POST".}
+\item{sourceID}{\code{numeric(1)} or \code{character(1)} Either a UniChem source
+database integer id or the name of a database to look up the key for.
+This should match "sourceID" from \code{getUniChemCompound()} when sourceID is
+numeric or "name" when it is character. Default source ID is "pubchem",
+accepting valid PubChem compound IDs.}
 
-\item{url}{\code{character(1)} UniChem API URL. Don't change unless you know what
-you are doing.}
+\item{...}{\code{pairlist} Fall through parameters to \code{httr::POST} via
+\code{httr:RETRY}. Pass \code{httr::verbose()} to see full details of the query being
+constructed.}
+
+\item{connectivity}{\code{logical(1)} Should the connectivity API be queried
+instead? This will treat your compound as a mixture and return sub-components,
+isotopes or other slight variations on the query molecule.
+Default is \code{FALSE}, which only matches exactly. Note that less detailed
+structural information is returned when \code{connectivity=TRUE}.}
+
+\item{BPPARAM}{A valid parallelization back-end to the
+\code{\link[BiocParallel:bplapply]{BiocParallel::bplapply}} function. Defaults to the current system
+back-end via \code{\link[BiocParallel:register]{BiocParallel::bpparam()}}.}
 }
 \value{
-\code{httr::response} object with the result of your query.
+\code{data.table} Of database specific identifiers, where the \code{compound}
+column contains the query compound. Rows where \code{compoundId} and other
+idenfiers are NA indicate that the query for this compound failed. See
+\verb{attr(<result>, "failed")} to see the failure error messages.
 }
 \description{
-Generic helper method to make arbitary REST API request to UniChem v2
+Retrieve database specific identifiers from all the databases available in
+UniChem based on some query compound. These identifiers can then be used
+to reliably look up the compound in any of the included databases.
+}
+\details{
+For cases where sourceID is character but is not in the "name" column of
+the source database table then we try to coerce to integer under the
+assumption that you accidentally specified the sourceID as a string.
+
+When \code{type="uci"}, \code{compound} is automatically coerced to character.
+
+When \code{connectivity=TRUE} the connectivity end-point is queried for similar
+compounds. The returned table in this case will have a list column which
+indicates which criteria were met for the match.
+
+Full documentation:
+https://chembl.gitbook.io/unichem/unichem-2.0/unichem-2.0-beta/api/compound-search
+https://chembl.gitbook.io/unichem/unichem-2.0/unichem-2.0-beta/api/connectivity-search
+}
+\examples{
+\donttest{
+  # successful query for Erlotinib and Paclitaxel via DrugBank ID
+  (success <- queryUniChem(compound=c("DB00530", "DB01229"), type="sourceID", sourceID="drugbank"))
+  # partially successful query for Erlotinib and a dummy value via DrugBank ID
+  (failed <- queryUniChem(compound=c("DB00530", "not_a_valid_id"), type="sourceID", sourceID="drugbank")
+}
+
+}
+\author{
+Christopher Eeles (christopher.eeles@uhnresearch.ca)
 }

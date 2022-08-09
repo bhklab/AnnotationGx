@@ -23,7 +23,7 @@ NULL
 #' @return `httr::response` object with the result of your query.
 #'
 #' @export
-queryUniChem <- function(endpoint, ..., verb="POST",
+httpRequestUniChem <- function(endpoint, ..., verb="POST",
         url="https://www.ebi.ac.uk/unichem/api/v1") {
     stopifnot(is.character(endpoint) && length(endpoint) == 1)
     stopifnot(is.character(url) && length(url) == 1)
@@ -67,7 +67,7 @@ queryUniChem <- function(endpoint, ..., verb="POST",
 #' @export
 getUniChemSources <- function(metadata=FALSE, ...) {
     stopifnot(is.logical(metadata))
-    response <- queryUniChem(endpoint="sources", ..., verb="GET")
+    response <- httpRequestUniChem(endpoint="sources", ..., verb="GET")
     response_list <- jsonlite::parse_json(response, encoding="UTF-8")
     source_dt <- data.table::rbindlist(
         response_list[[2]],
@@ -79,37 +79,37 @@ getUniChemSources <- function(metadata=FALSE, ...) {
 }
 
 
-## TODO:: Remove the sourceID and allow this to be specified via type!
-
-#' Query the UniChem 2.0 compounds endpoint using POST requests
+#' Make POST requests to UniChem 2.0 compounds or connectivity endpoint
 #'
 #' @description
 #' Retrieve database specific identifiers from all the databases available in
 #' UniChem based on some query compound. These identifiers can then be used
 #' to reliably look up the compound in any of the included databases.
 #'
-#' @param type `character(1)` The kind of compound representation for the
-#' molecule to search. Options are "uci" for UniChem ID, "inchi" for InChI,
-#' "inchikey" for InChIKey or "sourceID" mapping between databases.
 #' @param compound `character(1)` Machine readable compound identifier to the
 #' specified `type`. When `type=="sourceID"` the compound must be a valid
-#' identifer from the
-#' @param sourceID `numeric(1)` or `character(1)` Either a UniChem source database
-#' integer id or the name of a database to look up the key for. This should
-#' match "sourceID" from `getUniChemCompound()` when sourceID is numeric or
-#' "name" when it is character. Default source ID is "pubchem", accepting
-#' valid PubChem compound IDs.
+#' identifer from the from specified `sourceID` database.
+#' @param type `character(1)` The kind of compound representation for the
+#' molecule to search. Options are "uci" for UniChem ID, "inchi" for InChI,
+#' "inchikey" for InChIKey or "sourceID" mapping between databases. Default
+#' is "sourceID".
+#' @param sourceID `numeric(1)` or `character(1)` Either a UniChem source
+#' database integer id or the name of a database to look up the key for.
+#' This should match "sourceID" from `getUniChemCompound()` when sourceID is
+#' numeric or "name" when it is character. Default source ID is "pubchem",
+#' accepting valid PubChem compound IDs.
 #' @param ... `pairlist` Fall through parameters to `httr::POST` via
 #' `httr:RETRY`. Pass `httr::verbose()` to see full details of the query being
 #' constructed.
 #' @param connectivity `logical(1)` Should the connectivity API be queried
 #' instead? This will treat your compound as a mixture and return sub-components,
 #' isotopes or other slight variations on the query molecule.
-#' Default is `FALSE`, which only matches exactly.
+#' Default is `FALSE`, which only matches exactly. Note that less detailed
+#' structural information is returned when `connectivity=TRUE`.
 #'
 #' @return A `data.table` of database specific compound identifiers for the
 #' queried `compound`. Also attaches the query parameters ("query") and
-#' detailed InChi strutural information ("inchi") in the table attributes.
+#' detailed InChI strutural information ("inchi") in the table attributes.
 #' See `attributes()` of the returned object for this information.
 #'
 #' @details
@@ -133,15 +133,15 @@ getUniChemSources <- function(metadata=FALSE, ...) {
 #' @examples
 #' \donttest{
 #'   # Look up for Erlotinib via DrugBank ID
-#'   erl_drugbank <- queryUniChemCompounds(compound="DB00530", type="sourceID", sourceID="drugbank")
+#'   erl_drugbank <- postRequestUniChem(compound="DB00530", type="sourceID", sourceID="drugbank")
 #'   # Now do backwards look ups with the results
-#'   erl_uci <- queryUniChemCompounds(compound=unique(erl_drugbank$uci), type="uci")
-#'   erl_ichikey <- queryUniChemCompounds(compound=unique(erl_drugbank$inchikey), type="inchikey")
+#'   erl_uci <- postRequestUniChem(compound=unique(erl_drugbank$uci), type="uci")
+#'   erl_ichikey <- postRequestUniChem(compound=unique(erl_drugbank$inchikey), type="inchikey")
 #' }
 #'
 #' @export
-queryUniChemCompounds <- function(compound,
-        type=c("uci", "inchi", "inchikey", "sourceID"), sourceID="pubchem", ...,
+postRequestUniChem <- function(compound,
+        type=c("sourceID", "uci", "inchi", "inchikey"), sourceID="pubchem", ...,
         connectivity=FALSE) {
     # input validation
     type <- match.arg(type)
@@ -172,7 +172,7 @@ queryUniChemCompounds <- function(compound,
     )
 
     # query the API
-    response <- queryUniChem(
+    response <- httpRequestUniChem(
         endpoint=if (isTRUE(connectivity)) "connectivity" else "compounds",
         body=body,
         encode="json",
@@ -213,5 +213,57 @@ queryUniChemCompounds <- function(compound,
     }
 
     attributes(res_dt)$query <- match.call()
+    return(res_dt)
+}
+
+
+#' Use the UniChem 2.0 API to map compound identifiers between different public
+#' databases
+#'
+#' @inherit postRequestUniChem
+#'
+#' @param compound `character()` Vector of machine readable compound identifiers
+#' for the specified `type`. When `type="sourceID"` the compounds must be valid
+#' identifers from the from specified `sourceID` database. When compound is omitted
+#' this function calls `getUniChemSources` and displays available databases to
+#' map between.
+#' @param BPPARAM A valid parallelization back-end to the
+#' [`BiocParallel::bplapply`] function. Defaults to the current system
+#' back-end via [`BiocParallel::bpparam()`].
+#'
+#' @return `data.table` Of database specific identifiers, where the `compound`
+#' column contains the query compound. Rows where `compoundId` and other
+#' idenfiers are NA indicate that the query for this compound failed. See
+#' `attr(<result>, "failed")` to see the failure error messages.
+#'
+#' @examples
+#' \donttest{
+#'   # successful query for Erlotinib and Paclitaxel via DrugBank ID
+#'   (success <- queryUniChem(compound=c("DB00530", "DB01229"), type="sourceID", sourceID="drugbank"))
+#'   # partially successful query for Erlotinib and a dummy value via DrugBank ID
+#'   (failed <- queryUniChem(compound=c("DB00530", "not_a_valid_id"), type="sourceID", sourceID="drugbank")
+#' }
+#'
+#' @export
+queryUniChem <- function(compound,
+        type=c("sourceID", "uci", "inchi", "inchikey"), sourceID="pubchem", ...,
+        connectivity=FALSE, BPPARAM=BiocParallel::bpparam()) {
+    # -- early return with source options when compound is missing
+    if (missing(compound)) return(getUniChemSources())
+
+    stopifnot(is.character(compound))
+
+    BiocParallel::bpstopOnError(BPPARAM) <- FALSE
+    res <- BiocParallel::bptry(BiocParallel::bplapply(compound,
+        FUN=postRequestUniChem,
+        type=type, sourceID=sourceID, connectivity=connectivity,
+        BPPARAM=BPPARAM, ...))
+    names(res) <- compound
+    failed_queries <- !BiocParallel::bpok(res)
+    res_dt <- data.table::rbindlist(res[!failed_queries], idcol="compound")
+    failed_dt <- data.table(compound=compound[failed_queries])
+    res_dt <- rbind(res_dt, failed_dt, fill=TRUE)
+    res_dt <- res_dt[compound %in% compound]  # order to match the input
+    attributes(res_dt)$failed <- setNames(res[failed_queries], compound[failed_queries])
     return(res_dt)
 }

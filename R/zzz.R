@@ -1,6 +1,10 @@
 .onLoad <- function(libname, packagename) {
     # initialize the proxy manager reference class in the pkg namespace
-    assign('proxyManager', value=AnnotationGx:::ProxyManager$new(),
-        envir=asNamespace(packagename))
-
+    delayedAssign(
+        'proxyManager',
+        value=tryCatch({
+            AnnotationGx:::ProxyManager$new()
+        }, error=warning("ProxyManager setup failed! Proxies must be configured manually.")),
+        assign.env=asNamespace(packagename)
+    )
 }

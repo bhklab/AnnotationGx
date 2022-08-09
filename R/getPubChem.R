@@ -143,9 +143,8 @@
 #' @importFrom crayon strip_style
 #' @export
 getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
-    output='JSON', ..., url='https://pubchem.ncbi.nlm.nih.gov/rest/pug',
-    operation_options=NA, proxy=FALSE, raw=FALSE, query_only=FALSE)
-{
+        output='JSON', ..., url='https://pubchem.ncbi.nlm.nih.gov/rest/pug',
+        operation_options=NA, proxy=FALSE, raw=FALSE, query_only=FALSE) {
     funContext <- .funContext('::getRequestPubChem')
 
     # handle list or vector inputs for id
@@ -253,9 +252,9 @@ getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=
 #' @importFrom jsonlite toJSON
 #' @export
 queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
-    output='JSON', ..., url='https://pubchem.ncbi.nlm.nih.gov/rest/pug',
-    operation_options=NA, batch=TRUE, raw=FALSE, proxy=FALSE, query_only=FALSE)
-{
+        output='JSON', ..., url='https://pubchem.ncbi.nlm.nih.gov/rest/pug',
+        operation_options=NA, batch=TRUE, raw=FALSE, proxy=FALSE,
+        query_only=FALSE) {
     if (!is.character(id)) id <- as.character(id)
     if (namespace %in% c('name', 'xref', 'smiles', 'inchi', 'sdf'))
         batch <- FALSE
@@ -413,9 +412,7 @@ queryRequestPubChem <- function(..., query_only=FALSE)
 #' @importFrom data.table data.table as.data.table setcolorder
 #' @export
 getPubChemFromNSC <- function(ids, to='cids', ..., batch=TRUE, raw=FALSE,
-    proxy=FALSE, options=NA, query_only=FALSE)
-{
-
+        proxy=FALSE, options=NA, query_only=FALSE) {
     funContext <- .funContext('::getPubChemFromNSC')
 
     # -- make the GET request
@@ -907,31 +904,4 @@ getPubChemAnnotations <- function(header='Available', type='Compound',
     annotationDT <- DT[, .(CID=unlist(CID)),
         by=.(SourceName, SourceID, Name, URL, Synonyms)]
     return(annotationDT)
-}
-
-
-if (sys.nframe() == 0) {
-
-    # -- fetching annotation from PubChem
-
-    # GDSC <- readRDS(list.files('../PSets', pattern = 'GDSC.*v2.*', full.names=TRUE))
-    # drugInfo <- drugInfo(GDSC)
-
-    # result <- queryPubChem(id=drugInfo$cid, namespace='cid',
-    #     operation='aids', operation_options='aids_type=active')
-
-    # result <- querySynonymsFromName(drugs)
-    # unlist_result <- lapply(result, unlist)
-    # expSynDT <- data.table(drugid=drugs, synonyms=unlist_result)
-    # expSynDT[, synonyms2 := mapply(c, drugid, synonyms)]
-    # mappedSynonyms <- expSynDT[, .(list(which(..lab_drugids %in% unlist(.SD$synonyms2)))), by=drugid]
-    # mappedSynonyms <- mappedSynonyms[, unlist(V1), by=drugid]
-
-    # unmapped <- setdiff(expSynDT$drugid, mappedSynonyms$drugid)
-    # unmappedDT <- expSynDT[drugid %in% unmapped]
-
-    # # Get assay ids for each cid in drugInfo
-    # AIDtable <- buildAIDTable(result)
-
-    # #
 }
