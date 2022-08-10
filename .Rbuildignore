@@ -41,3 +41,6 @@ local_data/.*
 scripts
 scripts/.*
 
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
