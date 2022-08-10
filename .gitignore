@@ -39,3 +39,6 @@ local_data/*
 # Anything staring with a dot!
 .*
 !.gitignore
+
+# HTML files
+**.html
