@@ -43,7 +43,7 @@ queryUniProt <- function(query, columns='', limit='', offset='', format='xml',
     # parse parameters
     include <- if (include) 'yes' else 'no'
     compress <- if (compress) 'yes' else 'no'
-    
+
 
 
     response <- GET()

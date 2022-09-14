@@ -1,5 +1,6 @@
 #' @importFrom rvest read_html html_elements html_table
-#' @importFrom checkmate assert_character
+#' @importFrom data.table as.data.table rbindlist
+#' @importFrom checkmate assert_character assert_logical
 NULL
 
 
@@ -81,8 +82,6 @@ find_remote_files_recursive <- function(url, column="Name", extensions="[[:alnum
 #' @return `data.table` Table of available files and their download URLs and
 #'  any additional metadata available in the HTML table at `url`.
 #'
-#' @importFrom data.table as.data.table rbindlist
-#' @importFrom checkmate assert_character assert_logical
 #' @export
 scrapeRemoteFTPFilesTable <- function(url, column="Name", recursive=FALSE) {
     checkmate::assert_character(url, min.chars=5, max.len=1)
@@ -98,7 +97,7 @@ scrapeRemoteFTPFilesTable <- function(url, column="Name", recursive=FALSE) {
     directories <- parsed_table[[column]][grepl("/$", parsed_table[[column]])]
     if (length(directories) > 0 && isTRUE(recursive)) {
         for (dir in directories) {
-            new_table <- getRemoteFTPFilesTable(
+            new_table <- scrapeRemoteFTPFilesTable(
                 url=paste0(url, "/", dir),
                 recursive=recursive
             )

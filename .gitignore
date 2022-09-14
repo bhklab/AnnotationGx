@@ -1,4 +1,4 @@
-### OS ###  
+### OS ###
 
 .DS_Store
 
@@ -27,7 +27,7 @@ output/
 # Spreadsheets
 *.csv
 !inst/*
-
+git
 # R Object Files
 *.rds
 .Rproj.user
@@ -36,3 +36,10 @@ output/
 local_data
 local_data/*
 
+# Anything staring with a dot!
+.*
+!.gitignore
+
+# HTML files
+**.html
+docs

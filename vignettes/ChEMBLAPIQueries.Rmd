@@ -11,6 +11,9 @@ vignette: >
 
 # Introduction to ChEMBL API
 
+**WARNING: This vignette is a work in progress. If you have questions or would
+like to see more features, please open an issue at bhklab/AnnotationGx**
+
 The ChEMBL database contains information on bioactive drug-like small molecules.
 The information includes 2-D structures, calculated properties; logP, Molecular
 Weight, Lipinski Parameters, e.t.c. , nd abstracted bioactivities; binding

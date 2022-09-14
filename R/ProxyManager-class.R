@@ -30,7 +30,7 @@ ProxyManager <- R6::R6Class('ProxyManager',
     public=list(
         initialize=function(
             proxy_source_url='https://api.proxyscrape.com/v2/?request=getproxies&protocol=http&timeoust=10000&country=all&ssl=yes&anonymity=all&simplified=true',
-            name='ProxyManager', ..., 
+            name='ProxyManager', ...,
             proxy_parser=parse_text_response_to_datatable)
         {
             # Initialze the object fields
@@ -55,7 +55,7 @@ ProxyManager <- R6::R6Class('ProxyManager',
         },
         update_failed_proxies=function(new_data) {
             stopifnot(is.numeric(new_data))
-            private$failed_proxies <- private$failed_proxies[, 
+            private$failed_proxies <- private$failed_proxies[,
                 failed = c(failed, as.integer(new_data))]
         },
         get_failed_proxies=function() {
@@ -75,5 +75,3 @@ parse_text_response_to_datatable <- function(response) {
     proxyDT[['ip']] <- paste0('http://', proxyDT$ip)
     return(proxyDT)
 }
-
-

@@ -188,19 +188,3 @@ depositZenodo <- function(file_path, metadata=zenodoMetadata(), publish=FALSE,
 getZenodoFiles <- function() {
 
 }
-
-
-# Testing code
-if (sys.nframe() == 0) {
-    library(httr)
-    library(data.table)
-
-    target <- "https://zenodo.org/api/deposit/depositions"
-    access_token <- Sys.getenv("ZENODO_TOKEN")
-    GET(target, query=list("access_token"=access_token))
-
-    file_path <- list.files("local_data", pattern="TCGA_2.0.1_SARC.rds",
-        full.names=TRUE)
-
-    depositZenodo(file_path=file_path, metadata=zenodoMetadata(title="API Publish Test"))
-}

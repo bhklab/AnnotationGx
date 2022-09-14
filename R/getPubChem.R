@@ -143,9 +143,8 @@
 #' @importFrom crayon strip_style
 #' @export
 getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
-    output='JSON', ..., url='https://pubchem.ncbi.nlm.nih.gov/rest/pug',
-    operation_options=NA, proxy=FALSE, raw=FALSE, query_only=FALSE)
-{
+        output='JSON', ..., url='https://pubchem.ncbi.nlm.nih.gov/rest/pug',
+        operation_options=NA, proxy=FALSE, raw=FALSE, query_only=FALSE) {
     funContext <- .funContext('::getRequestPubChem')
 
     # handle list or vector inputs for id
@@ -216,25 +215,25 @@ getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=
 #' Checks to see if the PubChem query is exceeding the throttling limit
 #' @param response `httr::response`
 .checkThrottlingStatus <- function(response) {
-        throttling_control <- headers(response)$`x-throttling-control`
-        any_grepl <- function(...) any(grepl(...))
-        throttling_state <- max(which(vapply(
-            c('Green', 'Yellow', 'Red', 'Black', 'blacklisted'),
-            FUN=any_grepl, x=throttling_control, FUN.VALUE=logical(1))))
-        if (throttling_state == 2) {
-            .warning('PubChem Server returned Yellow status! Sleeping to compensate.')
-            Sys.sleep(5)
-        } else if (throttling_state == 3) {
-            .warning('PubChem Server returend Red status! Sleeping to compensate.')
-            Sys.sleep(10)
-        } else if (throttling_state == 4) {
-            .error('PubChem Server returned Black status! You could be ',
-                'black listed. The returned state message is: ',
-                throttling_control, '.')
-        } else if (throttling_state == 5) {
-            .error('PubChem server indicated: too many queries per second',
-                ' or you may be blacklisted.')
-        }
+    throttling_control <- headers(response)$`x-throttling-control`
+    any_grepl <- function(...) any(grepl(...))
+    throttling_state <- max(which(vapply(
+        c('Green', 'Yellow', 'Red', 'Black', 'blacklisted'),
+        FUN=any_grepl, x=throttling_control, FUN.VALUE=logical(1))))
+    if (throttling_state == 2) {
+        .warning('PubChem Server returned Yellow status! Sleeping to compensate.')
+        Sys.sleep(5)
+    } else if (throttling_state == 3) {
+        .warning('PubChem Server returend Red status! Sleeping to compensate.')
+        Sys.sleep(10)
+    } else if (throttling_state == 4) {
+        .error('PubChem Server returned Black status! You could be ',
+            'black listed. The returned state message is: ',
+            throttling_control, '.')
+    } else if (throttling_state == 5) {
+        .error('PubChem server indicated: too many queries per second',
+            ' or you may be blacklisted.')
+    }
 }
 
 #' @title queryPubChem
@@ -253,9 +252,9 @@ getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=
 #' @importFrom jsonlite toJSON
 #' @export
 queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
-    output='JSON', ..., url='https://pubchem.ncbi.nlm.nih.gov/rest/pug',
-    operation_options=NA, batch=TRUE, raw=FALSE, proxy=FALSE, query_only=FALSE)
-{
+        output='JSON', ..., url='https://pubchem.ncbi.nlm.nih.gov/rest/pug',
+        operation_options=NA, batch=TRUE, raw=FALSE, proxy=FALSE,
+        query_only=FALSE) {
     if (!is.character(id)) id <- as.character(id)
     if (namespace %in% c('name', 'xref', 'smiles', 'inchi', 'sdf'))
         batch <- FALSE
@@ -413,9 +412,7 @@ queryRequestPubChem <- function(..., query_only=FALSE)
 #' @importFrom data.table data.table as.data.table setcolorder
 #' @export
 getPubChemFromNSC <- function(ids, to='cids', ..., batch=TRUE, raw=FALSE,
-    proxy=FALSE, options=NA, query_only=FALSE)
-{
-
+        proxy=FALSE, options=NA, query_only=FALSE) {
     funContext <- .funContext('::getPubChemFromNSC')
 
     # -- make the GET request
@@ -907,31 +904,4 @@ getPubChemAnnotations <- function(header='Available', type='Compound',
     annotationDT <- DT[, .(CID=unlist(CID)),
         by=.(SourceName, SourceID, Name, URL, Synonyms)]
     return(annotationDT)
-}
-
-
-if (sys.nframe() == 0) {
-
-    # -- fetching annotation from PubChem
-
-    # GDSC <- readRDS(list.files('../PSets', pattern = 'GDSC.*v2.*', full.names=TRUE))
-    # drugInfo <- drugInfo(GDSC)
-
-    # result <- queryPubChem(id=drugInfo$cid, namespace='cid',
-    #     operation='aids', operation_options='aids_type=active')
-
-    # result <- querySynonymsFromName(drugs)
-    # unlist_result <- lapply(result, unlist)
-    # expSynDT <- data.table(drugid=drugs, synonyms=unlist_result)
-    # expSynDT[, synonyms2 := mapply(c, drugid, synonyms)]
-    # mappedSynonyms <- expSynDT[, .(list(which(..lab_drugids %in% unlist(.SD$synonyms2)))), by=drugid]
-    # mappedSynonyms <- mappedSynonyms[, unlist(V1), by=drugid]
-
-    # unmapped <- setdiff(expSynDT$drugid, mappedSynonyms$drugid)
-    # unmappedDT <- expSynDT[drugid %in% unmapped]
-
-    # # Get assay ids for each cid in drugInfo
-    # AIDtable <- buildAIDTable(result)
-
-    # #
 }

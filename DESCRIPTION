@@ -1,7 +1,7 @@
 Package: AnnotationGx
 Title: AnnotationGx: A package for building, updating and querying an
     annotation database for pharmaco-genomic data.
-Version: 0.0.2
+Version: 0.0.3
 Authors@R: c(
     person("Christopher", "Eeles", role = c("aut"),
         email = "christopher.eeles@uhnresearch.ca"),
@@ -35,13 +35,14 @@ Imports:
 Suggests:
     rmarkdown,
     knitr,
-    pandoc,
     BiocStyle,
+    DT,
+    kableExtra,
     testthat (>= 3.0.0)
 VignetteBuilder: knitr
 License: `use_mit_license()`
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.0
 Config/testthat/edition: 3

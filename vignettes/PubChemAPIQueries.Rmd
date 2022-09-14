@@ -246,6 +246,8 @@ You can see additional documentation for this function using
 
 1. Getting All ATC Codes
 
+**WARNING: these functions are poorly tested and may not work**
+
 ```{r eval=FALSE}
 CIDtoATC <- getPubChemAnnotations('ATC Codes')
 ```
