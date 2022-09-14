@@ -89,10 +89,10 @@ getFailedIDs <- function(x) unlist(lapply(getFailed(x), `[[`, i='query'))
 
 
 ##FIXME:: Remove these in final package build
-.collapse <- function (..., collapse = " ") paste0(..., collapse=collapse)
+.collapse <- function(..., collapse = " ") paste0(..., collapse=collapse)
 
 #' @importFrom crayon blue bold
-.message <- function (...) {
+.message <- function(...) {
     optionName <- paste0(packageName(), ".verbose")
     optionIsTRUE <- !is.null(getOption(optionName)) && getOption(optionName)
     verboseIsTRUE <- getOption("verbose")
@@ -101,21 +101,21 @@ getFailedIDs <- function(x) unlist(lapply(getFailed(x), `[[`, i='query'))
 }
 
 #' @importFrom crayon magenta blue cyan bold
-.formatMessage <- function (..., collapse = ", ") {
+.formatMessage <- function(..., collapse = ", ") {
     paste0(strwrap(paste0(..., collapse = collapse)), collapse = "\n")
 }
 
 #' @importFrom crayon magenta bold
-.error <- function (...) {
+.error <- function(...) {
     stop(magenta$bold(.formatMessage(...)), call. = FALSE)
 }
 
 #' @importFrom crayon cyan bold
-.warning <- function (...) {
+.warning <- function(...) {
     warning(cyan$bold(.formatMessage(...)), call. = FALSE)
 }
 
-.funContext <- function (funName) paste0("[", packageName(), funName, "]\n")
+.funContext <- function(funName) paste0("[", packageName(), funName, "]\n")
 
 #' Return the name of the function and the name of the package that function
 #'   is in when called within an R function.
