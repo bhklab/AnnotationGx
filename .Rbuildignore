@@ -45,3 +45,4 @@ scripts/.*
 ^docs$
 ^pkgdown$
 ^\.github$
+^LICENSE\.md$
