@@ -70,6 +70,7 @@ getGencodeFilesTable <- function(version="latest",
 #' When type="GTF" or "GFF":
 #' * comprehensive_all
 #' * comprehensive_chr
+#' * comprehensive_primary
 #' * basic_all
 #' * basic_chr
 #' * long_non_coding
@@ -99,12 +100,13 @@ getGencodeFilesTable <- function(version="latest",
 #' * transcipt_evidence
 #' * trembl
 #'
-#' @return `GenomcRanges` object when type="GTF", `DNAStringSet` when type="FASTA",
-#'   or ``
+#' @return `GenomcRanges` object when type="GTF", `DNAStringSet` when
+#'   type="FASTA", or `data.table`/`character` (as appropriate) when
+#'   type="metadata".
 #'
-#' @importFrom BiocIO import
+#' @importFrom rtracklayer import
 #' @importFrom checkmate assert_subset
-#' @importFrom data.table fread
+#' @importFrom data.table fread %ilike%
 #' @export
 getGencodeFile <- function(
         file="comprehensive_chr",
@@ -129,12 +131,21 @@ getGencodeFile <- function(
     # download and load the file
     download.file(download_url, destfile=destfile)
     gencode_data <- switch(type,
-        "GTF"=BiocIO::import(destfile),
-        "FASTA"=BiocIO::import(destfile),
+        "GTF"=rtracklayer::import(destfile),
+        "FASTA"={
+            if (grepl("genome", destfile)) {
+                rtracklayer::import(destfile, type="DNA")
+            } else if (grepl("transcript", destfile)) {
+                rtracklayer::import(destfile, type="RNA")
+            } else if (grepl("translation", destfile)) {
+                rtracklayer::import(destfile, type="AA")
+            }
+        },
         "metadata"=tryCatch({
             data.table::fread(destfile)
         }, error=function(e) {
-            warning("Failed to read with data.table::fread, falling back to readLines: ", e)
+            warning("Failed to read with data.table::fread, falling back to ",
+                "readLines: \n", e)
             readLines(gzfile(destfile))
         }),
         stop("Unknown type: ", type)
@@ -149,14 +160,15 @@ getGencodeFile <- function(
     type <- match.arg(type)
     valid_files <- list(
         "GTF"=list(
-            "comprehensive_all"="",
-            "comprehensive_chr"="gencode\\..{2,3}.\\.annotation\\.gtf\\.gz",
-            "basic_all"="",
-            "basic_chr"="",
-            "long_non_coding"="",
-            "poly_a"="",
-            "consensus_pseudogenes"="",
-            "predicted_trna"=""
+            "comprehensive_all"="gencode\\.v\\d{1,3}.\\.chr_patch_hapl_scaff\\.annotation\\.gtf\\.gz",
+            "comprehensive_chr"="gencode\\.v\\d{1,3}.\\.annotation\\.gtf\\.gz",
+            "comprehensive_primary"="gencode\\.v\\d{1,3}.\\.primary_assembly\\.annotation\\.gtf\\.gz",
+            "basic_all"="gencode\\.v\\d{1,3}.\\.chr_patch_hapl_scaff\\.basic\\.annotation\\.gtf\\.gz",
+            "basic_chr"="gencode\\.v\\d{1,3}.\\.basic\\.annotation\\.gtf\\.gz",
+            "long_non_coding"="gencode\\.v\\d{1,3}.\\.long_noncoding_RNAs\\.gtf\\.gz",
+            "poly_a"="gencode\\.v\\d{1,3}.\\.polyAs\\.gtf\\.gz",
+            "consensus_pseudogenes"="gencode\\.v\\d{1,3}\\.2wayconspseudos\\.gtf\\.gz",
+            "predicted_trna"="gencode\\.v\\d{1,3}.\\.tRNAs\\.gtf\\.gz"
         ),
         "FASTA"=list(
             "transcript"="",
