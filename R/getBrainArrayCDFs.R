@@ -20,8 +20,8 @@ getBrainArrayTable <- function(url="http://brainarray.mbni.med.umich.edu/Brainar
         table_html
 
     # extract the table as a tibble; but it doesn't get the links for table items
-    #  and is therefore pretty much useless in this case
-    # will use it for the table column names
+    #   and is therefore pretty much useless in this case
+    #   will use it for the table column names
     template_table <- html_table(table_html[[2]])
 
     table_html[2] |>
@@ -38,12 +38,12 @@ getBrainArrayTable <- function(url="http://brainarray.mbni.med.umich.edu/Brainar
     # parse the header into nice column names
     .format_html_header <- function(x) {
         x |>
-        gsub("<[^<>]*>|\n", "", x=_) |>
-        gsub(" ", "", x=_) |>
-        gsub("%", "Pct", x=_) |>
-        gsub("#", "Num", x=_)
+            gsub(pattern="<[^<>]*>|\n", replacement="") |>
+            gsub(pattern=" ", replacement="") |>
+            gsub(pattern="%", replacement="Pct") |>
+            gsub(pattern="#", replacement="Num")
     }
-    top_header <-  unlist(template_table[1, ]) |>
+    top_header <- unlist(template_table[1, ]) |>
         .format_html_header()
 
     lower_header <- unlist(template_table[2, ]) |>

@@ -19,7 +19,6 @@
 #' @importFrom checkmate assertCharacter assertFunction
 #' @export
 downloadAndExtract <- function(url, extract_fun=unzip, ...) {
-
     assertCharacter(url, max.len=1)
     if (is.character(extract_fun)) extract_fun <- get(extract_fun)
     assertFunction(extract_fun)
