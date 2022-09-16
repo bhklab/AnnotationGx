@@ -177,8 +177,8 @@ getGencodeAvailableFiles <- function(version="latest",
 #' @description
 #' File descriptions are available at https://www.gencodegenes.org/human/.
 #'
-#' @param file `character(1)` Character vector of files to download from the
-#' Gencode FTP site. Defaults to "comprehensive_chr". See details for options.
+#' @param file `character(1)` String name of file to download from the
+#' Gencode FTP site. See `getGencodeAvailableFiles()` for options.
 #' @param type `character(1)` One of "GTF", "GFF3", "FASTA" or "metadata".
 #'   Defaults to "GTF".
 #' @param version `character(1)` Gencode version to download for.
@@ -218,19 +218,18 @@ getGencodeFile <- function(
         )
     }
     checkmate::assert_character(file, max.len=1, any.missing=FALSE)
-    checkmate::assert_subset(file, valid_files$id, empty.ok=FALSE)
+    checkmate::assert_subset(file, valid_files$file, empty.ok=FALSE)
     # delete the file on exit if user doesn't provide a custom directory
     if (dir == tempdir()) on.exit(unlink(destfile))
     # download available files for selected Gencode version
     gencode_files <- getGencodeFilesTable(version=version, url=url)
     # find the file name and url
-    pattern <- valid_files[id == file, file]
-    match_row <- gencode_files[Name %ilike% pattern, .(Name, download_url)]
+    match_row <- gencode_files[Name %ilike% file, .(Name, download_url)]
     file_name <- match_row[["Name"]]
     download_url <- match_row[["download_url"]]
     destfile <- file.path(dir, file_name)
     # download and load the file
-    download.file(download_url, destfile=destfile)
+    if (!file.exists(destfile)) download.file(download_url, destfile=destfile)
     gencode_data <- switch(type,
         "GTF"=rtracklayer::import(destfile),
         "FASTA"={

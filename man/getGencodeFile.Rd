@@ -15,8 +15,8 @@ getGencodeFile(
 )
 }
 \arguments{
-\item{file}{\code{character(1)} Character vector of files to download from the
-Gencode FTP site. Defaults to "comprehensive_chr". See details for options.}
+\item{file}{\code{character(1)} String name of file to download from the
+Gencode FTP site. See \code{getGencodeAvailableFiles()} for options.}
 
 \item{type}{\code{character(1)} One of "GTF", "GFF3", "FASTA" or "metadata".
 Defaults to "GTF".}
