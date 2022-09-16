@@ -6,8 +6,8 @@
 Bioconductor classes.}
 \usage{
 getGencodeFile(
-  file = "gencode\\\\.v[^\\\\.]*\\\\.annotation\\\\.gtf\\\\.gz",
-  type = "GTF",
+  file = "gencode\\\\.{v}\\\\.annotation\\\\.gtf\\\\.gz",
+  type = infer_gencode_type(file),
   version = "latest",
   chr = c("GRCh38", "GRCh37"),
   dir = tempdir(),
@@ -17,10 +17,11 @@ getGencodeFile(
 \arguments{
 \item{file}{\code{character(1)} String name of file to download from the
 Gencode FTP site. See \code{getGencodeAvailableFiles()} for options. Supports
-regex to match file names.}
+regex to match file names. If you version is specified as "{v}" it will
+be interpolated from the \code{version} arugment.}
 
 \item{type}{\code{character(1)} One of "GTF", "GFF3", "FASTA" or "metadata".
-Defaults to "GTF".}
+Defaults to \code{infer_gencode_type(file)} will guess based on the file string.}
 
 \item{version}{\code{character(1)} Gencode version to download for.
 Defaults to "latest". See \code{getGencodeFTPTable()} for options.}

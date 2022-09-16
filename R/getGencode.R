@@ -1,6 +1,7 @@
-#'
-#'
-#'
+#' @importFrom checkmate assertCharacter assert_subset
+#' @importFrom data.table rbindlist %ilike% first as.data.table rbindlist fread
+#' @importFrom rtracklayer import
+#' @importFrom S4Vectors metadata metadata<-
 NULL
 
 
@@ -15,7 +16,6 @@ NULL
 #' @return `data.table` Table of files and directories available on the
 #'   Gencode FTP web page.
 #'
-#' @importFrom data.table as.data.table
 #' @export
 getGencodeFTPTable <- function(
         url="https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human",
@@ -34,8 +34,6 @@ getGencodeFTPTable <- function(
 #' @return `data.table` Table listing all files available for the selected
 #'   `version`, along with URLs to download each file from.
 #'
-#' @importFrom checkmate assertCharacter
-#' @importFrom data.table as.data.table rbindlist %ilike%
 #' @export
 getGencodeFilesTable <- function(version="latest",
         url="https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human") {
@@ -68,7 +66,6 @@ getGencodeFilesTable <- function(version="latest",
 #' @return `data.table` With columns type, file, and description. Note that *
 #'   in the returned file name is treated as a wildcard in `getGencodeFiles`.
 #'
-#' @importFrom data.table rbindlist %ilike% first
 #' @export
 getGencodeAvailableFiles <- function(version="latest",
         chr=c("GRCh38", "GRCh37"), dir=tempdir(),
@@ -90,9 +87,7 @@ getGencodeAvailableFiles <- function(version="latest",
         }
     }
     ## -- parse version number
-    ver <- gencode_files[Name %ilike% "gencode\\.", data.table::first(Name)] |>
-        gsub(pattern="^.*gencode\\.", replacement="") |>
-        gsub(pattern="\\..*$", replacement="")
+    ver <- .infer_gencode_version(gencode_files)
     ## -- download and README and load as text
     readme_url <- gencode_files[Name %ilike% "_README", download_url]
     # fall back to use the global readme if it is missing for a specific release
@@ -112,6 +107,13 @@ getGencodeAvailableFiles <- function(version="latest",
         .parse_lift_gencode_readme(readme_txt, ver) else
         .parse_normal_gencode_readme(readme_txt, ver)
     return(file_df)
+}
+
+#' @keywords internal
+.infer_gencode_version <- function(gencode_files) {
+    gencode_files[Name %ilike% "gencode\\.", data.table::first(Name)] |>
+        gsub(pattern="^.*gencode\\.", replacement="") |>
+        gsub(pattern="\\..*$", replacement="")
 }
 
 
@@ -198,10 +200,11 @@ getGencodeAvailableFiles <- function(version="latest",
 #' File descriptions are available at https://www.gencodegenes.org/human/.
 #'
 #' @param file `character(1)` String name of file to download from the
-#' Gencode FTP site. See `getGencodeAvailableFiles()` for options. Supports
-#' regex to match file names.
+#'   Gencode FTP site. See `getGencodeAvailableFiles()` for options. Supports
+#'   regex to match file names. If you version is specified as "{v}" it will
+#'   be interpolated from the `version` arugment.
 #' @param type `character(1)` One of "GTF", "GFF3", "FASTA" or "metadata".
-#'   Defaults to "GTF".
+#'   Defaults to `infer_gencode_type(file)` will guess based on the file string.
 #' @param version `character(1)` Gencode version to download for.
 #'   Defaults to "latest". See `getGencodeFTPTable()` for options.
 #' @param dir `character(1)` Path to download the file to. Defaults to
@@ -217,14 +220,10 @@ getGencodeAvailableFiles <- function(version="latest",
 #'   type="FASTA", or `data.table`/`character` (as appropriate) when
 #'   type="metadata".
 #'
-#' @importFrom rtracklayer import
-#' @importFrom checkmate assert_subset
-#' @importFrom data.table fread %ilike%
-#' @importFrom S4Vectors metadata metadata<-
 #' @export
 getGencodeFile <- function(
-        file="gencode\\.v[^\\.]*\\.annotation\\.gtf\\.gz",
-        type="GTF",
+        file="gencode\\.{v}\\.annotation\\.gtf\\.gz",
+        type=infer_gencode_type(file),
         version="latest",
         chr=c("GRCh38", "GRCh37"),
         dir=tempdir(),
@@ -233,6 +232,9 @@ getGencodeFile <- function(
     chr <- match.arg(chr)
     valid_files <- getGencodeAvailableFiles(version=version, chr=chr,
         dir=dir, url=url)
+    # interpolate the version, if possible
+    ver <- .infer_gencode_version(valid_files[, .(Name=file)])
+    file <- gsub("\\{v\\}", ver, file)
     checkmate::assert_character(file, max.len=1, any.missing=FALSE)
     if (!any(grepl(file, valid_files$file))) {
         stop("Invalid file name or pattern, choose from: \n\t",
@@ -281,4 +283,24 @@ getGencodeFile <- function(
         attributes(gencode_data)$source <- list(file=file_name, download_url=download_url)
     }
     return(gencode_data)
+}
+
+
+#' Guess the type of a Gencode file from its name
+#'
+#' @param file `character(1)` File name.
+#'
+#' @return `character(1)` One of "GTF", "GFF3", "FASTA" or "metadata" based on
+#'   the file extensions of `file`.
+#'
+#' @export
+infer_gencode_type <- function(file) {
+    type <- "metadata"
+    if (grepl(".gtf", file))
+        type <- "GTF"
+    if (grepl(".gff3", file))
+        type <- "GFF3"
+    if (grepl(".fa", file))
+        type <- "FASTA"
+    return(type)
 }
