@@ -28,7 +28,8 @@ automatically deleted when the function exits.}
 for Gencode Human files.}
 }
 \value{
-\code{data.table} With columns type, file, and description.
+\code{data.table} With columns type, file, and description. Note that *
+in the returned file name is treated as a wildcard in \code{getGencodeFiles}.
 }
 \description{
 Retrieve a list of files and their descriptions available for a Gencode

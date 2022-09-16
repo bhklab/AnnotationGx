@@ -6,7 +6,7 @@
 Bioconductor classes.}
 \usage{
 getGencodeFile(
-  file,
+  file = "",
   type = "GTF",
   version = "latest",
   chr = c("GRCh38", "GRCh37"),
@@ -16,7 +16,8 @@ getGencodeFile(
 }
 \arguments{
 \item{file}{\code{character(1)} String name of file to download from the
-Gencode FTP site. See \code{getGencodeAvailableFiles()} for options.}
+Gencode FTP site. See \code{getGencodeAvailableFiles()} for options. Supports
+regex to match file names.}
 
 \item{type}{\code{character(1)} One of "GTF", "GFF3", "FASTA" or "metadata".
 Defaults to "GTF".}

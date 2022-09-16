@@ -58,7 +58,8 @@ getGencodeFilesTable <- function(version="latest",
 #' @param url `character(1)` Address of Gencode FTP web page. Default is page
 #'   for Gencode Human files.
 #'
-#' @return `data.table` With columns type, file, and description.
+#' @return `data.table` With columns type, file, and description. Note that *
+#'   in the returned file name is treated as a wildcard in `getGencodeFiles`.
 #'
 #' @importFrom data.table rbindlist %ilike% first
 #' @export
@@ -91,7 +92,7 @@ getGencodeAvailableFiles <- function(version="latest",
     if (dir == tempdir()) on.exit(unlink(destfile))
     readme_txt <- readLines(destfile)
     file_df <- if (grepl("lift", ver))
-        .parse_lift_gencode_readme(readme_txt, ver) else
+        .parse_lift_gencode_readme(readme_txt) else
         .parse_normal_gencode_readme(readme_txt, ver)
     return(file_df)
 }
@@ -141,7 +142,7 @@ getGencodeAvailableFiles <- function(version="latest",
 
 
 #' @keywords internal
-.parse_lift_gencode_readme <- function(readme_txt, ver) {
+.parse_lift_gencode_readme <- function(readme_txt) {
     ## -- pull out the section text
     split_idx <- grep("^Release files$", readme_txt)
     ## -- pull out file sections
@@ -178,7 +179,8 @@ getGencodeAvailableFiles <- function(version="latest",
 #' File descriptions are available at https://www.gencodegenes.org/human/.
 #'
 #' @param file `character(1)` String name of file to download from the
-#' Gencode FTP site. See `getGencodeAvailableFiles()` for options.
+#' Gencode FTP site. See `getGencodeAvailableFiles()` for options. Supports
+#' regex to match file names.
 #' @param type `character(1)` One of "GTF", "GFF3", "FASTA" or "metadata".
 #'   Defaults to "GTF".
 #' @param version `character(1)` Gencode version to download for.
@@ -201,7 +203,7 @@ getGencodeAvailableFiles <- function(version="latest",
 #' @importFrom data.table fread %ilike%
 #' @export
 getGencodeFile <- function(
-        file,
+        file="",
         type="GTF",
         version="latest",
         chr=c("GRCh38", "GRCh37"),
@@ -218,7 +220,7 @@ getGencodeFile <- function(
         )
     }
     checkmate::assert_character(file, max.len=1, any.missing=FALSE)
-    checkmate::assert_subset(file, valid_files$file, empty.ok=FALSE)
+    stopifnot(any(grepl(file, valid_files$file)))
     # delete the file on exit if user doesn't provide a custom directory
     if (dir == tempdir()) on.exit(unlink(destfile))
     # download available files for selected Gencode version
