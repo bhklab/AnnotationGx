@@ -6,9 +6,10 @@
 Bioconductor classes.}
 \usage{
 getGencodeFile(
-  file = "comprehensive_chr",
+  file,
   type = "GTF",
   version = "latest",
+  chr = c("GRCh38", "GRCh37"),
   dir = tempdir(),
   url = "https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human"
 )
@@ -17,8 +18,8 @@ getGencodeFile(
 \item{file}{\code{character(1)} Character vector of files to download from the
 Gencode FTP site. Defaults to "comprehensive_chr". See details for options.}
 
-\item{type}{\code{character(1)} One of "GTF", "FASTA" or "metadata". Defaults to
-"GTF".}
+\item{type}{\code{character(1)} One of "GTF", "GFF3", "FASTA" or "metadata".
+Defaults to "GTF".}
 
 \item{version}{\code{character(1)} Gencode version to download for.
 Defaults to "latest". See \code{getGencodeFTPTable()} for options.}
@@ -39,45 +40,5 @@ type="metadata".
 File descriptions are available at https://www.gencodegenes.org/human/.
 }
 \details{
-\subsection{Options for \code{file}}{
 
-When type="GTF" or "GFF":
-\itemize{
-\item comprehensive_all
-\item comprehensive_chr
-\item comprehensive_primary
-\item basic_all
-\item basic_chr
-\item long_non_coding
-\item poly_a
-\item consensus_pseudogenes
-\item predicted_trna
-}
-
-When type="FASTA":
-\itemize{
-\item transcript
-\item protein_coding
-\item long_non_coding
-\item genome_all
-\item genome_primary
-}
-
-When type="metadata":
-\itemize{
-\item remarks
-\item entrez
-\item exon_evidence
-\item gene_source
-\item pdb
-\item poly_a
-\item pubmed_id
-\item ref_seq
-\item selenocyteine
-\item swiss_prot
-\item transcript_source
-\item transcipt_evidence
-\item trembl
-}
-}
 }

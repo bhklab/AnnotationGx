@@ -35,7 +35,7 @@ getGencodeFilesTable <- function(version="latest",
         url="https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human") {
     stopifnot(version == "latest" || !is.na(as.integer(version)))
     url <- gsub("/$", "", url) # deal with trailing slash on url
-    gencode_ftp <- getGencodeFTPTable()
+    gencode_ftp <- getGencodeFTPTable(url=url)
     version_dir <- gsub("/$", "", gencode_ftp[Name %ilike% version, Name])
     version_url <- paste0(url, "/", version_dir)
     checkmate::assertCharacter(version_url, max.len=1, any.missing=FALSE)
@@ -44,6 +44,132 @@ getGencodeFilesTable <- function(version="latest",
     return(file_table)
 }
 
+#' Retrieve a list of files and their descriptions available for a Gencode
+#' release and reference genome version.
+#'
+#' @param version `character(1)` Gencode version to download for.
+#'   Defaults to "latest". See `getGencodeFTPTable()` for options.
+#'   Versions prior to 10 are not currently supported.
+#' @param dir `character(1)` Path to download the file to. Defaults to
+#'   `tempdir()`. When this value is `tempdir()` the downloaded file is
+#'   automatically deleted when the function exits.
+#' @param chr `character(1)` Name of reference chromosome to fetch files for.
+#'   Options are "GRCh38" (default) and "GRCh37".
+#' @param url `character(1)` Address of Gencode FTP web page. Default is page
+#'   for Gencode Human files.
+#'
+#' @return `data.table` With columns type, file, and description.
+#'
+#' @importFrom data.table rbindlist %ilike% first
+#' @export
+getGencodeAvailableFiles <- function(version="latest",
+        chr=c("GRCh38", "GRCh37"), dir=tempdir(),
+        url="https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human") {
+    ## -- get available Gencode files
+    gencode_files <- getGencodeFilesTable(version=version, url=url)
+    if (version == "latest" || as.integer(version) > 19) {
+        chr <- match.arg(chr)
+        grch37_idx <- grepl("GRCh37", gencode_files$Name)
+        keep_idx <- if (chr == "GRCh37") grch37_idx else !grch37_idx
+        gencode_files <- gencode_files[keep_idx, ]
+    } else {
+        if (as.integer(version) < 10)
+            stop("Versions prior to 10 are not supported! Please download them manually.")
+        if (chr == "GRCh38")
+            warning("The chr argument has been set to GRCh37 for Gencode ",
+                "versions <= 19! ")
+    }
+    ## -- parse version number
+    ver <- gencode_files[Name %ilike% "gencode\\.", data.table::first(Name)] |>
+        gsub(pattern="^.*gencode\\.", replacement="") |>
+        gsub(pattern="\\..*$", replacement="")
+    ## -- download and README and load as text
+    readme_url <- gencode_files[Name %ilike% "_README", download_url]
+    destfile <- file.path(dir, "_README.txt")
+    if (!file.exists(destfile))
+        download.file(readme_url, destfile=destfile, quiet=TRUE)
+    if (dir == tempdir()) on.exit(unlink(destfile))
+    readme_txt <- readLines(destfile)
+    file_df <- if (grepl("lift", ver))
+        .parse_lift_gencode_readme(readme_txt, ver) else
+        .parse_normal_gencode_readme(readme_txt, ver)
+    return(file_df)
+}
+
+
+#' @keywords internal
+.parse_normal_gencode_readme <- function(readme_txt, ver) {
+    ## -- pull out the section text
+    anchor_points <- c("^#Annotation files$", "^#Sequence files$",
+        "^#Metadata files$", "^General format of the annotation files$")
+    .vgrep <- function(patterns, string) vapply(patterns,
+        FUN=function(p, x) grep(p, x), x=string, FUN.VALUE=numeric(1))
+    split_idx <- .vgrep(anchor_points, string=readme_txt)
+    chunks <- vector("list", length(split_idx) - 1)
+    for (i in seq_len(length(split_idx) - 1)) {
+        # offset of 2 on either end to remove section headers
+        chunks[[i]] <- readme_txt[seq(split_idx[i] + 2, split_idx[i + 1] - 2)]
+    }
+    ## -- pull out the files and descriptions for each section
+    file_dfs <- vector("list", length(chunks))
+    for (i in seq_along(chunks)) {
+        chunk_files <- c(grep("^\\d+\\. .*:", chunks[[i]]), length(chunks[[i]]))
+        file_dfs[[i]] <- data.frame()
+        for (j in seq_len(length(chunk_files) - 1)) {
+            starti <- chunk_files[j]
+            endi <- chunk_files[j + 1]
+            file_name <- chunks[[i]][starti] |>
+                gsub(pattern="^\\d+\\. |:$", replacement="") |>
+                gsub(pattern="vX", replacement=ver)
+            description <- chunks[[i]][seq(starti + 1, endi - 1)] |>
+                gsub(pattern="^\\s+", replacement="") |>
+                paste0(collapse=" ")
+            file_dfs[[i]] <- rbind(
+                file_dfs[[i]],
+                data.table(file=file_name, description=description)
+            )
+        }
+    }
+    ## -- clean up the file names and return
+    names(file_dfs) <- c("GTF", "FASTA", "metadata")
+    file_dfs[["GTF"]][, file := gsub("\\{|,gff3\\}", "", file)]
+    file_dfs[["GFF3"]] <- copy(file_dfs[["GTF"]])[,
+        file := gsub("gtf", "gff3", file)
+    ]
+    return(data.table::rbindlist(file_dfs, fill=TRUE, idcol="type"))
+}
+
+
+#' @keywords internal
+.parse_lift_gencode_readme <- function(readme_txt, ver) {
+    ## -- pull out the section text
+    split_idx <- grep("^Release files$", readme_txt)
+    ## -- pull out file sections
+    file_sections <- readme_txt[-seq(1, split_idx)]
+    chunk_idx <- c(grep("^\\*", file_sections), length(file_sections))
+    file_df <- data.table()
+    for (i in seq_len(length(chunk_idx) - 1)) {
+        starti <- chunk_idx[i]
+        endi <- chunk_idx[i + 1]
+        file_name <- gsub("^\\* ", "", file_sections[starti])
+        description <- paste0(
+            gsub("^\\s+|\\s+$", "", file_sections[seq(starti + 1, endi - 1)]),
+            collapse=" "
+        )
+        file_df <- rbind(file_df,
+            data.table(file=file_name, description=description)
+        )
+    }
+    file_df <- file_df[,
+        .(file=unlist(strsplit(file, split=", "))),
+        by=description
+    ]
+    file_df[, type := "metadta"]
+    file_df[file %ilike% "\\.gtf", type := "GTF"]
+    file_df[file %ilike% "\\.fa", type := "FASTA"]
+    file_df[file %ilike% "\\.gff3", type := "GFF3"]
+    return(file_df[])
+}
 
 #' Download files from the Gencode FTP site and load them as the appropriate
 #'   Bioconductor classes.
@@ -53,8 +179,8 @@ getGencodeFilesTable <- function(version="latest",
 #'
 #' @param file `character(1)` Character vector of files to download from the
 #' Gencode FTP site. Defaults to "comprehensive_chr". See details for options.
-#' @param type `character(1)` One of "GTF", "FASTA" or "metadata". Defaults to
-#'   "GTF".
+#' @param type `character(1)` One of "GTF", "GFF3", "FASTA" or "metadata".
+#'   Defaults to "GTF".
 #' @param version `character(1)` Gencode version to download for.
 #'   Defaults to "latest". See `getGencodeFTPTable()` for options.
 #' @param dir `character(1)` Path to download the file to. Defaults to
@@ -65,40 +191,6 @@ getGencodeFilesTable <- function(version="latest",
 #'
 #' @details
 #'
-#' ## Options for `file`
-#'
-#' When type="GTF" or "GFF":
-#' * comprehensive_all
-#' * comprehensive_chr
-#' * comprehensive_primary
-#' * basic_all
-#' * basic_chr
-#' * long_non_coding
-#' * poly_a
-#' * consensus_pseudogenes
-#' * predicted_trna
-#'
-#' When type="FASTA":
-#' * transcript
-#' * protein_coding
-#' * long_non_coding
-#' * genome_all
-#' * genome_primary
-#'
-#' When type="metadata":
-#' * remarks
-#' * entrez
-#' * exon_evidence
-#' * gene_source
-#' * pdb
-#' * poly_a
-#' * pubmed_id
-#' * ref_seq
-#' * selenocyteine
-#' * swiss_prot
-#' * transcript_source
-#' * transcipt_evidence
-#' * trembl
 #'
 #' @return `GenomcRanges` object when type="GTF", `DNAStringSet` when
 #'   type="FASTA", or `data.table`/`character` (as appropriate) when
@@ -109,21 +201,30 @@ getGencodeFilesTable <- function(version="latest",
 #' @importFrom data.table fread %ilike%
 #' @export
 getGencodeFile <- function(
-        file="comprehensive_chr",
+        file,
         type="GTF",
         version="latest",
+        chr=c("GRCh38", "GRCh37"),
         dir=tempdir(),
         url="https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human") {
     # validate input
-    valid_files <- .valid_gencode_files(type)
+    chr <- match.arg(chr)
+    valid_files <- getGencodeAvailableFiles(version=version, chr=chr,
+        dir=dir, url=url)
+    if (missing(file)) {
+        stop("Please selection one of: \n\t",
+            paste0(valid_files$file, collapse="\n\t"),
+            "\nOr see the result of getGencodeAvailableFiles() for more info."
+        )
+    }
     checkmate::assert_character(file, max.len=1, any.missing=FALSE)
-    checkmate::assert_subset(file, names(valid_files), empty.ok=FALSE)
+    checkmate::assert_subset(file, valid_files$id, empty.ok=FALSE)
     # delete the file on exit if user doesn't provide a custom directory
     if (dir == tempdir()) on.exit(unlink(destfile))
     # download available files for selected Gencode version
     gencode_files <- getGencodeFilesTable(version=version, url=url)
     # find the file name and url
-    pattern <- valid_files[[file]]
+    pattern <- valid_files[id == file, file]
     match_row <- gencode_files[Name %ilike% pattern, .(Name, download_url)]
     file_name <- match_row[["Name"]]
     download_url <- match_row[["download_url"]]
@@ -146,52 +247,10 @@ getGencodeFile <- function(
         }, error=function(e) {
             warning("Failed to read with data.table::fread, falling back to ",
                 "readLines: \n", e)
-            readLines(gzfile(destfile))
+            readLines(if (grepl("\\.gz$", destfile)) gzfile(destfile) else
+                destfile)
         }),
         stop("Unknown type: ", type)
     )
     return(gencode_data)
-}
-
-#' Retrieve valid file arguments for getGencodeFile
-#'
-#' @keywords internal
-.valid_gencode_files <- function(type=c("GTF", "FASTA", "metadata")) {
-    type <- match.arg(type)
-    valid_files <- list(
-        "GTF"=list(
-            "comprehensive_all"="gencode\\.v\\d{1,3}.\\.chr_patch_hapl_scaff\\.annotation\\.gtf\\.gz",
-            "comprehensive_chr"="gencode\\.v\\d{1,3}.\\.annotation\\.gtf\\.gz",
-            "comprehensive_primary"="gencode\\.v\\d{1,3}.\\.primary_assembly\\.annotation\\.gtf\\.gz",
-            "basic_all"="gencode\\.v\\d{1,3}.\\.chr_patch_hapl_scaff\\.basic\\.annotation\\.gtf\\.gz",
-            "basic_chr"="gencode\\.v\\d{1,3}.\\.basic\\.annotation\\.gtf\\.gz",
-            "long_non_coding"="gencode\\.v\\d{1,3}.\\.long_noncoding_RNAs\\.gtf\\.gz",
-            "poly_a"="gencode\\.v\\d{1,3}.\\.polyAs\\.gtf\\.gz",
-            "consensus_pseudogenes"="gencode\\.v\\d{1,3}\\.2wayconspseudos\\.gtf\\.gz",
-            "predicted_trna"="gencode\\.v\\d{1,3}.\\.tRNAs\\.gtf\\.gz"
-        ),
-        "FASTA"=list(
-            "transcript"="",
-            "protein_coding"="",
-            "long_non_coding"="",
-            "genome_all"="",
-            "genome_primary"=""
-        ),
-        "metadata"=list(
-            "remarks"="",
-            "entrez"="",
-            "exon_evidence"="",
-            "gene_source"="",
-            "pdb"="",
-            "poly_a"="",
-            "pubmed_id"="",
-            "ref_seq"="",
-            "selenocyteine"="",
-            "swiss_prot"="",
-            "transcript_source"="",
-            "transcipt_evidence"="",
-            "trembl"=""
-        )
-    )
-    return(valid_files[[type]])
 }
