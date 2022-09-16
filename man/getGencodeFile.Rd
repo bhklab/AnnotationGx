@@ -6,7 +6,7 @@
 Bioconductor classes.}
 \usage{
 getGencodeFile(
-  file = "",
+  file = "gencode\\\\.v[^\\\\.]*\\\\.annotation\\\\.gtf\\\\.gz",
   type = "GTF",
   version = "latest",
   chr = c("GRCh38", "GRCh37"),

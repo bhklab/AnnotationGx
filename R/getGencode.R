@@ -1,3 +1,9 @@
+#'
+#'
+#'
+NULL
+
+
 #' Retrieve the index table for the Gencode FTP web page
 #'
 #' @param url `character(1)` Address of Gencode FTP web page. Default is page
@@ -44,6 +50,7 @@ getGencodeFilesTable <- function(version="latest",
     return(file_table)
 }
 
+
 #' Retrieve a list of files and their descriptions available for a Gencode
 #' release and reference genome version.
 #'
@@ -68,17 +75,19 @@ getGencodeAvailableFiles <- function(version="latest",
         url="https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human") {
     ## -- get available Gencode files
     gencode_files <- getGencodeFilesTable(version=version, url=url)
+    chr <- match.arg(chr)
     if (version == "latest" || as.integer(version) > 19) {
-        chr <- match.arg(chr)
         grch37_idx <- grepl("GRCh37", gencode_files$Name)
         keep_idx <- if (chr == "GRCh37") grch37_idx else !grch37_idx
         gencode_files <- gencode_files[keep_idx, ]
     } else {
         if (as.integer(version) < 10)
             stop("Versions prior to 10 are not supported! Please download them manually.")
-        if (chr == "GRCh38")
+        if (chr == "GRCh38") {
             warning("The chr argument has been set to GRCh37 for Gencode ",
                 "versions <= 19! ")
+            chr <- "GRCh37"
+        }
     }
     ## -- parse version number
     ver <- gencode_files[Name %ilike% "gencode\\.", data.table::first(Name)] |>
@@ -86,13 +95,21 @@ getGencodeAvailableFiles <- function(version="latest",
         gsub(pattern="\\..*$", replacement="")
     ## -- download and README and load as text
     readme_url <- gencode_files[Name %ilike% "_README", download_url]
+    # fall back to use the global readme if it is missing for a specific release
+    if (length(readme_url) != 1) {
+        ftp_files <- getGencodeFTPTable()
+        pattern <- "_README"
+        pattern <- if (chr == "GRCh38") paste0(pattern, ".TXT") else
+            paste0(pattern, "_GRCh37_mapping.txt")
+        readme_url <- ftp_files[Name %ilike% pattern, download_url]
+    }
     destfile <- file.path(dir, "_README.txt")
     if (!file.exists(destfile))
         download.file(readme_url, destfile=destfile, quiet=TRUE)
     if (dir == tempdir()) on.exit(unlink(destfile))
     readme_txt <- readLines(destfile)
     file_df <- if (grepl("lift", ver))
-        .parse_lift_gencode_readme(readme_txt) else
+        .parse_lift_gencode_readme(readme_txt, ver) else
         .parse_normal_gencode_readme(readme_txt, ver)
     return(file_df)
 }
@@ -120,7 +137,7 @@ getGencodeAvailableFiles <- function(version="latest",
             starti <- chunk_files[j]
             endi <- chunk_files[j + 1]
             file_name <- chunks[[i]][starti] |>
-                gsub(pattern="^\\d+\\. |:$", replacement="") |>
+                gsub(pattern="^\\d+\\. |:$|\\s.*$", replacement="") |>
                 gsub(pattern="vX", replacement=ver)
             description <- chunks[[i]][seq(starti + 1, endi - 1)] |>
                 gsub(pattern="^\\s+", replacement="") |>
@@ -142,7 +159,7 @@ getGencodeAvailableFiles <- function(version="latest",
 
 
 #' @keywords internal
-.parse_lift_gencode_readme <- function(readme_txt) {
+.parse_lift_gencode_readme <- function(readme_txt, ver) {
     ## -- pull out the section text
     split_idx <- grep("^Release files$", readme_txt)
     ## -- pull out file sections
@@ -152,7 +169,8 @@ getGencodeAvailableFiles <- function(version="latest",
     for (i in seq_len(length(chunk_idx) - 1)) {
         starti <- chunk_idx[i]
         endi <- chunk_idx[i + 1]
-        file_name <- gsub("^\\* ", "", file_sections[starti])
+        file_name <- gsub("^\\* ", "", file_sections[starti]) |>
+            gsub(pattern="vXlift..", replacement=ver)
         description <- paste0(
             gsub("^\\s+|\\s+$", "", file_sections[seq(starti + 1, endi - 1)]),
             collapse=" "
@@ -165,12 +183,13 @@ getGencodeAvailableFiles <- function(version="latest",
         .(file=unlist(strsplit(file, split=", "))),
         by=description
     ]
-    file_df[, type := "metadta"]
+    file_df[, type := "metadata"]
     file_df[file %ilike% "\\.gtf", type := "GTF"]
     file_df[file %ilike% "\\.fa", type := "FASTA"]
     file_df[file %ilike% "\\.gff3", type := "GFF3"]
     return(file_df[])
 }
+
 
 #' Download files from the Gencode FTP site and load them as the appropriate
 #'   Bioconductor classes.
@@ -201,9 +220,10 @@ getGencodeAvailableFiles <- function(version="latest",
 #' @importFrom rtracklayer import
 #' @importFrom checkmate assert_subset
 #' @importFrom data.table fread %ilike%
+#' @importFrom S4Vectors metadata metadata<-
 #' @export
 getGencodeFile <- function(
-        file="",
+        file="gencode\\.v[^\\.]*\\.annotation\\.gtf\\.gz",
         type="GTF",
         version="latest",
         chr=c("GRCh38", "GRCh37"),
@@ -213,34 +233,35 @@ getGencodeFile <- function(
     chr <- match.arg(chr)
     valid_files <- getGencodeAvailableFiles(version=version, chr=chr,
         dir=dir, url=url)
-    if (missing(file)) {
-        stop("Please selection one of: \n\t",
-            paste0(valid_files$file, collapse="\n\t"),
-            "\nOr see the result of getGencodeAvailableFiles() for more info."
-        )
-    }
     checkmate::assert_character(file, max.len=1, any.missing=FALSE)
-    stopifnot(any(grepl(file, valid_files$file)))
-    # delete the file on exit if user doesn't provide a custom directory
-    if (dir == tempdir()) on.exit(unlink(destfile))
+    if (!any(grepl(file, valid_files$file))) {
+        stop("Invalid file name or pattern, choose from: \n\t",
+            paste0(valid_files$file, collapse="\n\t"))
+    }
     # download available files for selected Gencode version
     gencode_files <- getGencodeFilesTable(version=version, url=url)
     # find the file name and url
-    match_row <- gencode_files[Name %ilike% file, .(Name, download_url)]
-    file_name <- match_row[["Name"]]
+    file_arg <- file
+    exact_file <- valid_files[file %ilike% file_arg, file]
+    match_row <- gencode_files[Name %ilike% exact_file, .(Name, download_url)]
+    stopifnot(nrow(match_row) == 1)
+    file_name <- basename(match_row[["Name"]])
     download_url <- match_row[["download_url"]]
     destfile <- file.path(dir, file_name)
+    # delete the file on exit if user doesn't provide a custom directory
+    if (dir == tempdir()) on.exit(unlink(destfile))
     # download and load the file
     if (!file.exists(destfile)) download.file(download_url, destfile=destfile)
     gencode_data <- switch(type,
         "GTF"=rtracklayer::import(destfile),
         "FASTA"={
+            fasta <- rtracklayer::FastaFile(destfile)
             if (grepl("genome", destfile)) {
-                rtracklayer::import(destfile, type="DNA")
+                rtracklayer::import(fasta)
             } else if (grepl("transcript", destfile)) {
-                rtracklayer::import(destfile, type="RNA")
+                rtracklayer::import(fasta)
             } else if (grepl("translation", destfile)) {
-                rtracklayer::import(destfile, type="AA")
+                rtracklayer::import(fasta, type="AA")
             }
         },
         "metadata"=tryCatch({
@@ -253,5 +274,11 @@ getGencodeFile <- function(
         }),
         stop("Unknown type: ", type)
     )
+    if (hasMethod("metadata", class(gencode_data))) {
+        metadata(gencode_data) <- c(metadata(gencode_data),
+            list(file=file_name, download_url=download_url))
+    } else {
+        attributes(gencode_data)$source <- list(file=file_name, download_url=download_url)
+    }
     return(gencode_data)
 }
