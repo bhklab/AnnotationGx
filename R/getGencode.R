@@ -202,7 +202,7 @@ getGencodeAvailableFiles <- function(version="latest",
 #' @param file `character(1)` String name of file to download from the
 #'   Gencode FTP site. See `getGencodeAvailableFiles()` for options. Supports
 #'   regex to match file names. If you version is specified as "{v}" it will
-#'   be interpolated from the `version` arugment.
+#'   be interpolated from the `version` argument.
 #' @param type `character(1)` One of "GTF", "GFF3", "FASTA" or "metadata".
 #'   Defaults to `infer_gencode_type(file)` will guess based on the file string.
 #' @param version `character(1)` Gencode version to download for.
@@ -216,7 +216,7 @@ getGencodeAvailableFiles <- function(version="latest",
 #' @details
 #'
 #'
-#' @return `GenomcRanges` object when type="GTF", `DNAStringSet` when
+#' @return `GenomicRanges` object when type="GTF", `DNAStringSet` when
 #'   type="FASTA", or `data.table`/`character` (as appropriate) when
 #'   type="metadata".
 #'
