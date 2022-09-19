@@ -13,6 +13,9 @@
     <loc>/LICENSE-text.html</loc>
   </url>
   <url>
+    <loc>/LICENSE.html</loc>
+  </url>
+  <url>
     <loc>/articles/ChEMBLAPIQueries.html</loc>
   </url>
   <url>
@@ -85,6 +88,18 @@
     <loc>/reference/getFDAOrangeBookProducts.html</loc>
   </url>
   <url>
+    <loc>/reference/getGencodeAvailableFiles.html</loc>
+  </url>
+  <url>
+    <loc>/reference/getGencodeFTPTable.html</loc>
+  </url>
+  <url>
+    <loc>/reference/getGencodeFile.html</loc>
+  </url>
+  <url>
+    <loc>/reference/getGencodeFilesTable.html</loc>
+  </url>
+  <url>
     <loc>/reference/getGuideToPharm.html</loc>
   </url>
   <url>
@@ -118,6 +133,9 @@
     <loc>/reference/index.html</loc>
   </url>
   <url>
+    <loc>/reference/infer_gencode_type.html</loc>
+  </url>
+  <url>
     <loc>/reference/listColToDT.html</loc>
   </url>
   <url>
@@ -143,6 +161,9 @@
   </url>
   <url>
     <loc>/reference/queryUniProt.html</loc>
+  </url>
+  <url>
+    <loc>/reference/scrapeRemoteFTPFilesTable.html</loc>
   </url>
   <url>
     <loc>/reference/zenodoMetadata.html</loc>

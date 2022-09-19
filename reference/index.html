@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">AnnotationGx</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.4.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -140,6 +140,29 @@
         <dd>Download and load the FDA OrangeBook products file</dd>
       </dl><dl><dt>
           
+          <code><a href="getGencodeAvailableFiles.html">getGencodeAvailableFiles()</a></code> 
+        </dt>
+        <dd>Retrieve a list of files and their descriptions available for a Gencode
+release and reference genome version.</dd>
+      </dl><dl><dt>
+          
+          <code><a href="getGencodeFTPTable.html">getGencodeFTPTable()</a></code> 
+        </dt>
+        <dd>Retrieve the index table for the Gencode FTP web page</dd>
+      </dl><dl><dt>
+          
+          <code><a href="getGencodeFile.html">getGencodeFile()</a></code> 
+        </dt>
+        <dd>Download files from the Gencode FTP site and load them as the appropriate
+Bioconductor classes.</dd>
+      </dl><dl><dt>
+          
+          <code><a href="getGencodeFilesTable.html">getGencodeFilesTable()</a></code> 
+        </dt>
+        <dd>Retrieve a table listing all files available from Gencode for a specific
+database release.</dd>
+      </dl><dl><dt>
+          
           <code><a href="getGuideToPharm.html">getGuideToPharm()</a></code> 
         </dt>
         <dd>Get data from the Guide to PHARMACOLOGY Database Web Services</dd>
@@ -191,6 +214,11 @@ the UniChem 2.0 API</dd>
         <dd>Generic helper method to make arbitary REST API request to UniChem v2</dd>
       </dl><dl><dt>
           
+          <code><a href="infer_gencode_type.html">infer_gencode_type()</a></code> 
+        </dt>
+        <dd>Guess the type of a Gencode file from its name</dd>
+      </dl><dl><dt>
+          
           <code><a href="listColToDT.html">listColToDT()</a></code> 
         </dt>
         <dd>Convert a list column in a <code>data.table</code> to a <code>data.table</code></dd>
@@ -238,6 +266,12 @@ databases</dd>
         <dd>Query the UniProt website REST API</dd>
       </dl><dl><dt>
           
+          <code><a href="scrapeRemoteFTPFilesTable.html">scrapeRemoteFTPFilesTable()</a></code> 
+        </dt>
+        <dd>Retrieve a table of files available from an FTP download site by scraping
+the first HTML table at the specified URL.</dd>
+      </dl><dl><dt>
+          
           <code><a href="zenodoMetadata.html">zenodoMetadata()</a></code> 
         </dt>
         <dd>Build the required metadata for uploading a file to zenodo</dd>
@@ -246,7 +280,7 @@ databases</dd>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Christopher Eeles, Sisira Nair, Petr Smirnov, Benjamin Haibe-Kains.</p>
+  <p></p><p>Developed by Christopher Eeles, Sisira Nair, Petr Smirnov, Shahzada Farooq, Benjamin Haibe-Kains.</p>
 </div>
 
 <div class="pkgdown-footer-right">
