@@ -71,18 +71,19 @@ Bioconductor classes.</h1>
     <dl><dt>file</dt>
 <dd><p><code>character(1)</code> String name of file to download from the
 Gencode FTP site. See <code><a href="getGencodeAvailableFiles.html">getGencodeAvailableFiles()</a></code> for options. Supports
-regex to match file names. If you version is specified as "v" it will
+regex to match file names. If your version is specified as "v" it will
 be interpolated from the <code>version</code> argument.</p></dd>
 
 
 <dt>type</dt>
 <dd><p><code>character(1)</code> One of "GTF", "GFF3", "FASTA" or "metadata".
-Defaults to <code>infer_gencode_type(file)</code> will guess based on the file string.</p></dd>
+Defaults to <code>infer_gencode_type(file)</code>, which guesses based on the
+<code>file</code> string.</p></dd>
 
 
 <dt>version</dt>
-<dd><p><code>character(1)</code> Gencode version to download for.
-Defaults to "latest". See <code><a href="getGencodeFTPTable.html">getGencodeFTPTable()</a></code> for options.</p></dd>
+<dd><p><code>character(1)</code> Gencode version to download from.
+Defaults to "latest". See <code><a href="getGencodeFTPTable.html">?getGencodeFTPTable</a></code> for options.</p></dd>
 
 
 <dt>dir</dt>
@@ -103,6 +104,15 @@ for Gencode Human files.</p></dd>
 <p><code>GenomicRanges</code> object when type="GTF", <code>DNAStringSet</code> when
 type="FASTA", or <code>data.table</code>/<code>character</code> (as appropriate) when
 type="metadata".</p>
+    </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p>Other Gencode: 
+<code><a href="getGencodeAvailableFiles.html">getGencodeAvailableFiles</a>()</code>,
+<code><a href="getGencodeFTPTable.html">getGencodeFTPTable</a>()</code>,
+<code><a href="getGencodeFilesTable.html">getGencodeFilesTable</a>()</code>,
+<code><a href="getGencodeGRangesAnnotated.html">getGencodeGRangesAnnotated</a>()</code>,
+<code><a href="infer_gencode_type.html">infer_gencode_type</a>()</code></p></div>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
