@@ -15,10 +15,19 @@ the future.}
 retreiving the annotaton files. See \code{?getGencodeFile} for details.}
 }
 \value{
-\code{GRanges} File of Gencode genome annotations for the file retreived
-using \code{getGencodeFile(...)} with annotations added from the selected
-Gencode metadatafile.
+\code{GRanges} Gencode genome annotations for the file retreived
+using \code{getGencodeFile(...)}, with annotations added from the selected
+Gencode metadata file.
 }
 \description{
 Retrieve a GRanges object for a specific Gencode release with added metadata
 }
+\seealso{
+Other Gencode: 
+\code{\link{getGencodeAvailableFiles}()},
+\code{\link{getGencodeFTPTable}()},
+\code{\link{getGencodeFilesTable}()},
+\code{\link{getGencodeFile}()},
+\code{\link{infer_gencode_type}()}
+}
+\concept{Gencode}

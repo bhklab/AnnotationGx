@@ -23,3 +23,12 @@ release. Use \code{getGencodeFTPTable()} to view available releases.}
 Retrieve a table listing all files available from Gencode for a specific
 database release.
 }
+\seealso{
+Other Gencode: 
+\code{\link{getGencodeAvailableFiles}()},
+\code{\link{getGencodeFTPTable}()},
+\code{\link{getGencodeFile}()},
+\code{\link{getGencodeGRangesAnnotated}()},
+\code{\link{infer_gencode_type}()}
+}
+\concept{Gencode}

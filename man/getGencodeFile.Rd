@@ -17,14 +17,15 @@ getGencodeFile(
 \arguments{
 \item{file}{\code{character(1)} String name of file to download from the
 Gencode FTP site. See \code{getGencodeAvailableFiles()} for options. Supports
-regex to match file names. If you version is specified as "{v}" it will
+regex to match file names. If your version is specified as "{v}" it will
 be interpolated from the \code{version} argument.}
 
 \item{type}{\code{character(1)} One of "GTF", "GFF3", "FASTA" or "metadata".
-Defaults to \code{infer_gencode_type(file)} will guess based on the file string.}
+Defaults to \code{infer_gencode_type(file)}, which guesses based on the
+\code{file} string.}
 
-\item{version}{\code{character(1)} Gencode version to download for.
-Defaults to "latest". See \code{getGencodeFTPTable()} for options.}
+\item{version}{\code{character(1)} Gencode version to download from.
+Defaults to "latest". See \code{?getGencodeFTPTable} for options.}
 
 \item{dir}{\code{character(1)} Path to download the file to. Defaults to
 \code{tempdir()}. When this value is \code{tempdir()} the downloaded file is
@@ -41,3 +42,12 @@ type="metadata".
 \description{
 File descriptions are available at https://www.gencodegenes.org/human/.
 }
+\seealso{
+Other Gencode: 
+\code{\link{getGencodeAvailableFiles}()},
+\code{\link{getGencodeFTPTable}()},
+\code{\link{getGencodeFilesTable}()},
+\code{\link{getGencodeGRangesAnnotated}()},
+\code{\link{infer_gencode_type}()}
+}
+\concept{Gencode}

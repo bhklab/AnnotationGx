@@ -24,3 +24,12 @@ Gencode FTP web page.
 \description{
 Retrieve the index table for the Gencode FTP web page
 }
+\seealso{
+Other Gencode: 
+\code{\link{getGencodeAvailableFiles}()},
+\code{\link{getGencodeFilesTable}()},
+\code{\link{getGencodeFile}()},
+\code{\link{getGencodeGRangesAnnotated}()},
+\code{\link{infer_gencode_type}()}
+}
+\concept{Gencode}

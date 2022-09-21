@@ -13,8 +13,8 @@ getGencodeAvailableFiles(
 )
 }
 \arguments{
-\item{version}{\code{character(1)} Gencode version to download for.
-Defaults to "latest". See \code{getGencodeFTPTable()} for options.
+\item{version}{\code{character(1)} Gencode version to download file list for.
+Defaults to "latest". See \code{?getGencodeFTPTable} for options.
 Versions prior to 10 are not currently supported.}
 
 \item{chr}{\code{character(1)} Name of reference chromosome to fetch files for.
@@ -29,9 +29,18 @@ for Gencode Human files.}
 }
 \value{
 \code{data.table} With columns type, file, and description. Note that *
-in the returned file name is treated as a wildcard in \code{getGencodeFiles}.
+in the returned file name is treated as a wildcard in \code{getGencodeFiles()}.
 }
 \description{
 Retrieve a list of files and their descriptions available for a Gencode
 release and reference genome version.
 }
+\seealso{
+Other Gencode: 
+\code{\link{getGencodeFTPTable}()},
+\code{\link{getGencodeFilesTable}()},
+\code{\link{getGencodeFile}()},
+\code{\link{getGencodeGRangesAnnotated}()},
+\code{\link{infer_gencode_type}()}
+}
+\concept{Gencode}

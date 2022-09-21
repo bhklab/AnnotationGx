@@ -16,3 +16,12 @@ the file extensions of \code{file}.
 \description{
 Guess the type of a Gencode file from its name
 }
+\seealso{
+Other Gencode: 
+\code{\link{getGencodeAvailableFiles}()},
+\code{\link{getGencodeFTPTable}()},
+\code{\link{getGencodeFilesTable}()},
+\code{\link{getGencodeFile}()},
+\code{\link{getGencodeGRangesAnnotated}()}
+}
+\concept{Gencode}

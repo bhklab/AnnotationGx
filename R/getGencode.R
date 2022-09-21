@@ -207,12 +207,13 @@ getGencodeAvailableFiles <- function(version="latest",
 #'
 #' @param file `character(1)` String name of file to download from the
 #'   Gencode FTP site. See `getGencodeAvailableFiles()` for options. Supports
-#'   regex to match file names. If you version is specified as "{v}" it will
+#'   regex to match file names. If your version is specified as "{v}" it will
 #'   be interpolated from the `version` argument.
 #' @param type `character(1)` One of "GTF", "GFF3", "FASTA" or "metadata".
-#'   Defaults to `infer_gencode_type(file)` will guess based on the file string.
-#' @param version `character(1)` Gencode version to download for.
-#'   Defaults to "latest". See `getGencodeFTPTable()` for options.
+#'   Defaults to `infer_gencode_type(file)`, which guesses based on the
+#'   `file` string.
+#' @param version `character(1)` Gencode version to download from.
+#'   Defaults to "latest". See `?getGencodeFTPTable` for options.
 #' @param dir `character(1)` Path to download the file to. Defaults to
 #'   `tempdir()`. When this value is `tempdir()` the downloaded file is
 #'   automatically deleted when the function exits.
@@ -327,7 +328,7 @@ infer_gencode_type <- function(file) {
 #' @family Gencode
 #'
 #' @return `GRanges` Gencode genome annotations for the file retreived
-#'   using `getGencodeFile(...)` with annotations added from the selected
+#'   using `getGencodeFile(...)`, with annotations added from the selected
 #'   Gencode metadata file.
 #'
 #' @export
