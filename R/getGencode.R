@@ -1,7 +1,7 @@
 #' @importFrom checkmate assertCharacter assert_subset
 #' @importFrom data.table rbindlist %ilike% first as.data.table rbindlist fread
 #' @importFrom rtracklayer import
-#' @importFrom S4Vectors metadata metadata<-
+#' @importFrom S4Vectors metadata metadata<- mcols
 NULL
 
 
@@ -229,7 +229,7 @@ getGencodeFile <- function(
         dir=tempdir(),
         url="https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human") {
     # validate input
-    chr <- match.arg(chr)
+    chr <- match.arg(chr, choices=c("GRCh38", "GRCh37"))
     valid_files <- getGencodeAvailableFiles(version=version, chr=chr,
         dir=dir, url=url)
     # interpolate the version, if possible
@@ -267,7 +267,7 @@ getGencodeFile <- function(
             }
         },
         "metadata"=tryCatch({
-            data.table::fread(destfile)
+            data.table::fread(destfile, header=FALSE)
         }, error=function(e) {
             warning("Failed to read with data.table::fread, falling back to ",
                 "readLines: \n", e)
@@ -303,4 +303,55 @@ infer_gencode_type <- function(file) {
     if (grepl(".fa", file))
         type <- "FASTA"
     return(type)
+}
+
+
+#' Retrieve a GRanges object for a specific Gencode release with added metadata
+#'
+#' @param annotation `character(1)` Name of the annotation to retrieve. Currently
+#'   only supports, and defaults to, "SwissProt". More will be implemented in
+#'   the future.
+#' @param ... `pairlist()` Fall through arguments to `getGencodeFile` when
+#'   retreiving the annotaton files. See `?getGencodeFile` for details.
+#'
+#' @return `GRanges` File of Gencode genome annotations for the file retreived
+#'   using `getGencodeFile(...)` with annotations added from the selected
+#'   Gencode metadatafile.
+#'
+#' @export
+getGencodeGRangesAnnotated <- function(annotation="SwissProt", ...) {
+    annot_args <- switch(annotation,
+        "SwissProt"=list(
+            colnames=c("transcript_id", "uniprot_id", "uniprot_id_variant"),
+            join_col=c("transcript_id")
+        ),
+        stop("Support for selected annotation not implement yet: ",
+            annotation)
+    )
+    .genome <- getGencodeFile(...)
+    dots <- list(...)
+    dots[["file"]] <- paste0(".*", annotation, ".*")
+    dots[["type"]] <- "metadata"
+    annot <- do.call("getGencodeFile", args=dots)
+    colnames(annot) <- annot_args[["colnames"]]
+    .mcols <- data.table::as.data.table(as.data.frame(S4Vectors::mcols(.genome)))
+    .mcols[, i := .I]  # capture original index, to deal with duplicated rows in join
+    annotated_mcols <- merge(.mcols, annot, by=annot_args[["join_col"]],
+        all.x=TRUE, sort=FALSE)
+    has_duplicates <- annotated_mcols[, i %in% i[duplicated(i)]]
+    duplicated_rows <- annotated_mcols[has_duplicates, ]
+    dedup_rows <- duplicated_rows[,
+        lapply(.SD, function(x)
+            if (!all(is.na(x))) paste0(na.omit(unique(x)), collapse="|")
+            else as.character(unique(x))),
+        by=c("i")
+    ]
+    annotated_mcols <- rbind(
+        annotated_mcols[!has_duplicates, ],
+        dedup_rows
+    )
+    data.table::setorderv(annotated_mcols, "i")
+    annotated_mcols[, i := NULL]
+    S4Vectors::mcols(.genome) <- annotated_mcols
+    return(.genome)
 }
