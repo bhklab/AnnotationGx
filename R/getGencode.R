@@ -16,6 +16,8 @@ NULL
 #' @return `data.table` Table of files and directories available on the
 #'   Gencode FTP web page.
 #'
+#' @family Gencode
+#'
 #' @export
 getGencodeFTPTable <- function(
         url="https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human",
@@ -33,6 +35,8 @@ getGencodeFTPTable <- function(
 #'
 #' @return `data.table` Table listing all files available for the selected
 #'   `version`, along with URLs to download each file from.
+#'
+#' @family Gencode
 #'
 #' @export
 getGencodeFilesTable <- function(version="latest",
@@ -52,8 +56,8 @@ getGencodeFilesTable <- function(version="latest",
 #' Retrieve a list of files and their descriptions available for a Gencode
 #' release and reference genome version.
 #'
-#' @param version `character(1)` Gencode version to download for.
-#'   Defaults to "latest". See `getGencodeFTPTable()` for options.
+#' @param version `character(1)` Gencode version to download file list for.
+#'   Defaults to "latest". See `?getGencodeFTPTable` for options.
 #'   Versions prior to 10 are not currently supported.
 #' @param dir `character(1)` Path to download the file to. Defaults to
 #'   `tempdir()`. When this value is `tempdir()` the downloaded file is
@@ -64,7 +68,9 @@ getGencodeFilesTable <- function(version="latest",
 #'   for Gencode Human files.
 #'
 #' @return `data.table` With columns type, file, and description. Note that *
-#'   in the returned file name is treated as a wildcard in `getGencodeFiles`.
+#'   in the returned file name is treated as a wildcard in `getGencodeFiles()`.
+#'
+#' @family Gencode
 #'
 #' @export
 getGencodeAvailableFiles <- function(version="latest",
@@ -72,7 +78,7 @@ getGencodeAvailableFiles <- function(version="latest",
         url="https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human") {
     ## -- get available Gencode files
     gencode_files <- getGencodeFilesTable(version=version, url=url)
-    chr <- match.arg(chr)
+    chr <- match.arg(chr, choice=c("GRCh38", "GRCh37"))
     if (version == "latest" || as.integer(version) > 19) {
         grch37_idx <- grepl("GRCh37", gencode_files$Name)
         keep_idx <- if (chr == "GRCh37") grch37_idx else !grch37_idx
@@ -213,6 +219,8 @@ getGencodeAvailableFiles <- function(version="latest",
 #' @param url `character(1)` Address of Gencode FTP web page. Default is page
 #'   for Gencode Human files.
 #'
+#' @family Gencode
+#'
 #' @details
 #'
 #'
@@ -293,6 +301,8 @@ getGencodeFile <- function(
 #' @return `character(1)` One of "GTF", "GFF3", "FASTA" or "metadata" based on
 #'   the file extensions of `file`.
 #'
+#' @family Gencode
+#'
 #' @export
 infer_gencode_type <- function(file) {
     type <- "metadata"
@@ -314,9 +324,11 @@ infer_gencode_type <- function(file) {
 #' @param ... `pairlist()` Fall through arguments to `getGencodeFile` when
 #'   retreiving the annotaton files. See `?getGencodeFile` for details.
 #'
-#' @return `GRanges` File of Gencode genome annotations for the file retreived
+#' @family Gencode
+#'
+#' @return `GRanges` Gencode genome annotations for the file retreived
 #'   using `getGencodeFile(...)` with annotations added from the selected
-#'   Gencode metadatafile.
+#'   Gencode metadata file.
 #'
 #' @export
 getGencodeGRangesAnnotated <- function(annotation="SwissProt", ...) {
