@@ -18,7 +18,7 @@ getGencodeFile(
 \item{file}{\code{character(1)} String name of file to download from the
 Gencode FTP site. See \code{getGencodeAvailableFiles()} for options. Supports
 regex to match file names. If you version is specified as "{v}" it will
-be interpolated from the \code{version} arugment.}
+be interpolated from the \code{version} argument.}
 
 \item{type}{\code{character(1)} One of "GTF", "GFF3", "FASTA" or "metadata".
 Defaults to \code{infer_gencode_type(file)} will guess based on the file string.}
@@ -34,7 +34,7 @@ automatically deleted when the function exits.}
 for Gencode Human files.}
 }
 \value{
-\code{GenomcRanges} object when type="GTF", \code{DNAStringSet} when
+\code{GenomicRanges} object when type="GTF", \code{DNAStringSet} when
 type="FASTA", or \code{data.table}/\code{character} (as appropriate) when
 type="metadata".
 }
