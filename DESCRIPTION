@@ -21,6 +21,7 @@ Imports:
     httr,
     xml2,
     BiocParallel,
+    biomaRt,
     rtracklayer,
     janitor,
     jsonlite,
@@ -43,7 +44,7 @@ Suggests:
     kableExtra,
     testthat (>= 3.0.0)
 VignetteBuilder: knitr
-License: MIT
+License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

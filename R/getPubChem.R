@@ -23,7 +23,7 @@
 #'   has three parts – input, operation, and output – after the common prefix,
 #'   followed by operation options as URL arguments (after the ‘?’):
 #'
-#' https://pubchem.ncbi.nlm.nih.gov/rest/pug/\<input specification\>/\<operation specification\>/\[\<output specification\>\]\[?\<operation_options\>\]
+#' "https://pubchem.ncbi.nlm.nih.gov/rest/pug/<input specification>/<operation specification>/\[<output specification>\]\[?<operation_options>\]"
 #'
 #' ### Input
 #'
@@ -31,15 +31,15 @@
 #'   subject of the query. This is further subdivided into two or more locations
 #'   in the URL “path” as follows:
 #'
-#' \<input specification\> = \<domain\>/\<namespace\>/\<identifiers\>
+#' "<input specification> = <domain>/<namespace>/<identifiers>"
 #'
-#' \<domain\> = substance | compound | assay | \<other inputs\>
+#' "<domain> = substance | compound | assay | <other inputs>"
 #'
-#' compound domain \<namespace\> = cid | name | smiles | inchi | sdf | inchikey | formula | \<structure search\> | \<xref\> | listkey | \<fast search\>
+#' "compound domain <namespace> = cid | name | smiles | inchi | sdf | inchikey | formula | <structure search> | <xref> | listkey | <fast search>"
 #'
-#' substance domain \<namespace\> = sid | sourceid/\<source id\> | sourceall/\<source name\> | name | <xref> | listkey
+#' "substance domain <namespace> = sid | sourceid/<source id> | sourceall/<source name> | name | <xref> | listkey"
 #'
-#' assay domain <namespace> = aid | listkey | type/<assay type> | sourceall/<source name> | target/<assay target> | activity/<activity column name>
+#' "assay domain <namespace> = aid | listkey | type/<assay type> | sourceall/<source name> | target/<assay target> | activity/<activity column name>"
 #'
 #' Complete documentation for valid input specifications can be found at:
 #' https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest$_Toc494865556
@@ -55,11 +55,11 @@
 #'   that is, certain operations are applicable only to compounds and not
 #'   assays.
 #'
-#' compound domain <operation specification> = record | <compound property> | synonyms | sids | cids | aids | assaysummary | classification | <xrefs> | description | conformers
+#' "compound domain <operation specification> = record | <compound property> | synonyms | sids | cids | aids | assaysummary | classification | <xrefs> | description | conformers"
 #'
-#' substance domain <operation specification> = record | synonyms | sids | cids | aids | assaysummary | classification | <xrefs> | description
+#' "substance domain <operation specification> = record | synonyms | sids | cids | aids | assaysummary | classification | <xrefs> | description"
 #'
-#' assay domain <operation specification> = record | concise | aids | sids | cids | description | targets/<target type> | <doseresponse> | summary | classification
+#' "assay domain <operation specification> = record | concise | aids | sids | cids | description | targets/<target type> | <doseresponse> | summary | classification"
 #'
 #' Complete documentation for valid operations can be found at:
 #' https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest$_Toc494865557
@@ -70,7 +70,7 @@
 #'   Note that this is formally optional, as output format can also be specified
 #'   in the HTTP Accept field of the request header – see below for more detail.
 #'
-#' <output specification> = XML | ASNT | ASNB | JSON | JSONP [ ?callback=<callback name> ] | SDF | CSV | PNG | TXT
+#' "<output specification> = XML | ASNT | ASNB | JSON | JSONP [ ?callback=<callback name> ] | SDF | CSV | PNG | TXT"
 #'
 #' Complete documentation for valid output formats can be found at:
 #' https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest$_Toc494865558
@@ -350,7 +350,7 @@ queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
 #    'text' or 'parsed'. Default is 'text'.
 #' @param ... Additional arguments to the `httr::content` function.
 #'
-#' @seelalso [httr::content]
+#' @seealso [httr::content]
 #'
 #' @md
 #' @importFrom jsonlite fromJSON
@@ -525,9 +525,8 @@ getPubChemFromNSC <- function(ids, to='cids', ..., batch=TRUE, raw=FALSE,
 #' @importFrom data.table setnames as.data.table rbindlist
 #' @export
 getPubChemCompound <- function(ids, from='cid', to='property', ...,
-    properties='Title', batch=TRUE, raw=FALSE, proxy=FALSE, options=NA,
-    query_only=FALSE)
-{
+        properties='Title', batch=TRUE, raw=FALSE, proxy=FALSE, options=NA,
+        query_only=FALSE) {
     if (!is.character(ids)) ids <- as.character(ids)
     if (from %in% c('name', 'xref', 'smiles', 'inchi', 'sdf', 'inchikey')) {
         if (isTRUE(batch)) .warning('Batch queries cannot be used when mapping
@@ -606,8 +605,7 @@ getPubChemCompound <- function(ids, from='cid', to='property', ...,
 #' @importFrom data.table setnames as.data.table rbindlist
 #' @export
 getPubChemSubstance <- function(ids, from='cid', to='sids', ...,
-    batch=TRUE, raw=FALSE, proxy=FALSE)
-{
+        batch=TRUE, raw=FALSE, proxy=FALSE) {
     if (!is.character(ids)) ids <- as.character(ids)
     if (from %in% c('name', 'xref', 'smiles', 'inchi', 'sdf')) {
         if (isTRUE(batch)) .warning('Batch queries cannot be used when mapping
@@ -687,10 +685,9 @@ getPubChemSubstance <- function(ids, from='cid', to='sids', ...,
 #' @importFrom BiocParallel bpparam bpworkers bpprogressbar bptry
 #' @export
 getPubChemAnnotations <- function(header='Available', type='Compound',
-    parseFUN=identity, ..., output='JSON', raw=FALSE,
-    url='https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/annotations/heading',
-    BPPARAM=bpparam(), proxy=FALSE)
-{
+        parseFUN=identity, ..., output='JSON', raw=FALSE,
+        url='https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/annotations/heading',
+        BPPARAM=bpparam(), proxy=FALSE) {
     funContext <- .funContext('::getPubChemAnnotations')
     if (header == 'Available') {
         queryURL <-

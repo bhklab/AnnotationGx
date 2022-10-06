@@ -1,5 +1,5 @@
 #' @importFrom biomaRt useEnsembl listAttributes getBM
-#' @importFrom data.table rbindlist as.data.table
+#' @importFrom data.table rbindlist as.data.table melt
 #' @importFrom BiocParallel bplapply
 getBiomaRt <- function() {
 

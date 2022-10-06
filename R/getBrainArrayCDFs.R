@@ -4,7 +4,9 @@
 #'   to the ENSG version for Ensembl IDs.
 #'
 #' @examples
+#' \dontrun{
 #' brain_array <- getBrainArrayTable()
+#' }
 #'
 #' @importFrom rvest read_html html_table
 #' @importFrom data.table as.data.table tstrsplit

@@ -20,3 +20,8 @@ Parse a JSON into a list
 
 Parse a JSON into a list
 }
+\seealso{
+\link[httr:content]{httr::content}
+
+\link[httr:content]{httr::content}
+}
