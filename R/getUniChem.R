@@ -131,12 +131,12 @@ getUniChemSources <- function(metadata=FALSE, ...) {
 #' Christopher Eeles (christopher.eeles@uhnresearch.ca)
 #'
 #' @examples
-#' \donttest{
-#'   # Look up for Erlotinib via DrugBank ID
-#'   erl_drugbank <- postRequestUniChem(compound="DB00530", type="sourceID", sourceID="drugbank")
-#'   # Now do backwards look ups with the results
-#'   erl_uci <- postRequestUniChem(compound=unique(erl_drugbank$uci), type="uci")
-#'   erl_ichikey <- postRequestUniChem(compound=unique(erl_drugbank$inchikey), type="inchikey")
+#' \dontrun{
+#' # Look up for Erlotinib via DrugBank ID
+#' erl_drugbank <- postRequestUniChem(compound="DB00530", type="sourceID", sourceID="drugbank")
+#' # Now do backwards look ups with the results
+#' erl_uci <- postRequestUniChem(compound=unique(erl_drugbank$uci), type="uci")
+#' erl_ichikey <- postRequestUniChem(compound=unique(erl_drugbank$inchikey), type="inchikey")
 #' }
 #'
 #' @export
@@ -237,11 +237,11 @@ postRequestUniChem <- function(compound,
 #' `attr(<result>, "failed")` to see the failure error messages.
 #'
 #' @examples
-#' \donttest{
-#'   # successful query for Erlotinib and Paclitaxel via DrugBank ID
-#'   (success <- queryUniChem(compound=c("DB00530", "DB01229"), type="sourceID", sourceID="drugbank"))
-#'   # partially successful query for Erlotinib and a dummy value via DrugBank ID
-#'   (failed <- queryUniChem(compound=c("DB00530", "not_a_valid_id"), type="sourceID", sourceID="drugbank")
+#' \dontrun{
+#' # successful query for Erlotinib and Paclitaxel via DrugBank ID
+#' (success <- queryUniChem(compound=c("DB00530", "DB01229"), type="sourceID", sourceID="drugbank"))
+#' # partially successful query for Erlotinib and a dummy value via DrugBank ID
+#' (failed <- queryUniChem(compound=c("DB00530", "not_a_valid_id"), type="sourceID", sourceID="drugbank")
 #' }
 #'
 #' @export

@@ -4,16 +4,16 @@
 \alias{addAnnotationColumnToDrugs}
 \title{Adds a new column to the drugs with ids table}
 \usage{
-addAnnotationColumnToDrugs(drug.all, new_mapping)
+addAnnotationColumnToDrugs(drug_all, new_mapping)
 }
 \arguments{
+\item{drug_all}{assumed to be the drugs.with.ids table as data frame with
+rownames of unique.drugid}
+
 \item{new_mapping}{assumed to be a data frame with two columns, the first
 one named unique.drugid, and the second one named "dataset".drugid, for the
 new column name in the drugs with ids table. The rownames are also assumed to
 match unique.drugid (in part to ensure uniqueness of this id)}
-
-\item{drug_all}{assumed to be the drugs.with.ids table as data frame with
-rownames of unique.drugid}
 }
 \description{
 Adds a new column to the drugs with ids table
