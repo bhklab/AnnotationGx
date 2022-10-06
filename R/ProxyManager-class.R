@@ -29,7 +29,7 @@ ProxyManager <- R6::R6Class('ProxyManager',
     ),
     public=list(
         initialize=function(
-            proxy_source_url='http://api.proxyscrape.com/v2/?request=getproxies&protocol=http&timeoust=10000&country=all&ssl=yes&anonymity=all&simplified=true',
+            proxy_source_url='https://api.proxyscrape.com/v2/?request=displayproxies&protocol=http&timeout=10000&country=all&ssl=all&anonymity=all',
             name='ProxyManager', ...,
             proxy_parser=parse_text_response_to_datatable)
         {
