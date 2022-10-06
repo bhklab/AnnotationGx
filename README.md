@@ -1,4 +1,9 @@
 # AnnotationGx
+
+  <!-- badges: start -->
+  [![R-CMD-check](https://github.com/bhklab/AnnotationGx/workflows/R-CMD-check/badge.svg)](https://github.com/bhklab/AnnotationGx/actions)
+  <!-- badges: end -->
+
 An R package to query various bio/chem-informatics databases APIs to construct annotation files.
 
 ## Installing AnnotationGx

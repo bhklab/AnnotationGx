@@ -3,6 +3,8 @@
 #' @importFrom BiocParallel bplapply
 getBiomaRt <- function() {
 
+    stop("Not implemented yet!")
+
     # -- connect to ensembl to map gene symbols
     ensemblRat <- useEnsembl('genes', 'rnorvegicus_gene_ensembl')
     ensemblHuman <- useEnsembl('genes', 'hsapiens_gene_ensembl')
@@ -35,5 +37,5 @@ getBiomaRt <- function() {
 
     # merge all the symbols into a single table mapping symbol to ensembl id
     geneSymbolDT <- rbind(humanMapping, ratMapping)
-
+    return(geneSymbolDT)
 }

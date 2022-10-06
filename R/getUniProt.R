@@ -35,6 +35,7 @@ getUniProt <- function(url='') {
 queryUniProt <- function(query, columns='', limit='', offset='', format='xml',
         include=TRUE, compress=TRUE, ...,
         url='https://www.uniprot.org/uniprot') {
+    stop("Not implemented yet!")
     if (missing(query)) stop(.errorMsg(.context(), 'The query parameter is
         missing! This parameter is mandatory.'))
 
