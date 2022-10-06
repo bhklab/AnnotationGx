@@ -53,21 +53,21 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">addAnnotationColumnToDrugs</span><span class="op">(</span><span class="va">drug.all</span>, <span class="va">new_mapping</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">addAnnotationColumnToDrugs</span><span class="op">(</span><span class="va">drug_all</span>, <span class="va">new_mapping</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>new_mapping</dt>
+    <dl><dt>drug_all</dt>
+<dd><p>assumed to be the drugs.with.ids table as data frame with
+rownames of unique.drugid</p></dd>
+
+
+<dt>new_mapping</dt>
 <dd><p>assumed to be a data frame with two columns, the first
 one named unique.drugid, and the second one named "dataset".drugid, for the
 new column name in the drugs with ids table. The rownames are also assumed to
 match unique.drugid (in part to ensure uniqueness of this id)</p></dd>
-
-
-<dt>drug_all</dt>
-<dd><p>assumed to be the drugs.with.ids table as data frame with
-rownames of unique.drugid</p></dd>
 
 </dl></div>
 

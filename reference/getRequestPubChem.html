@@ -173,7 +173,7 @@ convenience.</p><div class="section">
 produce its results is encoded into the URL. The general form of the URL
 has three parts – input, operation, and output – after the common prefix,
 followed by operation options as URL arguments (after the ‘?’):</p>
-<p>https://pubchem.ncbi.nlm.nih.gov/rest/pug/&lt;input specification&gt;/&lt;operation specification&gt;/</p><div class="section">
+<p>https://pubchem.ncbi.nlm.nih.gov/rest/pug/&lt;input specification&gt;/&lt;operation specification&gt;/&lt;output specification&gt;</p><div class="section">
 <h4 id="input">Input<a class="anchor" aria-label="anchor" href="#input"></a></h4>
 
 
@@ -215,7 +215,7 @@ https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest$_Toc494865557</p>
 <p>The final portion of the URL tells the service what output format is desired.
 Note that this is formally optional, as output format can also be specified
 in the HTTP Accept field of the request header – see below for more detail.</p>
-<p>&lt;output specification&gt; = XML | ASNT | ASNB | JSON | JSONP  | SDF | CSV | PNG | TXT</p>
+<p>&lt;output specification&gt; = XML | ASNT | ASNB | JSON | JSONP  ?callback=&lt;callback name&gt;  | SDF | CSV | PNG | TXT</p>
 <p>Complete documentation for valid output formats can be found at:
 https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest$_Toc494865558</p>
 </div>

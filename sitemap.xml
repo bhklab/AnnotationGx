@@ -37,10 +37,7 @@
     <loc>/news/index.html</loc>
   </url>
   <url>
-    <loc>/reference/API-class.html</loc>
-  </url>
-  <url>
-    <loc>/reference/API.html</loc>
+    <loc>/reference/ProxyManager.html</loc>
   </url>
   <url>
     <loc>/reference/addAnnotationColumnToDrugs.html</loc>
