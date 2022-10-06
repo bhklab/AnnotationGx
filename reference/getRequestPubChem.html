@@ -14,7 +14,7 @@ object."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mat
     
     <a class="navbar-brand me-2" href="../index.html">AnnotationGx</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.4.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.5.9001</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -173,18 +173,18 @@ convenience.</p><div class="section">
 produce its results is encoded into the URL. The general form of the URL
 has three parts – input, operation, and output – after the common prefix,
 followed by operation options as URL arguments (after the ‘?’):</p>
-<p>https://pubchem.ncbi.nlm.nih.gov/rest/pug/&lt;input specification&gt;/&lt;operation specification&gt;/&lt;output specification&gt;</p><div class="section">
+<p>"https://pubchem.ncbi.nlm.nih.gov/rest/pug/&lt;input specification&gt;/&lt;operation specification&gt;/[&lt;output specification&gt;][?&lt;operation_options&gt;]"</p><div class="section">
 <h4 id="input">Input<a class="anchor" aria-label="anchor" href="#input"></a></h4>
 
 
 <p>The input portion of the URL tells the service which records to use as the
 subject of the query. This is further subdivided into two or more locations
 in the URL “path” as follows:</p>
-<p>&lt;input specification&gt; = &lt;domain&gt;/&lt;namespace&gt;/&lt;identifiers&gt;</p>
-<p>&lt;domain&gt; = substance | compound | assay | &lt;other inputs&gt;</p>
-<p>compound domain &lt;namespace&gt; = cid | name | smiles | inchi | sdf | inchikey | formula | &lt;structure search&gt; | &lt;xref&gt; | listkey | &lt;fast search&gt;</p>
-<p>substance domain &lt;namespace&gt; = sid | sourceid/&lt;source id&gt; | sourceall/&lt;source name&gt; | name | &lt;xref&gt; | listkey</p>
-<p>assay domain &lt;namespace&gt; = aid | listkey | type/&lt;assay type&gt; | sourceall/&lt;source name&gt; | target/&lt;assay target&gt; | activity/&lt;activity column name&gt;</p>
+<p>"&lt;input specification&gt; = &lt;domain&gt;/&lt;namespace&gt;/&lt;identifiers&gt;"</p>
+<p>"&lt;domain&gt; = substance | compound | assay | &lt;other inputs&gt;"</p>
+<p>"compound domain &lt;namespace&gt; = cid | name | smiles | inchi | sdf | inchikey | formula | &lt;structure search&gt; | &lt;xref&gt; | listkey | &lt;fast search&gt;"</p>
+<p>"substance domain &lt;namespace&gt; = sid | sourceid/&lt;source id&gt; | sourceall/&lt;source name&gt; | name | &lt;xref&gt; | listkey"</p>
+<p>"assay domain &lt;namespace&gt; = aid | listkey | type/&lt;assay type&gt; | sourceall/&lt;source name&gt; | target/&lt;assay target&gt; | activity/&lt;activity column name&gt;"</p>
 <p>Complete documentation for valid input specifications can be found at:
 https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest$_Toc494865556</p>
 </div>
@@ -201,9 +201,9 @@ specified at all, the default is to retrieve the entire record. What
 operations are available are, of course, dependent on the input domain –
 that is, certain operations are applicable only to compounds and not
 assays.</p>
-<p>compound domain &lt;operation specification&gt; = record | &lt;compound property&gt; | synonyms | sids | cids | aids | assaysummary | classification | &lt;xrefs&gt; | description | conformers</p>
-<p>substance domain &lt;operation specification&gt; = record | synonyms | sids | cids | aids | assaysummary | classification | &lt;xrefs&gt; | description</p>
-<p>assay domain &lt;operation specification&gt; = record | concise | aids | sids | cids | description | targets/&lt;target type&gt; | &lt;doseresponse&gt; | summary | classification</p>
+<p>"compound domain &lt;operation specification&gt; = record | &lt;compound property&gt; | synonyms | sids | cids | aids | assaysummary | classification | &lt;xrefs&gt; | description | conformers"</p>
+<p>"substance domain &lt;operation specification&gt; = record | synonyms | sids | cids | aids | assaysummary | classification | &lt;xrefs&gt; | description"</p>
+<p>"assay domain &lt;operation specification&gt; = record | concise | aids | sids | cids | description | targets/&lt;target type&gt; | &lt;doseresponse&gt; | summary | classification"</p>
 <p>Complete documentation for valid operations can be found at:
 https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest$_Toc494865557</p>
 </div>
@@ -215,7 +215,7 @@ https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest$_Toc494865557</p>
 <p>The final portion of the URL tells the service what output format is desired.
 Note that this is formally optional, as output format can also be specified
 in the HTTP Accept field of the request header – see below for more detail.</p>
-<p>&lt;output specification&gt; = XML | ASNT | ASNB | JSON | JSONP  ?callback=&lt;callback name&gt;  | SDF | CSV | PNG | TXT</p>
+<p>"&lt;output specification&gt; = XML | ASNT | ASNB | JSON | JSONP  | SDF | CSV | PNG | TXT"</p>
 <p>Complete documentation for valid output formats can be found at:
 https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest$_Toc494865558</p>
 </div>
