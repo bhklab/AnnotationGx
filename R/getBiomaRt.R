@@ -1,7 +1,9 @@
+#' @importFrom biomaRt useEnsembl listAttributes getBM
+#' @importFrom data.table rbindlist as.data.table
+#' @importFrom BiocParallel bplapply
 getBiomaRt <- function() {
 
     # -- connect to ensembl to map gene symbols
-    require('biomaRt')  ## FIXME:: Remove this when using as package
     ensemblRat <- useEnsembl('genes', 'rnorvegicus_gene_ensembl')
     ensemblHuman <- useEnsembl('genes', 'hsapiens_gene_ensembl')
     ratAttrs <- as.data.table(listAttributes(ensemblRat))

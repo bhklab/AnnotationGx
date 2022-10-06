@@ -33,7 +33,8 @@ Imports:
     R6,
     R6P,
     listenv,
-    rvest
+    rvest,
+    S4Vectors
 Suggests:
     rmarkdown,
     knitr,

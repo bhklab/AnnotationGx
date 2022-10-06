@@ -23,7 +23,7 @@
 #'   has three parts – input, operation, and output – after the common prefix,
 #'   followed by operation options as URL arguments (after the ‘?’):
 #'
-#' https://pubchem.ncbi.nlm.nih.gov/rest/pug/<input specification>/<operation specification>/[<output specification>][?<operation_options>]
+#' https://pubchem.ncbi.nlm.nih.gov/rest/pug/\<input specification\>/\<operation specification\>/\[\<output specification\>\]\[?\<operation_options\>\]
 #'
 #' ### Input
 #'
@@ -31,13 +31,13 @@
 #'   subject of the query. This is further subdivided into two or more locations
 #'   in the URL “path” as follows:
 #'
-#' <input specification> = <domain>/<namespace>/<identifiers>
+#' \<input specification\> = \<domain\>/\<namespace\>/\<identifiers\>
 #'
-#' <domain> = substance | compound | assay | <other inputs>
+#' \<domain\> = substance | compound | assay | \<other inputs\>
 #'
-#' compound domain <namespace> = cid | name | smiles | inchi | sdf | inchikey | formula | <structure search> | <xref> | listkey | <fast search>
+#' compound domain \<namespace\> = cid | name | smiles | inchi | sdf | inchikey | formula | \<structure search\> | \<xref\> | listkey | \<fast search\>
 #'
-#' substance domain <namespace> = sid | sourceid/<source id> | sourceall/<source name> | name | <xref> | listkey
+#' substance domain \<namespace\> = sid | sourceid/\<source id\> | sourceall/\<source name\> | name | <xref> | listkey
 #'
 #' assay domain <namespace> = aid | listkey | type/<assay type> | sourceall/<source name> | target/<assay target> | activity/<activity column name>
 #'
@@ -165,7 +165,12 @@ getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=
     # get HTTP response, respecting the 30s max query time of PubChem API
     tryCatch({
         if (isTRUE(proxy)) {
-            proxyDT <- AnnotationGx:::proxyManager$get_proxies()
+            if (is.null(proxyManager$get_proxies())) {
+                tryCatch(proxyManager$connect(),
+                error=function(e)
+                    stop("proxyManager connection failed, set proxy=FALSE!\n\t", e)
+                )
+            }
             result <- FALSE
             count <- 1
             while(isFALSE(result)) {

@@ -2,11 +2,7 @@
     # initialize the proxy manager reference class in the pkg namespace
     delayedAssign(
         'proxyManager',
-        value=tryCatch({
-            AnnotationGx:::ProxyManager$new()
-        },
-        error=warning("ProxyManager setup failed! Proxies must be configured",
-            "manually.")),
+        AnnotationGx:::ProxyManager$new(),
         assign.env=asNamespace(packagename)
     )
 }
