@@ -2,17 +2,13 @@
 #' @importFrom R6P Singleton
 NULL
 
-# Singleton ProxyManager Class to Manage a List of Proxy URLs
-#
-# @description
-# # Fields
-# name `character(1)` A string name for the ProxyManager. Defaults to
-# 'ProxyManger'
-#
-# @details
-# ## Constructor
-#
-#' @md
+#' Singleton ProxyManager Class to Manage a List of Proxy URLs
+#'
+#' @description
+#' # Fields
+#' name `character(1)` A string name for the ProxyManager. Defaults to
+#' 'ProxyManger'
+#'
 #' @importFrom R6P Singleton
 #' @importFrom httr GET
 #' @importFrom data.table data.table fread copy

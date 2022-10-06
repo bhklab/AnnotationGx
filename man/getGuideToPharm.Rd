@@ -30,6 +30,9 @@ PubChem CIDs.}
 \item{url}{\code{character(1)} The URL of the Guide to PHARMACOLOGY API. Do
 not change this unless you are a developer and know what you are doing.}
 }
+\value{
+A \code{data.table} of query results.
+}
 \description{
 Get data from the Guide to PHARMACOLOGY Database Web Services
 }

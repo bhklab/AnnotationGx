@@ -17,6 +17,8 @@ to the ENSG version for Ensembl IDs.}
 Retrieve a table of all available CDF files from BrainArray
 }
 \examples{
+\dontrun{
 brain_array <- getBrainArrayTable()
+}
 
 }

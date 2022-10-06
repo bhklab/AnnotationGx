@@ -97,7 +97,7 @@ produce its results is encoded into the URL. The general form of the URL
 has three parts – input, operation, and output – after the common prefix,
 followed by operation options as URL arguments (after the ‘?’):
 
-https://pubchem.ncbi.nlm.nih.gov/rest/pug/<input specification>/<operation specification>/
+https://pubchem.ncbi.nlm.nih.gov/rest/pug/<input specification>/<operation specification>/\link[=?<operation_options>]{<output specification>}
 \subsection{Input}{
 
 The input portion of the URL tells the service which records to use as the
@@ -145,7 +145,7 @@ The final portion of the URL tells the service what output format is desired.
 Note that this is formally optional, as output format can also be specified
 in the HTTP Accept field of the request header – see below for more detail.
 
-<output specification> = XML | ASNT | ASNB | JSON | JSONP  | SDF | CSV | PNG | TXT
+<output specification> = XML | ASNT | ASNB | JSON | JSONP \link[= ?callback=<callback name> ]{ ?callback=<callback name> } | SDF | CSV | PNG | TXT
 
 Complete documentation for valid output formats can be found at:
 https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest$_Toc494865558
