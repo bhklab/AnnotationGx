@@ -42,9 +42,6 @@ type="metadata".
 \description{
 File descriptions are available at https://www.gencodegenes.org/human/.
 }
-\details{
-
-}
 \seealso{
 Other Gencode: 
 \code{\link{getGencodeAvailableFiles}()},

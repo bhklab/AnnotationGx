@@ -17,20 +17,20 @@ getBrainArrayTable <- function(url="http://brainarray.mbni.med.umich.edu/Brainar
     content <- url |> read_html()
 
     # extract modes containing an HTML table
-    content |>
-        html_elements("table") -> # select the html tables unprocessed
-        table_html
+    table_html <- content |>
+        html_elements("table") # select the html tables unprocessed
+
 
     # extract the table as a tibble; but it doesn't get the links for table items
     #   and is therefore pretty much useless in this case
     #   will use it for the table column names
     template_table <- html_table(table_html[[2]])
 
-    table_html[2] |>
+    row_list <- table_html[2] |>
         html_elements("tr") |> # pull out the rows
         lapply(html_elements, xpath=".//td") |>
-        lapply(as.character) ->
-        row_list
+        lapply(as.character)
+
 
     dt <- do.call(rbind, row_list[-c(1, 2)]) |>
         as.data.table()

@@ -19,7 +19,7 @@ grep_file_names <- function(x, extensions="[[:alnum:]]{2,5}$") {
 }
 
 #' @param url `character(1)` URL to scrape all HTML tables from.
-#' @export1
+#' @export
 get_remote_table <- function(url) {
     read_html(url) |>
         html_elements("body") |>

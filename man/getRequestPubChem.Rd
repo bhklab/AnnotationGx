@@ -97,22 +97,22 @@ produce its results is encoded into the URL. The general form of the URL
 has three parts – input, operation, and output – after the common prefix,
 followed by operation options as URL arguments (after the ‘?’):
 
-https://pubchem.ncbi.nlm.nih.gov/rest/pug/<input specification>/<operation specification>/\link[=?<operation_options>]{<output specification>}
+"https://pubchem.ncbi.nlm.nih.gov/rest/pug/<input specification>/<operation specification>/[<output specification>][?<operation_options>]"
 \subsection{Input}{
 
 The input portion of the URL tells the service which records to use as the
 subject of the query. This is further subdivided into two or more locations
 in the URL “path” as follows:
 
-<input specification> = <domain>/<namespace>/<identifiers>
+"<input specification> = <domain>/<namespace>/<identifiers>"
 
-<domain> = substance | compound | assay | <other inputs>
+"<domain> = substance | compound | assay | <other inputs>"
 
-compound domain <namespace> = cid | name | smiles | inchi | sdf | inchikey | formula | <structure search> | <xref> | listkey | <fast search>
+"compound domain <namespace> = cid | name | smiles | inchi | sdf | inchikey | formula | <structure search> | <xref> | listkey | <fast search>"
 
-substance domain <namespace> = sid | sourceid/<source id> | sourceall/<source name> | name | <xref> | listkey
+"substance domain <namespace> = sid | sourceid/<source id> | sourceall/<source name> | name | <xref> | listkey"
 
-assay domain <namespace> = aid | listkey | type/<assay type> | sourceall/<source name> | target/<assay target> | activity/<activity column name>
+"assay domain <namespace> = aid | listkey | type/<assay type> | sourceall/<source name> | target/<assay target> | activity/<activity column name>"
 
 Complete documentation for valid input specifications can be found at:
 https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest$_Toc494865556
@@ -129,11 +129,11 @@ operations are available are, of course, dependent on the input domain –
 that is, certain operations are applicable only to compounds and not
 assays.
 
-compound domain <operation specification> = record | <compound property> | synonyms | sids | cids | aids | assaysummary | classification | <xrefs> | description | conformers
+"compound domain <operation specification> = record | <compound property> | synonyms | sids | cids | aids | assaysummary | classification | <xrefs> | description | conformers"
 
-substance domain <operation specification> = record | synonyms | sids | cids | aids | assaysummary | classification | <xrefs> | description
+"substance domain <operation specification> = record | synonyms | sids | cids | aids | assaysummary | classification | <xrefs> | description"
 
-assay domain <operation specification> = record | concise | aids | sids | cids | description | targets/<target type> | <doseresponse> | summary | classification
+"assay domain <operation specification> = record | concise | aids | sids | cids | description | targets/<target type> | <doseresponse> | summary | classification"
 
 Complete documentation for valid operations can be found at:
 https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest$_Toc494865557
@@ -145,7 +145,7 @@ The final portion of the URL tells the service what output format is desired.
 Note that this is formally optional, as output format can also be specified
 in the HTTP Accept field of the request header – see below for more detail.
 
-<output specification> = XML | ASNT | ASNB | JSON | JSONP \link[= ?callback=<callback name> ]{ ?callback=<callback name> } | SDF | CSV | PNG | TXT
+"<output specification> = XML | ASNT | ASNB | JSON | JSONP  | SDF | CSV | PNG | TXT"
 
 Complete documentation for valid output formats can be found at:
 https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest$_Toc494865558

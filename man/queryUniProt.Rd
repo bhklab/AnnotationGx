@@ -29,6 +29,8 @@ for more information.}
 \item{include}{A \code{boolean} indicating if isoforms or description of
 referenced data should be included.}
 
+\item{compress}{TODO::}
+
 \item{...}{Catch all unnamed arguments. All parameters after ... must be
 specified with as name=value or they will be ignored.}
 

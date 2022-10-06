@@ -73,11 +73,11 @@ https://chembl.gitbook.io/unichem/unichem-2.0/unichem-2.0-beta/api/compound-sear
 https://chembl.gitbook.io/unichem/unichem-2.0/unichem-2.0-beta/api/connectivity-search
 }
 \examples{
-\donttest{
-  # successful query for Erlotinib and Paclitaxel via DrugBank ID
-  (success <- queryUniChem(compound=c("DB00530", "DB01229"), type="sourceID", sourceID="drugbank"))
-  # partially successful query for Erlotinib and a dummy value via DrugBank ID
-  (failed <- queryUniChem(compound=c("DB00530", "not_a_valid_id"), type="sourceID", sourceID="drugbank")
+\dontrun{
+# successful query for Erlotinib and Paclitaxel via DrugBank ID
+(success <- queryUniChem(compound=c("DB00530", "DB01229"), type="sourceID", sourceID="drugbank"))
+# partially successful query for Erlotinib and a dummy value via DrugBank ID
+(failed <- queryUniChem(compound=c("DB00530", "not_a_valid_id"), type="sourceID", sourceID="drugbank")
 }
 
 }

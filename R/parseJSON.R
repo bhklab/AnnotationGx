@@ -5,7 +5,7 @@
 #    'text' or 'parsed'. Default is 'text'.
 #' @param ... Additional arguments to the `httr::content` function.
 #'
-#' @seelalso [httr::content]
+#' @seealso [httr::content]
 #'
 #' @md
 #' @importFrom jsonlite fromJSON

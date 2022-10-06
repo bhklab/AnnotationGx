@@ -65,12 +65,12 @@ https://chembl.gitbook.io/unichem/unichem-2.0/unichem-2.0-beta/api/compound-sear
 https://chembl.gitbook.io/unichem/unichem-2.0/unichem-2.0-beta/api/connectivity-search
 }
 \examples{
-\donttest{
-  # Look up for Erlotinib via DrugBank ID
-  erl_drugbank <- postRequestUniChem(compound="DB00530", type="sourceID", sourceID="drugbank")
-  # Now do backwards look ups with the results
-  erl_uci <- postRequestUniChem(compound=unique(erl_drugbank$uci), type="uci")
-  erl_ichikey <- postRequestUniChem(compound=unique(erl_drugbank$inchikey), type="inchikey")
+\dontrun{
+# Look up for Erlotinib via DrugBank ID
+erl_drugbank <- postRequestUniChem(compound="DB00530", type="sourceID", sourceID="drugbank")
+# Now do backwards look ups with the results
+erl_uci <- postRequestUniChem(compound=unique(erl_drugbank$uci), type="uci")
+erl_ichikey <- postRequestUniChem(compound=unique(erl_drugbank$inchikey), type="inchikey")
 }
 
 }

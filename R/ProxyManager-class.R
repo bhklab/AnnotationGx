@@ -2,19 +2,26 @@
 #' @importFrom R6P Singleton
 NULL
 
-#' Singleton ProxyManager Class to Manage a List of Proxy URLs
-#'
-#' @description
-#' # Fields
-#' name `character(1)` A string name for the ProxyManager. Defaults to
-#' 'ProxyManger'
-#'
+# Singleton ProxyManager Class to Manage a List of Proxy URLs
+#
+# @description
+# # Fields
+# name `character(1)` A string name for the ProxyManager. Defaults to
+#   'ProxyManger'
+# proxy_source_url `character(1)` URL for a source of free proxies.
+# proxy-data `data.table` Table of free proxies, initialized after calling
+#   the `ProxyManager$connect()` method.
+# failed_proxies `data.table` Collection of all the proxies that have
+#   had a failed request and are therefore removed from the `proxy_data` field.
+#
 #' @importFrom R6P Singleton
 #' @importFrom httr GET
 #' @importFrom data.table data.table fread copy
 #' @importFrom crayon magenta cyan bold
 #' @importFrom listenv listenv
-#' @export
+#'
+#' @noRd
+#' @keywords internal
 ProxyManager <- R6::R6Class('ProxyManager',
     inherit=R6P::Singleton,
     private=list(
@@ -32,19 +39,14 @@ ProxyManager <- R6::R6Class('ProxyManager',
             # Initialze the object fields
             private$name <- name
             private$proxy_source_url <- proxy_source_url
+            private$proxy_data <- NULL
             private$failed_proxies <- data.table::data.table(failed=integer())
-
+        },
+        connect=function(...) {
             # Get the data from the source URL
-            tryCatch({
-                response <- httr::GET(proxy_source_url, ...)
-            },
-            error=function(e) stop('The GET request failed with: ', e))
-
+            response <- httr::GET(private$proxy_source_url, ...)
             # Parse the text into a data.frame
-            tryCatch({
-                private$proxy_data <- proxy_parser(response)
-            },
-            error=function(e) stop('The proxy_parser function failed with: ', e))
+            private$proxy_data <- proxy_parser(response)
         },
         get_proxies=function() {
             data.table::copy(private$proxy_data)

@@ -20,7 +20,7 @@ getUniProt <- function(url='') {
 #'   for more information.
 #' @param include A `boolean` indicating if isoforms or description of
 #'   referenced data should be included.
-#' @param compress
+#' @param compress TODO::
 #' @param ... Catch all unnamed arguments. All parameters after ... must be
 #'   specified with as name=value or they will be ignored.
 #' @param url A `character` vector of the URL for the REST API. Should not
@@ -31,10 +31,10 @@ getUniProt <- function(url='') {
 #'
 #' @import httr
 #' @importFrom CoreGx .errorMsg .warnMsg
-#' @export
+# #' @export
 queryUniProt <- function(query, columns='', limit='', offset='', format='xml',
-        include=TRUE, compress=TRUE, ..., url='https://www.uniprot.org/uniprot') {
-
+        include=TRUE, compress=TRUE, ...,
+        url='https://www.uniprot.org/uniprot') {
     stop("Not implemented yet!")
     if (missing(query)) stop(.errorMsg(.context(), 'The query parameter is
         missing! This parameter is mandatory.'))
@@ -44,8 +44,6 @@ queryUniProt <- function(query, columns='', limit='', offset='', format='xml',
     # parse parameters
     include <- if (include) 'yes' else 'no'
     compress <- if (compress) 'yes' else 'no'
-
-
 
     response <- GET()
 }
