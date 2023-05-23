@@ -37,10 +37,16 @@
     <loc>/reference/addAnnotationColumnToDrugs.html</loc>
   </url>
   <url>
+    <loc>/reference/cleanCellosaurusResponse.html</loc>
+  </url>
+  <url>
     <loc>/reference/compoundQuery.html</loc>
   </url>
   <url>
     <loc>/reference/constructChemblQuery.html</loc>
+  </url>
+  <url>
+    <loc>/reference/createQueryURLs.html</loc>
   </url>
   <url>
     <loc>/reference/depositZenodo.html</loc>
@@ -68,6 +74,9 @@
   </url>
   <url>
     <loc>/reference/getBrainArrayTable.html</loc>
+  </url>
+  <url>
+    <loc>/reference/getCellApi.html</loc>
   </url>
   <url>
     <loc>/reference/getCellosaurus.html</loc>
