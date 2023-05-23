@@ -27,6 +27,9 @@ An \code{XML} document of Cellosaurus
 This function reads Cellosaurus XML and parses parent node for each cell line, returning an XML document.
 This enables parsing any child node of interest.
 }
+\details{
+This function reads Cellosaurus XML and parses parent node for each cell line, returning an XML document.
+}
 \references{
 Bairoch A.The Cellosaurus, a cell line knowledge resource.J. Biomol. Tech. 29:25-38(2018) DOI: 10.7171/jbt.18-2902-002; PMID: 29805321; PMCID: PMC5945021
 }

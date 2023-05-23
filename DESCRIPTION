@@ -20,12 +20,14 @@ Depends: R (>= 4.0)
 Imports:
     httr,
     xml2,
+    rjson,
     BiocParallel,
     biomaRt,
     rtracklayer,
     janitor,
     jsonlite,
     data.table,
+    qs,
     checkmate,
     rlang,
     CoreGx,
@@ -48,5 +50,5 @@ License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.3
 Config/testthat/edition: 3

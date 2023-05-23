@@ -25,13 +25,13 @@ identifier for the specified \code{domain} and \code{namespace}. For example, if
 \code{domain='compound'} and \code{namespace='cid'} then \code{id} should be one or
 more compound cids to retrieve information about. If \code{id} is a \code{list} or
 \code{vector}, the ids are parsed to a string with ids separated by
-commas. This parameter forms the '<identifiers>' part of the Input
-portion of the URL path: '<domain>/<namespace>/<identifiers>'.}
+commas. This parameter forms the '\if{html}{\out{<identifiers>}}' part of the Input
+portion of the URL path: '\if{html}{\out{<domain>}}/\if{html}{\out{<namespace>}}/\if{html}{\out{<identifiers>}}'.}
 
 \item{domain}{Which records in PubChem are the subject of the query? Default
 is 'compound'. Usually, this will be one of 'substance', 'compound', or
 'assay'. For more advanced options see the PubChem PUG REST API
-documentation. This forms the '<domain>' part of the Input portion of the
+documentation. This forms the '\if{html}{\out{<domain>}}' part of the Input portion of the
 URL path.}
 
 \item{namespace}{What kind of identifiers are in \code{id}? These options
@@ -41,7 +41,7 @@ options are 'cid', 'name', 'smiles', 'inchi', or 'formula'. For the
 'assay' domain common options are 'aid' and 'target/<assay_target>' where
 '<assay_target>' is one of 'gi', 'proteinname', 'geneid', 'genesymbol' or
 'accession'. For all options please see the PubChem PUG REST API
-documentation. This parameter makes up the '<namespace>' part of the
+documentation. This parameter makes up the '\if{html}{\out{<namespace>}}' part of the
 Input portion of the URL path.}
 
 \item{operation}{What kind of data to return for the specified input
@@ -51,12 +51,12 @@ are available in the PubChem PUG REST API documentation. Options valid for
 'compound', 'substance' and 'assay' domains are 'record', 'aids', 'sids',
 'aids', 'description' and 'classification'. Common options for the
 'compound' domain are 'assaysummary', 'conformers' and
-'property/<properties>' where '<properties>' is a comma separated list
+'property/\if{html}{\out{<properties>}}' where '\if{html}{\out{<properties>}}' is a comma separated list
 property tags; valid tags can be found at
 https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest$_Toc494865565.
 Common options for the 'substance' domain are 'assaysummary'.
 Common options for the 'assay' domain include 'concise', 'summary' and
-'targets/<target type>' where '<target type>' is one of 'ProteinGI',
+'targets/\if{html}{\out{<target type>}}' where '\if{html}{\out{<target type>}}' is one of 'ProteinGI',
 'ProteinName', 'GeneID' or 'GeneSymbol'.}
 
 \item{output}{What format should the data be returned in? Default is 'JSON'.

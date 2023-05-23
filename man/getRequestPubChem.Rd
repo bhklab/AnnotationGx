@@ -24,13 +24,13 @@ identifier for the specified \code{domain} and \code{namespace}. For example, if
 \code{domain='compound'} and \code{namespace='cid'} then \code{id} should be one or
 more compound cids to retrieve information about. If \code{id} is a \code{list} or
 \code{vector}, the ids are parsed to a string with ids separated by
-commas. This parameter forms the '<identifiers>' part of the Input
-portion of the URL path: '<domain>/<namespace>/<identifiers>'.}
+commas. This parameter forms the '\if{html}{\out{<identifiers>}}' part of the Input
+portion of the URL path: '\if{html}{\out{<domain>}}/\if{html}{\out{<namespace>}}/\if{html}{\out{<identifiers>}}'.}
 
 \item{domain}{Which records in PubChem are the subject of the query? Default
 is 'compound'. Usually, this will be one of 'substance', 'compound', or
 'assay'. For more advanced options see the PubChem PUG REST API
-documentation. This forms the '<domain>' part of the Input portion of the
+documentation. This forms the '\if{html}{\out{<domain>}}' part of the Input portion of the
 URL path.}
 
 \item{namespace}{What kind of identifiers are in \code{id}? These options
@@ -40,7 +40,7 @@ options are 'cid', 'name', 'smiles', 'inchi', or 'formula'. For the
 'assay' domain common options are 'aid' and 'target/<assay_target>' where
 '<assay_target>' is one of 'gi', 'proteinname', 'geneid', 'genesymbol' or
 'accession'. For all options please see the PubChem PUG REST API
-documentation. This parameter makes up the '<namespace>' part of the
+documentation. This parameter makes up the '\if{html}{\out{<namespace>}}' part of the
 Input portion of the URL path.}
 
 \item{operation}{What kind of data to return for the specified input
@@ -50,12 +50,12 @@ are available in the PubChem PUG REST API documentation. Options valid for
 'compound', 'substance' and 'assay' domains are 'record', 'aids', 'sids',
 'aids', 'description' and 'classification'. Common options for the
 'compound' domain are 'assaysummary', 'conformers' and
-'property/<properties>' where '<properties>' is a comma separated list
+'property/\if{html}{\out{<properties>}}' where '\if{html}{\out{<properties>}}' is a comma separated list
 property tags; valid tags can be found at
 https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest$_Toc494865565.
 Common options for the 'substance' domain are 'assaysummary'.
 Common options for the 'assay' domain include 'concise', 'summary' and
-'targets/<target type>' where '<target type>' is one of 'ProteinGI',
+'targets/\if{html}{\out{<target type>}}' where '\if{html}{\out{<target type>}}' is one of 'ProteinGI',
 'ProteinName', 'GeneID' or 'GeneSymbol'.}
 
 \item{output}{What format should the data be returned in? Default is 'JSON'.
@@ -97,22 +97,22 @@ produce its results is encoded into the URL. The general form of the URL
 has three parts – input, operation, and output – after the common prefix,
 followed by operation options as URL arguments (after the ‘?’):
 
-"https://pubchem.ncbi.nlm.nih.gov/rest/pug/<input specification>/<operation specification>/[<output specification>][?<operation_options>]"
+"https://pubchem.ncbi.nlm.nih.gov/rest/pug/\if{html}{\out{<input specification>}}/\if{html}{\out{<operation specification>}}/[\if{html}{\out{<output specification>}}][?<operation_options>]"
 \subsection{Input}{
 
 The input portion of the URL tells the service which records to use as the
 subject of the query. This is further subdivided into two or more locations
 in the URL “path” as follows:
 
-"<input specification> = <domain>/<namespace>/<identifiers>"
+"\if{html}{\out{<input specification>}} = \if{html}{\out{<domain>}}/\if{html}{\out{<namespace>}}/\if{html}{\out{<identifiers>}}"
 
-"<domain> = substance | compound | assay | <other inputs>"
+"\if{html}{\out{<domain>}} = substance | compound | assay | \if{html}{\out{<other inputs>}}"
 
-"compound domain <namespace> = cid | name | smiles | inchi | sdf | inchikey | formula | <structure search> | <xref> | listkey | <fast search>"
+"compound domain \if{html}{\out{<namespace>}} = cid | name | smiles | inchi | sdf | inchikey | formula | \if{html}{\out{<structure search>}} | \if{html}{\out{<xref>}} | listkey | \if{html}{\out{<fast search>}}"
 
-"substance domain <namespace> = sid | sourceid/<source id> | sourceall/<source name> | name | <xref> | listkey"
+"substance domain \if{html}{\out{<namespace>}} = sid | sourceid/\if{html}{\out{<source id>}} | sourceall/\if{html}{\out{<source name>}} | name | \if{html}{\out{<xref>}} | listkey"
 
-"assay domain <namespace> = aid | listkey | type/<assay type> | sourceall/<source name> | target/<assay target> | activity/<activity column name>"
+"assay domain \if{html}{\out{<namespace>}} = aid | listkey | type/\if{html}{\out{<assay type>}} | sourceall/\if{html}{\out{<source name>}} | target/\if{html}{\out{<assay target>}} | activity/\if{html}{\out{<activity column name>}}"
 
 Complete documentation for valid input specifications can be found at:
 https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest$_Toc494865556
@@ -129,11 +129,11 @@ operations are available are, of course, dependent on the input domain –
 that is, certain operations are applicable only to compounds and not
 assays.
 
-"compound domain <operation specification> = record | <compound property> | synonyms | sids | cids | aids | assaysummary | classification | <xrefs> | description | conformers"
+"compound domain \if{html}{\out{<operation specification>}} = record | \if{html}{\out{<compound property>}} | synonyms | sids | cids | aids | assaysummary | classification | \if{html}{\out{<xrefs>}} | description | conformers"
 
-"substance domain <operation specification> = record | synonyms | sids | cids | aids | assaysummary | classification | <xrefs> | description"
+"substance domain \if{html}{\out{<operation specification>}} = record | synonyms | sids | cids | aids | assaysummary | classification | \if{html}{\out{<xrefs>}} | description"
 
-"assay domain <operation specification> = record | concise | aids | sids | cids | description | targets/<target type> | <doseresponse> | summary | classification"
+"assay domain \if{html}{\out{<operation specification>}} = record | concise | aids | sids | cids | description | targets/\if{html}{\out{<target type>}} | \if{html}{\out{<doseresponse>}} | summary | classification"
 
 Complete documentation for valid operations can be found at:
 https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest$_Toc494865557
@@ -145,7 +145,7 @@ The final portion of the URL tells the service what output format is desired.
 Note that this is formally optional, as output format can also be specified
 in the HTTP Accept field of the request header – see below for more detail.
 
-"<output specification> = XML | ASNT | ASNB | JSON | JSONP  | SDF | CSV | PNG | TXT"
+"\if{html}{\out{<output specification>}} = XML | ASNT | ASNB | JSON | JSONP  | SDF | CSV | PNG | TXT"
 
 Complete documentation for valid output formats can be found at:
 https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest$_Toc494865558
