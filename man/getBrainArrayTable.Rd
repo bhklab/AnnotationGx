@@ -5,8 +5,8 @@
 \title{Retrieve a table of all available CDF files from BrainArray}
 \usage{
 getBrainArrayTable(
- 
-    url = "http://brainarray.mbni.med.umich.edu/Brainarray/Database/CustomCDF/25.0.0/ensg.asp"
+  url =
+    "http://brainarray.mbni.med.umich.edu/Brainarray/Database/CustomCDF/25.0.0/ensg.asp"
 )
 }
 \arguments{
