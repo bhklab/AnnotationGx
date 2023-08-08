@@ -19,54 +19,58 @@
 #' @md
 #' @importFrom xml2 read_xml
 #' @export
-getCelloxml <-
-    memoise::memoise(function(url = "https://ftp.expasy.org/databases/cellosaurus/cellosaurus.xml", verbose = TRUE) {
-      if (verbose) {
-        message(paste(
-          "xml read started from",
-          url,
-          format(Sys.time(), "%Y-%m-%d %H:%M:%S")
-        ))
-      }
-      main_xml <- read_xml(url)
-      if (verbose) {
-        message(paste(
-          "xml read completed at",
-          format(Sys.time(), "%Y-%m-%d %H:%M:%S")
-        ))
-      }
-      return(main_xml)
-    })
-
-#' @md
-#' @importFrom xml2 read_xml xml_find_all
-#' @export
-#########ADD DOCS
-cleanCellnames <-
-  function(main_xml, verbose = TRUE) {
+getCelloxml <- memoise::memoise(function(url = "https://ftp.expasy.org/databases/cellosaurus/cellosaurus.xml", verbose = TRUE) {
     if (verbose) {
       message(paste(
-        "Started removing special characters from cell line names in the xml",
+        "xml read started from",
+        url,
         format(Sys.time(), "%Y-%m-%d %H:%M:%S")
       ))
     }
-    matching <- xml_find_all(main_xml, "//cell-line/name-list/name/text()")
-    # A raw string, added in R 4.0 will excape characters for you: r"{ <string> }"
-    badchars <- r"{[\xb5]|[]|[ ,]|[;]|[:]|[-]|[+]|[*]|[%]|[$]|[#]|[{]|[}]|[[]|[]]|[|]|[^]|[/]|[\]|[.]|[_]|[ ]|[(]|[)]}"
-    for(i in 1:length(matching)){
-      node1 <- matching[[i]]
-      node1text <- xml_text(node1)
-      xml_par <- xml_find_first(node1, "parent::*")
-      xml_set_attr(xml_par, "cleanname", gsub(badchars,"",ignore.case = TRUE, node1text))
-    }
+    main_xml <- read_xml(url)
     if (verbose) {
       message(paste(
-        "Removed special characters from cell line names in the xml",
+        "xml read completed at",
         format(Sys.time(), "%Y-%m-%d %H:%M:%S")
       ))
     }
     return(main_xml)
   }
+)
+
+#' Clean Cell Names
+#' 
+#' @description 
+#' TODO::
+#' 
+#' @md
+#' @importFrom xml2 read_xml xml_find_all
+#' @export
+#########ADD DOCS
+cleanCellnames <- function(main_xml, verbose = TRUE) {
+  if (verbose) {
+    message(paste(
+      "Started removing special characters from cell line names in the xml",
+      format(Sys.time(), "%Y-%m-%d %H:%M:%S")
+    ))
+  }
+  matching <- xml_find_all(main_xml, "//cell-line/name-list/name/text()")
+  # A raw string, added in R 4.0 will excape characters for you: r"{ <string> }"
+  badchars <- r"{[\xb5]|[]|[ ,]|[;]|[:]|[-]|[+]|[*]|[%]|[$]|[#]|[{]|[}]|[[]|[]]|[|]|[^]|[/]|[\]|[.]|[_]|[ ]|[(]|[)]}"
+  for(i in 1:length(matching)){
+    node1 <- matching[[i]]
+    node1text <- xml_text(node1)
+    xml_par <- xml_find_first(node1, "parent::*")
+    xml_set_attr(xml_par, "cleanname", gsub(badchars,"",ignore.case = TRUE, node1text))
+  }
+  if (verbose) {
+    message(paste(
+      "Removed special characters from cell line names in the xml",
+      format(Sys.time(), "%Y-%m-%d %H:%M:%S")
+    ))
+  }
+  return(main_xml)
+}
 
 #' Filter parent node cell-line and parse child nodes for required annotations
 #' @param cell_ip is either cell name or cvcl id.
