@@ -4,7 +4,10 @@
 \alias{cleanCellosaurusResponse}
 \title{Clean cellosaurus responses}
 \usage{
-cleanCellosaurusResponse(responseList)
+cleanCellosaurusResponse(
+  responseList,
+  GETfxn = c("search/cell-line?", "cell-line/")
+)
 }
 \arguments{
 \item{responseList}{is a list of responses}

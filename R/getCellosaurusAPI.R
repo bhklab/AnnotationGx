@@ -6,7 +6,7 @@
 #'
 #' @details 
 #' Function to create a URL query for Cellosaurus to search for a cell-line using its name 
-#' An example call:   computedURLs <- createQueryURLs(api = "https://api.cellosaurus.org/", cl_names = ["22rv1", "Hela"], fields = c("id", "ac"))
+#' An example call:   computedURLs <- .createQueryURLs(api = "https://api.cellosaurus.org/", cl_names = c("22rv1", "Hela"), fields = c("id", "ac"))
 #' @return A list of URLS
 #' @param api is the link to the API to build the URL. i.e "https://api.cellosaurus.org/"
 #' @param cl_names is a list of the cell line names
@@ -16,28 +16,42 @@
 #' @param fields is a list of desired fields to include in the response 
 #' 
 #' @md
-#' 
-createQueryURLs <- 
-    function(api,
+#' @export
+.createQueryURLs <- 
+    function(api = "https://api.cellosaurus.org/",
              cl_names,
              format = "txt",
              num_results = 1,
-             GETfxn = "search/cell-line?",
-             fields) {
-        # create urls 
-        computedURLs <- paste0(api,
-                            GETfxn,
-                            "q=",
-                            "idsy:",
-                            gsub(" ", "%20",cl_names),
-                            "&",
-                            "rows=",
-                            num_results,
-                            "&",
-                            "format=",format,
-                            "&",
-                            "fields=", paste(fields, collapse=",")
-                            )
+             GETfxn = c("search/cell-line?", "cell-line/"),
+             fields,
+             q = "idsy:") {
+        
+        if (GETfxn == "search/cell-line?") {
+                # create urls 
+            computedURLs <- paste0(
+                api,
+                GETfxn,
+                "q=", q,
+                gsub(" ", "%20",cl_names),
+                "&rows=", num_results,
+                "&format=", format,
+                "&fields=", paste(fields, collapse=",")
+            )
+            return(computedURLs)
+        } else if (GETfxn == "cell-line/") {
+            computedURLs <- paste0(
+                api,
+                GETfxn,
+                gsub(" ", "%20",cl_names),
+                "?",
+                "format=",format,
+                "&fields=", paste(fields, collapse=",")
+            )
+            return(computedURLs)
+        } else {
+            stop("GETfxn must be either 'search/cell-line?' or 'cell-line/'")
+        }
+        
         return(computedURLs)
 }
 
@@ -59,22 +73,25 @@ createQueryURLs <-
 getCellosaurusAPI <-
     function(
             cl_names,                       # List of cell line names 
-            fields = c("id",               # Recommended name. Most frequently the name of the cell line as provided in the original publication.
-                            "ac",           # Primary accession. It is the unique identifier of the cell line. It is normally stable across Cellosaurus versions ...
-                            "sy",           # List of synonyms.
-                            "misspelling",  # Identified misspelling(s) of the cell line name
-                            "din",          # Disease(s) suffered by the individual from which the cell line originated with its NCI Thesaurus or ORDO identifier.
-                            "ca",           # Category to which a cell line belongs, one of 14 defined terms. Example: cancer cell line, hybridoma, transformed cell line.
-                            "sx",           # Sex
-                            "ag",           # Age at sampling time of the individual from which the cell line was established.
-                            "sampling-site", # Body part, organ, cell-type the cell line is derived from
-                            "metastatic-site" # Body part, organ the cell line is derived from in the case of a cell line originating from a cancer metastasis.
-                            # "cc"            # comments
-                )
+            fields = c(
+                "id",               # Recommended name. Most frequently the name of the cell line as provided in the original publication.
+                "ac",           # Primary accession. It is the unique identifier of the cell line. It is normally stable across Cellosaurus versions ...
+                "sy",           # List of synonyms.
+                "misspelling",  # Identified misspelling(s) of the cell line name
+                "din",          # Disease(s) suffered by the individual from which the cell line originated with its NCI Thesaurus or ORDO identifier.
+                "ca",           # Category to which a cell line belongs, one of 14 defined terms. Example: cancer cell line, hybridoma, transformed cell line.
+                "sx",           # Sex
+                "ag",           # Age at sampling time of the individual from which the cell line was established.
+                "sampling-site", # Body part, organ, cell-type the cell line is derived from
+                "metastatic-site" # Body part, organ the cell line is derived from in the case of a cell line originating from a cancer metastasis.
+                ),
+            GETfxn = c("search/cell-line?", "cell-line/"), # Function to use on the cellosaurus website
+            querydomain = "ac:"
             ){
         cellosaurus_api_url <- "https://api.cellosaurus.org/"
         
-        computedURLs <- createQueryURLs(api = cellosaurus_api_url, cl_names = cl_names, fields = fields)
+        computedURLs <- .createQueryURLs(api = cellosaurus_api_url, GETfxn = GETfxn, cl_names = cl_names, fields = fields, q = querydomain)
+
         responseList <- BiocParallel::bplapply(computedURLs, function(x) GET(x)) 
         names(responseList) <- cl_names
         return(responseList)
@@ -93,32 +110,55 @@ getCellosaurusAPI <-
 #' @export
 #' 
 cleanCellosaurusResponse <- 
-    function(responseList){
+    function(
+        responseList, 
+        GETfxn = c("search/cell-line?", "cell-line/")
+        ){
         # Get content of each response, then separate content on newline character
         responseContent <- lapply(lapply(responseList, httr::content),
                                     function(x) strsplit(x=x, split="\n"))
         
-        #Remove first 15 rows of content
-        responseContent_sub <- lapply(responseContent, function(x) x[[1]][-(1:15)]) 
+        if (GETfxn == "search/cell-line?") {
+            #Remove first 15 rows of content
+            responseContent_sub <- lapply(responseContent, function(x) x[[1]][-(1:15)]) 
+            # Split on first "  " appearance
+            responseContent_sub_split <- lapply(responseContent_sub, function(x) strsplit(x, split = "  ."))
+                    # rbind responses (do.call returns as one large matrix instead of dataframe)
+            df_ <- lapply(responseContent_sub_split, function(x) do.call(rbind, x))
 
-        # Split on first "  " appearance
-        responseContent_sub_split <- lapply(responseContent_sub, function(x) strsplit(x, split = "  ."))
-        
-        # rbind responses (do.call returns as one large matrix instead of dataframe)
-        df_ <- lapply(responseContent_sub_split, function(x) do.call(rbind, x))
+            # convert each response from matrix to data.table
+            df_2 <- lapply(df_, function(x) data.table(x))
 
-        # convert each response from matrix to data.table
-        df_2 <- lapply(df_, function(x) data.table(x))
+            # rbinds all responses (creates new column so all of cell line x will have its name in col cellLine)
+            df_3<- rbindlist(df_2, idcol = "cellLine")
+            df_3 <- df_3[V1!="//"]
 
-        # rbinds all responses (creates new column so all of cell line x will have its name in col cellLine)
-        df_3<- rbindlist(df_2, idcol = "cellLine")
-        df_3 <- df_3[V1!="//"]
+            # Collapse all rows with the same cellLine & V1 (most often rows for cc) and separate by "; "
+            df_4 <- df_3[, list(data = paste0(unique(na.omit(V2)), collapse ="; ")), by = c("cellLine", "V1")]
 
-        # Collapse all rows with the same cellLine & V1 (most often rows for cc) and separate by "; "
-        df_4 <- df_3[, list(data = paste0(unique(na.omit(V2)), collapse ="; ")), by = c("cellLine", "V1")]
+            # transpose 
+            df_5 <- data.table::dcast(df_4, cellLine ~ ...)
 
-        # transpose 
-        df_5 <- dcast(df_4, cellLine ~ ...)
+            return(df_5) 
+        } else if (GETfxn == "cell-line/") {
+            #Remove first 15 rows of content
+            # responseContent_sub <- lapply(responseContent, function(x) x[[1]][-(1:15)])
+            responseContent_sub <- responseContent
+            responseContent_sub_split <- lapply(responseContent_sub, function(x) strsplit(x[[1]], split = "  ."))
 
-        return(df_5) 
+            result <- rbindlist(lapply(responseContent_sub_split, function(x) {
+                # remove the entire column if any of the elements has "//" in it
+                if (any(grepl("//", x))) {
+                    x <- x[, -1]
+                }
+
+                cvcl_dt <- as.data.table(x)
+                names(cvcl_dt) <- as.character(cvcl_dt[1])
+                cvcl_dt[2]
+            }))
+            return(result)
+
+        } else {
+            stop("GETfxn must be either 'search/cell-line?' or 'cell-line/'")
+        }
 }

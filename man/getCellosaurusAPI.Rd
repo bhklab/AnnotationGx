@@ -7,7 +7,9 @@
 getCellosaurusAPI(
   cl_names,
   fields = c("id", "ac", "sy", "misspelling", "din", "ca", "sx", "ag", "sampling-site",
-    "metastatic-site")
+    "metastatic-site"),
+  GETfxn = c("search/cell-line?", "cell-line/"),
+  querydomain = "ac:"
 )
 }
 \arguments{
