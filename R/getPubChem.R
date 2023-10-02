@@ -692,7 +692,12 @@ getPubChemAnnotations <- function(header='Available', type='Compound',
     if (header == 'Available') {
         queryURL <-
             'https://pubchem.ncbi.nlm.nih.gov/rest/pug/annotations/headings/JSON'
-    } else {
+    } else if (header == 'data') {
+        url <- 'https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/'
+        queryURL <- paste0(.buildURL(url, header, output),
+            '?heading_type=', type)
+    } 
+    else {
         queryURL <- paste0(.buildURL(url, header, output),
             '?heading_type=', type)
     }
