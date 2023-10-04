@@ -696,6 +696,7 @@ getPubChemAnnotations <-
         url='https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/annotations/heading',
         BPPARAM=bpparam(),
         proxy=FALSE,
+        retries=3,
         ...
         ) {
     funContext <- .funContext('::getPubChemAnnotations')
@@ -719,7 +720,7 @@ getPubChemAnnotations <-
         count <- 1
         while(isFALSE(queryRes)) {
             proxy <- unlist(proxyDT[sample(.N, 1), ])
-            queryRes <- tryCatch({ RETRY('GET', encodedQueryURL, timeout(29), times=3,
+            queryRes <- tryCatch({ RETRY('GET', encodedQueryURL, timeout(29), times=retries,
                 quiet=TRUE, use_proxy(proxy[1], as.integer(proxy[2])))
             }, error=function(e) FALSE)
 
@@ -732,17 +733,18 @@ getPubChemAnnotations <-
         }
         fwrite(proxyDT, file=file.path(tempdir(), 'proxy.csv'))
     } else {
-        queryRes <- RETRY('GET', encodedQueryURL, timeout(29), times=3,
+        queryRes <- RETRY('GET', encodedQueryURL, timeout(29), times=retries,
             quiet=TRUE)
     }
-
+    .checkThrottlingStatus(queryRes)
     if (isTRUE(raw)) return(queryRes)
 
     resultDT <- as.data.table(parseJSON(queryRes)[[1]][[1]])
 
     if (header == 'Available') return(resultDT)
 
-    numPages <- as.numeric(content(queryRes)[[1]]$TotalPages)
+    numPages <- content(queryRes)[[1]]$TotalPages
+    if (is.null(numPages)) numPages <- 1 else numPages <- as.numeric(numPages)
     if (numPages > 1) {
         tryCatch({
             bpworkers(BPPARAM) <- 5
@@ -760,7 +762,7 @@ getPubChemAnnotations <-
                 while(isFALSE(queryRes)) {
                     proxy <- unlist(proxyDT[sample(.N, 1), ])
                     print(proxy)
-                    queryRes <- tryCatch({ RETRY('GET', encodedQueryURL, timeout(29), times=3,
+                    queryRes <- tryCatch({ RETRY('GET', encodedQueryURL, timeout(29), times=retries,
                         quiet=TRUE, use_proxy(proxy[1], as.integer(proxy[2])))
                     }, error=function(e) FALSE)
 
@@ -776,6 +778,8 @@ getPubChemAnnotations <-
                 queryRes <- RETRY('GET', encodedQueryURL, timeout(29), times=3,
                     quiet=TRUE)
             }
+            .checkThrottlingStatus(queryRes)
+
             page <- tryCatch({
                 as.data.table(parseJSON(queryRes)[[1]][[1]])
             }, error=function(e) {
