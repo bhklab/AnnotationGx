@@ -684,10 +684,20 @@ getPubChemSubstance <- function(ids, from='cid', to='sids', ...,
 #' @importFrom data.table data.table as.data.table merge.data.table last rbindlist fwrite
 #' @importFrom BiocParallel bpparam bpworkers bpprogressbar bptry
 #' @export
-getPubChemAnnotations <- function(header='Available', type='Compound',
-        parseFUN=identity, ..., output='JSON', raw=FALSE,
+getPubChemAnnotations <- 
+    function(
+        header='Available', 
+        type='Compound',
+        parseFUN=identity, 
+        output='JSON', 
+        raw=FALSE, 
+        rawAnnotationDT=FALSE, 
+        verbose = FALSE,
         url='https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/annotations/heading',
-        BPPARAM=bpparam(), proxy=FALSE) {
+        BPPARAM=bpparam(),
+        proxy=FALSE,
+        ...
+        ) {
     funContext <- .funContext('::getPubChemAnnotations')
     if (header == 'Available') {
         queryURL <-
@@ -787,7 +797,7 @@ getPubChemAnnotations <- function(header='Available', type='Compound',
         annotationDT <- rbindlist(pageList, fill=TRUE, use.names=TRUE)
         annotationDT[, Data := lapply(Data, as.data.table)]
     }
-
+    if (isTRUE(rawAnnotationDT)) return(annotationDT)
     # parse the results to a user friendly format
     switch(header,
         'ATC Code'=return(.parseATCannotations(annotationDT)),
@@ -822,10 +832,12 @@ getPubChemAnnotations <- function(header='Available', type='Compound',
     annotationDT <- merge.data.table(
         dataDT[, .(SourceID, ATC_code)],
         DT[, .(SourceName, SourceID, LinkedRecords)],
-        by='SourceID'
+        by='SourceID',
+        allow.cartesian=TRUE
     )
     DT <- annotationDT[, .(CID=unlist(LinkedRecords)),
         by=.(SourceName, SourceID, ATC_code)]
+    DT <- unique(DT)
     return(DT)
 }
 
