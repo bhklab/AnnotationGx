@@ -745,6 +745,7 @@ getPubChemAnnotations <-
 
     numPages <- content(queryRes)[[1]]$TotalPages
     if (is.null(numPages)) numPages <- 1 else numPages <- as.numeric(numPages)
+    if (verbose) print(paste0("numPages: ", numPages))
     if (numPages > 1) {
         tryCatch({
             bpworkers(BPPARAM) <- 5
@@ -799,11 +800,12 @@ getPubChemAnnotations <-
 
     if (header != 'CAS') {
         annotationDT <- rbindlist(pageList, fill=TRUE, use.names=TRUE)
+        if (verbose) print("applying as.data.table to Data column of annotationDT")
         annotationDT[, Data := lapply(Data, as.data.table)]
     }
-
+    
     if (isTRUE(rawAnnotationDT)) {
-        print(paste0("Not Parsing, ", header, " returning annotationDT"))
+        if(verbose) print(paste0("Not Parsing, ", header, " returning annotationDT"))
         return(annotationDT)
     }
     # parse the results to a user friendly format
