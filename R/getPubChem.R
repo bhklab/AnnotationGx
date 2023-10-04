@@ -862,7 +862,8 @@ getPubChemAnnotations <-
         dataDT[, .(SourceID, DILI)],
         DT[, .(SourceID, SourceName, Name, LinkedRecords.CID,
             LinkedRecords.SID)],
-        by='SourceID')
+        by='SourceID',
+        allow.cartesian=TRUE)
     DT <- annotationDT[, .(CID=unlist(LinkedRecords.CID), SID=unlist(LinkedRecords.SID)),
         by=.(SourceName, SourceID, Name, DILI)]
     return(DT)
@@ -897,8 +898,11 @@ getPubChemAnnotations <-
         CID=unlist(lapply(LinkedRecords, function(x) if(is.null(x)) NA_integer_ else x)),
         SID=unlist(lapply(LinkedRecords.SID, function(x) if(is.null(x)) NA_integer_ else x)))
         , by=.(SourceName, SourceID, Name, URL)]
-    annotationDT <- merge.data.table(CAS_DT, ID_DT,
-        by=c('SourceName', 'SourceID', 'Name'), all.x=TRUE)
+    annotationDT <- merge.data.table(
+        CAS_DT, ID_DT,
+        by=c('SourceName', 'SourceID', 'Name'), 
+        all.x=TRUE,
+        allow.cartesian=TRUE)
     return(annotationDT)
 }
 
@@ -914,7 +918,7 @@ getPubChemAnnotations <-
         by=SourceID]
     dataDT[, Synonyms := paste(Synonyms, '|', Name), by=SourceID]
     dataDT[, Value.StringWithMarkup := NULL]
-    annotationDT <- merge.data.table(dataDT, DT, by='SourceID')
+    annotationDT <- merge.data.table(dataDT, DT, by='SourceID', allow.cartesian=TRUE)
     setnames(annotationDT,
         old=c('TOCHeading.type', 'TOCHeading..TOCHeading', 'LinkedRecords'),
         new=c('Type', 'Heading', 'ID')
