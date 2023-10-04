@@ -697,6 +697,7 @@ getPubChemAnnotations <-
         BPPARAM=bpparam(),
         proxy=FALSE,
         retries=3,
+        maxPages=NA,
         ...
         ) {
     funContext <- .funContext('::getPubChemAnnotations')
@@ -746,6 +747,8 @@ getPubChemAnnotations <-
     numPages <- content(queryRes)[[1]]$TotalPages
     if (is.null(numPages)) numPages <- 1 else numPages <- as.numeric(numPages)
     if (verbose) print(paste0("numPages: ", numPages))
+
+    if (!is.na(maxPages)) numPages <- maxPages 
     if (numPages > 1) {
         tryCatch({
             bpworkers(BPPARAM) <- 5
