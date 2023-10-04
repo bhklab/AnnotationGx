@@ -751,7 +751,7 @@ getPubChemAnnotations <-
     if (!is.na(maxPages)) numPages <- maxPages 
     if (numPages > 1) {
         tryCatch({
-            bpworkers(BPPARAM) <- 5
+            # bpworkers(BPPARAM) <- 5
             bpprogressbar(BPPARAM) <- TRUE
         }, error=function(e) .warning(funContext, 'Failed to set parallelzation
             parameters! Please configure them yourself and pass in as the
@@ -801,16 +801,20 @@ getPubChemAnnotations <-
         pageList <- list(resultDT)
     }
 
-    if (header != 'CAS') {
-        annotationDT <- rbindlist(pageList, fill=TRUE, use.names=TRUE)
-        if (verbose) print("applying as.data.table to Data column of annotationDT")
-        annotationDT[, Data := lapply(Data, as.data.table)]
-    }
-    
     if (isTRUE(rawAnnotationDT)) {
-        if(verbose) print(paste0("Not Parsing, ", header, " returning annotationDT"))
-        return(annotationDT)
-    }
+        
+        if (header != 'CAS') {
+            annotationDT <- rbindlist(pageList, fill=TRUE, use.names=TRUE)
+            if (verbose) print("applying as.data.table to Data column of annotationDT")
+            annotationDT[, Data := lapply(Data, as.data.table)]
+            if(verbose) print(paste0("Not Parsing, ", header, " returning annotationDT"))
+            return(annotationDT)
+        } else {
+            if (verbose) print(paste0("Parsing, ", header, " returning pageList"))
+            return(pageList)
+        }
+    } 
+    
     # parse the results to a user friendly format
     switch(header,
         'ATC Code'=return(.parseATCannotations(annotationDT)),
