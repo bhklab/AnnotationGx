@@ -801,7 +801,11 @@ getPubChemAnnotations <-
         annotationDT <- rbindlist(pageList, fill=TRUE, use.names=TRUE)
         annotationDT[, Data := lapply(Data, as.data.table)]
     }
-    if (isTRUE(rawAnnotationDT)) return(annotationDT)
+
+    if (isTRUE(rawAnnotationDT)) {
+        print(paste0("Not Parsing, ", header, " returning annotationDT"))
+        return(annotationDT)
+    }
     # parse the results to a user friendly format
     switch(header,
         'ATC Code'=return(.parseATCannotations(annotationDT)),
