@@ -745,10 +745,15 @@ getPubChemAnnotations <-
     if (header == 'Available') return(resultDT)
 
     numPages <- content(queryRes)[[1]]$TotalPages
-    if (is.null(numPages)) numPages <- 1 else numPages <- as.numeric(numPages)
-    if (verbose) print(paste0("numPages: ", numPages))
+    if (is.null(numPages)) {
+        numPages <- 1 
+    }else {
+        if (!is.na(maxPages)) numPages <- min(maxPages,as.numeric(numPages))
+        if (verbose) print(paste0("numPages: ", numPages))
+    }
 
-    if (!is.na(maxPages)) numPages <- maxPages 
+    
+    
     if (numPages > 1) {
         tryCatch({
             # bpworkers(BPPARAM) <- 5
@@ -759,7 +764,7 @@ getPubChemAnnotations <-
         pageList <- bplapply(seq(2, numPages), function(i, queryURL, numPages) {
             t1 <- Sys.time()
             encodedURL <- URLencode(paste0(queryURL, '&page=', i))
-            if (isTRUE(proxy)) {
+            if (isTRUE(FALSE)) { # changed from proxy -> FALSE for testing
                 proxyDT <- fread(file.path(tempdir(), 'proxy.csv'))
                 queryRes <- FALSE
                 count <- 1
@@ -779,7 +784,7 @@ getPubChemAnnotations <-
                 }
                 fwrite(proxyDT, file=file.path(tempdir(), 'proxy.csv'))
             } else {
-                queryRes <- RETRY('GET', encodedQueryURL, timeout(29), times=3,
+                queryRes <- RETRY('GET', encodedQueryURL, timeout(1), times=10,
                     quiet=TRUE)
             }
             .checkThrottlingStatus(queryRes)
@@ -793,7 +798,7 @@ getPubChemAnnotations <-
             })
             t2 <- Sys.time()
             queryTime <- t2 - t1
-            if (queryTime < 0.31) Sys.sleep(0.31 - queryTime)
+            # if (queryTime < 0.31) Sys.sleep(0.31 - queryTime)
             return(page)
         }, BPPARAM=BPPARAM, queryURL=queryURL, numPages=numPages)
         pageList <- c(list(resultDT), pageList)
@@ -801,20 +806,17 @@ getPubChemAnnotations <-
         pageList <- list(resultDT)
     }
 
+    if (header != 'CAS') {
+        annotationDT <- rbindlist(pageList, fill=TRUE, use.names=TRUE)
+        if (verbose) print("applying as.data.table to Data column of annotationDT")
+        annotationDT[, Data := lapply(Data, as.data.table)]
+    } else {  
+        annotationDT <- pageList
+    }
     if (isTRUE(rawAnnotationDT)) {
-        
-        if (header != 'CAS') {
-            annotationDT <- rbindlist(pageList, fill=TRUE, use.names=TRUE)
-            if (verbose) print("applying as.data.table to Data column of annotationDT")
-            annotationDT[, Data := lapply(Data, as.data.table)]
-            if(verbose) print(paste0("Not Parsing, ", header, " returning annotationDT"))
-            return(annotationDT)
-        } else {
-            if (verbose) print(paste0("Parsing, ", header, " returning pageList"))
-            return(pageList)
-        }
-    } 
-    
+        if(verbose) print(paste0("Not Parsing, ", header, " returning annotationDT"))
+        return(annotationDT)
+    }
     # parse the results to a user friendly format
     switch(header,
         'ATC Code'=return(.parseATCannotations(annotationDT)),
@@ -823,7 +825,7 @@ getPubChemAnnotations <-
         'CTD Chemical-Gene Interactions'=return(.parseCTDannotations(annotationDT)),
         'Names and Synonyms'=return(.parseNamesAndSynonyms(annotationDT)),
         'Synonyms and Identifiers'=return(.parseSynonymsAndIdentifiers(annotationDT)),
-        'CAS'=return(.parseCASannotations(pageList)),
+        'CAS'=return(.parseCASannotations(annotationDT)),
         tryCatch({
             parseFUN(annotationDT)
         },
@@ -871,7 +873,9 @@ getPubChemAnnotations <-
             LinkedRecords.SID)],
         by='SourceID',
         allow.cartesian=TRUE)
-    DT <- annotationDT[, .(CID=unlist(LinkedRecords.CID), SID=unlist(LinkedRecords.SID)),
+    DT <- 
+    annotationDT[, 
+        .(CID=unlist(LinkedRecords.CID), SID=unlist(LinkedRecords.SID)),
         by=.(SourceName, SourceID, Name, DILI)]
     return(DT)
 }
@@ -901,15 +905,15 @@ getPubChemAnnotations <-
     DT <- rbindlist(CAS_list, fill=TRUE, use.names=TRUE)
     DT[, CAS := lapply(Data, function(x) unlist(x[[2]]))]
     CAS_DT <- DT[, .(CAS=unlist(CAS)), by=.(SourceName, SourceID, Name)]
-    ID_DT <- DT[, .(
-        CID=unlist(lapply(LinkedRecords, function(x) if(is.null(x)) NA_integer_ else x)),
-        SID=unlist(lapply(LinkedRecords.SID, function(x) if(is.null(x)) NA_integer_ else x)))
-        , by=.(SourceName, SourceID, Name, URL)]
+    ID_DT <- DT[, 
+        .(CID=unlist(lapply(LinkedRecords, function(x) if(is.null(x)) NA_integer_ else x))),
+        by=.(SourceName, SourceID, Name, URL)]
     annotationDT <- merge.data.table(
         CAS_DT, ID_DT,
         by=c('SourceName', 'SourceID', 'Name'), 
         all.x=TRUE,
         allow.cartesian=TRUE)
+    annotationDT <- unique(annotationDT)
     return(annotationDT)
 }
 
@@ -930,6 +934,7 @@ getPubChemAnnotations <-
         old=c('TOCHeading.type', 'TOCHeading..TOCHeading', 'LinkedRecords'),
         new=c('Type', 'Heading', 'ID')
     )
+    annotationDT <- unique(annotationDT)
     return(annotationDT)
 }
 
@@ -940,8 +945,10 @@ getPubChemAnnotations <-
     DT[, Synonyms := lapply(Synonyms, FUN=gsub, pattern=' - .*$', replacement='')]
     DT[, Synonyms := unlist(lapply(Synonyms, FUN=paste0, collapse='|'))]
     # fix NULL list itemss
-    DT[, CID := lapply(LinkedRecords, function(x) if(is.null(x)) NA_integer_ else x)]
-    annotationDT <- DT[, .(CID=unlist(CID)),
+    DT[, CID := lapply(LinkedRecords.CID, function(x) if(is.null(x)) NA_integer_ else x)]
+    DT[, SID := lapply(LinkedRecords.SID, function(x) if(is.null(x)) NA_integer_ else x)]
+    annotationDT <- DT[, .(CID=unlist(CID), SID=unlist(SID)),
         by=.(SourceName, SourceID, Name, URL, Synonyms)]
+    annotationDT <- unique(annotationDT)
     return(annotationDT)
 }
