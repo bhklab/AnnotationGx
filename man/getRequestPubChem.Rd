@@ -15,7 +15,8 @@ getRequestPubChem(
   operation_options = NA,
   proxy = FALSE,
   raw = FALSE,
-  query_only = FALSE
+  query_only = FALSE,
+  verbose = FALSE
 )
 }
 \arguments{

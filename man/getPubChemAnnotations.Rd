@@ -8,12 +8,16 @@ getPubChemAnnotations(
   header = "Available",
   type = "Compound",
   parseFUN = identity,
-  ...,
   output = "JSON",
   raw = FALSE,
+  rawAnnotationDT = FALSE,
+  verbose = FALSE,
   url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/annotations/heading",
   BPPARAM = bpparam(),
-  proxy = FALSE
+  proxy = FALSE,
+  retries = 3,
+  maxPages = NA,
+  ...
 )
 }
 \arguments{
@@ -30,8 +34,6 @@ Defaults to identity, i.e., it returned the results unparsed. Some
 default parsing is implemented inside the function for 'ATC Code' and
 'Drug Induced Liver Injury' headers.}
 
-\item{...}{Force subsequent parameters to be named. Not used.}
-
 \item{output}{\code{character(1)} The output format. Defaults to 'JSON'. For
 options other than 'JSON', you must set \code{raw=TRUE} or the fuction will
 fail.}
@@ -41,6 +43,8 @@ developer use only and should not be changed.}
 
 \item{BPPARAM}{\code{BiocParallelParam} A BiocParallel back-end to parallelize
 with. Defaults to \code{bpparam()}. To run in serial, set to \code{SerialParam()}.}
+
+\item{...}{Force subsequent parameters to be named. Not used.}
 }
 \value{
 A \code{data.table} of resulting annotations. If the header is not

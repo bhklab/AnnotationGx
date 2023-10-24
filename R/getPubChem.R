@@ -144,7 +144,7 @@
 #' @export
 getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
         output='JSON', ..., url='https://pubchem.ncbi.nlm.nih.gov/rest/pug',
-        operation_options=NA, proxy=FALSE, raw=FALSE, query_only=FALSE) {
+        operation_options=NA, proxy=FALSE, raw=FALSE, query_only=FALSE, verbose = FALSE) {
     funContext <- .funContext('::getRequestPubChem')
 
     # handle list or vector inputs for id
@@ -164,34 +164,13 @@ getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=
 
     # get HTTP response, respecting the 30s max query time of PubChem API
     tryCatch({
-        if (isTRUE(proxy)) {
-            if (is.null(proxyManager$get_proxies())) {
-                tryCatch(proxyManager$connect(),
-                error=function(e)
-                    stop("proxyManager connection failed, set proxy=FALSE!\n\t", e)
-                )
-            }
-            result <- FALSE
-            count <- 1
-            while(isFALSE(result)) {
-                proxy <- unlist(proxyDT[sample(.N, 1), ])
-                result <- tryCatch({
-                    RETRY('GET', encodedQuery, timeout(29), times=3, quiet=TRUE,
-                        terminate_on=c(400, 404, 503),
-                        use_proxy(proxy[1], port=as.integer(proxy[2])))
-                }, error=function(e) FALSE)
-                count <- count + 1
-                if (count > 10) .error(funContext, 'Infinite retry loop
-                    due to failed proxy requests!')
-            }
-        } else {
-            result <- RETRY('GET', encodedQuery, timeout(29), times=3,
-                quiet=TRUE, terminate_on=c(400, 404, 503))
-        }
+        
+        result <- RETRY('GET', encodedQuery, timeout(29), times=3,
+            quiet=TRUE, terminate_on=c(400, 404, 503))
 
         if (isTRUE(raw)) return(result)
 
-        .checkThrottlingStatus(result)
+        .checkThrottlingStatus(result, verbose = verbose)
 
         canParse <- tryCatch({ parseJSON(result, as='text'); TRUE },
             error=function(e) FALSE)
@@ -219,26 +198,42 @@ getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=
 
 #' Checks to see if the PubChem query is exceeding the throttling limit
 #' @param response `httr::response`
-.checkThrottlingStatus <- function(response) {
+.checkThrottlingStatus <- function(response, verbose = FALSE) {
     throttling_control <- headers(response)$`x-throttling-control`
+    
+    if (verbose) cat("\n", throttling_control,"\n")
+
     any_grepl <- function(...) any(grepl(...))
-    throttling_state <- max(which(vapply(
-        c('Green', 'Yellow', 'Red', 'Black', 'blacklisted'),
-        FUN=any_grepl, x=throttling_control, FUN.VALUE=logical(1))))
-    if (throttling_state == 2) {
-        .warning('PubChem Server returned Yellow status! Sleeping to compensate.')
-        Sys.sleep(5)
-    } else if (throttling_state == 3) {
-        .warning('PubChem Server returend Red status! Sleeping to compensate.')
-        Sys.sleep(10)
-    } else if (throttling_state == 4) {
-        .error('PubChem Server returned Black status! You could be ',
-            'black listed. The returned state message is: ',
-            throttling_control, '.')
-    } else if (throttling_state == 5) {
-        .error('PubChem server indicated: too many queries per second',
-            ' or you may be blacklisted.')
-    }
+    
+    # pubchemStatusColors <- c('Green', 'Yellow', 'Red', 'Black')
+    # throttling_state <- max(
+    #     which(
+    #         vapply(
+    #             pubchemStatusColors,
+    #             FUN=any_grepl, 
+    #             x=throttling_control, 
+    #             FUN.VALUE=logical(1)
+    #             )
+    #         )
+    #     )
+    matches <- regmatches(throttling_control, gregexpr("\\((.*?)%\\)", throttling_control))           # Extracts text within parentheses
+    percentages <- gsub("\\(|%|\\)", "", unlist(matches[1:3]))
+    percentage <- max(as.numeric(percentages))
+
+
+    if(as.integer(percentage) > 15 && as.integer(percentage) < 30){
+        Sys.sleep(15)
+    }else if (as.integer(percentage) > 30 && as.integer(percentage) < 50){
+        Sys.sleep(20)
+    }else if (as.integer(percentage) > 50 && as.integer(percentage) < 75) {
+        print(paste0("Throttling at ", percentage, "%. Sleeping for 30 seconds."))
+        Sys.sleep(30)
+    }else if (as.integer(percentage) > 75) {
+        print(paste0("Throttling at ", percentage, "%. Sleeping for 60 seconds."))
+        Sys.sleep(60)
+    }else{
+        Sys.sleep(1)
+    }   
 }
 
 #' @title queryPubChem
@@ -259,7 +254,7 @@ getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=
 queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
         output='JSON', ..., url='https://pubchem.ncbi.nlm.nih.gov/rest/pug',
         operation_options=NA, batch=TRUE, raw=FALSE, proxy=FALSE,
-        query_only=FALSE) {
+        query_only=FALSE, verbose = FALSE) {
     if (!is.character(id)) id <- as.character(id)
     if (namespace %in% c('name', 'xref', 'smiles', 'inchi', 'sdf'))
         batch <- FALSE
@@ -290,12 +285,12 @@ queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
         queryRes <- bplapply(queries, FUN=.queryPubChemSleep, domain=domain,
             namespace=namespace, operation=operation, output=output, url=url,
             operation_options=operation_options, BPPARAM=BPPARAM, proxy=proxy,
-            raw=raw, query_only=query_only)
+            raw=raw, query_only=query_only, verbose = verbose)
     } else {
         queryRes <- bplapply(id, FUN=.queryPubChemSleep, domain=domain,
             namespace=namespace, operation=operation, output=output, url=url,
             operation_options=operation_options, BPPARAM=BPPARAM, proxy=proxy,
-            raw=raw, query_only=query_only)
+            raw=raw, query_only=query_only, verbose = verbose)
         queries <- as.list(id)
     }
 
@@ -539,8 +534,8 @@ getPubChemCompound <- function(ids, from='cid', to='property', ...,
         batch <- FALSE
     }
 
-    if (to == 'property')
-        to <- paste0(to, '/', paste0(properties, collapse=','))
+    if (to == 'property') to <- paste0(to, '/', paste0(properties, collapse=','))
+    
     queryRes <- queryPubChem(ids, domain='compound', namespace=from,
         operation=to, batch=batch, raw=raw, proxy=proxy,
         operation_options=options, query_only=query_only, ...)
@@ -748,7 +743,7 @@ getPubChemAnnotations <-
     if (is.null(numPages)) {
         numPages <- 1 
     }else {
-        if (!is.na(maxPages)) numPages <- min(maxPages,as.numeric(numPages))
+        if (!is.na(maxPages)) numPages <- min(as.numeric(maxPages),as.numeric(numPages))
         if (verbose) print(paste0("numPages: ", numPages))
     }
 
@@ -758,6 +753,8 @@ getPubChemAnnotations <-
         tryCatch({
             # bpworkers(BPPARAM) <- 5
             bpprogressbar(BPPARAM) <- TRUE
+            print(BPPARAM)
+            BiocParallel::register(BPPARAM)
         }, error=function(e) .warning(funContext, 'Failed to set parallelzation
             parameters! Please configure them yourself and pass in as the
             BPPARAM argument.'))
@@ -800,7 +797,7 @@ getPubChemAnnotations <-
             queryTime <- t2 - t1
             # if (queryTime < 0.31) Sys.sleep(0.31 - queryTime)
             return(page)
-        }, BPPARAM=BPPARAM, queryURL=queryURL, numPages=numPages)
+        },  queryURL=queryURL, numPages=numPages)
         pageList <- c(list(resultDT), pageList)
     } else {
         pageList <- list(resultDT)

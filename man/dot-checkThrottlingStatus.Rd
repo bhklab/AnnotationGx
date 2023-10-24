@@ -4,7 +4,7 @@
 \alias{.checkThrottlingStatus}
 \title{Checks to see if the PubChem query is exceeding the throttling limit}
 \usage{
-.checkThrottlingStatus(response)
+.checkThrottlingStatus(response, verbose = FALSE)
 }
 \arguments{
 \item{response}{\code{httr::response}}
