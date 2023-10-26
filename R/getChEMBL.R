@@ -223,6 +223,60 @@ moleculeQuery <- function(field, filter_type, value) {
 }
 
 
+#' Query the ChEMBL mechanism API end-point for a given CHEMBL_ID or list of CHEMBL_IDs
+#' 
+#' @md 
+#' @title Query the ChEMBL mechanism API end-point for a given CHEMBL_ID or list of CHEMBL_IDs
+#' @description A specialised function for querying the mechanism resource from the ChEMBL API. 
+#' 
+#' @param chembl.ID `character(1)` or `character(n)` CHEMBL_ID(s) to query
+#' @param resources `character(1)` Resource to query. Default is "mechanism"
+#' @param field `character(1)` or `character(n)` Field(s) to query. Default is "molecule_chembl_id"
+#' @param filter_type `character(1)` Filter type. Default is "in"
+#' @param returnURL `logical(1)` Return the URL(s) instead of the data table
+#' 
+#' @return `data.table` A table containing all mechanism of action entries and the CHEMBL_IDs queried
+#' 
+#' @examples 
+#' getChemblMechanism("CHEMBL1413")
+#' 
+#' chembl_ids <- c("CHEMBL515", "CHEMBL235191", "CHEMBL1413")
+#' getChemblMechanism(chembl_ids)
+#' 
+#' @export 
+getChemblMechanism <- function(
+    chembl.ID, 
+    resources = "mechanism", 
+    field = "molecule_chembl_id", 
+    filter_type = "in",
+    returnURL = FALSE){
+
+
+    # constructChemblQuery(resource = "mechanism", field = "molecule_chembl_id", filter_type = "in", value = "CHEMBL1413")
+    urls <- constructChemblQuery(resource = resources, field = field, filter_type = filter_type, value = chembl.ID)
+    urls <- URLencode(urls)
+    
+    if(returnURL) return(urls)
+
+    # [1] "action_type"               "binding_site_comment"     
+    # [3] "direct_interaction"        "disease_efficacy"         
+    # [5] "max_phase"                 "mec_id"                   
+    # [7] "mechanism_comment"         "mechanism_of_action"      
+    # [9] "mechanism_refs"            "molecular_mechanism"      
+    # [11] "molecule_chembl_id"        "parent_molecule_chembl_id"
+    # [13] "record_id"                 "selectivity_comment"      
+    # [15] "site_id"                   "target_chembl_id"         
+    # [17] "variant_sequence"         
+
+    responses <- data.table::rbindlist(lapply(urls, function(url){
+        response <- httr::GET(url)
+        response <- AnnotationGx::parseJSON(response)
+        mechanisms <- data.table::as.data.table(response$mechanisms)
+        result <- mechanisms[,.(molecule_chembl_id, action_type, mechanism_of_action, molecular_mechanism, mechanism_comment, parent_molecule_chembl_id, target_chembl_id)]
+    }))
+    
+    return(responses)
+}
 
 
 # Write testing code here, this is only executed if the file is run as a script
@@ -234,3 +288,5 @@ if (sys.nframe() == 0) {
     test1 <- constructChemblQuery("target", "pref_name", "contains", "kinase")
     test2 <- compoundQuery("field", "fil", "j")
 }
+
+

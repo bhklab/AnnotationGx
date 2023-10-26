@@ -30,25 +30,24 @@ getUniProt <- function(url='') {
 #' @return A httr::response object containing the query results as `format`.
 #'
 #' @import httr
-#' @importFrom CoreGx .errorMsg .warnMsg
 # #' @export
-queryUniProt <- function(query, columns='', limit='', offset='', format='xml',
-        include=TRUE, compress=TRUE, ...,
-        url='https://www.uniprot.org/uniprot') {
-    stop("Not implemented yet!")
-    if (missing(query)) stop(.errorMsg(.context(), 'The query parameter is
-        missing! This parameter is mandatory.'))
+# queryUniProt <- function(query, columns='', limit='', offset='', format='xml',
+#         include=TRUE, compress=TRUE, ...,
+#         url='https://www.uniprot.org/uniprot') {
+#     stop("Not implemented yet!")
+#     if (missing(query)) stop(.errorMsg(.context(), 'The query parameter is
+#         missing! This parameter is mandatory.'))
 
-    ##TODO:: handle more errors
+#     ##TODO:: handle more errors
 
-    # parse parameters
-    include <- if (include) 'yes' else 'no'
-    compress <- if (compress) 'yes' else 'no'
+#     # parse parameters
+#     include <- if (include) 'yes' else 'no'
+#     compress <- if (compress) 'yes' else 'no'
 
-    response <- GET()
-}
+#     response <- GET()
+# }
 
-#'
+# #'
 #'
 #'
 #'

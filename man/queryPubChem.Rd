@@ -16,7 +16,8 @@ queryPubChem(
   batch = TRUE,
   raw = FALSE,
   proxy = FALSE,
-  query_only = FALSE
+  query_only = FALSE,
+  verbose = FALSE
 )
 }
 \arguments{

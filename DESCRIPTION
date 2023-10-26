@@ -5,6 +5,8 @@ Version: 0.0.5.9001
 Authors@R: c(
     person("Christopher", "Eeles", role = c("aut"),
         email = "christopher.eeles@uhnresearch.ca"),
+    person("Jermiah", "Joseph", role = c("aut"),
+        email = "jermiah.joseph@uhn.ca"),
     person("Sisira", "Nair", role = c("aut"),
         email="sisira.nair@uhnresearch.ca"),
     person("Petr", "Smirnov", role=c("aut")),
@@ -30,7 +32,6 @@ Imports:
     qs,
     checkmate,
     rlang,
-    CoreGx,
     crayon,
     memoise,
     R6,

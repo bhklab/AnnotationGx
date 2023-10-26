@@ -144,7 +144,7 @@
 #' @export
 getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
         output='JSON', ..., url='https://pubchem.ncbi.nlm.nih.gov/rest/pug',
-        operation_options=NA, proxy=FALSE, raw=FALSE, query_only=FALSE) {
+        operation_options=NA, proxy=FALSE, raw=FALSE, query_only=FALSE, verbose = FALSE) {
     funContext <- .funContext('::getRequestPubChem')
 
     # handle list or vector inputs for id
@@ -164,34 +164,13 @@ getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=
 
     # get HTTP response, respecting the 30s max query time of PubChem API
     tryCatch({
-        if (isTRUE(proxy)) {
-            if (is.null(proxyManager$get_proxies())) {
-                tryCatch(proxyManager$connect(),
-                error=function(e)
-                    stop("proxyManager connection failed, set proxy=FALSE!\n\t", e)
-                )
-            }
-            result <- FALSE
-            count <- 1
-            while(isFALSE(result)) {
-                proxy <- unlist(proxyDT[sample(.N, 1), ])
-                result <- tryCatch({
-                    RETRY('GET', encodedQuery, timeout(29), times=3, quiet=TRUE,
-                        terminate_on=c(400, 404, 503),
-                        use_proxy(proxy[1], port=as.integer(proxy[2])))
-                }, error=function(e) FALSE)
-                count <- count + 1
-                if (count > 10) .error(funContext, 'Infinite retry loop
-                    due to failed proxy requests!')
-            }
-        } else {
-            result <- RETRY('GET', encodedQuery, timeout(29), times=3,
-                quiet=TRUE, terminate_on=c(400, 404, 503))
-        }
+        
+        result <- RETRY('GET', encodedQuery, timeout(29), times=3,
+            quiet=TRUE, terminate_on=c(400, 404, 503))
 
         if (isTRUE(raw)) return(result)
 
-        .checkThrottlingStatus(result)
+        .checkThrottlingStatus(result, throttleMessage = verbose)
 
         canParse <- tryCatch({ parseJSON(result, as='text'); TRUE },
             error=function(e) FALSE)
@@ -217,29 +196,6 @@ getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=
         })
 }
 
-#' Checks to see if the PubChem query is exceeding the throttling limit
-#' @param response `httr::response`
-.checkThrottlingStatus <- function(response) {
-    throttling_control <- headers(response)$`x-throttling-control`
-    any_grepl <- function(...) any(grepl(...))
-    throttling_state <- max(which(vapply(
-        c('Green', 'Yellow', 'Red', 'Black', 'blacklisted'),
-        FUN=any_grepl, x=throttling_control, FUN.VALUE=logical(1))))
-    if (throttling_state == 2) {
-        .warning('PubChem Server returned Yellow status! Sleeping to compensate.')
-        Sys.sleep(5)
-    } else if (throttling_state == 3) {
-        .warning('PubChem Server returend Red status! Sleeping to compensate.')
-        Sys.sleep(10)
-    } else if (throttling_state == 4) {
-        .error('PubChem Server returned Black status! You could be ',
-            'black listed. The returned state message is: ',
-            throttling_control, '.')
-    } else if (throttling_state == 5) {
-        .error('PubChem server indicated: too many queries per second',
-            ' or you may be blacklisted.')
-    }
-}
 
 #' @title queryPubChem
 #'
@@ -259,7 +215,7 @@ getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=
 queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
         output='JSON', ..., url='https://pubchem.ncbi.nlm.nih.gov/rest/pug',
         operation_options=NA, batch=TRUE, raw=FALSE, proxy=FALSE,
-        query_only=FALSE) {
+        query_only=FALSE, verbose = FALSE) {
     if (!is.character(id)) id <- as.character(id)
     if (namespace %in% c('name', 'xref', 'smiles', 'inchi', 'sdf'))
         batch <- FALSE
@@ -290,12 +246,12 @@ queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
         queryRes <- bplapply(queries, FUN=.queryPubChemSleep, domain=domain,
             namespace=namespace, operation=operation, output=output, url=url,
             operation_options=operation_options, BPPARAM=BPPARAM, proxy=proxy,
-            raw=raw, query_only=query_only)
+            raw=raw, query_only=query_only, verbose = verbose)
     } else {
         queryRes <- bplapply(id, FUN=.queryPubChemSleep, domain=domain,
             namespace=namespace, operation=operation, output=output, url=url,
             operation_options=operation_options, BPPARAM=BPPARAM, proxy=proxy,
-            raw=raw, query_only=query_only)
+            raw=raw, query_only=query_only, verbose = verbose)
         queries <- as.list(id)
     }
 
@@ -318,30 +274,6 @@ queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
     return(queryRes)
 }
 
-## TODO:: Retrieve PubChem server status to dynamically set query spacing
-##>based on server load
-## TODO:: Make the query away for server load status in response header
-#' @importFrom crayon strip_style
-.queryPubChemSleep <- function(x, ..., query_only=FALSE) {
-    proxy <- list(...)$proxy
-    t1 <- Sys.time()
-    queryRes <- tryCatch({
-        queryRequestPubChem(x, ..., query_only=query_only)
-    },
-        error=function(e) {
-            cat('\r')
-            print(e)
-        list(Error=list(
-            Code='.queryPubChemSleep.ERROR',
-            Message='See Details for error msg',
-            Details=paste0(strip_style(e), collapse=' ')
-        ))
-    })
-    t2 <- Sys.time()
-    queryTime <- t2 - t1
-    if (!isTRUE(proxy) && queryTime < 0.31) Sys.sleep(0.31 - queryTime)
-    return(queryRes)
-}
 
 #' Parse a JSON into a list
 #'
@@ -539,8 +471,8 @@ getPubChemCompound <- function(ids, from='cid', to='property', ...,
         batch <- FALSE
     }
 
-    if (to == 'property')
-        to <- paste0(to, '/', paste0(properties, collapse=','))
+    if (to == 'property') to <- paste0(to, '/', paste0(properties, collapse=','))
+    
     queryRes <- queryPubChem(ids, domain='compound', namespace=from,
         operation=to, batch=batch, raw=raw, proxy=proxy,
         operation_options=options, query_only=query_only, ...)
@@ -644,6 +576,8 @@ getPubChemSubstance <- function(ids, from='cid', to='sids', ...,
     return(queryRes)
 }
 
+
+
 #' Get a selected annotation for all PubChem entries
 #'
 #' @description
@@ -684,15 +618,32 @@ getPubChemSubstance <- function(ids, from='cid', to='sids', ...,
 #' @importFrom data.table data.table as.data.table merge.data.table last rbindlist fwrite
 #' @importFrom BiocParallel bpparam bpworkers bpprogressbar bptry
 #' @export
-getPubChemAnnotations <- function(header='Available', type='Compound',
-        parseFUN=identity, ..., output='JSON', raw=FALSE,
+getAllPubChemAnnotations <- 
+    function(
+        header='Available', 
+        type='Compound',
+        parseFUN=identity, 
+        output='JSON', 
+        raw=FALSE, 
+        rawAnnotationDT=FALSE, 
+        verbose = FALSE,
         url='https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/annotations/heading',
-        BPPARAM=bpparam(), proxy=FALSE) {
+        BPPARAM=bpparam(),
+        proxy=FALSE,
+        retries=3,
+        maxPages=NA,
+        ...
+        ) {
     funContext <- .funContext('::getPubChemAnnotations')
     if (header == 'Available') {
         queryURL <-
             'https://pubchem.ncbi.nlm.nih.gov/rest/pug/annotations/headings/JSON'
-    } else {
+    } else if (header == 'data') {
+        url <- 'https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/'
+        queryURL <- paste0(.buildURL(url, header, output),
+            '?heading_type=', type)
+    } 
+    else {
         queryURL <- paste0(.buildURL(url, header, output),
             '?heading_type=', type)
     }
@@ -704,7 +655,7 @@ getPubChemAnnotations <- function(header='Available', type='Compound',
         count <- 1
         while(isFALSE(queryRes)) {
             proxy <- unlist(proxyDT[sample(.N, 1), ])
-            queryRes <- tryCatch({ RETRY('GET', encodedQueryURL, timeout(29), times=3,
+            queryRes <- tryCatch({ RETRY('GET', encodedQueryURL, timeout(29), times=retries,
                 quiet=TRUE, use_proxy(proxy[1], as.integer(proxy[2])))
             }, error=function(e) FALSE)
 
@@ -717,50 +668,42 @@ getPubChemAnnotations <- function(header='Available', type='Compound',
         }
         fwrite(proxyDT, file=file.path(tempdir(), 'proxy.csv'))
     } else {
-        queryRes <- RETRY('GET', encodedQueryURL, timeout(29), times=3,
+        queryRes <- RETRY('GET', encodedQueryURL, timeout(29), times=retries,
             quiet=TRUE)
     }
-
+    .checkThrottlingStatus(queryRes)
     if (isTRUE(raw)) return(queryRes)
 
     resultDT <- as.data.table(parseJSON(queryRes)[[1]][[1]])
 
     if (header == 'Available') return(resultDT)
 
-    numPages <- as.numeric(content(queryRes)[[1]]$TotalPages)
+    numPages <- content(queryRes)[[1]]$TotalPages
+    if (is.null(numPages)) {
+        numPages <- 1 
+    }else {
+        if (!is.na(maxPages)) numPages <- min(as.numeric(maxPages),as.numeric(numPages))
+        if (verbose) print(paste0("numPages: ", numPages))
+    }
+
+    
     if (numPages > 1) {
         tryCatch({
-            bpworkers(BPPARAM) <- 5
+            # bpworkers(BPPARAM) <- 5
             bpprogressbar(BPPARAM) <- TRUE
+            print(BPPARAM)
+            BiocParallel::register(BPPARAM)
         }, error=function(e) .warning(funContext, 'Failed to set parallelzation
             parameters! Please configure them yourself and pass in as the
             BPPARAM argument.'))
         pageList <- bplapply(seq(2, numPages), function(i, queryURL, numPages) {
             t1 <- Sys.time()
             encodedURL <- URLencode(paste0(queryURL, '&page=', i))
-            if (isTRUE(proxy)) {
-                proxyDT <- fread(file.path(tempdir(), 'proxy.csv'))
-                queryRes <- FALSE
-                count <- 1
-                while(isFALSE(queryRes)) {
-                    proxy <- unlist(proxyDT[sample(.N, 1), ])
-                    print(proxy)
-                    queryRes <- tryCatch({ RETRY('GET', encodedQueryURL, timeout(29), times=3,
-                        quiet=TRUE, use_proxy(proxy[1], as.integer(proxy[2])))
-                    }, error=function(e) FALSE)
-
-                    if (isFALSE(queryRes)) {
-                        proxyDT <- proxyDT[ip != proxy[1] & port != proxy[2], ]
-                    }
-                    count <- count + 1
-                    if (count > 10) .error(funContext, 'Infinite retry loop
-                        due to failed proxy requests!')
-                }
-                fwrite(proxyDT, file=file.path(tempdir(), 'proxy.csv'))
-            } else {
-                queryRes <- RETRY('GET', encodedQueryURL, timeout(29), times=3,
+            queryRes <- RETRY('GET', encodedQueryURL, timeout(1), times=10,
                     quiet=TRUE)
-            }
+            
+            .checkThrottlingStatus(queryRes)
+            
             page <- tryCatch({
                 as.data.table(parseJSON(queryRes)[[1]][[1]])
             }, error=function(e) {
@@ -770,9 +713,9 @@ getPubChemAnnotations <- function(header='Available', type='Compound',
             })
             t2 <- Sys.time()
             queryTime <- t2 - t1
-            if (queryTime < 0.31) Sys.sleep(0.31 - queryTime)
+            # if (queryTime < 0.31) Sys.sleep(0.31 - queryTime)
             return(page)
-        }, BPPARAM=BPPARAM, queryURL=queryURL, numPages=numPages)
+        },  queryURL=queryURL, numPages=numPages)
         pageList <- c(list(resultDT), pageList)
     } else {
         pageList <- list(resultDT)
@@ -780,9 +723,15 @@ getPubChemAnnotations <- function(header='Available', type='Compound',
 
     if (header != 'CAS') {
         annotationDT <- rbindlist(pageList, fill=TRUE, use.names=TRUE)
+        if (verbose) print("applying as.data.table to Data column of annotationDT")
         annotationDT[, Data := lapply(Data, as.data.table)]
+    } else {  
+        annotationDT <- pageList
     }
-
+    if (isTRUE(rawAnnotationDT)) {
+        if(verbose) print(paste0("Not Parsing, ", header, " returning annotationDT"))
+        return(annotationDT)
+    }
     # parse the results to a user friendly format
     switch(header,
         'ATC Code'=return(.parseATCannotations(annotationDT)),
@@ -791,7 +740,7 @@ getPubChemAnnotations <- function(header='Available', type='Compound',
         'CTD Chemical-Gene Interactions'=return(.parseCTDannotations(annotationDT)),
         'Names and Synonyms'=return(.parseNamesAndSynonyms(annotationDT)),
         'Synonyms and Identifiers'=return(.parseSynonymsAndIdentifiers(annotationDT)),
-        'CAS'=return(.parseCASannotations(pageList)),
+        'CAS'=return(.parseCASannotations(annotationDT)),
         tryCatch({
             parseFUN(annotationDT)
         },
@@ -803,107 +752,160 @@ getPubChemAnnotations <- function(header='Available', type='Compound',
         })
     )
 }
+#' @title getPubChemAnnotation
+#' @description queries the PubChem PUG-VIEW API to get a single annotation using a CID for a header
+#' 
+#' @param compound `character(1)` A valid CID to use for the query.
+#' @param header `character(1)` A valid header name for the PUG VIEW annotations
+#' @param url `character(1)` The URL to perform API queries on. default = 'https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound'
+#' @param output `character(1)` The output format. Defaults to 'JSON'.
+#' @param timeout_s `numeric(1)` The number of seconds to wait before timing out. Default is 29.
+#' @param retries `numeric(1)` The number of times to retry a failed query. Default is 3.
+#' @param quiet `logical(1)` Should the function be quiet? Default is TRUE.
+#' @param throttleMessage `logical(1)` Should a message be printed when the query is throttled? Default is FALSE.
+#' @export
+getPubChemAnnotation <- function(
+    compound,
+    annotationType = 'ChEMBL ID',
+    url = 'https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound',
+    output = 'JSON', 
+    timeout_s = 29,
+    retries = 3,
+    quiet = TRUE,
+    throttleMessage = FALSE
+    ){
+        header <- annotationType
 
-# -----------------------------
-# getPubChemAnnotations Helpers
+        validHeaders <-  c('ChEMBL ID', 'NSC Number', 'Drug Induced Liver Injury', 'DILI', 'CAS', 'ATC Code')
 
-#' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
-.parseATCannotations <- function(DT) {
-    dataL <- DT$Data
-    names(dataL) <- DT$SourceID
-    dataDT <- rbindlist(dataL, fill=TRUE, use.names=TRUE, idcol='SourceID')
-    dataDT[, ATC_code := unlist(lapply(Value.StringWithMarkup,
-        function(x) last(x)[[1]]))]
-    annotationDT <- merge.data.table(
-        dataDT[, .(SourceID, ATC_code)],
-        DT[, .(SourceName, SourceID, LinkedRecords)],
-        by='SourceID'
-    )
-    DT <- annotationDT[, .(CID=unlist(LinkedRecords)),
-        by=.(SourceName, SourceID, ATC_code)]
-    return(DT)
+        # make sure type is in the list of valid types
+        if(!(header %in% validHeaders)){
+            stop(paste0("header must be one of the following: ", paste0(validHeaders, collapse = ", ")))
+        }
+
+        # TODO:: add a check to see if the compound is a valid CID or SID
+        # TODO:: allow for variaitons of headers due to spelling errors
+        # Temporary:
+        if(header == "DILI") queryURL <- paste0(.buildURL(url, compound, output), '?heading=', "Drug Induced Liver Injury")
+        else queryURL <- paste0(.buildURL(url, compound, output), '?heading=', header)
+
+        tryCatch({
+            result <- RETRY('GET', URLencode(queryURL), times = retries, quiet = quiet)
+        }, error=function(e) {
+            print(paste0("Error: ", e$message))
+            return(NULL)
+        })
+
+        .checkThrottlingStatus(result, throttleMessage = throttleMessage)
+        result <- parseJSON(result)
+        # switch(header,
+        #     'ATC Code'=return(.parseATCannotations(annotationDT)),
+        #     'Drug Induced Liver Injury'=return(.parseDILIannotations(annotationDT)),
+        #     'NSC Number'=return(.parseNSCannotations(annotationDT)),
+        #     'CTD Chemical-Gene Interactions'=return(.parseCTDannotations(annotationDT)),
+        #     'Names and Synonyms'=return(.parseNamesAndSynonyms(annotationDT)),
+        #     'Synonyms and Identifiers'=return(.parseSynonymsAndIdentifiers(annotationDT)),
+        #     'CAS'=return(.parseCASannotations(annotationDT)),
+        #     tryCatch({
+        #         parseFUN(annotationDT)
+        #     },
+        #     error=function(e) {
+        #         .warning(funContext, 'The parseFUN function failed: ', e,
+        #             '. Returning unparsed results instead. Please test the parseFUN
+        #             on the returned data.')
+        #         return(annotationDT)
+        #     })
+        # )
+
+
+        if (header == 'ChEMBL ID') {
+            result <- .parseCHEMBLresponse(result)
+        }else if (header == 'NSC Number'){
+            result <- .parseNSCresponse(result)
+        }else if (header == 'DILI' || header =='Drug Induced Liver Injury'){
+            result <- .parseDILIresponse(result)
+        }else if (header == 'CAS'){
+            result <- .parseCASresponse(result)
+        }else if (header == 'ATC Code'){
+            result <- .parseATCresponse(result)
+        }
+        
+        # Using switch instead of if statements
+        result <- switch(
+            header,
+            'ChEMBL ID'     = .parseCHEMBLresponse(result),
+            'NSC Number'    = .parseNSCresponse(result),
+            'DILI'          = .parseDILIresponse(result),
+            'CAS'           = .parseCASresponse(result),
+            'ATC Code'      = .parseATCresponse(result)
+        )
+
+        if (is.null(result)) result <- list(compound, "N/A")
+        else result <- list(compound,result)
+        names(result) <- c("cid", header)
+        return(result)
+    }
+ 
+#' Function that parses the results of the PubChem PUG-VIEW API for the CHEMBL ID header
+.parseCHEMBLresponse <- function(result){
+    result <- result$Record$Reference$SourceID
+    result <- gsub("::Compound", "", result)
+    return(result)
 }
 
-#' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
-.parseDILIannotations <- function(DT) {
-    dataL <- DT$Data
-    names(dataL) <- DT$SourceID
-    dataL <- lapply(dataL, FUN=`[`, i=Name %like% 'DILI')
-    dataDT <- rbindlist(dataL, fill=TRUE, use.names=TRUE, idcol='SourceID')
-    dataDT[, DILI := unlist(Value.StringWithMarkup)]
-    annotationDT <- merge.data.table(
-        dataDT[, .(SourceID, DILI)],
-        DT[, .(SourceID, SourceName, Name, LinkedRecords.CID,
-            LinkedRecords.SID)],
-        by='SourceID')
-    DT <- annotationDT[, .(CID=unlist(LinkedRecords.CID), SID=unlist(LinkedRecords.SID)),
-        by=.(SourceName, SourceID, Name, DILI)]
-    return(DT)
+#' Function that parses the results of the PubChem PUG-VIEW API for the NSC Number header
+.parseNSCresponse <- function(result){
+    result <- result$Record$Reference$SourceID[1]
+    result <- gsub(" ", "", result)
+    return(result)
 }
 
-#' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
-.parseNSCannotations <- function(DT) {
-    DT[, NSC := unlist(lapply(Data, `[[`, i=4))]
-    annotationDT <- DT[,
-        .(CID=unlist(LinkedRecords.CID), SID=unlist(LinkedRecords.SID)),
-        by=.(SourceName, SourceID, NSC)]
-    return(annotationDT)
+#' Function that parses the results of the PubChem PUG-VIEW API for the DILI header
+.parseDILIresponse <- function(result){
+    if(length(result$Record$Section) == 0){
+                result <- "NA"
+    }else{
+        dt_ <- as.data.table(result$Record$Section)
+        dt_ <- as.data.table(dt_)$Section[[1]]
+        dt_ <- as.data.table(dt_)$Section
+        dt_ <- as.data.table(dt_)
+        dt_ <- as.data.table(dt_)$Information
+        # print(as.data.table(dt_)[1:3,  .(Name,unlist(Value))])
+        section <- as.data.table(dt_)[1:3, "DILI" := paste0(unlist(Name), ":", unlist(Value))]
+
+        # if any of the first 4 rows are NA, remove it 
+        section <- section[!is.na(section$DILI)]
+
+
+        section <- paste0(section[1:3, DILI], collapse= "; ")
+
+        # create a list for each row as Name:Value string with no spaces and no new lines
+        reference <- paste0("LTKBID:", result$Record$Reference$SourceID)
+        result <- c(section, reference)
+        result <- paste0(result, collapse = "; ")
+    }
 }
 
-#' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
-.parseCTDannotations <- function(DT) {
-    annotationDT <- DT[, .(CID=unlist(LinkedRecords)),
-        by=.(SourceName, SourceID, URL)]
-    annotationDT[, CTD := gsub('::.*$', '', SourceID)]
-    return(annotationDT)
+#' Function that parses the results of the PubChem PUG-VIEW API for the CAS header
+.parseCASresponse <- function(result){
+    result <- result$Record$Reference$SourceID[1]
+    return(result)
 }
 
-#' @importFrom data.table data.table as.data.table merge.data.table last rbindlist setnames
-.parseCASannotations <- function(list) {
-    # Make sure CIDs all go in the same column
-    CAS_list <- lapply(list, setnames, old='LinkedRecords.CID', new='LinkedRecords',
-        skip_absent=TRUE)
-    DT <- rbindlist(CAS_list, fill=TRUE, use.names=TRUE)
-    DT[, CAS := lapply(Data, function(x) unlist(x[[2]]))]
-    CAS_DT <- DT[, .(CAS=unlist(CAS)), by=.(SourceName, SourceID, Name)]
-    ID_DT <- DT[, .(
-        CID=unlist(lapply(LinkedRecords, function(x) if(is.null(x)) NA_integer_ else x)),
-        SID=unlist(lapply(LinkedRecords.SID, function(x) if(is.null(x)) NA_integer_ else x)))
-        , by=.(SourceName, SourceID, Name, URL)]
-    annotationDT <- merge.data.table(CAS_DT, ID_DT,
-        by=c('SourceName', 'SourceID', 'Name'), all.x=TRUE)
-    return(annotationDT)
-}
+#' Function that parses the results of the PubChem PUG-VIEW API for the ATC Code header
+.parseATCresponse <- function(result){
+    if(length(result$Record$Section) == 0){
+                result <- "NA"
+                
+    }else{dt_ <- as.data.table(result$Record$Section)
+    dt_ <- as.data.table(dt_)$Section[[1]]
+    dt_ <- as.data.table(dt_)$Information
+    dt_ <- as.data.table(dt_)$Value
+    dt_ <- as.data.table(dt_[[1]])
+    result <- paste0("ATC:", dt_$String)
+    if(length(result) > 1){
+        result <- paste0(result, collapse = "; ")
+    }}
 
-#' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
-.parseSynonymsAndIdentifiers <- function(DT) {
-    dataList <- lapply(DT$Data, as.data.table)
-    names(dataList) <- DT$SourceID
-    dataDT <- rbindlist(dataList, fill=TRUE, use.names=TRUE,
-        idcol='SourceID')
-    DT[, Data := NULL]
-    dataDT[,
-        Synonyms := paste0(unlist(Value.StringWithMarkup[[1]]), collapse='|'),
-        by=SourceID]
-    dataDT[, Synonyms := paste(Synonyms, '|', Name), by=SourceID]
-    dataDT[, Value.StringWithMarkup := NULL]
-    annotationDT <- merge.data.table(dataDT, DT, by='SourceID')
-    setnames(annotationDT,
-        old=c('TOCHeading.type', 'TOCHeading..TOCHeading', 'LinkedRecords'),
-        new=c('Type', 'Heading', 'ID')
-    )
-    return(annotationDT)
-}
-
-#' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
-.parseNamesAndSynonyms <- function(DT) {
-    DT[, Synonyms := lapply(Data, function(x) x[2, ]$Value[[1]][[1]])]
-    # Remove the weird annotation from the end of the synonym
-    DT[, Synonyms := lapply(Synonyms, FUN=gsub, pattern=' - .*$', replacement='')]
-    DT[, Synonyms := unlist(lapply(Synonyms, FUN=paste0, collapse='|'))]
-    # fix NULL list itemss
-    DT[, CID := lapply(LinkedRecords, function(x) if(is.null(x)) NA_integer_ else x)]
-    annotationDT <- DT[, .(CID=unlist(CID)),
-        by=.(SourceName, SourceID, Name, URL, Synonyms)]
-    return(annotationDT)
+    return(result)
 }
