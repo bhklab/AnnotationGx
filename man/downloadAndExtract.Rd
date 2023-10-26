@@ -24,5 +24,5 @@ the specified \code{extract_fun} for more details.}
 Download a compressed file from a remote URL and extract it.
 }
 \seealso{
-\link[utils:unzip]{utils::unzip}, \link[utils:untar]{utils::untar}, \link[R.utils:compressFile]{R.utils::gunzip}, \link[R.utils:compressFile]{R.utils::bunzip2}
+\link[utils:unzip]{utils::unzip}, \link[utils:untar]{utils::untar}, \link[R.utils:gunzip]{R.utils::gunzip}, \link[R.utils:bunzip2]{R.utils::bunzip2}
 }
