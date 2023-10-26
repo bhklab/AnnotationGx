@@ -63,6 +63,11 @@
         <dd>Adds a new column to the drugs with ids table</dd>
       </dl><dl><dt>
           
+          <code><a href="cleanCellnames.html">cleanCellnames()</a></code> 
+        </dt>
+        <dd>Clean Cell Names</dd>
+      </dl><dl><dt>
+          
           <code><a href="cleanCellosaurusResponse.html">cleanCellosaurusResponse()</a></code> 
         </dt>
         <dd>Clean cellosaurus responses</dd>
@@ -76,11 +81,6 @@
           <code><a href="constructChemblQuery.html">constructChemblQuery()</a></code> 
         </dt>
         <dd>A general function for creating Queries to the ChEMBL API</dd>
-      </dl><dl><dt>
-          
-          <code><a href="createQueryURLs.html">createQueryURLs()</a></code> 
-        </dt>
-        <dd>Create a list of query URLS for Cellosaurus API</dd>
       </dl><dl><dt>
           
           <code><a href="depositZenodo.html">depositZenodo()</a></code> 
@@ -98,9 +98,39 @@
         <dd>Checks to see if the PubChem query is exceeding the throttling limit</dd>
       </dl><dl><dt>
           
+          <code><a href="dot-createQueryURLs.html">.createQueryURLs()</a></code> 
+        </dt>
+        <dd>Create a list of query URLS for Cellosaurus API</dd>
+      </dl><dl><dt>
+          
           <code><a href="dot-groupListByName.html">.groupListByName()</a></code> 
         </dt>
         <dd>Collect repeated list item names into a single list item</dd>
+      </dl><dl><dt>
+          
+          <code><a href="dot-parseATCresponse.html">.parseATCresponse()</a></code> 
+        </dt>
+        <dd>Function that parses the results of the PubChem PUG-VIEW API for the ATC Code header</dd>
+      </dl><dl><dt>
+          
+          <code><a href="dot-parseCASresponse.html">.parseCASresponse()</a></code> 
+        </dt>
+        <dd>Function that parses the results of the PubChem PUG-VIEW API for the CAS header</dd>
+      </dl><dl><dt>
+          
+          <code><a href="dot-parseCHEMBLresponse.html">.parseCHEMBLresponse()</a></code> 
+        </dt>
+        <dd>Function that parses the results of the PubChem PUG-VIEW API for the CHEMBL ID header</dd>
+      </dl><dl><dt>
+          
+          <code><a href="dot-parseDILIresponse.html">.parseDILIresponse()</a></code> 
+        </dt>
+        <dd>Function that parses the results of the PubChem PUG-VIEW API for the DILI header</dd>
+      </dl><dl><dt>
+          
+          <code><a href="dot-parseNSCresponse.html">.parseNSCresponse()</a></code> 
+        </dt>
+        <dd>Function that parses the results of the PubChem PUG-VIEW API for the NSC Number header</dd>
       </dl><dl><dt>
           
           <code><a href="downloadAndExtract.html">downloadAndExtract()</a></code> 
@@ -124,19 +154,24 @@
 of <code>data.frame</code>s within <code>list</code> columns.</dd>
       </dl><dl><dt>
           
+          <code><a href="getAllPubChemAnnotations.html">getAllPubChemAnnotations()</a></code> 
+        </dt>
+        <dd>Get a selected annotation for all PubChem entries</dd>
+      </dl><dl><dt>
+          
           <code><a href="getBrainArrayTable.html">getBrainArrayTable()</a></code> 
         </dt>
         <dd>Retrieve a table of all available CDF files from BrainArray</dd>
       </dl><dl><dt>
           
-          <code><a href="getCellApi.html">getCellApi()</a></code> 
-        </dt>
-        <dd>Query Cellosaurus</dd>
-      </dl><dl><dt>
-          
           <code><a href="getCellosaurus.html">getCellosaurus()</a></code> 
         </dt>
         <dd>Build a <code>data.table</code> of annotations from query list.</dd>
+      </dl><dl><dt>
+          
+          <code><a href="getCellosaurusAPI.html">getCellosaurusAPI()</a></code> 
+        </dt>
+        <dd>Query Cellosaurus</dd>
       </dl><dl><dt>
           
           <code><a href="getCelloxml.html">getCelloxml()</a></code> 
@@ -147,6 +182,11 @@ of <code>data.frame</code>s within <code>list</code> columns.</dd>
           <code><a href="getChemblAllMechanisms.html">getChemblAllMechanisms()</a></code> 
         </dt>
         <dd>Retrieve a <code>data.table</code> of all molecule mechanisms of action from ChEMBL</dd>
+      </dl><dl><dt>
+          
+          <code><a href="getChemblMechanism.html">getChemblMechanism()</a></code> 
+        </dt>
+        <dd>Query the ChEMBL mechanism API end-point for a given CHEMBL_ID or list of CHEMBL_IDs</dd>
       </dl><dl><dt>
           
           <code><a href="getDrugTargets.html">getDrugTargets()</a></code> 
@@ -202,9 +242,9 @@ database release.</dd>
         <dd>Extract the <code>pathway</code> item from a node in the DrugBank .xml file</dd>
       </dl><dl><dt>
           
-          <code><a href="getPubChemAnnotations.html">getPubChemAnnotations()</a></code> 
+          <code><a href="getPubChemAnnotation.html">getPubChemAnnotation()</a></code> 
         </dt>
-        <dd>Get a selected annotation for all PubChem entries</dd>
+        <dd>getPubChemAnnotation</dd>
       </dl><dl><dt>
           
           <code><a href="getPubChemCompound.html">getPubChemCompound()</a></code> 
@@ -285,11 +325,6 @@ JSON to a list. This only works when <code>output='JSON'</code> in <code>getRequ
 databases</dd>
       </dl><dl><dt>
           
-          <code><a href="queryUniProt.html">queryUniProt()</a></code> 
-        </dt>
-        <dd>Query the UniProt website REST API</dd>
-      </dl><dl><dt>
-          
           <code><a href="scrapeRemoteFTPFilesTable.html">scrapeRemoteFTPFilesTable()</a></code> 
         </dt>
         <dd>Retrieve a table of files available from an FTP download site by scraping
@@ -304,7 +339,7 @@ the first HTML table at the specified URL.</dd>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Christopher Eeles, Sisira Nair, Petr Smirnov, Shahzada Farooq, Benjamin Haibe-Kains.</p>
+  <p></p><p>Developed by Christopher Eeles, Jermiah Joseph, Sisira Nair, Petr Smirnov, Shahzada Farooq, Benjamin Haibe-Kains.</p>
 </div>
 
 <div class="pkgdown-footer-right">

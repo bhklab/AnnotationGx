@@ -53,22 +53,32 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">.checkThrottlingStatus</span><span class="op">(</span><span class="va">response</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">.checkThrottlingStatus</span><span class="op">(</span><span class="va">result</span>, throttleMessage <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>response</dt>
+    <dl><dt>throttleMessage</dt>
+<dd><p><code>logical</code> whether to print the throttling message</p></dd>
+
+
+<dt>response</dt>
 <dd><p><code><a href="https://httr.r-lib.org/reference/response.html" class="external-link">httr::response</a></code></p></dd>
 
 </dl></div>
+    <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    
+
+<p><code>logical</code> whether the query is throttled</p>
+    </div>
 
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Christopher Eeles, Sisira Nair, Petr Smirnov, Shahzada Farooq, Benjamin Haibe-Kains.</p>
+  <p></p><p>Developed by Christopher Eeles, Jermiah Joseph, Sisira Nair, Petr Smirnov, Shahzada Farooq, Benjamin Haibe-Kains.</p>
 </div>
 
 <div class="pkgdown-footer-right">

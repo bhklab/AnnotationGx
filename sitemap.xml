@@ -37,6 +37,9 @@
     <loc>/reference/addAnnotationColumnToDrugs.html</loc>
   </url>
   <url>
+    <loc>/reference/cleanCellnames.html</loc>
+  </url>
+  <url>
     <loc>/reference/cleanCellosaurusResponse.html</loc>
   </url>
   <url>
@@ -44,9 +47,6 @@
   </url>
   <url>
     <loc>/reference/constructChemblQuery.html</loc>
-  </url>
-  <url>
-    <loc>/reference/createQueryURLs.html</loc>
   </url>
   <url>
     <loc>/reference/depositZenodo.html</loc>
@@ -58,7 +58,25 @@
     <loc>/reference/dot-checkThrottlingStatus.html</loc>
   </url>
   <url>
+    <loc>/reference/dot-createQueryURLs.html</loc>
+  </url>
+  <url>
     <loc>/reference/dot-groupListByName.html</loc>
+  </url>
+  <url>
+    <loc>/reference/dot-parseATCresponse.html</loc>
+  </url>
+  <url>
+    <loc>/reference/dot-parseCASresponse.html</loc>
+  </url>
+  <url>
+    <loc>/reference/dot-parseCHEMBLresponse.html</loc>
+  </url>
+  <url>
+    <loc>/reference/dot-parseDILIresponse.html</loc>
+  </url>
+  <url>
+    <loc>/reference/dot-parseNSCresponse.html</loc>
   </url>
   <url>
     <loc>/reference/downloadAndExtract.html</loc>
@@ -73,19 +91,25 @@
     <loc>/reference/fsquash.html</loc>
   </url>
   <url>
+    <loc>/reference/getAllPubChemAnnotations.html</loc>
+  </url>
+  <url>
     <loc>/reference/getBrainArrayTable.html</loc>
   </url>
   <url>
-    <loc>/reference/getCellApi.html</loc>
+    <loc>/reference/getCellosaurus.html</loc>
   </url>
   <url>
-    <loc>/reference/getCellosaurus.html</loc>
+    <loc>/reference/getCellosaurusAPI.html</loc>
   </url>
   <url>
     <loc>/reference/getCelloxml.html</loc>
   </url>
   <url>
     <loc>/reference/getChemblAllMechanisms.html</loc>
+  </url>
+  <url>
+    <loc>/reference/getChemblMechanism.html</loc>
   </url>
   <url>
     <loc>/reference/getDrugTargets.html</loc>
@@ -118,7 +142,7 @@
     <loc>/reference/getPathways.html</loc>
   </url>
   <url>
-    <loc>/reference/getPubChemAnnotations.html</loc>
+    <loc>/reference/getPubChemAnnotation.html</loc>
   </url>
   <url>
     <loc>/reference/getPubChemCompound.html</loc>
@@ -167,9 +191,6 @@
   </url>
   <url>
     <loc>/reference/queryUniChem.html</loc>
-  </url>
-  <url>
-    <loc>/reference/queryUniProt.html</loc>
   </url>
   <url>
     <loc>/reference/scrapeRemoteFTPFilesTable.html</loc>
