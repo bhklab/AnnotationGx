@@ -170,7 +170,7 @@ getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=
 
         if (isTRUE(raw)) return(result)
 
-        .checkThrottlingStatus(result, verbose = verbose)
+        .checkThrottlingStatus(result, throttleMessage = verbose)
 
         canParse <- tryCatch({ parseJSON(result, as='text'); TRUE },
             error=function(e) FALSE)

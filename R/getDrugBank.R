@@ -188,12 +188,12 @@ listColToDT <- function(col) {
 }
 
 # Function testing scripts, not run unless this file is called as a script
-if (sys.nframe() == 0) {
-    library(AnnotationGx)
-    library(xml2)
-    library(data.table)
-    library(BiocParallel)
+# if (sys.nframe() == 0) {
+#     library(AnnotationGx)
+#     library(xml2)
+#     library(data.table)
+#     library(BiocParallel)
 
-    drugTargetDT <- getDrugTargets('local_data/drugbank.xml')
+#     drugTargetDT <- getDrugTargets('local_data/drugbank.xml')
     
-}
+# }
