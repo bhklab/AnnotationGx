@@ -766,7 +766,7 @@ getAllPubChemAnnotations <-
 #' @export
 getPubChemAnnotation <- function(
     compound,
-    header = 'ChEMBL ID',
+    annotationType = 'ChEMBL ID',
     url = 'https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound',
     output = 'JSON', 
     timeout_s = 29,
@@ -774,7 +774,15 @@ getPubChemAnnotation <- function(
     quiet = TRUE,
     throttleMessage = FALSE
     ){
-        
+        header <- annotationType
+
+        validHeaders <-  c('ChEMBL ID', 'NSC Number', 'Drug Induced Liver Injury', 'DILI', 'CAS', 'ATC Code')
+
+        # make sure type is in the list of valid types
+        if(!(header %in% validHeaders)){
+            stop(paste0("header must be one of the following: ", paste0(validHeaders, collapse = ", ")))
+        }
+
         # TODO:: add a check to see if the compound is a valid CID or SID
         # TODO:: allow for variaitons of headers due to spelling errors
         # Temporary:
@@ -837,23 +845,23 @@ getPubChemAnnotation <- function(
         names(result) <- c("cid", header)
         return(result)
     }
-
+ 
 #' Function that parses the results of the PubChem PUG-VIEW API for the CHEMBL ID header
-.parseCHEMBLresponse <- function(response){
+.parseCHEMBLresponse <- function(result){
     result <- result$Record$Reference$SourceID
     result <- gsub("::Compound", "", result)
     return(result)
 }
 
 #' Function that parses the results of the PubChem PUG-VIEW API for the NSC Number header
-.parseNSCresponse <- function(response){
+.parseNSCresponse <- function(result){
     result <- result$Record$Reference$SourceID[1]
     result <- gsub(" ", "", result)
     return(result)
 }
 
 #' Function that parses the results of the PubChem PUG-VIEW API for the DILI header
-.parseDILIresponse <- function(response){
+.parseDILIresponse <- function(result){
     if(length(result$Record$Section) == 0){
                 result <- "NA"
     }else{
@@ -879,13 +887,13 @@ getPubChemAnnotation <- function(
 }
 
 #' Function that parses the results of the PubChem PUG-VIEW API for the CAS header
-.parseCASresponse <- function(response){
+.parseCASresponse <- function(result){
     result <- result$Record$Reference$SourceID[1]
     return(result)
 }
 
 #' Function that parses the results of the PubChem PUG-VIEW API for the ATC Code header
-.parseATCresponse <- function(response){
+.parseATCresponse <- function(result){
     if(length(result$Record$Section) == 0){
                 result <- "NA"
                 

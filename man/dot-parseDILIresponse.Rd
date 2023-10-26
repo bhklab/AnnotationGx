@@ -4,7 +4,7 @@
 \alias{.parseDILIresponse}
 \title{Function that parses the results of the PubChem PUG-VIEW API for the DILI header}
 \usage{
-.parseDILIresponse(response)
+.parseDILIresponse(result)
 }
 \description{
 Function that parses the results of the PubChem PUG-VIEW API for the DILI header

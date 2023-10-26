@@ -4,7 +4,7 @@
 \alias{.parseCHEMBLresponse}
 \title{Function that parses the results of the PubChem PUG-VIEW API for the CHEMBL ID header}
 \usage{
-.parseCHEMBLresponse(response)
+.parseCHEMBLresponse(result)
 }
 \description{
 Function that parses the results of the PubChem PUG-VIEW API for the CHEMBL ID header

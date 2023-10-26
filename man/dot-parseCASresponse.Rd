@@ -4,7 +4,7 @@
 \alias{.parseCASresponse}
 \title{Function that parses the results of the PubChem PUG-VIEW API for the CAS header}
 \usage{
-.parseCASresponse(response)
+.parseCASresponse(result)
 }
 \description{
 Function that parses the results of the PubChem PUG-VIEW API for the CAS header

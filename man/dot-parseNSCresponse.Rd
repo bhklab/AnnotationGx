@@ -4,7 +4,7 @@
 \alias{.parseNSCresponse}
 \title{Function that parses the results of the PubChem PUG-VIEW API for the NSC Number header}
 \usage{
-.parseNSCresponse(response)
+.parseNSCresponse(result)
 }
 \description{
 Function that parses the results of the PubChem PUG-VIEW API for the NSC Number header

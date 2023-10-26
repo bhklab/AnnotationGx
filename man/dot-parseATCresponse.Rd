@@ -4,7 +4,7 @@
 \alias{.parseATCresponse}
 \title{Function that parses the results of the PubChem PUG-VIEW API for the ATC Code header}
 \usage{
-.parseATCresponse(response)
+.parseATCresponse(result)
 }
 \description{
 Function that parses the results of the PubChem PUG-VIEW API for the ATC Code header
