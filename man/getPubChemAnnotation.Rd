@@ -8,7 +8,6 @@ getPubChemAnnotation(
   compound,
   annotationType = "ChEMBL ID",
   url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound",
-  output = "JSON",
   timeout_s = 29,
   retries = 3,
   quiet = TRUE,
@@ -20,8 +19,6 @@ getPubChemAnnotation(
 
 \item{url}{\code{character(1)} The URL to perform API queries on. default = 'https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound'}
 
-\item{output}{\code{character(1)} The output format. Defaults to 'JSON'.}
-
 \item{timeout_s}{\code{numeric(1)} The number of seconds to wait before timing out. Default is 29.}
 
 \item{retries}{\code{numeric(1)} The number of times to retry a failed query. Default is 3.}
@@ -31,6 +28,8 @@ getPubChemAnnotation(
 \item{throttleMessage}{\code{logical(1)} Should a message be printed when the query is throttled? Default is FALSE.}
 
 \item{header}{\code{character(1)} A valid header name for the PUG VIEW annotations}
+
+\item{output}{\code{character(1)} The output format. Defaults to 'JSON'.}
 }
 \description{
 queries the PubChem PUG-VIEW API to get a single annotation using a CID for a header
