@@ -23,7 +23,7 @@
         print(paste0("Throttling at ", percentage, "%. Sleeping for 60 seconds."))
         Sys.sleep(60)
     }else{
-        Sys.sleep(5)
+        Sys.sleep(max(as.numeric(percentages)))
     }   
 
     return(as.integer(percentage) > 15)

@@ -290,13 +290,24 @@ queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
 #' @export
 parseJSON <- function(response, ..., encoding='UTF-8', query_only=FALSE) {
     if (isTRUE(query_only)) return(response)
+    response <- content(CAS, encoding = "UTF-8", as='text', type='JSON')
+
+    if (is.null(response)) return(NULL)
+    if (is.na(response)) return(NA)
+
     tryCatch({
-        fromJSON(content(response, ..., as='text', type='JSON',
-            encoding=encoding))
+        fromJSON(response, ...)
     },
     error=function(e) {
-        fromJSON(content(response, ..., type='JSON', encoding=encoding))
+        NA
     })
+    # tryCatch({
+    #     fromJSON(content(response, ..., as='text', type='JSON',
+    #         encoding=encoding))
+    # },
+    # error=function(e) {
+    #     fromJSON(content(response, ..., type='JSON', encoding=encoding))
+    # })
 }
 
 #' Query the PubChem REST API, with the result automatically converted from
@@ -768,7 +779,6 @@ getPubChemAnnotation <- function(
     compound,
     annotationType = 'ChEMBL ID',
     url = 'https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound',
-    output = 'JSON', 
     timeout_s = 29,
     retries = 3,
     quiet = TRUE,
@@ -786,8 +796,8 @@ getPubChemAnnotation <- function(
         # TODO:: add a check to see if the compound is a valid CID or SID
         # TODO:: allow for variaitons of headers due to spelling errors
         # Temporary:
-        if(header == "DILI") queryURL <- paste0(.buildURL(url, compound, output), '?heading=', "Drug Induced Liver Injury")
-        else queryURL <- paste0(.buildURL(url, compound, output), '?heading=', header)
+        if(header == "DILI") queryURL <- paste0(.buildURL(url, compound, 'JSON'), '?heading=', "Drug Induced Liver Injury")
+        else queryURL <- paste0(.buildURL(url, compound, 'JSON'), '?heading=', header)
 
         tryCatch({
             result <- RETRY('GET', URLencode(queryURL), times = retries, quiet = quiet)
@@ -798,58 +808,57 @@ getPubChemAnnotation <- function(
 
         .checkThrottlingStatus(result, throttleMessage = throttleMessage)
         result <- parseJSON(result)
-        # switch(header,
-        #     'ATC Code'=return(.parseATCannotations(annotationDT)),
-        #     'Drug Induced Liver Injury'=return(.parseDILIannotations(annotationDT)),
-        #     'NSC Number'=return(.parseNSCannotations(annotationDT)),
-        #     'CTD Chemical-Gene Interactions'=return(.parseCTDannotations(annotationDT)),
-        #     'Names and Synonyms'=return(.parseNamesAndSynonyms(annotationDT)),
-        #     'Synonyms and Identifiers'=return(.parseSynonymsAndIdentifiers(annotationDT)),
-        #     'CAS'=return(.parseCASannotations(annotationDT)),
-        #     tryCatch({
-        #         parseFUN(annotationDT)
-        #     },
-        #     error=function(e) {
-        #         .warning(funContext, 'The parseFUN function failed: ', e,
-        #             '. Returning unparsed results instead. Please test the parseFUN
-        #             on the returned data.')
-        #         return(annotationDT)
-        #     })
-        # )
-
-
-        if (header == 'ChEMBL ID') {
-            result <- .parseCHEMBLresponse(result)
-        }else if (header == 'NSC Number'){
-            result <- .parseNSCresponse(result)
-        }else if (header == 'DILI' || header =='Drug Induced Liver Injury'){
-            result <- .parseDILIresponse(result)
-        }else if (header == 'CAS'){
-            result <- .parseCASresponse(result)
-        }else if (header == 'ATC Code'){
-            result <- .parseATCresponse(result)
-        }
-        
-        # Using switch instead of if statements
         result <- switch(
             header,
             'ChEMBL ID'     = .parseCHEMBLresponse(result),
             'NSC Number'    = .parseNSCresponse(result),
             'DILI'          = .parseDILIresponse(result),
             'CAS'           = .parseCASresponse(result),
-            'ATC Code'      = .parseATCresponse(result)
-        )
-
+            'ATC Code'      = .parseATCresponse(result))
+    
         if (is.null(result)) result <- list(compound, "N/A")
         else result <- list(compound,result)
+
         names(result) <- c("cid", header)
         return(result)
     }
- 
+
+
+#' Retrieve PubChem annotations for a given compound
+#'
+#' This function retrieves PubChem annotations for a given compound using the specified annotations.
+#'
+#' @param compound The compound for which PubChem annotations are to be retrieved.
+#' @param annotations A character vector specifying the annotations to retrieve.
+#' @param ... Additional arguments to be passed to getPubChemAnnotation().
+#'
+#' @return A merged data table containing the PubChem annotations for the specified compound.
+#'
+#' @examples
+#' getPubChemAnnotations(
+#'      compound = "36314", 
+#'      annotations= c('ChEMBL ID', 'NSC Number', 'Drug Induced Liver Injury'))
+#'
+#' @export
+getPubChemAnnotations <- function(compound, annotations, ...){
+    result <- lapply(annotations, .getPubChemAnnotationDT, compound = compound, ...)
+    names(result) <- annotations
+    Reduce(function(x, y) merge(x, y, by = "cid", all.x = TRUE), result)
+}
+
+
+#' Function that returns a DT of getPubChemAnnotation results 
+.getPubChemAnnotationDT <- function(compound, annotationType, ...){
+    result <- getPubChemAnnotation(compound, annotationType, ...)
+    data.table::as.data.table(result)
+}
+
+
+
 #' Function that parses the results of the PubChem PUG-VIEW API for the CHEMBL ID header
 .parseCHEMBLresponse <- function(result){
     result <- result$Record$Reference$SourceID
-    result <- gsub("::Compound", "", result)
+    result <- gsub("Compound::", "", result)
     return(result)
 }
 
