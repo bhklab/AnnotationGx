@@ -81,12 +81,13 @@ has been included to allow users to easily query this domain.
 
 1. Get CID from Drug Names
 
-```{r eval=FALSE}
+```{r eval=TRUE}
 library(AnnotationGx)
 library(data.table)
 drugs <- c("Erlotinib", "Acadesine", "Camptothecin", "Vincaleukoblastine",
     "Cisplatin")
 namesToCID <- getPubChemCompound(drugs, from='name', to='cids')
+namesToCID
 ```
 
 It is possible for names to multimap to CIDs. This is the case for
@@ -94,11 +95,12 @@ It is possible for names to multimap to CIDs. This is the case for
 the first entry has the highest similarity to the requested drug. To subset
 to only the first occurrence of each of drug name:
 
-```{r eval=FALSE}
+```{r eval=TRUE}
 # Using duplicated function
 noDuplicatesNamesToCID <- namesToCID[!duplicated(name), ]
 # Using group-by operations
 noDuplicatesNamesToCID <- namesToCID[, first(.SD), by=name]
+noDuplicatesNamesToCID
 ```
 
 In cases with multimapping, we highly recommend you manually check that the
@@ -141,7 +143,7 @@ namesToSynonyms <- getPubChemCompound(drugs, from='name', to='synonyms')
 ```
 
 4. Get Compound Properties from CIDs
-```{r eval=FALSE}
+```{r eval=TRUE}
 cids <- namesToCID$cids
 propertiesFromCID <- getPubChemCompound(cids,
     properties=c('Title', 'InChIKey', 'CanonicalSMILES'))
@@ -234,78 +236,68 @@ and extract relevant information.
 To determine what kind of annotations are available, you can get a list
 of headers by calling the function with no arguments:
 
-```{r eval=FALSE}
-headers <- getPubChemAnnotations()
+```{r eval=TRUE}
+headers <- getAllPubChemAnnotations()
 # %like% is a convenient way to do regex subsets on a data.table
 #>it is equivalent to grepl('ATC', Heading)
-headers[Heading %like% 'ATC', ]
+headers[Heading %like% 'ChEMBL', ]
 ```
 
 You can see additional documentation for this function using
-`?getPubChemAnnotations` from the R console.
+`?getAllPubChemAnnotations` from the R console.
 
-1. Getting All ATC Codes
+#### Common Use Cases
 
-**WARNING: these functions are poorly tested and may not work**
+1. Get ChEMBL ID for a list of CIDs
 
-```{r eval=FALSE}
-CIDtoATC <- getPubChemAnnotations('ATC Codes')
+```{r eval=TRUE}
+
+(annotation <- headers[Heading %like% 'ChEMBL' & Type=="Compound", ]$Heading)
+
+# get ChEMBL IDs for a list of CIDs 
+CIDtoCHEMBL <- lapply(
+  noDuplicatesNamesToCID$cids, 
+  function(cid) as.data.table(getPubChemAnnotation(cid, annotationType=annotation)))
+
+# merge results into a single data.table`
+CIDtoCHEMBL <- merge(rbindlist(CIDtoCHEMBL, fill=TRUE), namesToCID, by.x = "cid", by.y = "cids", all.x = TRUE)
+CIDtoCHEMBL
 ```
 
-2. Getting All NSC Numbers
+2. Get NSC Number for a list of CIDs
 
-```{r eval=FALSE}
-CIDtoNSC <- getPubChemAnnotations('NSC Number')
+```{r eval=TRUE}
+
+(annotation <- headers[Heading %like% 'NSC' & Type=="Compound", ]$Heading)
+
+# get NSC Numbers for a list of CIDs
+CIDtoNSC <- lapply(
+  noDuplicatesNamesToCID$cids, 
+  function(cid) as.data.table(getPubChemAnnotation(cid, annotationType=annotation)))
+
+# merge results into a single data.table`
+CIDtoNSC <- merge(rbindlist(CIDtoNSC, fill=TRUE), namesToCID, by.x = "cid", by.y = "cids", all.x = TRUE)
+CIDtoNSC
 ```
 
-3. Getting All CTD Codes
 
-```{r eval=FALSE}
-CIDtoCTD <- getPubChemAnnotations('CTD Chemical-Gene Interactions')
+3. use `getPubChemAnnotations` to get multiple annotations for a CID
+
+```{r eval=TRUE}
+
+annotations <- c('ChEMBL ID', 'NSC Number', 'Drug Induced Liver Injury', 'CAS', 'ATC Code')
+
+CID <- noDuplicatesNamesToCID$cids[3]
+
+CIDtoAnnotations <- getPubChemAnnotations(CID, annotations)
+
+CIDtoAnnotations
 ```
 
-4. Getting All DILI Statuses
 
-```{r eval=FALSE}
-CIDtoDILI <- getPubChemAnnotations('Drug Induced Liver Injury')
-```
+#### Other Annotations
 
-5. Getting All CAS Registry Numbers
-
-The PubChem PUG VIEW API has many records with valid CAS identifiers, therefore
-this function can be very slow. Since it returns values for ALL PubChem records,
-it should only need to be run once. Subsequent look-ups can be done from the
-resulting `data.table` based on CID or SID. Make sure to save the file
-as soon as this function returns to prevent having to run it again.
-
-```{r eval=FALSE}
-CIDtoCAS <- getPubChemAnnotations('CAS')
-```
-
-6. Getting All Compound Synonyms
-
-While it is generally faster and more efficient to use the `getPubChemCompound`
-function to look up synonyms based on some known identifier, it may be useful
-to get an exaustive list of synonyms when other mapping methods fail.
-
-```{r eval=FALSE}
-headers[Heading %like% 'Syn']
-```
-
-Here we can see that there are two options for looking up compound synonyms
-available via the PUG VIEW API. We can get results for both.
-
-```{r eval=FALSE}
-CIDtoNamesAndSyn <- getPubChemAnnotations('Names and Synonyms')
-```
-
-```{r eval=FALSE}
-CIDtoSynAndIDs <- getPubChemAnnotations('Synonyms and Identifiers')
-```
-
-7. Other Annotations
-
-The `getPubChemAnnotations` function supports arbitrary annotation headers.
+The `getPubChemAnnotation` function supports arbitrary annotation headers.
 We have included default parsing functions to take the raw query results
 for the use cases above and return a well formatted table of result data.
 
