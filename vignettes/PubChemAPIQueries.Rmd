@@ -81,7 +81,7 @@ has been included to allow users to easily query this domain.
 
 1. Get CID from Drug Names
 
-```{r eval=TRUE}
+```{r eval=FALSE}
 library(AnnotationGx)
 library(data.table)
 drugs <- c("Erlotinib", "Acadesine", "Camptothecin", "Vincaleukoblastine",
@@ -95,7 +95,7 @@ It is possible for names to multimap to CIDs. This is the case for
 the first entry has the highest similarity to the requested drug. To subset
 to only the first occurrence of each of drug name:
 
-```{r eval=TRUE}
+```{r eval=FALSE}
 # Using duplicated function
 noDuplicatesNamesToCID <- namesToCID[!duplicated(name), ]
 # Using group-by operations
@@ -143,7 +143,7 @@ namesToSynonyms <- getPubChemCompound(drugs, from='name', to='synonyms')
 ```
 
 4. Get Compound Properties from CIDs
-```{r eval=TRUE}
+```{r eval=FALSE}
 cids <- namesToCID$cids
 propertiesFromCID <- getPubChemCompound(cids,
     properties=c('Title', 'InChIKey', 'CanonicalSMILES'))
@@ -236,7 +236,7 @@ and extract relevant information.
 To determine what kind of annotations are available, you can get a list
 of headers by calling the function with no arguments:
 
-```{r eval=TRUE}
+```{r eval=FALSE}
 headers <- getAllPubChemAnnotations()
 # %like% is a convenient way to do regex subsets on a data.table
 #>it is equivalent to grepl('ATC', Heading)
@@ -250,7 +250,7 @@ You can see additional documentation for this function using
 
 1. Get ChEMBL ID for a list of CIDs
 
-```{r eval=TRUE}
+```{r eval=FALSE}
 
 (annotation <- headers[Heading %like% 'ChEMBL' & Type=="Compound", ]$Heading)
 
@@ -266,7 +266,7 @@ CIDtoCHEMBL
 
 2. Get NSC Number for a list of CIDs
 
-```{r eval=TRUE}
+```{r eval=FALSE}
 
 (annotation <- headers[Heading %like% 'NSC' & Type=="Compound", ]$Heading)
 
@@ -283,7 +283,7 @@ CIDtoNSC
 
 3. use `getPubChemAnnotations` to get multiple annotations for a CID
 
-```{r eval=TRUE}
+```{r eval=FALSE}
 
 annotations <- c('ChEMBL ID', 'NSC Number', 'Drug Induced Liver Injury', 'CAS', 'ATC Code')
 
