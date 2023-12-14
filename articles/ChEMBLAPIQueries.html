@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">AnnotationGx</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.5.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.5.9002</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -102,9 +102,11 @@ function.</p>
 <h4 id="use-case">Use Case<a class="anchor" aria-label="anchor" href="#use-case"></a>
 </h4>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">AnnotationGx</span><span class="op">)</span></span>
-<span></span>
-<span><span class="op">(</span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getChemblAllMechanisms.html">getChemblAllMechanisms</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">AnnotationGx</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by</span></span>
+<span><span class="co">## 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'</span></span></code></pre>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="op">(</span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getChemblAllMechanisms.html">getChemblAllMechanisms</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##         action_type binding_site_comment direct_interaction disease_efficacy</span></span>
 <span><span class="co">##    1:     INHIBITOR                 &lt;NA&gt;                  1                1</span></span>
 <span><span class="co">##    2:     INHIBITOR                 &lt;NA&gt;                  1                1</span></span>
@@ -217,9 +219,9 @@ contains, startswith, e.t.c.</p>
 <div class="section level4">
 <h4 id="use-case-1">Use Case<a class="anchor" aria-label="anchor" href="#use-case-1"></a>
 </h4>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">general</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/constructChemblQuery.html">constructChemblQuery</a></span><span class="op">(</span><span class="st">"target"</span>, <span class="st">"pref_name"</span>, <span class="st">"contains"</span>, <span class="st">"kinase"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] "https://www.ebi.ac.uk/chembl/api/data/target.json?pref_name__contains=kinase"</span></span></code></pre>
+<pre><code><span><span class="co">## [1] "https://www.ebi.ac.uk/chembl/api/data/target?format=json&amp;pref_name__contains=kinase"</span></span></code></pre>
 </div>
 </div>
 <div class="section level3">
@@ -233,7 +235,7 @@ compound_key, compound_name, document_chembl_id, record_id, src_id.</p>
 <div class="section level4">
 <h4 id="use-case-2">Use Case<a class="anchor" aria-label="anchor" href="#use-case-2"></a>
 </h4>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">compoundQuery</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/compoundQuery.html">compoundQuery</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
@@ -249,7 +251,7 @@ subfields: molecule_chembl_id and parent_chembl_id.</p>
 <div class="section level4">
 <h4 id="use-case-3">Use Case<a class="anchor" aria-label="anchor" href="#use-case-3"></a>
 </h4>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">moleculeQuery</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/moleculeQuery.html">moleculeQuery</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>

@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">AnnotationGx</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.5.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.5.9002</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -98,37 +98,37 @@
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">getChemblMechanism</span><span class="op">(</span><span class="st">"CHEMBL1413"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    molecule_chembl_id     action_type       mechanism_of_action</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    molecule.chembl.id     action.type       mechanism.of.action</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:         CHEMBL1413 CHELATING AGENT      Iron chelating agent</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2:         CHEMBL1413 CHELATING AGENT Aluminium chelating agent</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    molecular_mechanism</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    molecular.mechanism</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:                   1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2:                   1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                                                                                  mechanism_comment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                                                                                  mechanism.comment</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1: Trivalent metal cations chelating agent; inhibition of the metal-dependent enzymes that are responsible for the degradation of peroxides within the fungal cell</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2: Trivalent metal cations chelating agent; inhibition of the metal-dependent enzymes that are responsible for the degradation of peroxides within the fungal cell</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    parent_molecule_chembl_id target_chembl_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    parent.molecule.chembl.id target.chembl.id</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:                CHEMBL1413    CHEMBL2363058</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2:                CHEMBL1413    CHEMBL2366381</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">chembl_ids</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CHEMBL515"</span>, <span class="st">"CHEMBL235191"</span>, <span class="st">"CHEMBL1413"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">getChemblMechanism</span><span class="op">(</span><span class="va">chembl_ids</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    molecule_chembl_id     action_type           mechanism_of_action</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    molecule.chembl.id     action.type           mechanism.of.action</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:          CHEMBL515       INHIBITOR                 DNA inhibitor</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2:       CHEMBL235191       INHIBITOR Histone deacetylase inhibitor</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3:         CHEMBL1413 CHELATING AGENT          Iron chelating agent</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4:         CHEMBL1413 CHELATING AGENT     Aluminium chelating agent</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    molecular_mechanism</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    molecular.mechanism</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:                   1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2:                   1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3:                   1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4:                   1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                                                                                  mechanism_comment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                                                                                  mechanism.comment</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:                                                                                                                                                Alkylating agent</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2:                                                                                                                                                            &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3: Trivalent metal cations chelating agent; inhibition of the metal-dependent enzymes that are responsible for the degradation of peroxides within the fungal cell</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4: Trivalent metal cations chelating agent; inhibition of the metal-dependent enzymes that are responsible for the degradation of peroxides within the fungal cell</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    parent_molecule_chembl_id target_chembl_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    parent.molecule.chembl.id target.chembl.id</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:                 CHEMBL515    CHEMBL2311221</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2:              CHEMBL235191    CHEMBL2093865</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3:                CHEMBL1413    CHEMBL2363058</span>
