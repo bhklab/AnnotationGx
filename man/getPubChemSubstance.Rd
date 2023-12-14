@@ -10,8 +10,7 @@ getPubChemSubstance(
   to = "sids",
   ...,
   batch = TRUE,
-  raw = FALSE,
-  proxy = FALSE
+  raw = FALSE
 )
 }
 \arguments{
@@ -26,8 +25,6 @@ getPubChemSubstance(
 \item{batch}{Logical indicating whether to use batch queries (default is TRUE).}
 
 \item{raw}{Logical indicating whether to return the raw query results (default is FALSE).}
-
-\item{proxy}{Logical indicating whether to use a proxy server for the queries (default is FALSE).}
 }
 \value{
 A data table containing the retrieved PubChem substance information.

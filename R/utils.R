@@ -170,15 +170,3 @@ getFailedIDs <- function(x) unlist(lapply(getFailed(x), `[[`, i='query'))
 }
 #' @noRd
 .context <- .getExecutionContext
-
-#' @importFrom httr RETRY GET
-.testProxyGetRequest <- memoise::memoise(function(ip, port, raw=FALSE) {
-    queryRes <- tryCatch({
-        GET(url='https://httpbin.org/ip', timeout(10),
-            use_proxy(ip, port=as.integer(port)))
-    },
-    error=function(e) { print(e); FALSE })
-    if (isFALSE(queryRes) || isTRUE(raw)) return(queryRes)
-    res <- tryCatch({ parseJSON(queryRes) }, error=function(e) list())
-    return(length(res) == 1)
-})

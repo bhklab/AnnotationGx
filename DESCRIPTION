@@ -32,7 +32,6 @@ Imports:
     qs,
     checkmate,
     rlang,
-    crayon,
     memoise,
     R6,
     R6P,

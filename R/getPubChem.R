@@ -11,12 +11,10 @@
 #' function parameters then executes that query, returning a `httr::request`
 #' object.
 #'
-#' @details See https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest for the complete API
-#'   documentation. A subset of this documentation is included below for
+#' @details See the PUG_VIEW website for the complete 
+#'   API documentation. A subset of this documentation is included below for
 #'   convenience.
-#'
-#' ## URL Path
-#'
+#'#'
 #' Most – if not all – of the information PubChem PUG service needs to
 #'   produce its results is encoded into the URL. The general form of the URL
 #'   has three parts – input, operation, and output – after the common prefix,
@@ -118,9 +116,6 @@
 #'   this is specific to the selected operation. This is appended as a string
 #'   after '?' at the end of the query. See
 #'   https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest$_Toc494865565 for details.
-#' @param proxy `logical(1)` Should a random proxy server be used for the
-#'   get request. Default is `FALSE`. This is useful to avoid getting
-#'   black-listed from the API.
 #' @param query_only `logical(1)` Should this function early return only
 #'   the encoded query?
 #'
@@ -137,12 +132,12 @@
 #'
 #' @md
 #' @importFrom jsonlite toJSON fromJSON
-#' @importFrom httr RETRY GET timeout use_proxy
+#' @importFrom httr RETRY GET timeout 
 #' @importFrom data.table data.table fread
 #' @export
 getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
         output='JSON', ..., url='https://pubchem.ncbi.nlm.nih.gov/rest/pug',
-        operation_options=NA, proxy=FALSE, raw=FALSE, query_only=FALSE, verbose = FALSE) {
+        operation_options=NA, raw=FALSE, query_only=FALSE, verbose = FALSE) {
     funContext <- .funContext('::getRequestPubChem')
 
     # handle list or vector inputs for id
@@ -212,7 +207,7 @@ getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=
 #' @export
 queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
         output='JSON', ..., url='https://pubchem.ncbi.nlm.nih.gov/rest/pug',
-        operation_options=NA, batch=TRUE, raw=FALSE, proxy=FALSE,
+        operation_options=NA, batch=TRUE, raw=FALSE, 
         query_only=FALSE, verbose = FALSE) {
     if (!is.character(id)) id <- as.character(id)
     if (namespace %in% c('name', 'xref', 'smiles', 'inchi', 'sdf'))
@@ -223,7 +218,7 @@ queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
     if (is.null(BPPARAM)) {
         BPPARAM <- bpparam()
         if (class(BPPARAM) %in% c('MulticoreParam', 'SnowParam')) {
-            if (isFALSE(proxy) && bpnworkers(BPPARAM) > 5)
+            if (bpnworkers(BPPARAM) > 5)
                 bpworkers(BPPARAM) <- 5
         }
         bpprogressbar(BPPARAM) <- TRUE
@@ -244,13 +239,13 @@ queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
 
         queryRes <- bplapply(queries, FUN=.queryPubChemSleep, domain=domain,
             namespace=namespace, operation=operation, output=output, url=url,
-            operation_options=operation_options, BPPARAM=BPPARAM, proxy=proxy,
+            operation_options=operation_options, BPPARAM=BPPARAM,
             raw=raw, query_only=query_only, verbose = verbose)
     } else {
 
         queryRes <- bplapply(id, FUN=.queryPubChemSleep, domain=domain,
             namespace=namespace, operation=operation, output=output, url=url,
-            operation_options=operation_options, BPPARAM=BPPARAM, proxy=proxy,
+            operation_options=operation_options, BPPARAM=BPPARAM,
             raw=raw, query_only=query_only, verbose = verbose)
         queries <- as.list(id)
     }
@@ -289,8 +284,6 @@ queryRequestPubChem <- function(..., query_only=FALSE)
 ##>based on server load
 ## TODO:: Make the query away for server load status in response header
 .queryPubChemSleep <- function(x, ..., query_only=FALSE) {
-    proxy <- list(...)$proxy
-
     queryRes <- tryCatch({
         queryRequestPubChem(x, ..., query_only=query_only)
     },
@@ -303,7 +296,7 @@ queryRequestPubChem <- function(..., query_only=FALSE)
             Details=e
         ))
     })
-    # if (!isTRUE(proxy) && queryTime < 0.31) Sys.sleep(0.31 - queryTime)
+
     return(queryRes)
 }
 ## ============================
@@ -338,7 +331,6 @@ queryRequestPubChem <- function(..., query_only=FALSE)
 #'   cases, batch will automatically be set to `FALSE` with a warning.
 #' @param raw `logical(1)` Should the raw query results be early returned. This
 #'   can be useful for diagnosing issues with failing queries.
-#' @param proxy `logical(1)` Route API queries through random proxy servers?
 #'   this can increase query length, but it useful if you have been blacklisted.
 #'
 #' @return A `data.table` containing results of the query, or a list if `raw`
@@ -354,7 +346,7 @@ queryRequestPubChem <- function(..., query_only=FALSE)
 #' @importFrom data.table setnames as.data.table rbindlist
 #' @export
 getPubChemCompound <- function(ids, from='cid', to='property', ...,
-        properties='Title', batch=TRUE, raw=FALSE, proxy=FALSE, options=NA,
+        properties='Title', batch=TRUE, raw=FALSE, options=NA,
         query_only=FALSE) {
     if (!is.character(ids)) ids <- as.character(ids)
     if (from %in% c('name', 'xref', 'smiles', 'inchi', 'sdf', 'inchikey')) {
@@ -371,7 +363,7 @@ getPubChemCompound <- function(ids, from='cid', to='property', ...,
     if (to == 'property') to <- paste0(to, '/', paste0(properties, collapse=','))
     
     queryRes <- queryPubChem(ids, domain='compound', namespace=from,
-        operation=to, batch=batch, raw=raw, proxy=proxy,
+        operation=to, batch=batch, raw=raw, 
         operation_options=options, query_only=query_only, ...)
 
     # -- early return option
@@ -417,7 +409,6 @@ getPubChemCompound <- function(ids, from='cid', to='property', ...,
 #' @param to The namespace to map the input IDs to (default is 'sids').
 #' @param batch Logical indicating whether to use batch queries (default is TRUE).
 #' @param raw Logical indicating whether to return the raw query results (default is FALSE).
-#' @param proxy Logical indicating whether to use a proxy server for the queries (default is FALSE).
 #' @param ... Additional arguments to be passed to the queryPubChem function.
 #'
 #' @return A data table containing the retrieved PubChem substance information.
@@ -434,7 +425,7 @@ getPubChemCompound <- function(ids, from='cid', to='property', ...,
 #'
 #' @export
 getPubChemSubstance <- function(ids, from='cid', to='sids', ...,
-        batch=TRUE, raw=FALSE, proxy=FALSE) {
+        batch=TRUE, raw=FALSE) {
     if (!is.character(ids)) ids <- as.character(ids)
     if (from %in% c('name', 'xref', 'smiles', 'inchi', 'sdf')) {
         if (isTRUE(batch)) .warning('Batch queries cannot be used when mapping
@@ -442,7 +433,7 @@ getPubChemSubstance <- function(ids, from='cid', to='sids', ...,
         batch <- FALSE
     }
     queryRes <- queryPubChem(ids, domain='substance',
-        namespace=from, operation=to, batch=batch, raw=raw, proxy=proxy, ...)
+        namespace=from, operation=to, batch=batch, raw=raw, ...)
 
     # -- early return option
     if (raw) return(queryRes)
@@ -510,7 +501,6 @@ getPubChemSubstance <- function(ids, from='cid', to='sids', ...,
 #' For detailed documentation of the annotations API see:
 #' https://pubchemdocs.ncbi.nlm.nih.gov/Dpug-view$_Toc495044630
 #'
-#' @importFrom httr GET use_proxy
 #' @importFrom jsonlite fromJSON
 #' @importFrom data.table data.table as.data.table merge.data.table last rbindlist fwrite
 #' @importFrom BiocParallel bpparam bpworkers bpprogressbar bptry
@@ -525,7 +515,6 @@ getAllPubChemAnnotations <- function(
     verbose = FALSE,
     url='https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/annotations/heading',
     BPPARAM=bpparam(),
-    proxy=FALSE,
     retries=3,
     maxPages=NA,
     ...
@@ -545,28 +534,10 @@ getAllPubChemAnnotations <- function(
     }
     encodedQueryURL <- URLencode(queryURL)
 
-    if (isTRUE(proxy)) {
-        proxyDT <- fread(file.path(tempdir(), 'proxy.csv'))
-        queryRes <- FALSE
-        count <- 1
-        while(isFALSE(queryRes)) {
-            proxy <- unlist(proxyDT[sample(.N, 1), ])
-            queryRes <- tryCatch({ RETRY('GET', encodedQueryURL, timeout(29), times=retries,
-                quiet=TRUE, use_proxy(proxy[1], as.integer(proxy[2])))
-            }, error=function(e) FALSE)
+    
+    queryRes <- RETRY('GET', encodedQueryURL, timeout(29), times=retries,
+        quiet=TRUE)
 
-            if (isFALSE(queryRes)) {
-                proxyDT <- proxyDT[ip != proxy[1] & port != proxy[2], ]
-            }
-            count <- count + 1
-            if (count > 10) .error(funContext, 'Infinite retry loop
-                due to failed proxy requests!')
-        }
-        fwrite(proxyDT, file=file.path(tempdir(), 'proxy.csv'))
-    } else {
-        queryRes <- RETRY('GET', encodedQueryURL, timeout(29), times=retries,
-            quiet=TRUE)
-    }
     .checkThrottlingStatus(queryRes)
     if (isTRUE(raw)) return(queryRes)
 
@@ -845,9 +816,6 @@ getPubChemAnnotations <- function(compound, annotations, ...){
 #' @param raw A `logical(1)` vector specifying whether to early return the raw
 #'   query results. Use this if specifying an unimplemented return to the `to`
 #'   parameter.
-#' @param proxy `logical(1)` Should the query be routed through a random
-#'   proxy server. This is useful to keep trying queries if a user gets
-#'   blacklisted.
 #'
 #' @return A `data.table` where the first column is the specified NSC ids and
 #'   the second column is the results specified in `to`.
@@ -855,14 +823,13 @@ getPubChemAnnotations <- function(compound, annotations, ...){
 #' @md
 #' @importFrom data.table data.table as.data.table setcolorder
 #' @export
-getPubChemFromNSC <- function(ids, to='cids', ..., batch=TRUE, raw=FALSE,
-        proxy=FALSE, options=NA, query_only=FALSE) {
+getPubChemFromNSC <- function(ids, to='cids', ..., batch=TRUE, raw=FALSE, options=NA, query_only=FALSE) {
     funContext <- .funContext('::getPubChemFromNSC')
 
     # -- make the GET request
     queryRes <- queryPubChem(ids, domain='substance', ...,
         namespace='sourceid/DTP.NCI', operation=to, batch=batch, raw=raw,
-        proxy=proxy, operation_options=options, query_only=query_only)
+        operation_options=options, query_only=query_only)
 
     # -- early return option
     if (isTRUE(raw) || isTRUE(query_only)) return(queryRes)

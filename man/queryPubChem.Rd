@@ -15,7 +15,6 @@ queryPubChem(
   operation_options = NA,
   batch = TRUE,
   raw = FALSE,
-  proxy = FALSE,
   query_only = FALSE,
   verbose = FALSE
 )
@@ -72,10 +71,6 @@ output format options, plase see the PubChem PUG REST API documentation.}
 this is specific to the selected operation. This is appended as a string
 after '?' at the end of the query. See
 https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest$_Toc494865565 for details.}
-
-\item{proxy}{\code{logical(1)} Should a random proxy server be used for the
-get request. Default is \code{FALSE}. This is useful to avoid getting
-black-listed from the API.}
 
 \item{query_only}{\code{logical(1)} Should this function early return only
 the encoded query?}

@@ -12,7 +12,6 @@ getPubChemCompound(
   properties = "Title",
   batch = TRUE,
   raw = FALSE,
-  proxy = FALSE,
   options = NA,
   query_only = FALSE
 )
@@ -43,9 +42,7 @@ ids per GET request to the API). Default is \code{TRUE}. Should be set to
 cases, batch will automatically be set to \code{FALSE} with a warning.}
 
 \item{raw}{\code{logical(1)} Should the raw query results be early returned. This
-can be useful for diagnosing issues with failing queries.}
-
-\item{proxy}{\code{logical(1)} Route API queries through random proxy servers?
+can be useful for diagnosing issues with failing queries.
 this can increase query length, but it useful if you have been blacklisted.}
 }
 \value{

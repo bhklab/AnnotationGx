@@ -13,7 +13,6 @@ getRequestPubChem(
   ...,
   url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug",
   operation_options = NA,
-  proxy = FALSE,
   raw = FALSE,
   query_only = FALSE,
   verbose = FALSE
@@ -72,10 +71,6 @@ this is specific to the selected operation. This is appended as a string
 after '?' at the end of the query. See
 https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest$_Toc494865565 for details.}
 
-\item{proxy}{\code{logical(1)} Should a random proxy server be used for the
-get request. Default is \code{FALSE}. This is useful to avoid getting
-black-listed from the API.}
-
 \item{query_only}{\code{logical(1)} Should this function early return only
 the encoded query?}
 }
@@ -88,11 +83,10 @@ function parameters then executes that query, returning a \code{httr::request}
 object.
 }
 \details{
-See https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest for the complete API
-documentation. A subset of this documentation is included below for
+See the PUG_VIEW website for the complete
+API documentation. A subset of this documentation is included below for
 convenience.
-\subsection{URL Path}{
-
+#'
 Most – if not all – of the information PubChem PUG service needs to
 produce its results is encoded into the URL. The general form of the URL
 has three parts – input, operation, and output – after the common prefix,
@@ -150,8 +144,6 @@ in the HTTP Accept field of the request header – see below for more detail.
 
 Complete documentation for valid output formats can be found at:
 https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest$_Toc494865558
-}
-
 }
 }
 \references{

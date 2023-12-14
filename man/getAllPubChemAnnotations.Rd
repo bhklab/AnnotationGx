@@ -14,7 +14,6 @@ getAllPubChemAnnotations(
   verbose = FALSE,
   url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/annotations/heading",
   BPPARAM = bpparam(),
-  proxy = FALSE,
   retries = 3,
   maxPages = NA,
   ...
