@@ -131,13 +131,27 @@ getChemblAllMechanisms <- function(url="https://www.ebi.ac.uk",
 #'| search                   | Special type of filter allowing a full text search based on elastic search queries                           |
 #'| only                     | Select specific properties from the original endpoint and returns only the desired properties on each record |                                                                                                         |
 #'
+#' @param resource `character(1)` Resource to query
+#' @param field `character(1)` Field to query
+#' @param filter_type `character(1)` Filter type
+#' @param value `character(1)` Value to query
+#' 
+#' 
 #' @md
 #' @export
-constructChemblQuery <- function(resource, field, filter_type, value){
+constructChemblQuery <- function(resource, field, filter_type, value, format = "json"){
+
+    # possible formats for now are XML, JSON and YAML
+    checkmate::assert_character(format)
+    checkmate::assert_character(resource)
+    checkmate::assert_character(field)
+    checkmate::assert_character(filter_type)
+    checkmate::assert_character(value)
+    checkmate::assert_subset(format, c("json", "xml", "yaml"))
 
     url <- "https://www.ebi.ac.uk/chembl/api/data/"
 
-    final <- paste0(url, resource, ".json", "?", field, "__", filter_type, "=", value)
+    final <- paste0(url, resource, "?", "format=", format, "&", field, "__", filter_type, "=", value)
 
     return (final)
 }
@@ -251,31 +265,40 @@ getChemblMechanism <- function(
     filter_type = "in",
     returnURL = FALSE){
 
-
     # constructChemblQuery(resource = "mechanism", field = "molecule_chembl_id", filter_type = "in", value = "CHEMBL1413")
-    urls <- constructChemblQuery(resource = resources, field = field, filter_type = filter_type, value = chembl.ID)
-    urls <- URLencode(urls)
+    # urls <- constructChemblQuery(resource = resources, field = field, filter_type = filter_type, value = chembl.ID)
+    # urls <- URLencode(urls)
     
-    if(returnURL) return(urls)
+    # if(returnURL) return(urls)
 
-    # [1] "action_type"               "binding_site_comment"     
-    # [3] "direct_interaction"        "disease_efficacy"         
-    # [5] "max_phase"                 "mec_id"                   
-    # [7] "mechanism_comment"         "mechanism_of_action"      
-    # [9] "mechanism_refs"            "molecular_mechanism"      
-    # [11] "molecule_chembl_id"        "parent_molecule_chembl_id"
-    # [13] "record_id"                 "selectivity_comment"      
-    # [15] "site_id"                   "target_chembl_id"         
-    # [17] "variant_sequence"         
+    cols <- c("molecule_chembl_id", "action_type", 
+    "mechanism_of_action", "molecular_mechanism", 
+    "mechanism_comment", "parent_molecule_chembl_id", "target_chembl_id")
 
-    responses <- data.table::rbindlist(lapply(urls, function(url){
+    responses <- lapply(chembl.ID, function(ID){
+        url <- constructChemblQuery(resource = resources, field = field, filter_type = filter_type, value = ID)
         response <- httr::GET(url)
-        response <- AnnotationGx::parseJSON(response)
+        response <- parseJSON(response)
         mechanisms <- data.table::as.data.table(response$mechanisms)
-        result <- mechanisms[,.(molecule_chembl_id, action_type, mechanism_of_action, molecular_mechanism, mechanism_comment, parent_molecule_chembl_id, target_chembl_id)]
-    }))
+        
+        # if cols are not in names then return an empty data.table with cols 
+        if(!all(cols %in% names(mechanisms))){
+            mechanisms <- data.table::data.table()
+            mechanisms[, (cols) := NA]
+            mechanisms[, "molecule_chembl_id" := ID]
+            return(mechanisms)
+        }
+        return(mechanisms[,..cols])
+    })
     
-    return(responses)
+    # replace the _ in the column names with .
+    responses <- lapply(responses, function(x){
+        names(x) <- gsub("_", ".", names(x))
+        return(x)
+    })
+
+    return(data.table::rbindlist(responses, fill = TRUE))
+
 }
 
 

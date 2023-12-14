@@ -3,8 +3,8 @@
 FROM bioconductor/bioconductor_docker:3.17-R-4.3.0
 
 # Install required libraries -- using prebuild binaries where available
-# RUN apt-get update && apt-get install -y \
-#     git \
+RUN apt-get update && apt-get install -y \
+    git
 #     r-cran-data.table \
 #     r-cran-doparallel \
 #     r-cran-dygraphs \
@@ -30,6 +30,12 @@ FROM bioconductor/bioconductor_docker:3.17-R-4.3.0
 # Install R packages
 # RUN install2.r --error --deps TRUE BiocManager
 
+# install data.table 
+# RUN R -e "BiocManager::install('data.table', update = FALSE, ask = FALSE)"
+
+RUN install2.r --error --deps TRUE pak
+
+RUN R -e "pak::pkg_install('bhklab/AnnotationGx@main', ask = F)"
 
 
 RUN rm -rf /tmp/*

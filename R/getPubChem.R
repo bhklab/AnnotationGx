@@ -200,7 +200,7 @@ getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=
 #' @title queryPubChem
 #'
 #' @details
-#' This function automatically parses the results of the
+#' This function automatically parses the results of the 
 #'
 #' @inheritParams getRequestPubChem
 #' @param ... Fall through parameters to `bpmapply`.
@@ -243,11 +243,13 @@ queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
         querySize <- ceiling(length(id) / numQueries)
         queries <- split(id, ceiling(seq_along(id) / querySize))
 
+
         queryRes <- bplapply(queries, FUN=.queryPubChemSleep, domain=domain,
             namespace=namespace, operation=operation, output=output, url=url,
             operation_options=operation_options, BPPARAM=BPPARAM, proxy=proxy,
             raw=raw, query_only=query_only, verbose = verbose)
     } else {
+
         queryRes <- bplapply(id, FUN=.queryPubChemSleep, domain=domain,
             namespace=namespace, operation=operation, output=output, url=url,
             operation_options=operation_options, BPPARAM=BPPARAM, proxy=proxy,
@@ -274,42 +276,6 @@ queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
     return(queryRes)
 }
 
-
-#' Parse a JSON into a list
-#'
-#' @param response A `response` object as returned by `httr::GET`
-#' @param as A `character` vector indicating the return type. Options are 'raw',
-#    'text' or 'parsed'. Default is 'text'.
-#' @param ... Additional arguments to the `httr::content` function.
-#'
-#' @seealso [httr::content]
-#'
-#' @md
-#' @importFrom jsonlite fromJSON
-#' @importFrom httr content
-#' @export
-parseJSON <- function(response, ..., encoding='UTF-8', query_only=FALSE) {
-    if (isTRUE(query_only)) return(response)
-    response <- content(CAS, encoding = "UTF-8", as='text', type='JSON')
-
-    if (is.null(response)) return(NULL)
-    if (is.na(response)) return(NA)
-
-    tryCatch({
-        fromJSON(response, ...)
-    },
-    error=function(e) {
-        NA
-    })
-    # tryCatch({
-    #     fromJSON(content(response, ..., as='text', type='JSON',
-    #         encoding=encoding))
-    # },
-    # error=function(e) {
-    #     fromJSON(content(response, ..., type='JSON', encoding=encoding))
-    # })
-}
-
 #' Query the PubChem REST API, with the result automatically converted from
 #'   JSON to a list. This only works when `output='JSON'` in `getRequestPubChem`.
 #'
@@ -321,110 +287,33 @@ parseJSON <- function(response, ..., encoding='UTF-8', query_only=FALSE) {
 queryRequestPubChem <- function(..., query_only=FALSE)
     parseJSON(getRequestPubChem(..., query_only=query_only), query_only=query_only)
 
+## TODO:: Retrieve PubChem server status to dynamically set query spacing
+##>based on server load
+## TODO:: Make the query away for server load status in response header
+#' @importFrom crayon strip_style
+.queryPubChemSleep <- function(x, ..., query_only=FALSE) {
+    proxy <- list(...)$proxy
 
+    queryRes <- tryCatch({
+        queryRequestPubChem(x, ..., query_only=query_only)
+    },
+        error=function(e) {
+            cat('\r')
+            print(e)
+        list(Error=list(
+            Code='.queryPubChemSleep.ERROR',
+            Message='See Details for error msg',
+            Details=paste0(strip_style(e), collapse=' ')
+        ))
+    })
+    # if (!isTRUE(proxy) && queryTime < 0.31) Sys.sleep(0.31 - queryTime)
+    return(queryRes)
+}
 ## ============================
 ## queryPubChem wrapper methods
 ## ----------------------------
 
 
-## These methods further specialize the queryPubChem function to provide
-## a simple user interface that does not require knowledge of the PubChem
-## REST API to use.
-
-
-#' @title getPubChemFromNSC
-#'
-#' @description
-#' Return a data.table mapping from ids to the information specified in `to`.
-#'
-#' @param ids A `character` or `numeric` vector of valid NSC ids to use for the
-#'   query.
-#' @param to A `character(1)` vector with the desired return type. Currently
-#'   only 'cids' and 'sids' are implemented, but other options are available
-#'   via the PubChem API. This corresponds to the `operation` portion of the
-#'   PubChem API URL Path.
-#' @param ... Fall through arguments to bpmapply. Use this to pass in BPPARAM
-#'   parameter to customize parellization settings. Alternatively, just call
-#'   `register()` with your desired parallel backend configuration.
-#' @param raw A `logical(1)` vector specifying whether to early return the raw
-#'   query results. Use this if specifying an unimplemented return to the `to`
-#'   parameter.
-#' @param proxy `logical(1)` Should the query be routed through a random
-#'   proxy server. This is useful to keep trying queries if a user gets
-#'   blacklisted.
-#'
-#' @return A `data.table` where the first column is the specified NSC ids and
-#'   the second column is the results specified in `to`.
-#'
-#' @md
-#' @importFrom data.table data.table as.data.table setcolorder
-#' @export
-getPubChemFromNSC <- function(ids, to='cids', ..., batch=TRUE, raw=FALSE,
-        proxy=FALSE, options=NA, query_only=FALSE) {
-    funContext <- .funContext('::getPubChemFromNSC')
-
-    # -- make the GET request
-    queryRes <- queryPubChem(ids, domain='substance', ...,
-        namespace='sourceid/DTP.NCI', operation=to, batch=batch, raw=raw,
-        proxy=proxy, operation_options=options, query_only=query_only)
-
-    # -- early return option
-    if (isTRUE(raw) || isTRUE(query_only)) return(queryRes)
-
-    # -- handle failed queries
-    failedQueries <- attributes(queryRes)$failed
-    queries <- attributes(queryRes)$queries
-
-    # -- rehandle failed queries, somehow they are getting past queryPubChem?
-    ## FIXME:: How are they failed queries not found in queryPubChem?
-    failed <- unlist(lapply(queryRes, names)) %in% c("Fault", "Bad", "Error")
-    if (any(failed)) {
-        newFailedQueries <- Map(list, query=queries[failed], failure=queryRes[failed])
-        failedQueries <- c(failedQueries, newFailedQueries)
-        queryRes <- queryRes[!failed]
-        queries <- queries[!failed]
-    }
-
-    # -- process the results
-    .replace_NULL_NA <- function(DT) lapply(DT, function(x) {
-        ifelse(is.null(x), rep(NA_integer_, length(x)), x) })
-
-    # TODO:: Determine if all results are wrapped in two lists? If not this may
-    #>break the function.
-    .parseQueryToDT <- function(queryRes) as.data.table(queryRes[[1]][[1]])
-    queryRes <- lapply(queryRes, FUN=.parseQueryToDT)
-    queryRes <- rbindlist(queryRes, fill=TRUE)
-    switch(to,
-        'cids'={
-            unlistQueryRes <- queryRes[, NSC_id := unlist(queries)][,
-                lapply(.SD, FUN=.replace_NULL_NA)][, lapply(.SD, unlist)]
-            if (nrow(unlistQueryRes) > nrow(queryRes))
-                .warning(funContext, 'Some IDs multimap to returned CIDs,
-                    check for sduplicates to see which ones!')
-            if (any(is.na(unlistQueryRes$CID))) .warning(funContext, 'Some IDs
-                failed to map and will have NA CIDs.')
-        },
-        'sids'={
-            unlistQueryRes <- queryRes[, NSC_id := unlist(queries)][,
-                lapply(.SD, FUN=.replace_NULL_NA)][, lapply(.SD, unlist)]
-            if (nrow(unlistQueryRes) > nrow(queryRes))
-                .warning(funContext, 'Some IDs multimap to returned SIDs,
-                    check for duplicates to see which ones!')
-            if (any(is.na(unlistQueryRes$SID))) .warning(funContext, 'Some IDs
-                failed to map and will have NA SIDs.')
-        },
-        .error('The operation ', to, ' has not been implemented yet!',
-            ' To return the unprocessed results of the query, set `raw=TRUE`.')
-    )
-    # rearrange columns so that NSC_id is first
-    setcolorder(unlistQueryRes, rev(colnames(unlistQueryRes)))
-    if (length(failedQueries) > 0) {
-        .warning(funContext, 'One or more queries failed, please see
-            `attributes(<result>)$failed` for more information.')
-        attributes(unlistQueryRes)$failed <- failedQueries
-    }
-    return(unlistQueryRes)
-}
 
 
 #' @title getPubChemCompound
@@ -702,13 +591,12 @@ getAllPubChemAnnotations <-
         tryCatch({
             # bpworkers(BPPARAM) <- 5
             bpprogressbar(BPPARAM) <- TRUE
-            print(BPPARAM)
+            # print(BPPARAM)
             BiocParallel::register(BPPARAM)
         }, error=function(e) .warning(funContext, 'Failed to set parallelzation
             parameters! Please configure them yourself and pass in as the
             BPPARAM argument.'))
         pageList <- bplapply(seq(2, numPages), function(i, queryURL, numPages) {
-            t1 <- Sys.time()
             encodedURL <- URLencode(paste0(queryURL, '&page=', i))
             queryRes <- RETRY('GET', encodedQueryURL, timeout(1), times=10,
                     quiet=TRUE)
@@ -722,8 +610,6 @@ getAllPubChemAnnotations <-
                     data.table.')
                 return(data.table())
             })
-            t2 <- Sys.time()
-            queryTime <- t2 - t1
             # if (queryTime < 0.31) Sys.sleep(0.31 - queryTime)
             return(page)
         },  queryURL=queryURL, numPages=numPages)
@@ -782,7 +668,8 @@ getPubChemAnnotation <- function(
     timeout_s = 29,
     retries = 3,
     quiet = TRUE,
-    throttleMessage = FALSE
+    throttleMessage = FALSE,
+    query_only = FALSE
     ){
         header <- annotationType
 
@@ -795,30 +682,35 @@ getPubChemAnnotation <- function(
 
         # TODO:: add a check to see if the compound is a valid CID or SID
         # TODO:: allow for variaitons of headers due to spelling errors
-        # Temporary:
-        if(header == "DILI") queryURL <- paste0(.buildURL(url, compound, 'JSON'), '?heading=', "Drug Induced Liver Injury")
-        else queryURL <- paste0(.buildURL(url, compound, 'JSON'), '?heading=', header)
+        if(header == "DILI") header <- "Drug Induced Liver Injury"
+        queryURL <- paste0(.buildURL(url, compound, 'JSON'), '?heading=', header)
 
+        if(query_only) return(URLencode(queryURL))
         tryCatch({
             result <- RETRY('GET', URLencode(queryURL), times = retries, quiet = quiet)
         }, error=function(e) {
             print(paste0("Error: ", e$message))
-            return(NULL)
+            return(list(compound, "NA"))
         })
 
         .checkThrottlingStatus(result, throttleMessage = throttleMessage)
-        result <- parseJSON(result)
-        result <- switch(
-            header,
-            'ChEMBL ID'     = .parseCHEMBLresponse(result),
-            'NSC Number'    = .parseNSCresponse(result),
-            'DILI'          = .parseDILIresponse(result),
-            'CAS'           = .parseCASresponse(result),
-            'ATC Code'      = .parseATCresponse(result))
-    
-        if (is.null(result)) result <- list(compound, "N/A")
-        else result <- list(compound,result)
+        result <- parseJSON(result)    
 
+        if(is.null(result) || is.na(result) || is.null(result$Record)){
+
+            result <- "NA"
+        }
+        else {
+            result <- switch(header,
+                'ChEMBL ID'     = .parseCHEMBLresponse(result),
+                'NSC Number'    = .parseNSCresponse(result),
+                'DILI'          = .parseDILIresponse(result),
+                'Drug Induced Liver Injury' = .parseDILIresponse(result),
+                'CAS'           = .parseCASresponse(result),
+                'ATC Code'      = .parseATCresponse(result))
+        }
+
+        result <- list(compound, result)
         names(result) <- c("cid", header)
         return(result)
     }
@@ -843,19 +735,25 @@ getPubChemAnnotation <- function(
 getPubChemAnnotations <- function(compound, annotations, ...){
     result <- lapply(annotations, .getPubChemAnnotationDT, compound = compound, ...)
     names(result) <- annotations
-    Reduce(function(x, y) merge(x, y, by = "cid", all.x = TRUE), result)
+
+    # all values of result should be a 2 column data.table with "cid" and the
+    # annotation as the column names. 
+    # merge all of them together on "cid" and keep all values even if NA or NULL
+    Reduce(function(x, y) merge(x, y, by = "cid", all = TRUE), result)
+
 }
 
-
 #' Function that returns a DT of getPubChemAnnotation results 
+#' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
 .getPubChemAnnotationDT <- function(compound, annotationType, ...){
     result <- getPubChemAnnotation(compound, annotationType, ...)
-    data.table::as.data.table(result)
+    as.data.table(result, na.rm = F)
 }
 
 
 
 #' Function that parses the results of the PubChem PUG-VIEW API for the CHEMBL ID header
+#' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
 .parseCHEMBLresponse <- function(result){
     result <- result$Record$Reference$SourceID
     result <- gsub("Compound::", "", result)
@@ -863,6 +761,7 @@ getPubChemAnnotations <- function(compound, annotations, ...){
 }
 
 #' Function that parses the results of the PubChem PUG-VIEW API for the NSC Number header
+#' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
 .parseNSCresponse <- function(result){
     result <- result$Record$Reference$SourceID[1]
     result <- gsub(" ", "", result)
@@ -870,21 +769,22 @@ getPubChemAnnotations <- function(compound, annotations, ...){
 }
 
 #' Function that parses the results of the PubChem PUG-VIEW API for the DILI header
+#' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
 .parseDILIresponse <- function(result){
+    
     if(length(result$Record$Section) == 0){
-                result <- "NA"
+        result <- "NA"
     }else{
+
         dt_ <- as.data.table(result$Record$Section)
         dt_ <- as.data.table(dt_)$Section[[1]]
         dt_ <- as.data.table(dt_)$Section
         dt_ <- as.data.table(dt_)
         dt_ <- as.data.table(dt_)$Information
-        # print(as.data.table(dt_)[1:3,  .(Name,unlist(Value))])
         section <- as.data.table(dt_)[1:3, "DILI" := paste0(unlist(Name), ":", unlist(Value))]
 
         # if any of the first 4 rows are NA, remove it 
         section <- section[!is.na(section$DILI)]
-
 
         section <- paste0(section[1:3, DILI], collapse= "; ")
 
@@ -893,15 +793,18 @@ getPubChemAnnotations <- function(compound, annotations, ...){
         result <- c(section, reference)
         result <- paste0(result, collapse = "; ")
     }
+    return(result)
 }
 
 #' Function that parses the results of the PubChem PUG-VIEW API for the CAS header
+#' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
 .parseCASresponse <- function(result){
     result <- result$Record$Reference$SourceID[1]
     return(result)
 }
 
 #' Function that parses the results of the PubChem PUG-VIEW API for the ATC Code header
+#' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
 .parseATCresponse <- function(result){
     if(length(result$Record$Section) == 0){
                 result <- "NA"
@@ -917,4 +820,104 @@ getPubChemAnnotations <- function(compound, annotations, ...){
     }}
 
     return(result)
+}
+
+
+## These methods further specialize the queryPubChem function to provide
+## a simple user interface that does not require knowledge of the PubChem
+## REST API to use.
+
+
+#' @title getPubChemFromNSC
+#'
+#' @description
+#' Return a data.table mapping from ids to the information specified in `to`.
+#'
+#' @param ids A `character` or `numeric` vector of valid NSC ids to use for the
+#'   query.
+#' @param to A `character(1)` vector with the desired return type. Currently
+#'   only 'cids' and 'sids' are implemented, but other options are available
+#'   via the PubChem API. This corresponds to the `operation` portion of the
+#'   PubChem API URL Path.
+#' @param ... Fall through arguments to bpmapply. Use this to pass in BPPARAM
+#'   parameter to customize parellization settings. Alternatively, just call
+#'   `register()` with your desired parallel backend configuration.
+#' @param raw A `logical(1)` vector specifying whether to early return the raw
+#'   query results. Use this if specifying an unimplemented return to the `to`
+#'   parameter.
+#' @param proxy `logical(1)` Should the query be routed through a random
+#'   proxy server. This is useful to keep trying queries if a user gets
+#'   blacklisted.
+#'
+#' @return A `data.table` where the first column is the specified NSC ids and
+#'   the second column is the results specified in `to`.
+#'
+#' @md
+#' @importFrom data.table data.table as.data.table setcolorder
+#' @export
+getPubChemFromNSC <- function(ids, to='cids', ..., batch=TRUE, raw=FALSE,
+        proxy=FALSE, options=NA, query_only=FALSE) {
+    funContext <- .funContext('::getPubChemFromNSC')
+
+    # -- make the GET request
+    queryRes <- queryPubChem(ids, domain='substance', ...,
+        namespace='sourceid/DTP.NCI', operation=to, batch=batch, raw=raw,
+        proxy=proxy, operation_options=options, query_only=query_only)
+
+    # -- early return option
+    if (isTRUE(raw) || isTRUE(query_only)) return(queryRes)
+
+    # -- handle failed queries
+    failedQueries <- attributes(queryRes)$failed
+    queries <- attributes(queryRes)$queries
+
+    # -- rehandle failed queries, somehow they are getting past queryPubChem?
+    ## FIXME:: How are they failed queries not found in queryPubChem?
+    failed <- unlist(lapply(queryRes, names)) %in% c("Fault", "Bad", "Error")
+    if (any(failed)) {
+        newFailedQueries <- Map(list, query=queries[failed], failure=queryRes[failed])
+        failedQueries <- c(failedQueries, newFailedQueries)
+        queryRes <- queryRes[!failed]
+        queries <- queries[!failed]
+    }
+
+    # -- process the results
+    .replace_NULL_NA <- function(DT) lapply(DT, function(x) {
+        ifelse(is.null(x), rep(NA_integer_, length(x)), x) })
+
+    # TODO:: Determine if all results are wrapped in two lists? If not this may
+    #>break the function.
+    .parseQueryToDT <- function(queryRes) as.data.table(queryRes[[1]][[1]])
+    queryRes <- lapply(queryRes, FUN=.parseQueryToDT)
+    queryRes <- rbindlist(queryRes, fill=TRUE)
+    switch(to,
+        'cids'={
+            unlistQueryRes <- queryRes[, NSC_id := unlist(queries)][,
+                lapply(.SD, FUN=.replace_NULL_NA)][, lapply(.SD, unlist)]
+            if (nrow(unlistQueryRes) > nrow(queryRes))
+                .warning(funContext, 'Some IDs multimap to returned CIDs,
+                    check for sduplicates to see which ones!')
+            if (any(is.na(unlistQueryRes$CID))) .warning(funContext, 'Some IDs
+                failed to map and will have NA CIDs.')
+        },
+        'sids'={
+            unlistQueryRes <- queryRes[, NSC_id := unlist(queries)][,
+                lapply(.SD, FUN=.replace_NULL_NA)][, lapply(.SD, unlist)]
+            if (nrow(unlistQueryRes) > nrow(queryRes))
+                .warning(funContext, 'Some IDs multimap to returned SIDs,
+                    check for duplicates to see which ones!')
+            if (any(is.na(unlistQueryRes$SID))) .warning(funContext, 'Some IDs
+                failed to map and will have NA SIDs.')
+        },
+        .error('The operation ', to, ' has not been implemented yet!',
+            ' To return the unprocessed results of the query, set `raw=TRUE`.')
+    )
+    # rearrange columns so that NSC_id is first
+    setcolorder(unlistQueryRes, rev(colnames(unlistQueryRes)))
+    if (length(failedQueries) > 0) {
+        .warning(funContext, 'One or more queries failed, please see
+            `attributes(<result>)$failed` for more information.')
+        attributes(unlistQueryRes)$failed <- failedQueries
+    }
+    return(unlistQueryRes)
 }
