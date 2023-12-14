@@ -59,7 +59,6 @@
 <span>  <span class="va">...</span>,</span>
 <span>  batch <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  raw <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  proxy <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  options <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  query_only <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -89,12 +88,6 @@ parameter to customize parellization settings. Alternatively, just call
 <dd><p>A <code>logical(1)</code> vector specifying whether to early return the raw
 query results. Use this if specifying an unimplemented return to the <code>to</code>
 parameter.</p></dd>
-
-
-<dt>proxy</dt>
-<dd><p><code>logical(1)</code> Should the query be routed through a random
-proxy server. This is useful to keep trying queries if a user gets
-blacklisted.</p></dd>
 
 </dl></div>
     <div class="section level2">

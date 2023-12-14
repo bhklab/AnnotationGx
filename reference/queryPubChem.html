@@ -64,7 +64,6 @@
 <span>  operation_options <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  batch <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  raw <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  proxy <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  query_only <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -138,12 +137,6 @@ output format options, plase see the PubChem PUG REST API documentation.</p></dd
 this is specific to the selected operation. This is appended as a string
 after '?' at the end of the query. See
 https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest$_Toc494865565 for details.</p></dd>
-
-
-<dt>proxy</dt>
-<dd><p><code>logical(1)</code> Should a random proxy server be used for the
-get request. Default is <code>FALSE</code>. This is useful to avoid getting
-black-listed from the API.</p></dd>
 
 
 <dt>query_only</dt>

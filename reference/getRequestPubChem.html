@@ -68,7 +68,6 @@ object.</p>
 <span>  <span class="va">...</span>,</span>
 <span>  url <span class="op">=</span> <span class="st">"https://pubchem.ncbi.nlm.nih.gov/rest/pug"</span>,</span>
 <span>  operation_options <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  proxy <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  raw <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  query_only <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
@@ -145,12 +144,6 @@ after '?' at the end of the query. See
 https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest$_Toc494865565 for details.</p></dd>
 
 
-<dt>proxy</dt>
-<dd><p><code>logical(1)</code> Should a random proxy server be used for the
-get request. Default is <code>FALSE</code>. This is useful to avoid getting
-black-listed from the API.</p></dd>
-
-
 <dt>query_only</dt>
 <dd><p><code>logical(1)</code> Should this function early return only
 the encoded query?</p></dd>
@@ -164,18 +157,16 @@ the encoded query?</p></dd>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>See https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest for the complete API
-documentation. A subset of this documentation is included below for
-convenience.</p><div class="section">
-<h3 id="url-path">URL Path<a class="anchor" aria-label="anchor" href="#url-path"></a></h3>
-
-
-<p>Most – if not all – of the information PubChem PUG service needs to
+    <p>See the PUG_VIEW website for the complete
+API documentation. A subset of this documentation is included below for
+convenience.
+#'
+Most – if not all – of the information PubChem PUG service needs to
 produce its results is encoded into the URL. The general form of the URL
 has three parts – input, operation, and output – after the common prefix,
 followed by operation options as URL arguments (after the ‘?’):</p>
 <p>"https://pubchem.ncbi.nlm.nih.gov/rest/pug/<input specification>/<operation specification>/[<output specification>][?&lt;operation_options&gt;]"</output></operation></p><div class="section">
-<h4 id="input">Input<a class="anchor" aria-label="anchor" href="#input"></a></h4>
+<h3 id="input">Input<a class="anchor" aria-label="anchor" href="#input"></a></h3>
 
 
 <p>The input portion of the URL tells the service which records to use as the
@@ -191,7 +182,7 @@ https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest$_Toc494865556</p>
 </div>
 
 <div class="section">
-<h4 id="operation">Operation<a class="anchor" aria-label="anchor" href="#operation"></a></h4>
+<h3 id="operation">Operation<a class="anchor" aria-label="anchor" href="#operation"></a></h3>
 
 
 <p>The operation part of the URL tells the service what to do with the input
@@ -210,7 +201,7 @@ https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest$_Toc494865557</p>
 </div>
 
 <div class="section">
-<h4 id="output">Output<a class="anchor" aria-label="anchor" href="#output"></a></h4>
+<h3 id="output">Output<a class="anchor" aria-label="anchor" href="#output"></a></h3>
 
 
 <p>The final portion of the URL tells the service what output format is desired.
@@ -219,9 +210,6 @@ in the HTTP Accept field of the request header – see below for more detail.</p
 <p>"<output specification> = XML | ASNT | ASNB | JSON | JSONP  | SDF | CSV | PNG | TXT"</output></p>
 <p>Complete documentation for valid output formats can be found at:
 https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest$_Toc494865558</p>
-</div>
-
-
 </div>
 
     </div>
