@@ -4,7 +4,18 @@
 \alias{constructChemblQuery}
 \title{A general function for creating Queries to the ChEMBL API}
 \usage{
-constructChemblQuery(resource, field, filter_type, value)
+constructChemblQuery(resource, field, filter_type, value, format = "json")
+}
+\arguments{
+\item{resource}{\code{character(1)} Resource to query}
+
+\item{field}{\code{character(1)} Field to query}
+
+\item{filter_type}{\code{character(1)} Filter type}
+
+\item{value}{\code{character(1)} Value to query}
+
+\item{format}{\code{character(1)} Format of the response}
 }
 \description{
 A general function for creating Queries to the ChEMBL API\tabular{cc}{

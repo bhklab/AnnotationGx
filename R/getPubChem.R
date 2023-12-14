@@ -11,8 +11,7 @@
 #' function parameters then executes that query, returning a `httr::request`
 #' object.
 #'
-#' @details
-#' See https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest for the complete API
+#' @details See https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest for the complete API
 #'   documentation. A subset of this documentation is included below for
 #'   convenience.
 #'
@@ -409,32 +408,32 @@ getPubChemCompound <- function(ids, from='cid', to='property', ...,
     return(queryRes)
 }
 
-
-#' @title getPubChemSubstance
+#' Retrieve PubChem substance information
 #'
-#' @description
-#' Make queries to the PubChem Compound domain.
+#' This function retrieves PubChem substance information based on the provided IDs.
+#' It supports mapping from various namespaces such as CID, name, xref, smiles, inchi, and sdf.
+#' The function can handle batch queries and can return the raw query results if specified.
 #'
-#' @param ids A `character` or `numeric` vector of valid PubChem identifiers
-#'   to use for the query. Which identifier is being used must be specified in
-#'   the `from` parameter.
-#' @param from A `character(1)` vector with the desired namespace to query.
-#'   Default is 'cid'. Try using 'sid' if some of your CIDs fail to map.
-#' @param to A `character(1)` vector with the desired return type. Defaults
-#'   to 'record', which returns all available data from the specified IDs.
-#' @param batch `logical(1)` Should the query be run in batches (i.e., multiple
-#'   ids per GET request to the API). Default is `TRUE`. Should be set to
-#'   `FALSE` when retrying failed queries. Batch queries are not supported when
-#'   `from` is one of 'name', 'xref', 'smiles', 'inchi' or 'sdf'. In these
-#'   cases, batch will automatically be set to `FALSE` with a warning.
-#' @param raw `logical(1)` Should the raw query results be early returned. This
-#'   can be useful for diagnosing issues with failing queries.
-#' @param proxy
+#' @param ids A character vector of IDs to query.
+#' @param from The namespace of the input IDs (default is 'cid').
+#' @param to The namespace to map the input IDs to (default is 'sids').
+#' @param batch Logical indicating whether to use batch queries (default is TRUE).
+#' @param raw Logical indicating whether to return the raw query results (default is FALSE).
+#' @param proxy Logical indicating whether to use a proxy server for the queries (default is FALSE).
+#' @param ... Additional arguments to be passed to the queryPubChem function.
 #'
-#' @return A `data.frame` or `list` containing results of the query.
+#' @return A data table containing the retrieved PubChem substance information.
+#' If raw is TRUE, the function returns the raw query results.
+#' If any queries fail, the function includes the failed queries in the returned object.
 #'
-#' @md
-#' @importFrom data.table setnames as.data.table rbindlist
+#' @examples
+#' getPubChemSubstance(c('123', '456'), from='cid', to='sids')
+#' getPubChemSubstance(c('water', 'ethanol'), from='name', to='cid', batch=FALSE)
+#' getPubChemSubstance(c('C1=CC=CC=C1', 'CCO'), from='smiles', to='name', raw=TRUE)
+#' 
+#' @references
+#' Documentation for the PubChem API: https://pubchemdocs.ncbi.nlm.nih.gov/
+#'
 #' @export
 getPubChemSubstance <- function(ids, from='cid', to='sids', ...,
         batch=TRUE, raw=FALSE, proxy=FALSE) {
@@ -518,22 +517,21 @@ getPubChemSubstance <- function(ids, from='cid', to='sids', ...,
 #' @importFrom data.table data.table as.data.table merge.data.table last rbindlist fwrite
 #' @importFrom BiocParallel bpparam bpworkers bpprogressbar bptry
 #' @export
-getAllPubChemAnnotations <- 
-    function(
-        header='Available', 
-        type='Compound',
-        parseFUN=identity, 
-        output='JSON', 
-        raw=FALSE, 
-        rawAnnotationDT=FALSE, 
-        verbose = FALSE,
-        url='https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/annotations/heading',
-        BPPARAM=bpparam(),
-        proxy=FALSE,
-        retries=3,
-        maxPages=NA,
-        ...
-        ) {
+getAllPubChemAnnotations <- function(
+    header='Available', 
+    type='Compound',
+    parseFUN=identity, 
+    output='JSON', 
+    raw=FALSE, 
+    rawAnnotationDT=FALSE, 
+    verbose = FALSE,
+    url='https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/annotations/heading',
+    BPPARAM=bpparam(),
+    proxy=FALSE,
+    retries=3,
+    maxPages=NA,
+    ...
+    ) {
     funContext <- .funContext('::getPubChemAnnotations')
     if (header == 'Available') {
         queryURL <-
@@ -660,6 +658,10 @@ getAllPubChemAnnotations <-
 #' @param retries `numeric(1)` The number of times to retry a failed query. Default is 3.
 #' @param quiet `logical(1)` Should the function be quiet? Default is TRUE.
 #' @param throttleMessage `logical(1)` Should a message be printed when the query is throttled? Default is FALSE.
+#' @param query_only `logical(1)` Should this function early return only the encoded query?
+#' 
+#' @return A `data.table` of resulting annotations.
+#' 
 #' @export
 getPubChemAnnotation <- function(
     compound,

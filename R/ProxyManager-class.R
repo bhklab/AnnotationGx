@@ -62,6 +62,17 @@ ProxyManager <- R6::R6Class('ProxyManager',
     )
 )
 
+#' Parse text response to create a data table of proxies.
+#'
+#' This function takes a response object and parses the text content to create a data table
+#' of proxies. It imports the necessary functions from the `data.table` and `httr` packages.
+#' The response object is expected to contain a text response that is formatted with IP addresses
+#' and ports separated by a colon. The function splits the text response into separate columns
+#' for IP and port, and adds a 'http://' prefix to the IP addresses. The resulting data table
+#' has two columns: 'ip' and 'port'.
+#'
+#' @param response The response object containing the text response.
+#' @return A data table with columns 'ip' and 'port' representing the parsed proxies.
 #' @importFrom data.table data.table tstrsplit as.data.table
 #' @importFrom httr content
 #' @export

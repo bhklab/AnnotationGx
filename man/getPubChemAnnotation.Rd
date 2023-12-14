@@ -11,7 +11,8 @@ getPubChemAnnotation(
   timeout_s = 29,
   retries = 3,
   quiet = TRUE,
-  throttleMessage = FALSE
+  throttleMessage = FALSE,
+  query_only = FALSE
 )
 }
 \arguments{
@@ -27,9 +28,14 @@ getPubChemAnnotation(
 
 \item{throttleMessage}{\code{logical(1)} Should a message be printed when the query is throttled? Default is FALSE.}
 
+\item{query_only}{\code{logical(1)} Should this function early return only the encoded query?}
+
 \item{header}{\code{character(1)} A valid header name for the PUG VIEW annotations}
 
 \item{output}{\code{character(1)} The output format. Defaults to 'JSON'.}
+}
+\value{
+A \code{data.table} of resulting annotations.
 }
 \description{
 queries the PubChem PUG-VIEW API to get a single annotation using a CID for a header

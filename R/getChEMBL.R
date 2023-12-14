@@ -135,7 +135,7 @@ getChemblAllMechanisms <- function(url="https://www.ebi.ac.uk",
 #' @param field `character(1)` Field to query
 #' @param filter_type `character(1)` Filter type
 #' @param value `character(1)` Value to query
-#' 
+#' @param format `character(1)` Format of the response
 #' 
 #' @md
 #' @export

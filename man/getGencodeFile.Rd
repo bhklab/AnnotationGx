@@ -42,6 +42,12 @@ type="metadata".
 \description{
 File descriptions are available at https://www.gencodegenes.org/human/.
 }
+\details{
+The Gencode files are downloaded to the \code{dir} directory, and
+loaded into R using the appropriate Bioconductor class. The file name
+and download URL are added to the \code{source} attribute of the returned
+object.
+}
 \seealso{
 Other Gencode: 
 \code{\link{getGencodeAvailableFiles}()},

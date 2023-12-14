@@ -7,7 +7,10 @@
 #' @description
 #' This function reads Cellosaurus XML and parses nodes for cell line annotations based on input parameters, returning a data.table object
 #'
-#' @details
+#' @details This function is a wrapper for the `getCellosaurus` function, 
+#' which is a wrapper for the `getInfoFromCelllineInput` function, 
+#' which is a wrapper for the `cleanCellnames` function, 
+#' which is a wrapper for the `getCelloxml` function.
 #'
 #' @return An `XML` document of Cellosaurus
 #' @references

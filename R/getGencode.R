@@ -222,7 +222,10 @@ getGencodeAvailableFiles <- function(version="latest",
 #'
 #' @family Gencode
 #'
-#' @details
+#' @details The Gencode files are downloaded to the `dir` directory, and
+#'  loaded into R using the appropriate Bioconductor class. The file name
+#' and download URL are added to the `source` attribute of the returned
+#' object.
 #'
 #'
 #' @return `GenomicRanges` object when type="GTF", `DNAStringSet` when

@@ -31,13 +31,25 @@ downloadAndExtract <- function(url, extract_fun=unzip, ...) {
     return(extract_fun_result)
 }
 
-
+#' Convert a character string to a named vector.
+#'
+#' This function takes a character string in the format "name=value|name=value|..."
+#' and converts it into a named vector, where each name-value pair is separated by
+#' a pipe symbol (|) and the name and value are separated by an equals sign (=).
+#'
+#' @param x A character string in the format "name=value|name=value|..."
+#' @return A named vector with the names and values extracted from the input string.
 #' @export
 characterToNamedVector <- function(x) {
     Reduce(c, lapply(strsplit(unlist(strsplit(x, '\\|')), '='),
             FUN=\(x) structure(x[2], .Names=x[1]))) }
 
-
+#' Get failure messages from an object
+#'
+#' This function retrieves failure messages from an object that has a 'failed' attribute.
+#'
+#' @param x An object with a 'failed' attribute
+#' @return A data frame containing the query and corresponding failure messages
 #' @export
 getFailureMessages <- function(x) {
     if (is.null(attributes(x)$failed)) stop("There is no 'failed' attribute?")
@@ -46,12 +58,22 @@ getFailureMessages <- function(x) {
     failedDT <- rbindlist(lapply(DT$failure, as.data.table), fill=TRUE)
     return(cbind(DT[, 'query'], failedDT))
 }
-
-
+#' Get the failed attribute of an object
+#'
+#' This function retrieves the "failed" attribute of an object.
+#'
+#' @param x An object
+#' @return The "failed" attribute of the object
 #' @export
 getFailed <- function(x) attributes(x)$failed
 
 
+#' Get the failed IDs from an object
+#'
+#' This function retrieves the "failed" IDs from an object by accessing the "query" element of the "failed" attribute.
+#'
+#' @param x An object
+#' @return A vector of failed IDs
 #' @export
 getFailedIDs <- function(x) unlist(lapply(getFailed(x), `[[`, i='query'))
 

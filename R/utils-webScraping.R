@@ -4,20 +4,35 @@
 NULL
 
 
+
+#' Extracts directory names from a given vector of paths.
+#'
+#' @param x A vector of paths.
+#' @return A vector of directory names.
+#'
+#' @examples
+#' grep_directory_names(c("/home/user/dir1/file1.txt", "/home/user/dir2/file2.txt"))
+#'
 #' @export
 grep_directory_names <- function(x) {
     grep(".*/$", x, value=TRUE)
 }
 
+#' Find file names matching specified extensions in a vector of file paths.
+#'
 #' @param x `character()` vector of file or directory paths
 #' @param extensions `character(1)` regex of file extensions to match. Defaults
-#'   to files whcih end with 2 to 5 alphanumeric character preceded by a dot.
+#'   to files which end with 2 to 5 alphanumeric characters preceded by a dot.
 #' @export
 grep_file_names <- function(x, extensions="[[:alnum:]]{2,5}$") {
     checkmate::assert_character(extensions, max.len=1)
     grep(paste0(".*\\.", extensions), x, value=TRUE)
 }
 
+#' Get all HTML tables from a remote URL.
+#'
+#' This function takes a URL as input and scrapes all HTML tables from that URL.
+#'
 #' @param url `character(1)` URL to scrape all HTML tables from.
 #' @export
 get_remote_table <- function(url) {

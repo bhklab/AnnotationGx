@@ -2,7 +2,7 @@
 % Please edit documentation in R/getPubChem.R
 \name{getPubChemSubstance}
 \alias{getPubChemSubstance}
-\title{getPubChemSubstance}
+\title{Retrieve PubChem substance information}
 \usage{
 getPubChemSubstance(
   ids,
@@ -15,30 +15,36 @@ getPubChemSubstance(
 )
 }
 \arguments{
-\item{ids}{A \code{character} or \code{numeric} vector of valid PubChem identifiers
-to use for the query. Which identifier is being used must be specified in
-the \code{from} parameter.}
+\item{ids}{A character vector of IDs to query.}
 
-\item{from}{A \code{character(1)} vector with the desired namespace to query.
-Default is 'cid'. Try using 'sid' if some of your CIDs fail to map.}
+\item{from}{The namespace of the input IDs (default is 'cid').}
 
-\item{to}{A \code{character(1)} vector with the desired return type. Defaults
-to 'record', which returns all available data from the specified IDs.}
+\item{to}{The namespace to map the input IDs to (default is 'sids').}
 
-\item{batch}{\code{logical(1)} Should the query be run in batches (i.e., multiple
-ids per GET request to the API). Default is \code{TRUE}. Should be set to
-\code{FALSE} when retrying failed queries. Batch queries are not supported when
-\code{from} is one of 'name', 'xref', 'smiles', 'inchi' or 'sdf'. In these
-cases, batch will automatically be set to \code{FALSE} with a warning.}
+\item{...}{Additional arguments to be passed to the queryPubChem function.}
 
-\item{raw}{\code{logical(1)} Should the raw query results be early returned. This
-can be useful for diagnosing issues with failing queries.}
+\item{batch}{Logical indicating whether to use batch queries (default is TRUE).}
 
-\item{proxy}{}
+\item{raw}{Logical indicating whether to return the raw query results (default is FALSE).}
+
+\item{proxy}{Logical indicating whether to use a proxy server for the queries (default is FALSE).}
 }
 \value{
-A \code{data.frame} or \code{list} containing results of the query.
+A data table containing the retrieved PubChem substance information.
+If raw is TRUE, the function returns the raw query results.
+If any queries fail, the function includes the failed queries in the returned object.
 }
 \description{
-Make queries to the PubChem Compound domain.
+This function retrieves PubChem substance information based on the provided IDs.
+It supports mapping from various namespaces such as CID, name, xref, smiles, inchi, and sdf.
+The function can handle batch queries and can return the raw query results if specified.
+}
+\examples{
+getPubChemSubstance(c('123', '456'), from='cid', to='sids')
+getPubChemSubstance(c('water', 'ethanol'), from='name', to='cid', batch=FALSE)
+getPubChemSubstance(c('C1=CC=CC=C1', 'CCO'), from='smiles', to='name', raw=TRUE)
+
+}
+\references{
+Documentation for the PubChem API: https://pubchemdocs.ncbi.nlm.nih.gov/
 }
