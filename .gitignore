@@ -43,3 +43,5 @@ local_data/*
 # HTML files
 **.html
 docs
+/doc/
+/Meta/

@@ -46,3 +46,5 @@ scripts/.*
 ^pkgdown$
 ^\.github$
 ^LICENSE\.md$
+^doc$
+^Meta$

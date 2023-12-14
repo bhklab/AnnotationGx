@@ -139,7 +139,6 @@
 #' @importFrom jsonlite toJSON fromJSON
 #' @importFrom httr RETRY GET timeout use_proxy
 #' @importFrom data.table data.table fread
-#' @importFrom crayon strip_style
 #' @export
 getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
         output='JSON', ..., url='https://pubchem.ncbi.nlm.nih.gov/rest/pug',
@@ -189,7 +188,7 @@ getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=
                         Error=list(
                             Code='getRequestPubChem.ERROR',
                             Message='See Details for error message',
-                            Details=paste0(strip_style(e), collapse=' ')))),
+                            Details=e))),
                     status_code=400)
             }
         })
@@ -289,7 +288,6 @@ queryRequestPubChem <- function(..., query_only=FALSE)
 ## TODO:: Retrieve PubChem server status to dynamically set query spacing
 ##>based on server load
 ## TODO:: Make the query away for server load status in response header
-#' @importFrom crayon strip_style
 .queryPubChemSleep <- function(x, ..., query_only=FALSE) {
     proxy <- list(...)$proxy
 
@@ -302,7 +300,7 @@ queryRequestPubChem <- function(..., query_only=FALSE)
         list(Error=list(
             Code='.queryPubChemSleep.ERROR',
             Message='See Details for error msg',
-            Details=paste0(strip_style(e), collapse=' ')
+            Details=e
         ))
     })
     # if (!isTRUE(proxy) && queryTime < 0.31) Sys.sleep(0.31 - queryTime)
