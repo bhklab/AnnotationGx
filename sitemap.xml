@@ -37,6 +37,9 @@
     <loc>/reference/addAnnotationColumnToDrugs.html</loc>
   </url>
   <url>
+    <loc>/reference/characterToNamedVector.html</loc>
+  </url>
+  <url>
     <loc>/reference/cleanCellnames.html</loc>
   </url>
   <url>
@@ -121,6 +124,15 @@
     <loc>/reference/getFDAOrangeBookProducts.html</loc>
   </url>
   <url>
+    <loc>/reference/getFailed.html</loc>
+  </url>
+  <url>
+    <loc>/reference/getFailedIDs.html</loc>
+  </url>
+  <url>
+    <loc>/reference/getFailureMessages.html</loc>
+  </url>
+  <url>
     <loc>/reference/getGencodeAvailableFiles.html</loc>
   </url>
   <url>
@@ -157,6 +169,9 @@
     <loc>/reference/getPubChemFromNSC.html</loc>
   </url>
   <url>
+    <loc>/reference/getPubChemStatus.html</loc>
+  </url>
+  <url>
     <loc>/reference/getPubChemSubstance.html</loc>
   </url>
   <url>
@@ -164,6 +179,15 @@
   </url>
   <url>
     <loc>/reference/getUniChemSources.html</loc>
+  </url>
+  <url>
+    <loc>/reference/get_remote_table.html</loc>
+  </url>
+  <url>
+    <loc>/reference/grep_directory_names.html</loc>
+  </url>
+  <url>
+    <loc>/reference/grep_file_names.html</loc>
   </url>
   <url>
     <loc>/reference/httpRequestUniChem.html</loc>
@@ -182,6 +206,9 @@
   </url>
   <url>
     <loc>/reference/parseJSON.html</loc>
+  </url>
+  <url>
+    <loc>/reference/parse_text_response_to_datatable.html</loc>
   </url>
   <url>
     <loc>/reference/postRequestUniChem.html</loc>
