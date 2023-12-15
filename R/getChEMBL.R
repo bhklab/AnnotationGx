@@ -268,8 +268,6 @@ getChemblMechanism <- function(
     # constructChemblQuery(resource = "mechanism", field = "molecule_chembl_id", filter_type = "in", value = "CHEMBL1413")
     # urls <- constructChemblQuery(resource = resources, field = field, filter_type = filter_type, value = chembl.ID)
     # urls <- URLencode(urls)
-    
-    # if(returnURL) return(urls)
 
     cols <- c("molecule_chembl_id", "action_type", 
     "mechanism_of_action", "molecular_mechanism", 
@@ -277,6 +275,8 @@ getChemblMechanism <- function(
 
     responses <- lapply(chembl.ID, function(ID){
         url <- constructChemblQuery(resource = resources, field = field, filter_type = filter_type, value = ID)
+        if(returnURL) return(url)
+
         response <- httr::GET(url)
         response <- parseJSON(response)
         mechanisms <- data.table::as.data.table(response$mechanisms)
@@ -288,12 +288,21 @@ getChemblMechanism <- function(
             mechanisms[, "molecule_chembl_id" := ID]
             return(mechanisms)
         }
+
+        mechanisms <- mechanisms[,..cols]
+        if(length(mechanisms) > 1) message("NOTE::More than one mechanism for ", ID)
+
         return(mechanisms[,..cols])
     })
-    
-    # replace the _ in the column names with .
+    if(returnURL) return(responses)
+
+    # replace the _ in the column names with a space
+    # capitalize the first letter of each word
+    # replace Id with ID
     responses <- lapply(responses, function(x){
-        names(x) <- gsub("_", ".", names(x))
+        names(x) <- gsub("_", " ", names(x))
+        names(x) <- stringr::str_to_title(names(x))
+        names(x) <- gsub("Id", "ID", names(x))
         return(x)
     })
 
