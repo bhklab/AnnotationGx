@@ -158,8 +158,11 @@ getRequestPubChem <- function(id, domain='compound', namespace='cid', operation=
     # get HTTP response, respecting the 30s max query time of PubChem API
     tryCatch({
         
-        result <- RETRY('GET', encodedQuery, timeout(29), times=3,
-            quiet=TRUE, terminate_on=c(400, 404, 503))
+        # result <- RETRY('GET', encodedQuery, timeout(29), times=9,
+        #     quiet=TRUE, terminate_on=c(400, 404, 503))
+
+        result <- RETRY('GET', encodedQuery, timeout(29), times=9,
+            quiet=TRUE)
 
         if (isTRUE(raw)) return(result)
 
@@ -302,9 +305,6 @@ queryRequestPubChem <- function(..., query_only=FALSE)
 ## ============================
 ## queryPubChem wrapper methods
 ## ----------------------------
-
-
-
 
 #' @title getPubChemCompound
 #'
@@ -787,7 +787,27 @@ getPubChemAnnotations <- function(compound, annotations, ...){
     dt_ <- as.data.table(dt_[[1]])
     result <- paste0("ATC:", dt_$String)
     if(length(result) > 1){
-        result <- paste0(result, collapse = "; ")
+        # result <- paste0(result, collapse = "; ") # this is the old way
+
+        # example: result
+        # [1] "ATC:L - Antineoplastic and immunomodulating agents"           
+        # [2] "ATC:L01 - Antineoplastic agents"                              
+        # [3] "ATC:L01E - Protein kinase inhibitors"                         
+        # [4] "ATC:L01EE - Mitogen-activated protein kinase (mek) inhibitors"
+        # [5] "ATC:L01EE04 - Selumetinib"   
+
+        # get the number of letters after the colon and before the dash
+        # split the string by the colon
+        # get the second element
+
+        codes <- lapply(result, function(x) {
+            x <- strsplit(x, ":")[[1]][2]
+            x <- strsplit(x, "-")[[1]][1]
+            x <- nchar(x)
+            return(x)
+        })
+        result <- strsplit(result[which.max(codes)], "-")[[1]][1]
+        result <- gsub(" ", "", result)
     }}
 
     return(result)
