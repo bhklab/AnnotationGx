@@ -286,12 +286,17 @@ getCellosaurus <-
     return(op_dt)
     }
 
-
-#'
-#'
+#' Fetches the complete Cellosaurus data
+#' 
+#' This function fetches the complete Cellosaurus data and converts it 
+#' into a data table using the Cellosaurus package. 
+#' 
 #' @export
-getCellosaurusDataFrame <- function(url) {
+#' @return A data table containing the complete Cellosaurus data
+getCompleteCellosaurusObject <- function() {
 
+  message("Fetching Cellosaurus Data")
+  message("This may take up to 15 minutes and it is recommended to save 
+          the output for future use")
+  Cellosaurus::Cellosaurus()
 }
-
-
