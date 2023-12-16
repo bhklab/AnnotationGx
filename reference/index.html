@@ -73,11 +73,6 @@
         <dd>Clean Cell Names</dd>
       </dl><dl><dt>
           
-          <code><a href="cleanCellosaurusResponse.html">cleanCellosaurusResponse()</a></code> 
-        </dt>
-        <dd>Clean cellosaurus responses</dd>
-      </dl><dl><dt>
-          
           <code><a href="compoundQuery.html">compoundQuery()</a></code> 
         </dt>
         <dd>Query the ChEMBL compound API end-point</dd>
@@ -101,11 +96,6 @@
           <code><a href="dot-checkThrottlingStatus.html">.checkThrottlingStatus()</a></code> 
         </dt>
         <dd>Checks to see if the PubChem query is exceeding the throttling limit</dd>
-      </dl><dl><dt>
-          
-          <code><a href="dot-createQueryURLs.html">.createQueryURLs()</a></code> 
-        </dt>
-        <dd>Create a list of query URLS for Cellosaurus API</dd>
       </dl><dl><dt>
           
           <code><a href="dot-getPubChemAnnotationDT.html">.getPubChemAnnotationDT()</a></code> 
@@ -179,9 +169,9 @@ of <code>data.frame</code>s within <code>list</code> columns.</dd>
         <dd>Build a <code>data.table</code> of annotations from query list.</dd>
       </dl><dl><dt>
           
-          <code><a href="getCellosaurusAPI.html">getCellosaurusAPI()</a></code> 
+          <code><a href="getCellosaurusAccesions.html">getCellosaurusAccesions()</a></code> 
         </dt>
-        <dd>Query Cellosaurus</dd>
+        <dd>getCellosaurusAccesions Function</dd>
       </dl><dl><dt>
           
           <code><a href="getCelloxml.html">getCelloxml()</a></code> 
@@ -197,6 +187,11 @@ of <code>data.frame</code>s within <code>list</code> columns.</dd>
           <code><a href="getChemblMechanism.html">getChemblMechanism()</a></code> 
         </dt>
         <dd>Query the ChEMBL mechanism API end-point for a given CHEMBL_ID or list of CHEMBL_IDs</dd>
+      </dl><dl><dt>
+          
+          <code><a href="getCompleteCellosaurusObject.html">getCompleteCellosaurusObject()</a></code> 
+        </dt>
+        <dd>Fetches the complete Cellosaurus data</dd>
       </dl><dl><dt>
           
           <code><a href="getDrugTargets.html">getDrugTargets()</a></code> 
@@ -379,6 +374,20 @@ databases</dd>
         </dt>
         <dd>Retrieve a table of files available from an FTP download site by scraping
 the first HTML table at the specified URL.</dd>
+      </dl><dl><dt>
+          
+          <code><a href="searchCellosaurusAPI.html">searchCellosaurusAPI()</a></code> 
+        </dt>
+        <dd>id, sy, idsy, ac, acas, dr, ref, rx, ra, rt, rl,
+ww, genome-ancestry, hla, registration, sequence-variation,
+anecdotal, biotechnology, breed, caution, cell-type,
+characteristics, donor-info,
+derived-from-site, discontinued, doubling-time, from, group,
+karyotype, knockout, msi, miscellaneous, misspelling, mab-isotype,
+mab-target, omics, part-of, population, problematic, resistance,
+senescence, transfected, transformant, virology,
+cc, str, di, din, dio, ox, sx, ag, oi, hi, ch, ca, dt, dtc, dtu, dtv
+Search Cellosaurus API</dd>
       </dl><dl><dt>
           
           <code><a href="zenodoMetadata.html">zenodoMetadata()</a></code> 

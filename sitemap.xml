@@ -43,9 +43,6 @@
     <loc>/reference/cleanCellnames.html</loc>
   </url>
   <url>
-    <loc>/reference/cleanCellosaurusResponse.html</loc>
-  </url>
-  <url>
     <loc>/reference/compoundQuery.html</loc>
   </url>
   <url>
@@ -59,9 +56,6 @@
   </url>
   <url>
     <loc>/reference/dot-checkThrottlingStatus.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dot-createQueryURLs.html</loc>
   </url>
   <url>
     <loc>/reference/dot-getPubChemAnnotationDT.html</loc>
@@ -106,7 +100,7 @@
     <loc>/reference/getCellosaurus.html</loc>
   </url>
   <url>
-    <loc>/reference/getCellosaurusAPI.html</loc>
+    <loc>/reference/getCellosaurusAccesions.html</loc>
   </url>
   <url>
     <loc>/reference/getCelloxml.html</loc>
@@ -116,6 +110,9 @@
   </url>
   <url>
     <loc>/reference/getChemblMechanism.html</loc>
+  </url>
+  <url>
+    <loc>/reference/getCompleteCellosaurusObject.html</loc>
   </url>
   <url>
     <loc>/reference/getDrugTargets.html</loc>
@@ -224,6 +221,9 @@
   </url>
   <url>
     <loc>/reference/scrapeRemoteFTPFilesTable.html</loc>
+  </url>
+  <url>
+    <loc>/reference/searchCellosaurusAPI.html</loc>
   </url>
   <url>
     <loc>/reference/zenodoMetadata.html</loc>
