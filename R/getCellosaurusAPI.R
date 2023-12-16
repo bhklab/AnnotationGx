@@ -82,6 +82,15 @@ searchCellosaurusAPI <- function(
 }
 
 
+#' Parse Cellosaurus TSV Response
+#'
+#' This function parses the response from the Cellosaurus API and converts it into a data.table.
+#'
+#' @param response The response from the Cellosaurus API.
+#'
+#' @return A data.table containing the parsed information from the response.
+#'
+#' @export
 .parseCellosaurusTSVResponse <- function(response) {
     lookup <- c(
         "id" = "Name",
@@ -120,11 +129,7 @@ searchCellosaurusAPI <- function(
 #'
 #' @return A data.table object containing the Cellosaurus accessions for the given samples.
 #'
-#' @examples
-#' getCellosaurusAccesions(samples = c("sample1", "sample2"), from = "idsy", threads = 2)
 #'
-#' @import BiocParallel
-#' @import data.table
 #' @export
 getCellosaurusAccesions <- function(samples, from = "idsy", ..., threads=1){
     results <- BiocParallel::bplapply(samples, function(sampleID){
@@ -146,6 +151,14 @@ getCellosaurusAccesions <- function(samples, from = "idsy", ..., threads=1){
     results
 }
 
+#' Parses the response from the Cellosaurus API.
+#'
+#' This function takes the response from the Cellosaurus API and parses it into a structured format.
+#' It removes unnecessary header lines, splits the response into individual records, and extracts the relevant fields.
+#' The resulting data is returned as a data.table object.
+#'
+#' @param response The response from the Cellosaurus API.
+#' @return A data.table object containing the parsed data.
 .parseCellosaurusTXTResponse <- function(response){
     response <- strsplit(response, split = "\n")[[1]][-(1:15)]
     response <- split(response, cumsum(response == "//"))

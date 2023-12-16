@@ -41,15 +41,25 @@ getCelloxml <- memoise::memoise(function(url = "https://ftp.expasy.org/databases
   }
 )
 
-#' Clean Cell Names
-#' 
-#' @description 
-#' TODO::
-#' 
-#' @md
-#' @importFrom xml2 read_xml xml_find_all
+
+#' Clean cell line names in XML
+#'
+#' This function removes special characters from cell line names in an XML file.
+#'
+#' @param main_xml The XML object containing the cell line names.
+#' @param verbose Logical indicating whether to display progress messages. Default is TRUE.
+#'
+#' @return The modified XML object with cleaned cell line names.
+#'
+#' @examples
+#' # Load XML file
+#' xml_file <- xml2::read_xml("path/to/xml/file.xml")
+#'
+#' # Clean cell line names
+#' cleaned_xml <- cleanCellnames(xml_file)
+#'
+#' @importFrom xml2 xml_find_all xml_text xml_find_first xml_set_attr
 #' @export
-#########ADD DOCS
 cleanCellnames <- function(main_xml, verbose = TRUE) {
   if (verbose) {
     message(paste(

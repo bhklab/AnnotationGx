@@ -38,7 +38,8 @@ Imports:
     listenv,
     rvest,
     S4Vectors,
-    crayon
+    crayon,
+    stringr
 Suggests:
     rmarkdown,
     knitr,
