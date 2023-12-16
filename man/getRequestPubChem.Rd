@@ -81,12 +81,7 @@ A \code{httr::response} object with the results of the GET request.
 This function builds a query URL for the PubChem PUG REST API based on the
 function parameters then executes that query, returning a \code{httr::request}
 object.
-}
-\details{
-See the PUG_VIEW website for the complete
-API documentation. A subset of this documentation is included below for
-convenience.
-#'
+
 Most – if not all – of the information PubChem PUG service needs to
 produce its results is encoded into the URL. The general form of the URL
 has three parts – input, operation, and output – after the common prefix,
@@ -145,6 +140,11 @@ in the HTTP Accept field of the request header – see below for more detail.
 Complete documentation for valid output formats can be found at:
 https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest$_Toc494865558
 }
+}
+\details{
+See the PUG_VIEW website for the complete
+API documentation. A subset of this documentation is included below for
+convenience.
 }
 \references{
 Kim S, Thiessen PA, Cheng T, Yu B, Bolton EE. An update on PUG-REST: RESTful interface for programmatic access to PubChem. Nucleic Acids Res. 2018 July 2; 46(W1):W563-570. doi:10.1093/nar/gky294.

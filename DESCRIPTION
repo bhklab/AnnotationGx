@@ -37,7 +37,8 @@ Imports:
     R6P,
     listenv,
     rvest,
-    S4Vectors
+    S4Vectors,
+    Cellosaurus
 Suggests:
     rmarkdown,
     knitr,
@@ -45,6 +46,7 @@ Suggests:
     DT,
     kableExtra,
     testthat (>= 3.0.0)
+Additional_repositories: https://r.acidgenomics.com
 VignetteBuilder: knitr
 License: GPL (>= 3)
 Encoding: UTF-8

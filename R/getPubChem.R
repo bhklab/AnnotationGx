@@ -11,10 +11,7 @@
 #' function parameters then executes that query, returning a `httr::request`
 #' object.
 #'
-#' @details See the PUG_VIEW website for the complete 
-#'   API documentation. A subset of this documentation is included below for
-#'   convenience.
-#'#'
+#' 
 #' Most – if not all – of the information PubChem PUG service needs to
 #'   produce its results is encoded into the URL. The general form of the URL
 #'   has three parts – input, operation, and output – after the common prefix,
@@ -72,6 +69,10 @@
 #' Complete documentation for valid output formats can be found at:
 #' https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest$_Toc494865558
 #'
+#' @details See the PUG_VIEW website for the complete 
+#'   API documentation. A subset of this documentation is included below for
+#'   convenience.
+#' 
 #' @param id The identifier for REST API query. This should be a valid compound
 #'   identifier for the specified `domain` and `namespace`. For example, if
 #'   `domain='compound'` and `namespace='cid'` then `id` should be one or
