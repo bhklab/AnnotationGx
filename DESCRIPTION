@@ -37,7 +37,8 @@ Imports:
     R6P,
     listenv,
     rvest,
-    S4Vectors
+    S4Vectors,
+    crayon
 Suggests:
     rmarkdown,
     knitr,
