@@ -58,10 +58,22 @@
     <loc>/reference/dot-checkThrottlingStatus.html</loc>
   </url>
   <url>
+    <loc>/reference/dot-error.html</loc>
+  </url>
+  <url>
+    <loc>/reference/dot-formatMessage.html</loc>
+  </url>
+  <url>
+    <loc>/reference/dot-funContext.html</loc>
+  </url>
+  <url>
     <loc>/reference/dot-getPubChemAnnotationDT.html</loc>
   </url>
   <url>
     <loc>/reference/dot-groupListByName.html</loc>
+  </url>
+  <url>
+    <loc>/reference/dot-message.html</loc>
   </url>
   <url>
     <loc>/reference/dot-parseATCresponse.html</loc>
@@ -73,10 +85,19 @@
     <loc>/reference/dot-parseCHEMBLresponse.html</loc>
   </url>
   <url>
+    <loc>/reference/dot-parseCellosaurusTSVResponse.html</loc>
+  </url>
+  <url>
+    <loc>/reference/dot-parseCellosaurusTXTResponse.html</loc>
+  </url>
+  <url>
     <loc>/reference/dot-parseDILIresponse.html</loc>
   </url>
   <url>
     <loc>/reference/dot-parseNSCresponse.html</loc>
+  </url>
+  <url>
+    <loc>/reference/dot-warning.html</loc>
   </url>
   <url>
     <loc>/reference/downloadAndExtract.html</loc>

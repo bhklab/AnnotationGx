@@ -108,50 +108,6 @@ If any queries fail, the function includes the failed queries in the returned ob
     <p>Documentation for the PubChem API: https://pubchemdocs.ncbi.nlm.nih.gov/</p>
     </div>
 
-    <div class="section level2">
-    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">getPubChemSubstance</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'123'</span>, <span class="st">'456'</span><span class="op">)</span>, from<span class="op">=</span><span class="st">'cid'</span>, to<span class="op">=</span><span class="st">'sids'</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Null data.table (0 rows and 0 cols)</span>
-<span class="r-in"><span><span class="fu">getPubChemSubstance</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'water'</span>, <span class="st">'ethanol'</span><span class="op">)</span>, from<span class="op">=</span><span class="st">'name'</span>, to<span class="op">=</span><span class="st">'cid'</span>, batch<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |                                                                      |   0%  |                                                                              |===================================                                   |  50%  |                                                                              |======================================================================| 100%</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Null data.table (0 rows and 0 cols)</span>
-<span class="r-in"><span><span class="fu">getPubChemSubstance</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'C1=CC=CC=C1'</span>, <span class="st">'CCO'</span><span class="op">)</span>, from<span class="op">=</span><span class="st">'smiles'</span>, to<span class="op">=</span><span class="st">'name'</span>, raw<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span><span style="color: #00BBBB; font-weight: bold;">Batch queries cannot be used when mapping from name, xref, smiles,</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB; font-weight: bold;">inchi or sdf. Setting to batch=FALSE.</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |                                                                      |   0%  |                                                                              |===================================                                   |  50%  |                                                                              |======================================================================| 100%</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]$Fault</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]$Fault$Code</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "PUGREST.BadRequest"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]$Fault$Message</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Invalid identifier namespace"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]$Fault$Details</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Expected identifier namespace: sid, sourceid, sourceall, name, xref, or listkey"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]$Fault</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]$Fault$Code</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "PUGREST.BadRequest"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]$Fault$Message</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Invalid identifier namespace"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]$Fault$Details</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Expected identifier namespace: sid, sourceid, sourceall, name, xref, or listkey"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span></span></span>
-</code></pre></div>
-    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 
