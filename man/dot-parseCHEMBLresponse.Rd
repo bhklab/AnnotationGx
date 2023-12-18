@@ -6,6 +6,15 @@
 \usage{
 .parseCHEMBLresponse(result)
 }
+\arguments{
+\item{result}{The result object obtained from the PubChem PUG-VIEW API.}
+}
+\value{
+The CHEMBL ID header extracted from the result object.
+}
 \description{
-Function that parses the results of the PubChem PUG-VIEW API for the CHEMBL ID header
+This function takes the result object obtained from the PubChem PUG-VIEW API
+and extracts the CHEMBL ID header from it.
+It removes the "Compound::" prefix from the header and returns the cleaned
+result.
 }

@@ -2,18 +2,33 @@
 % Please edit documentation in R/getPubChem-helpers.R
 \name{.checkThrottlingStatus}
 \alias{.checkThrottlingStatus}
-\title{Checks to see if the PubChem query is exceeding the throttling limit}
+\title{Checks the throttling status of a request and sleeps if necessary}
 \usage{
 .checkThrottlingStatus(result, throttleMessage = FALSE)
 }
 \arguments{
-\item{throttleMessage}{\code{logical} whether to print the throttling message}
+\item{result}{The result of the request}
 
-\item{response}{\code{httr::response}}
+\item{throttleMessage}{Logical indicating whether to print the throttling
+message}
 }
 \value{
-\code{logical} whether the query is throttled
+Logical indicating whether the request was throttled
 }
 \description{
-Checks to see if the PubChem query is exceeding the throttling limit
+This function checks the throttling status of a request by analyzing the
+"x-throttling-control" header in the response. If the throttling status
+indicates that the request is being throttled, the function sleeps for a
+certain amount of time based on the percentage of throttling. The sleep time
+is determined as follows:
+\itemize{
+\item If the percentage of throttling is greater than 50\%, the function sleeps
+for 30 seconds.
+\item If the percentage of throttling is greater than 30\%, the function sleeps
+for 20 seconds.
+\item If the percentage of throttling is greater than 15\%, the function sleeps
+for 15 seconds.
+\item Otherwise, the function sleeps for the same amount of time as the
+percentage of throttling.
+}
 }

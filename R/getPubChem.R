@@ -64,7 +64,7 @@
 #'   Note that this is formally optional, as output format can also be specified
 #'   in the HTTP Accept field of the request header – see below for more detail.
 #'
-#' "<output specification> = XML | ASNT | ASNB | JSON | JSONP [ ?callback=<callback name> ] | SDF | CSV | PNG | TXT"
+#' "<output specification> = XML | ASNT | ASNB | JSON | JSONP | SDF | CSV | PNG | TXT"
 #'
 #' Complete documentation for valid output formats can be found at:
 #' https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest$_Toc494865558
@@ -274,10 +274,11 @@ queryPubChem <- function(id, domain='compound', namespace='cid', operation=NA,
 }
 
 #' Query the PubChem REST API, with the result automatically converted from
-#'   JSON to a list. This only works when `output='JSON'` in `getRequestPubChem`.
+#' JSON to a list. This only works when `output='JSON'` in `getRequestPubChem`.
 #'
 #' @param ... Fallthrough arguments to `AnnotationGx::getRequestPubChem` function.
-#' @param query_only
+#' @param query_only Specifies whether to only return the query string without
+#'  making the actual request.
 #'
 #' @md
 #' @export
@@ -415,11 +416,7 @@ getPubChemCompound <- function(ids, from='cid', to='property', ...,
 #' @return A data table containing the retrieved PubChem substance information.
 #' If raw is TRUE, the function returns the raw query results.
 #' If any queries fail, the function includes the failed queries in the returned object.
-#'
-#' @examples
-#' getPubChemSubstance(c('123', '456'), from='cid', to='sids')
-#' getPubChemSubstance(c('water', 'ethanol'), from='name', to='cid', batch=FALSE)
-#' getPubChemSubstance(c('C1=CC=CC=C1', 'CCO'), from='smiles', to='name', raw=TRUE)
+# 
 #' 
 #' @references
 #' Documentation for the PubChem API: https://pubchemdocs.ncbi.nlm.nih.gov/
@@ -715,16 +712,34 @@ getPubChemAnnotations <- function(compound, annotations, ...){
 
 }
 
-#' Function that returns a DT of getPubChemAnnotation results 
+#' Function that returns a data.table of getPubChemAnnotation results 
+#' 
+#' This function takes a compound and an annotation type as input and returns a data.table
+#' containing the results of the getPubChemAnnotation function. The data.table is created
+#' using the as.data.table function and the result is returned with NA values preserved.
+#' 
+#' @param compound The compound for which PubChem annotation is requested.
+#' @param annotationType The type of annotation to retrieve from PubChem.
+#' @param ... Additional arguments to be passed to the getPubChemAnnotation function.
+#' 
+#' @return A data.table containing the results of the getPubChemAnnotation function.
+#' 
 #' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
 .getPubChemAnnotationDT <- function(compound, annotationType, ...){
     result <- getPubChemAnnotation(compound, annotationType, ...)
-    as.data.table(result, na.rm = F)
+    as.data.table(result, na.rm = FALSE)
 }
 
-
-
 #' Function that parses the results of the PubChem PUG-VIEW API for the CHEMBL ID header
+#'
+#' This function takes the result object obtained from the PubChem PUG-VIEW API 
+#' and extracts the CHEMBL ID header from it.
+#' It removes the "Compound::" prefix from the header and returns the cleaned 
+#' result.
+#'
+#' @param result The result object obtained from the PubChem PUG-VIEW API.
+#' @return The CHEMBL ID header extracted from the result object.
+#'
 #' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
 .parseCHEMBLresponse <- function(result){
     result <- result$Record$Reference$SourceID
@@ -733,6 +748,13 @@ getPubChemAnnotations <- function(compound, annotations, ...){
 }
 
 #' Function that parses the results of the PubChem PUG-VIEW API for the NSC Number header
+#'
+#' This function takes the result of the PubChem PUG-VIEW API and extracts the 
+#' NSC Number header from it. The NSC Number header is then cleaned by removing 
+#' any spaces and returned as the result.
+#'
+#' @param result The result of the PubChem PUG-VIEW API
+#' @return The cleaned NSC Number header
 #' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
 .parseNSCresponse <- function(result){
     result <- result$Record$Reference$SourceID[1]
@@ -741,6 +763,14 @@ getPubChemAnnotations <- function(compound, annotations, ...){
 }
 
 #' Function that parses the results of the PubChem PUG-VIEW API for the DILI header
+#'
+#' This function takes the result of the PubChem PUG-VIEW API and extracts the 
+#' DILI (Drug-Induced Liver Injury) header information. It returns a formatted 
+#' string containing the DILI section and the reference information.
+#'
+#' @param result The result object obtained from the PubChem PUG-VIEW API.
+#' @return A formatted string containing the DILI section and the reference information.
+#' @export
 #' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
 .parseDILIresponse <- function(result){
     
@@ -769,6 +799,11 @@ getPubChemAnnotations <- function(compound, annotations, ...){
 }
 
 #' Function that parses the results of the PubChem PUG-VIEW API for the CAS header
+#' 
+#' This function takes the result object obtained from the PubChem PUG-VIEW API and extracts the CAS header information.
+#' 
+#' @param result The result object obtained from the PubChem PUG-VIEW API.
+#' @return The CAS header information extracted from the result object.
 #' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
 .parseCASresponse <- function(result){
     result <- result$Record$Reference$SourceID[1]
@@ -776,41 +811,34 @@ getPubChemAnnotations <- function(compound, annotations, ...){
 }
 
 #' Function that parses the results of the PubChem PUG-VIEW API for the ATC Code header
+#'
+#' This function takes the result of the PubChem PUG-VIEW API and extracts the ATC Code header information.
+#' It returns the ATC code as a string.
+#'
+#' @param result The result of the PubChem PUG-VIEW API call.
+#' @return The ATC code as a string, or "NA" if no ATC code is found.
 #' @importFrom data.table data.table as.data.table merge.data.table last rbindlist
 .parseATCresponse <- function(result){
     if(length(result$Record$Section) == 0){
-                result <- "NA"
-                
-    }else{dt_ <- as.data.table(result$Record$Section)
-    dt_ <- as.data.table(dt_)$Section[[1]]
-    dt_ <- as.data.table(dt_)$Information
-    dt_ <- as.data.table(dt_)$Value
-    dt_ <- as.data.table(dt_[[1]])
-    result <- paste0("ATC:", dt_$String)
-    if(length(result) > 1){
-        # result <- paste0(result, collapse = "; ") # this is the old way
-
-        # example: result
-        # [1] "ATC:L - Antineoplastic and immunomodulating agents"           
-        # [2] "ATC:L01 - Antineoplastic agents"                              
-        # [3] "ATC:L01E - Protein kinase inhibitors"                         
-        # [4] "ATC:L01EE - Mitogen-activated protein kinase (mek) inhibitors"
-        # [5] "ATC:L01EE04 - Selumetinib"   
-
-        # get the number of letters after the colon and before the dash
-        # split the string by the colon
-        # get the second element
-
-        codes <- lapply(result, function(x) {
-            x <- strsplit(x, ":")[[1]][2]
-            x <- strsplit(x, "-")[[1]][1]
-            x <- nchar(x)
-            return(x)
-        })
-        result <- strsplit(result[which.max(codes)], "-")[[1]][1]
-        result <- gsub(" ", "", result)
-    }}
-
+        result <- "NA"
+    }else{
+        dt_ <- as.data.table(result$Record$Section)
+        dt_ <- as.data.table(dt_)$Section[[1]]
+        dt_ <- as.data.table(dt_)$Information
+        dt_ <- as.data.table(dt_)$Value
+        dt_ <- as.data.table(dt_[[1]])
+        result <- paste0("ATC:", dt_$String)
+        if(length(result) > 1){
+            codes <- lapply(result, function(x) {
+                x <- strsplit(x, ":")[[1]][2]
+                x <- strsplit(x, "-")[[1]][1]
+                x <- nchar(x)
+                return(x)
+            })
+            result <- strsplit(result[which.max(codes)], "-")[[1]][1]
+            result <- gsub(" ", "", result)
+        }
+    }
     return(result)
 }
 

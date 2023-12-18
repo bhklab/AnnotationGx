@@ -6,6 +6,14 @@
 \usage{
 .parseDILIresponse(result)
 }
+\arguments{
+\item{result}{The result object obtained from the PubChem PUG-VIEW API.}
+}
+\value{
+A formatted string containing the DILI section and the reference information.
+}
 \description{
-Function that parses the results of the PubChem PUG-VIEW API for the DILI header
+This function takes the result of the PubChem PUG-VIEW API and extracts the
+DILI (Drug-Induced Liver Injury) header information. It returns a formatted
+string containing the DILI section and the reference information.
 }

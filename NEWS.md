@@ -1,3 +1,6 @@
+# AnnotationGx 0.0.5.9002
+* Fixed Annotation parsing from getPubChemAnnotations functions.
+
 # AnnotationGx 0.0.5.9001
 * Moved the ProxyManager connection to run-time from load time
   * This should make installing the pacakge much more reliable

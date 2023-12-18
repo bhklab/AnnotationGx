@@ -2,10 +2,18 @@
 % Please edit documentation in R/getCellosaurus.R
 \name{cleanCellnames}
 \alias{cleanCellnames}
-\title{Clean Cell Names}
+\title{Clean cell line names in XML}
 \usage{
 cleanCellnames(main_xml, verbose = TRUE)
 }
+\arguments{
+\item{main_xml}{The XML object containing the cell line names.}
+
+\item{verbose}{Logical indicating whether to display progress messages. Default is TRUE.}
+}
+\value{
+The modified XML object with cleaned cell line names.
+}
 \description{
-TODO::
+This function removes special characters from cell line names in an XML file.
 }

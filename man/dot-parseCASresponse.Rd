@@ -6,6 +6,12 @@
 \usage{
 .parseCASresponse(result)
 }
+\arguments{
+\item{result}{The result object obtained from the PubChem PUG-VIEW API.}
+}
+\value{
+The CAS header information extracted from the result object.
+}
 \description{
-Function that parses the results of the PubChem PUG-VIEW API for the CAS header
+This function takes the result object obtained from the PubChem PUG-VIEW API and extracts the CAS header information.
 }

@@ -158,16 +158,18 @@ constructChemblQuery <- function(resource, field, filter_type, value, format = "
 
 #' Query the ChEMBL compound API end-point
 #'
-#' @description A specialised function for querying the compund_record resource
-#' from the ChEMBL API
+#' This function is used to query the compound_record resource from the ChEMBL API.
+#' It takes three parameters: field, filter_type, and value.
+#' The field parameter specifies the field to query, such as compound_key, compound_name, document_chembl_id, record_id, or src_id.
+#' The filter_type parameter specifies the type of filter to apply, such as "exact", "contains", "startswith", or "endswith".
+#' The value parameter specifies the value to filter on.
 #'
-#'    |       Field        |
-#'    |--------------------|
-#'    | compound_key       |
-#'    | compound_name      |
-#'    | document_chembl_id |
-#'    | record_id          |
-#'    | src_id             |
+#' @param field The field to query.
+#' @param filter_type The type of filter to apply.
+#' @param value The value to filter on.
+#'
+#' @return A response object containing the query results.
+#'
 #'
 #' @md
 #' @export
@@ -178,7 +180,6 @@ compoundQuery <- function(field, filter_type, value){
     response <- GET(url)
     response <- parseJSON(response)
     return (response)
-
 }
 
 #' Query the ChEMBL molecule API end-point

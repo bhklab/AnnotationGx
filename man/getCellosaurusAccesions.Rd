@@ -21,7 +21,3 @@ A data.table object containing the Cellosaurus accessions for the given samples.
 \description{
 This function retrieves Cellosaurus accessions for a given set of samples.
 }
-\examples{
-getCellosaurusAccesions(samples = c("sample1", "sample2"), from = "idsy", threads = 2)
-
-}

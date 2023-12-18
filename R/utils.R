@@ -112,7 +112,14 @@ getFailedIDs <- function(x) unlist(lapply(getFailed(x), `[[`, i='query'))
 ##FIXME:: Remove these in final package build
 .collapse <- function(..., collapse = " ") paste0(..., collapse=collapse)
 
+#' Custom message function for verbose output
+#'
+#' This function is used to print messages when the verbose option is enabled.
+#' It checks if the package-specific verbose option is set or if the global verbose option is set.
+#' If either of these options is TRUE, the message is printed in blue and bold format.
+#'
 #' @importFrom crayon blue bold
+#' @keywords internal
 .message <- function(...) {
     optionName <- paste0(packageName(), ".verbose")
     optionIsTRUE <- !is.null(getOption(optionName)) && getOption(optionName)
@@ -121,21 +128,47 @@ getFailedIDs <- function(x) unlist(lapply(getFailed(x), `[[`, i='query'))
         message(blue$bold(.formatMessage(...)))
 }
 
+#' Format a message with optional collapsing
+#'
+#' This function takes multiple arguments and concatenates them into a single string.
+#' The arguments are separated by a collapse character, which is a comma by default.
+#' The resulting string is then wrapped to a new line if it exceeds a certain width.
+#'
 #' @importFrom crayon magenta blue cyan bold
+#' @keywords internal
 .formatMessage <- function(..., collapse = ", ") {
     paste0(strwrap(paste0(..., collapse = collapse)), collapse = "\n")
 }
 
+#' Custom error function with formatted message
+#'
+#' This function is used to raise an error with a formatted message.
+#' The message is printed in magenta and bold format.
+#'
 #' @importFrom crayon magenta bold
+#' @keywords internal
 .error <- function(...) {
     stop(magenta$bold(.formatMessage(...)), call. = FALSE)
 }
 
+#' Custom warning function with formatted message
+#'
+#' This function is used to raise a warning with a formatted message.
+#' The message is printed in cyan and bold format.
+#'
 #' @importFrom crayon cyan bold
+#' @keywords internal
 .warning <- function(...) {
     warning(cyan$bold(.formatMessage(...)), call. = FALSE)
 }
 
+#' Generate a function context string
+#'
+#' This function takes the name of a function and returns a string that 
+#' represents the function context.
+#' The string is formatted as [packageName functionName].
+#'
+#' @keywords internal
 .funContext <- function(funName) paste0("[", packageName(), funName, "]\n")
 
 #' Return the name of the function and the name of the package that function

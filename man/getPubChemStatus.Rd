@@ -6,9 +6,20 @@
 \usage{
 getPubChemStatus(sleep = FALSE)
 }
+\arguments{
+\item{sleep}{A logical value indicating whether to sleep before checking
+the throttling status.}
+}
 \value{
-\code{logical} whether the query is throttled
+A logical value indicating whether the query is throttled.
 }
 \description{
-simple checkThrottling Status by a default response
+This function checks the throttling status of a PubChem query and returns
+a logical value indicating whether the query is throttled.
 }
+\examples{
+getPubChemStatus()
+getPubChemStatus(sleep = TRUE)
+
+}
+\keyword{internal}

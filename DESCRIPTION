@@ -1,6 +1,6 @@
 Package: AnnotationGx
 Title: AnnotationGx: A package for building, updating and querying an
-    annotation database for pharmaco-genomic data.
+    annotation database for pharmaco-genomic data
 Version: 0.0.5.9002
 Authors@R: c(
     person("Christopher", "Eeles", role = c("aut"),
@@ -22,28 +22,23 @@ Depends: R (>= 4.0)
 Imports:
     httr,
     xml2,
-    rjson,
     BiocParallel,
     biomaRt,
     rtracklayer,
-    janitor,
     jsonlite,
     data.table,
     qs,
     checkmate,
     rlang,
     memoise,
-    R6,
-    R6P,
-    listenv,
     rvest,
     S4Vectors,
     crayon,
-    stringr
+    stringr,
+    BiocStyle
 Suggests:
     rmarkdown,
     knitr,
-    BiocStyle,
     DT,
     kableExtra,
     testthat (>= 3.0.0)

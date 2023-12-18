@@ -6,6 +6,14 @@
 \usage{
 .parseNSCresponse(result)
 }
+\arguments{
+\item{result}{The result of the PubChem PUG-VIEW API}
+}
+\value{
+The cleaned NSC Number header
+}
 \description{
-Function that parses the results of the PubChem PUG-VIEW API for the NSC Number header
+This function takes the result of the PubChem PUG-VIEW API and extracts the
+NSC Number header from it. The NSC Number header is then cleaned by removing
+any spaces and returned as the result.
 }
