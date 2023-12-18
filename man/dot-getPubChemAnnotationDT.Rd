@@ -2,10 +2,22 @@
 % Please edit documentation in R/getPubChem.R
 \name{.getPubChemAnnotationDT}
 \alias{.getPubChemAnnotationDT}
-\title{Function that returns a DT of getPubChemAnnotation results}
+\title{Function that returns a data.table of getPubChemAnnotation results}
 \usage{
 .getPubChemAnnotationDT(compound, annotationType, ...)
 }
+\arguments{
+\item{compound}{The compound for which PubChem annotation is requested.}
+
+\item{annotationType}{The type of annotation to retrieve from PubChem.}
+
+\item{...}{Additional arguments to be passed to the getPubChemAnnotation function.}
+}
+\value{
+A data.table containing the results of the getPubChemAnnotation function.
+}
 \description{
-Function that returns a DT of getPubChemAnnotation results
+This function takes a compound and an annotation type as input and returns a data.table
+containing the results of the getPubChemAnnotation function. The data.table is created
+using the as.data.table function and the result is returned with NA values preserved.
 }

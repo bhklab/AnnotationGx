@@ -6,14 +6,20 @@
 \usage{
 compoundQuery(field, filter_type, value)
 }
-\description{
-A specialised function for querying the compund_record resource
-from the ChEMBL API\tabular{l}{
-   Field \cr
-   compound_key \cr
-   compound_name \cr
-   document_chembl_id \cr
-   record_id \cr
-   src_id \cr
+\arguments{
+\item{field}{The field to query.}
+
+\item{filter_type}{The type of filter to apply.}
+
+\item{value}{The value to filter on.}
 }
+\value{
+A response object containing the query results.
+}
+\description{
+This function is used to query the compound_record resource from the ChEMBL API.
+It takes three parameters: field, filter_type, and value.
+The field parameter specifies the field to query, such as compound_key, compound_name, document_chembl_id, record_id, or src_id.
+The filter_type parameter specifies the type of filter to apply, such as "exact", "contains", "startswith", or "endswith".
+The value parameter specifies the value to filter on.
 }

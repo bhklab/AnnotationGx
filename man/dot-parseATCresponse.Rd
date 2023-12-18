@@ -6,6 +6,13 @@
 \usage{
 .parseATCresponse(result)
 }
+\arguments{
+\item{result}{The result of the PubChem PUG-VIEW API call.}
+}
+\value{
+The ATC code as a string, or "NA" if no ATC code is found.
+}
 \description{
-Function that parses the results of the PubChem PUG-VIEW API for the ATC Code header
+This function takes the result of the PubChem PUG-VIEW API and extracts the ATC Code header information.
+It returns the ATC code as a string.
 }

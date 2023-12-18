@@ -135,7 +135,7 @@ The final portion of the URL tells the service what output format is desired.
 Note that this is formally optional, as output format can also be specified
 in the HTTP Accept field of the request header – see below for more detail.
 
-"\if{html}{\out{<output specification>}} = XML | ASNT | ASNB | JSON | JSONP  | SDF | CSV | PNG | TXT"
+"\if{html}{\out{<output specification>}} = XML | ASNT | ASNB | JSON | JSONP | SDF | CSV | PNG | TXT"
 
 Complete documentation for valid output formats can be found at:
 https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest$_Toc494865558

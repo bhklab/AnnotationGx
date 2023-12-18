@@ -29,8 +29,10 @@ jobs:
       R_KEEP_PKG_SOURCE: yes
 
     steps:
+      # This step checks out a copy of your repository.
       - uses: actions/checkout@v2
 
+      # This step uses the R-hub builder action to build R and pandac
       - uses: r-lib/actions/setup-pandoc@v2
 
       - uses: r-lib/actions/setup-r@v2
@@ -39,11 +41,13 @@ jobs:
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
 
+      # This step installs the dependencies of the package.
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: rcmdcheck
           # needs: check
 
+      # This step installs the package.
       - uses: r-lib/actions/check-r-package@v2
         with:
           error-on: '"error"'

@@ -36,12 +36,6 @@ This function retrieves PubChem substance information based on the provided IDs.
 It supports mapping from various namespaces such as CID, name, xref, smiles, inchi, and sdf.
 The function can handle batch queries and can return the raw query results if specified.
 }
-\examples{
-getPubChemSubstance(c('123', '456'), from='cid', to='sids')
-getPubChemSubstance(c('water', 'ethanol'), from='name', to='cid', batch=FALSE)
-getPubChemSubstance(c('C1=CC=CC=C1', 'CCO'), from='smiles', to='name', raw=TRUE)
-
-}
 \references{
 Documentation for the PubChem API: https://pubchemdocs.ncbi.nlm.nih.gov/
 }

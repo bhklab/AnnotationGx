@@ -10,7 +10,8 @@ queryRequestPubChem(..., query_only = FALSE)
 \arguments{
 \item{...}{Fallthrough arguments to \code{AnnotationGx::getRequestPubChem} function.}
 
-\item{query_only}{}
+\item{query_only}{Specifies whether to only return the query string without
+making the actual request.}
 }
 \description{
 Query the PubChem REST API, with the result automatically converted from
