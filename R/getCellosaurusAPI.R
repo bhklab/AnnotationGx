@@ -1,3 +1,29 @@
+
+#' Construct Cellosaurus API URL
+#' @keywords internal
+.constructCellosaurusURL <- function(query, from, extResource, to, numResults) {
+    cellosaurus_api_url <- "https://api.cellosaurus.org/"
+    resource <- "search/cell-line?"
+    
+    if (from == "dr") {
+        checkmate::assert_character(extResource)
+        from <- paste0(from, ":", extResource)
+        q <- paste0("q=", from, ";", query)
+    } else {
+        q <- paste0("q=", from, ":", query)
+    }
+
+    url <- paste0(
+        cellosaurus_api_url, resource,
+        q,
+        "&format=tsv",
+        "&fields=", paste(to, collapse = ","),
+        "&rows=", numResults
+    )
+
+    return(url)
+}
+
 #' Search Cellosaurus API
 #'
 #' This function searches the Cellosaurus API for cell line information based on the provided query.
@@ -33,36 +59,11 @@ searchCellosaurusAPI <- function(
     response <- httr::content(response, "text")
     response <- data.table::fread(text = response, sep = "\t")
     response <- .parseCellosaurusTSVResponse(response)
-
+    
     response$queryField <- query
     return(response)  
 }
 
-
-#' Construct Cellosaurus API URL
-#' @keywords internal
-.constructCellosaurusURL <- function(query, from, extResource, to, numResults) {
-    cellosaurus_api_url <- "https://api.cellosaurus.org/"
-    resource <- "search/cell-line?"
-    
-    if (from == "dr") {
-        checkmate::assert_character(extResource)
-        from <- paste0(from, ":", extResource)
-        q <- paste0("q=", from, ";", query)
-    } else {
-        q <- paste0("q=", from, ":", query)
-    }
-
-    url <- paste0(
-        cellosaurus_api_url, resource,
-        q,
-        "&format=tsv",
-        "&fields=", paste(to, collapse = ","),
-        "&rows=", numResults
-    )
-
-    return(url)
-}
 
 
 
@@ -92,13 +93,13 @@ searchCellosaurusAPI <- function(
         "hi" = "ParentCellLine",
         "dt" = "Date"
     )
-    
+
     result <- lapply(
-        names(response), function(x) {
-            ifelse(
-                x %in% names(lookup),
-                setNames(response[[x]], lookup[x]),
-                setNames(response[[x]], x))
+        names(response), 
+        function(x) {
+            v <- lookup[x]
+            if(!x %in% names(lookup)) v <- x
+            setNames(list(response[[x]]), v)
         })
 
     data.table::as.data.table(t(unlist(result)))
