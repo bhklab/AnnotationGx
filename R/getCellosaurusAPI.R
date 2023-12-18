@@ -64,9 +64,6 @@ searchCellosaurusAPI <- function(
     return(response)  
 }
 
-
-
-
 #' Parse Cellosaurus TSV Response
 #'
 #' This function parses the response from the Cellosaurus API and converts it into a data.table.
@@ -173,42 +170,6 @@ mapCellosaursAccessionsToFields <- function(accessions, fields, threads=1){
     results <- data.table::rbindlist(results, fill = TRUE)
     results
 }
-
-# #' Parses the response from the Cellosaurus API.
-# #'
-# #' This function takes the response from the Cellosaurus API and parses it into a structured format.
-# #' It removes unnecessary header lines, splits the response into individual records, and extracts the relevant fields.
-# #' The resulting data is returned as a data.table object.
-# #'
-# #' @param response The response from the Cellosaurus API.
-# #' @return A data.table object containing the parsed data.
-# .parseCellosaurusTXTResponse <- function(response){
-
-#     response <- strsplit(response, split = "\n")[[1]][-(1:15)]
-#     response <- split(response, cumsum(response == "//"))
-#     response <- lapply(response, function(x) x[x != "//"])
-#     response <- unname(response[lengths(response) > 0])
-#     response <- lapply(response, function(i){
-#         unlist(lapply(i, .parseCellosarusField))})
-    
-#     response
-#     data.table::rbindlist(lapply(response, function(i) {
-#         temp <- t(i)
-
-#         temp <- data.table::as.data.table(temp, keep.rownames = TRUE)
-#         # if there are multiple columns with the same name, 
-#         # collapse them into a single column separated by "; "
-#         }),
-#         fill=TRUE)
-# }
-
-# #' Parses a single field from the Cellosaurus API response.
-# #' @keywords internal
-# .parseCellosarusField <- function(field) {
-#     res <- strsplit(field, split = "   ")[[1]]
-#     setNames(list(res[2]), res[1])
-# }
-
 
 # Write testing code here, this is only executed if the file is run as a script
 # It is equivalent to if __name__ == "__main__" in Python
