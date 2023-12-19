@@ -2,45 +2,29 @@
 % Please edit documentation in R/getCellosaurusAPI.R
 \name{searchCellosaurusAPI}
 \alias{searchCellosaurusAPI}
-\title{id, sy, idsy, ac, acas, dr, ref, rx, ra, rt, rl,
-ww, genome-ancestry, hla, registration, sequence-variation,
-anecdotal, biotechnology, breed, caution, cell-type,
-characteristics, donor-info,
-derived-from-site, discontinued, doubling-time, from, group,
-karyotype, knockout, msi, miscellaneous, misspelling, mab-isotype,
-mab-target, omics, part-of, population, problematic, resistance,
-senescence, transfected, transformant, virology,
-cc, str, di, din, dio, ox, sx, ag, oi, hi, ch, ca, dt, dtc, dtu, dtv
-Search Cellosaurus API}
+\title{Search Cellosaurus API}
 \usage{
 searchCellosaurusAPI(
   query,
   from = "id",
   extResource = NULL,
-  format = "tsv",
   to = c("id", "ac", "ca", "sx", "ag", "di", "derived-from-site", "misspelling"),
   numResults = 1,
   returnURL = FALSE
 )
 }
 \arguments{
-\item{query}{The query string to search for.}
+\item{query}{The query string to search for in the Cellosaurus API.}
 
 \item{from}{The field to search in. Default is "id".}
 
-\item{extResource}{The external resource to search in, only applicable when from is "dr".}
+\item{extResource}{The external resource to search in. Default is NULL.}
 
-\item{format}{The format of the response. Only "txt" format is currently supported.}
-
-\item{to}{The fields to include in the response. The default is :
-"id", "ac", "sy", "ca", "sx", "ag", "din", "derived-from-site",  "misspelling")}
+\item{to}{The fields to return in the response. Default is "id".}
 
 \item{numResults}{The number of results to return. Default is 1.}
 
-\item{returnURL}{Logical indicating whether to return the constructed URL instead of making the API request. Default is FALSE.}
-}
-\value{
-A data frame containing the search results.
+\item{returnURL}{Logical indicating whether to return the constructed API URL. Default is FALSE.}
 }
 \description{
 This function searches the Cellosaurus API for cell line information based on the provided query.
