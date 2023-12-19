@@ -58,6 +58,9 @@
     <loc>/reference/dot-checkThrottlingStatus.html</loc>
   </url>
   <url>
+    <loc>/reference/dot-constructCellosaurusURL.html</loc>
+  </url>
+  <url>
     <loc>/reference/dot-error.html</loc>
   </url>
   <url>
@@ -86,9 +89,6 @@
   </url>
   <url>
     <loc>/reference/dot-parseCellosaurusTSVResponse.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dot-parseCellosaurusTXTResponse.html</loc>
   </url>
   <url>
     <loc>/reference/dot-parseDILIresponse.html</loc>
@@ -215,6 +215,9 @@
   </url>
   <url>
     <loc>/reference/listColToDT.html</loc>
+  </url>
+  <url>
+    <loc>/reference/mapCellosaursAccessionsToFields.html</loc>
   </url>
   <url>
     <loc>/reference/moleculeQuery.html</loc>
