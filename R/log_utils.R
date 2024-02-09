@@ -1,82 +1,108 @@
-#' These functions are to create some logging and debugging tools.
-#' that will be used throughout the rest of the package.
+#' Default Log formatter
 #'
-#'
-
-# Would be beneficial to imnplement an environmental variable to set the logging level
-    #  loglevel(2) == loglevel("INFO")
-    #  loglevel("WARN") < loglevel("ERROR")
-    #  loglevel(-1)
-    #  try(loglevel("UNDEFINED"))
-    #  is.loglevel("DEBUG")
-    #  is.loglevel(loglevel("DEBUG"))
-    #  as.numeric(loglevel("FATAL"))
-    #  available.loglevels()
-
-    #  ## Not run:
-
-    #  library(optparse)
-    #  library(log4r)
-
-    #  optlist <- list(make_option(c('-v', '--verbosity-level'),
-    #    type = "integer",
-    #    dest = "verbosity",
-    #    default = 1,
-    #    help = "Verbosity threshold (5=DEBUG, 4=INFO 3=WARN, 2=ERROR, 1=FATAL)"))
-
-    #  optparser <- OptionParser(option_list=optlist)
-    #  opt <- parse_args(optparser)
-
-    #  my.logger <- create.logger(logfile = "", level = verbosity(opt$verbosity))
-
-    #  fatal(my.logger, "Fatal message")
-    #  error(my.logger, "Error message")
-    #  warn(my.logger, "Warning message")
-    #  info(my.logger, "Informational message")
-    #  debug(my.logger, "Debugging message")
-    #  ## End(Not run)
-
-
-#' Base Logging function to be inherited by other functions
-#'
-#' @param message The message to be logged
-#'
-#' Internal function
-#'
-#' @internal
-parent_log <- function(level, message) {
-
-    logger <- log4r::create.logger(logfile = "", level = level)
-
-
+#' @title Default Log formatter
+#' @description log_fmt function to format log messages
+#' @param level `character` The log level
+#' @param ... `character` The messages to log
+#' @keywords internal
+#' @noRd
+.log_fmt <- function(level, ...) {
+  paste0(format(Sys.time(), "[%H-%M-%S]"), " [", level, "] ", ..., collapse = "\n")
 }
 
-#' Debugging function to log messages at the debug level
-#' Inherits from parent_log
+
+#' Custom message function for verbose output
 #'
-#' @param message The message to be logged
+#' This function is used to print messages when the verbose option is enabled.
+#' It checks if the package-specific verbose option is set or if the global verbose option is set.
+#' If either of these options is TRUE, the message is printed in blue and bold format.
 #'
-#' @export
-
-.debug <- function(message) {
-  parent_log("debug", message)
+#' @param ... `character` The messages to print
+#'
+#' @examples
+#' \dontrun{
+#' options("myPackage.verbose" = TRUE)
+#' }
+#'
+#' @keywords internal
+#' @noRd
+.info <- function(...) {
+    # optionName <- paste0(packageName(), ".verbose")
+    # optionIsTRUE <- !is.null(getOption(optionName)) && getOption(optionName)
+    # verboseIsTRUE <- getOption("verbose")
+    # if (optionIsTRUE || verboseIsTRUE)
+    #     message(crayon::green(.log_fmt("INFO", ...)))
+    message(crayon::green(.log_fmt("INFO", ...)))
 }
 
-.info <- function(message) {
-  parent_log("info", message)
+#' @keywords internal
+#' @noRd
+.debug <- function(...) {
+    msg <- .log_fmt("DEBUG", ...)
+    message(crayon::blue(msg))
 }
 
-.warn <- function(message) {
-  parent_log("warn", message)
+#' @keywords internal
+#' @noRd
+.warn <- function(...) {
+    msg <- .log_fmt("WARN", ...)
+    warning(crayon::yellow(msg), call. = FALSE)
 }
 
-.error <- function(message) {
-  parent_log("error", message)
+#' @keywords internal
+#' @noRd
+.error <- function(...) {
+    msg <- .log_fmt("ERROR", ...)
+    stop(crayon::red(msg), call. = FALSE)
 }
 
-# test
-.debug("This is a debug message")
-.info("This is an info message")
-.warn("This is a warning message")
-.error("This is an error message")
+
+
+# # test
+# .debug("This is a debug message")
+# .info("This is an info message")
+# .warn("This is a warning message")
+# .error("This is an error message")
+
+
+#' Generate a function context string
+#'
+#' This function takes the name of a function and returns a string that
+#' represents the function context.
+#' The string is formatted as [packageName functionName].
+#'
+#' @keywords internal
+#' @noRd
+.funContext <- function(funName) paste0("[", utils::packageName(), "::", funName, "]")
+
+#' Return the name of the function and the name of the package that function
+#'   is in when called within an R function.
+#'
+#' For providing context in user messages, warnings and errors
+#'
+#' @param n `integer` How far up the call stack to look for context. Defaults to
+#'   2 since it is assumed this function will be used inside of `message`,
+#'   `warning` or `stop`.
+#'
+#' @return `list`:
+#' - fun: `character` The name of the function where `.getExectutionContext()`
+#' was called
+#' - pkg: `character` The name of the package `fun` is from, if applicable.
+#'
+#' @md
+#' @keywords internal
+#' @noRd
+.getExecutionContext <- function(n=2) {
+
+    # name of function which called this function
+    callStack <- rlang::trace_back()$calls
+    context <- deparse(callStack[[length(callStack) - n]])
+
+    # remove function arguments
+    context <- gsub('\\(.*\\)', '', context)
+
+    return(paste0('\n[', context, '] ', collapse='::'))
+}
+
+
 
