@@ -92,17 +92,17 @@
 #' @md
 #' @keywords internal
 #' @noRd
-.getExecutionContext <- function(n=2) {
+# .getExecutionContext <- function(n=2) {
 
-    # name of function which called this function
-    callStack <- rlang::trace_back()$calls
-    context <- deparse(callStack[[length(callStack) - n]])
+#     # name of function which called this function
+#     callStack <- rlang::trace_back()$calls
+#     context <- deparse(callStack[[length(callStack) - n]])
 
-    # remove function arguments
-    context <- gsub('\\(.*\\)', '', context)
+#     # remove function arguments
+#     context <- gsub('\\(.*\\)', '', context)
 
-    return(paste0('\n[', context, '] ', collapse='::'))
-}
+#     return(paste0('\n[', context, '] ', collapse='::'))
+# }
 
 
 
