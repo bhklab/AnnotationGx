@@ -7,7 +7,7 @@
 #' @keywords internal
 #' @noRd
 .log_fmt <- function(level, ...) {
-  paste0(format(Sys.time(), "[%H-%M-%S]"), " [", level, "] ", ..., collapse = "\n")
+  paste0(format(Sys.time(), "[%H:%M:%S]"), " [", level, "] ", ..., collapse = "\n")
 }
 
 
@@ -31,7 +31,6 @@
     # optionIsTRUE <- !is.null(getOption(optionName)) && getOption(optionName)
     # verboseIsTRUE <- getOption("verbose")
     # if (optionIsTRUE || verboseIsTRUE)
-    #     message(crayon::green(.log_fmt("INFO", ...)))
     message(crayon::green(.log_fmt("INFO", ...)))
 }
 
@@ -39,19 +38,25 @@
 #' @noRd
 .debug <- function(...) {
     msg <- .log_fmt("DEBUG", ...)
+    # optionName <- paste0(packageName(), ".debug")
+    # # to set the debug option, use options("myPackage.debug" = TRUE)
+
+    # optionIsTRUE <- !is.null(getOption(optionName)) && getOption(optionName)
+    # verboseIsTRUE <- getOption("verbose")
+    # if (optionIsTRUE || verboseIsTRUE)
     message(crayon::blue(msg))
 }
 
 #' @keywords internal
 #' @noRd
 .warn <- function(...) {
-    msg <- .log_fmt("WARN", ...)
-    warning(crayon::yellow(msg), call. = FALSE)
+    msg <- .log_fmt("WARNING", ...)
+    message(crayon::yellow(msg))
 }
 
 #' @keywords internal
 #' @noRd
-.error <- function(...) {
+.err <- function(...) {
     msg <- .log_fmt("ERROR", ...)
     stop(crayon::red(msg), call. = FALSE)
 }
