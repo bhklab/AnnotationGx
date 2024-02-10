@@ -2,6 +2,7 @@ library(AnnotationGx)
 library(testthat)
 library(checkmate)
 
+
 test_that("query_pubchem_rest", {
     res <- query_pubchem_rest('erlotinib')
     expect_class(res, "httr2_response")
