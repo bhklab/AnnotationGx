@@ -1,3 +1,16 @@
+.buildURL <- function(...) {
+    paste0(stats::na.omit(unlist(list(...))), collapse='/') |> utils::URLencode()
+}
+
+
+.build_pubchem_request <- function(url){
+    httr2::request(url) |>
+        httr2::req_retry(max_tries = 3) |>
+        httr2::req_throttle(rate = 400/60) |>
+        httr2::req_error(is_error = \(resp) FALSE)
+}
+
+
 # # getPubchemStatus <- function(sleep = FALSE, throttleMessage = FALSE){
     
 # #     response <- tryCatch(

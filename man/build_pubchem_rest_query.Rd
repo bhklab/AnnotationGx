@@ -2,7 +2,7 @@
 % Please edit documentation in R/pubchem_rest.R
 \name{build_pubchem_rest_query}
 \alias{build_pubchem_rest_query}
-\title{Query PubChem REST API}
+\title{Build a query for the PubChem REST API}
 \usage{
 build_pubchem_rest_query(
   id,
@@ -18,33 +18,29 @@ build_pubchem_rest_query(
 )
 }
 \arguments{
-\item{id}{The identifier(s) of the entity to query. For compound queries, it can be a single value or a vector of values. For other domains, it must be a single value.}
+\item{id}{The identifier(s) for the query. If namespace is 'name', id must be a single value.}
 
-\item{domain}{The domain to query. Options are 'compound', 'substance', 'assay', 'cell', 'gene', and 'protein'.}
+\item{domain}{The domain of the query. Options are 'compound', 'substance', 'assay', 'cell', 'gene', 'protein'.}
 
-\item{namespace}{The namespace to use for the query. The available options depend on the chosen domain.}
+\item{namespace}{The namespace of the query. Options depend on the chosen domain.}
 
-\item{operation}{The operation to perform. The available options depend on the chosen domain and namespace.}
+\item{operation}{The operation to perform. Options depend on the chosen domain and namespace.}
 
-\item{output}{The desired output format. Options are 'JSON', 'XML', 'SDF', 'TXT', and 'CSV'.}
+\item{output}{The desired output format. Options are 'JSON', 'XML', 'SDF', 'TXT', 'CSV'.}
 
-\item{url}{The base URL of the PubChem REST API.}
+\item{url}{The base URL for the PubChem REST API.}
 
-\item{raw}{Logical indicating whether to return the raw response or parse it into a structured format.}
+\item{raw}{Logical indicating whether to return the raw response or parse it.}
 
-\item{query_only}{Logical indicating whether to return the constructed query URL without making the actual request.}
+\item{query_only}{Logical indicating whether to return the query URL only.}
 
 \item{verbose}{Logical indicating whether to print debug information.}
 
-\item{...}{Additional arguments to be passed to the underlying HTTP request function.}
+\item{...}{Additional arguments to be passed to the query.}
 }
 \value{
-The response from the PubChem REST API, parsed into a structured format if raw is set to FALSE.
+The query URL or the parsed response, depending on the arguments.
 }
 \description{
-This function queries the PubChem REST API to retrieve information
-about compounds, substances, assays, cells, genes, and proteins.
-}
-\references{
-PubChem REST API documentation: https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest
+This function builds a query for the PubChem REST API based on the provided parameters.
 }

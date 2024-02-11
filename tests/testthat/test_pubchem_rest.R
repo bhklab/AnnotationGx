@@ -14,6 +14,7 @@ test_that("build_pubchem_rest_query", {
 
     res3 <- build_pubchem_rest_query(3672, namespace= 'cid', operation = 'property/InChIKey', output = 'JSON')
     expect_class(res3, "httr2_request")
+
 })
 
 test_that("build_pubchem_rest_query Failure", {

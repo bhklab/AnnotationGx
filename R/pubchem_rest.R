@@ -1,37 +1,22 @@
-.buildURL <- function(...) {
-    paste0(stats::na.omit(unlist(list(...))), collapse='/') |> utils::URLencode()
-}
 
-
-.build_pubchem_request <- function(url){
-    httr2::request(url) |>
-        httr2::req_retry(max_tries = 3) |>
-        httr2::req_throttle(rate = 400/60) |>
-        httr2::req_error(is_error = \(resp) FALSE)
-}
-
-#' Query PubChem REST API
+#' Build a query for the PubChem REST API
 #'
-#' This function queries the PubChem REST API to retrieve information
-#' about compounds, substances, assays, cells, genes, and proteins.
+#' This function builds a query for the PubChem REST API based on the provided parameters.
 #'
-#' @param id The identifier(s) of the entity to query. For compound queries, it can be a single value or a vector of values. For other domains, it must be a single value.
-#' @param domain The domain to query. Options are 'compound', 'substance', 'assay', 'cell', 'gene', and 'protein'.
-#' @param namespace The namespace to use for the query. The available options depend on the chosen domain.
-#' @param operation The operation to perform. The available options depend on the chosen domain and namespace.
-#' @param output The desired output format. Options are 'JSON', 'XML', 'SDF', 'TXT', and 'CSV'.
-#' @param url The base URL of the PubChem REST API.
-#' @param raw Logical indicating whether to return the raw response or parse it into a structured format.
-#' @param query_only Logical indicating whether to return the constructed query URL without making the actual request.
+#' @param id The identifier(s) for the query. If namespace is 'name', id must be a single value.
+#' @param domain The domain of the query. Options are 'compound', 'substance', 'assay', 'cell', 'gene', 'protein'.
+#' @param namespace The namespace of the query. Options depend on the chosen domain.
+#' @param operation The operation to perform. Options depend on the chosen domain and namespace.
+#' @param output The desired output format. Options are 'JSON', 'XML', 'SDF', 'TXT', 'CSV'.
+#' @param url The base URL for the PubChem REST API.
+#' @param raw Logical indicating whether to return the raw response or parse it.
+#' @param query_only Logical indicating whether to return the query URL only.
 #' @param verbose Logical indicating whether to print debug information.
-#' @param ... Additional arguments to be passed to the underlying HTTP request function.
+#' @param ... Additional arguments to be passed to the query.
 #'
-#' @return The response from the PubChem REST API, parsed into a structured format if raw is set to FALSE.
+#' @return The query URL or the parsed response, depending on the arguments.
 #'
-#' @references
-#' PubChem REST API documentation: https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest
-#'
-#' @importFrom checkmate assert_choice assert assert_logical assert_atomic test_choice
+#' @importFrom checkmate assert assert_choice assert_logical assert_atomic test_choice
 #' @export
 build_pubchem_rest_query <- function(
         id, domain='compound', namespace='name', operation='cids',
