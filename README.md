@@ -3,7 +3,7 @@
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/jjjermiah/AnnotationGx/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jjjermiah/AnnotationGx/actions/workflows/R-CMD-check.yaml)
-
+[![codecov](https://codecov.io/github/jjjermiah/AnnotationGx/graph/badge.svg?token=Nb1x0FcJoi)](https://codecov.io/github/jjjermiah/AnnotationGx)
 <!-- badges: end -->
 
 The goal of AnnotationGx is to ...
