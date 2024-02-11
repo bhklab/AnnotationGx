@@ -13,7 +13,6 @@ build_pubchem_rest_query(
   url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug",
   raw = FALSE,
   query_only = FALSE,
-  verbose = FALSE,
   ...
 )
 }
@@ -33,8 +32,6 @@ build_pubchem_rest_query(
 \item{raw}{Logical indicating whether to return the raw response or parse it.}
 
 \item{query_only}{Logical indicating whether to return the query URL only.}
-
-\item{verbose}{Logical indicating whether to print debug information.}
 
 \item{...}{Additional arguments to be passed to the query.}
 }

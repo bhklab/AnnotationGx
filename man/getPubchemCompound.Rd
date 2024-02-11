@@ -11,7 +11,6 @@ getPubchemCompound(
   properties = c("Title", "InChIKey"),
   raw = FALSE,
   query_only = FALSE,
-  verbose = FALSE,
   output = "JSON",
   ...
 )
@@ -28,8 +27,6 @@ getPubchemCompound(
 \item{raw}{Logical indicating whether to return the raw query results. Default is FALSE.}
 
 \item{query_only}{Logical indicating whether to only perform the query without retrieving the results. Default is FALSE.}
-
-\item{verbose}{Logical indicating whether to display verbose output. Default is FALSE.}
 
 \item{output}{The format of the query results. Default is 'JSON'.}
 

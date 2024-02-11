@@ -11,7 +11,6 @@
 #' @param url The base URL for the PubChem REST API.
 #' @param raw Logical indicating whether to return the raw response or parse it.
 #' @param query_only Logical indicating whether to return the query URL only.
-#' @param verbose Logical indicating whether to print debug information.
 #' @param ... Additional arguments to be passed to the query.
 #'
 #' @return The query URL or the parsed response, depending on the arguments.
@@ -21,7 +20,7 @@
 build_pubchem_rest_query <- function(
         id, domain='compound', namespace='name', operation='cids',
         output='JSON', url='https://pubchem.ncbi.nlm.nih.gov/rest/pug',
-        raw=FALSE, query_only=FALSE, verbose = FALSE,  ...){
+        raw=FALSE, query_only=FALSE, ...){
 
 
     # -------------------------------------- Argument checking --------------------------------------
@@ -41,7 +40,7 @@ build_pubchem_rest_query <- function(
         "protein" = assert_choice(namespace, c('accession', 'gi', 'synonym'))
     )
     assert_choice(output, c('JSON', 'XML', 'SDF', 'TXT', 'CSV'))
-    assert_logical(raw, query_only, verbose)
+    assert_logical(raw, query_only)
     assert_atomic(id, all.missing = FALSE)
 
     if(length(id) > 1 && namespace == 'name') stop("id must be a single value when namespace is 'name'")
@@ -50,7 +49,7 @@ build_pubchem_rest_query <- function(
     funContext <- .funContext("query_pubchem_rest")
 
     url <- .buildURL(url, domain, namespace, id, operation, output)
-    if(verbose) .debug(funContext, "URL: ", url)
+
     if(query_only) return(url)
 
     # -------------------------------------- Querying PubChem REST API --------------------------------------
@@ -69,7 +68,6 @@ build_pubchem_rest_query <- function(
 #' @param properties A character vector specifying the properties to retrieve.
 #' @param raw Logical indicating whether to return the raw query results. Default is FALSE.
 #' @param query_only Logical indicating whether to only perform the query without retrieving the results. Default is FALSE.
-#' @param verbose Logical indicating whether to display verbose output. Default is FALSE.
 #' @param output The format of the query results. Default is 'JSON'.
 #' @param ... Additional arguments to be passed to the query_pubchem_rest function.
 #'
@@ -82,7 +80,7 @@ build_pubchem_rest_query <- function(
 #' @export
 getPubchemCompound <- function(
     ids, from = 'cid', to = 'property', properties = c('Title', 'InChIKey'),
-    raw = FALSE, query_only = FALSE, verbose = FALSE, output = 'JSON',...
+    raw = FALSE, query_only = FALSE,output = 'JSON',...
     ){
 
     if(to == 'property'){
@@ -94,7 +92,7 @@ getPubchemCompound <- function(
     res <- lapply(ids, function(x) {
         build_pubchem_rest_query(
             id = x, domain = 'compound', namespace = from, operation = to, output = output,
-            raw = raw, query_only = query_only, verbose = verbose, ...)
+            raw = raw, query_only = query_only, ...)
         }
     )
 
