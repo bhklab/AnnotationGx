@@ -12,7 +12,8 @@ Imports:
     checkmate,
     crayon,
     httr2,
-    data.table
+    data.table,
+    options
 Suggests: 
     testthat (>= 3.0.0),
     covr

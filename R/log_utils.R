@@ -27,11 +27,12 @@
 #' @keywords internal
 #' @noRd
 .info <- function(...) {
+    msg <- .log_fmt("INFO", ...)
     # optionName <- paste0(packageName(), ".verbose")
-    # optionIsTRUE <- !is.null(getOption(optionName)) && getOption(optionName)
+    optionIsTRUE <- options::opt("log_level") == "INFO"
     # verboseIsTRUE <- getOption("verbose")
     # if (optionIsTRUE || verboseIsTRUE)
-    message(crayon::green(.log_fmt("INFO", ...)))
+    message(crayon::green(msg))
 }
 
 #' @keywords internal
@@ -40,17 +41,19 @@
     msg <- .log_fmt("DEBUG", ...)
     # optionName <- paste0(packageName(), ".debug")
     # # to set the debug option, use options("myPackage.debug" = TRUE)
-
+    optionIsTRUE <- options::opt("log_level") == "DEBUG"
     # optionIsTRUE <- !is.null(getOption(optionName)) && getOption(optionName)
-    # verboseIsTRUE <- getOption("verbose")
-    # if (optionIsTRUE || verboseIsTRUE)
-    message(crayon::blue(msg))
+    verboseIsTRUE <- options::opt("verbose")
+    if (optionIsTRUE || verboseIsTRUE)
+        message(crayon::blue(msg))
 }
 
 #' @keywords internal
 #' @noRd
 .warn <- function(...) {
     msg <- .log_fmt("WARNING", ...)
+
+    optionIsTRUE <- options::opt("log_level") != "ERROR"
     message(crayon::yellow(msg))
 }
 
@@ -58,6 +61,7 @@
 #' @noRd
 .err <- function(...) {
     msg <- .log_fmt("ERROR", ...)
+    optionIsTRUE <- options::opt("log_level") != NULL
     stop(crayon::red(msg), call. = FALSE)
 }
 
@@ -79,35 +83,3 @@
 #' @keywords internal
 #' @noRd
 .funContext <- function(funName) paste0("[", utils::packageName(), "::", funName, "]")
-
-#' Return the name of the function and the name of the package that function
-#'   is in when called within an R function.
-#'
-#' For providing context in user messages, warnings and errors
-#'
-#' @param n `integer` How far up the call stack to look for context. Defaults to
-#'   2 since it is assumed this function will be used inside of `message`,
-#'   `warning` or `stop`.
-#'
-#' @return `list`:
-#' - fun: `character` The name of the function where `.getExectutionContext()`
-#' was called
-#' - pkg: `character` The name of the package `fun` is from, if applicable.
-#'
-#' @md
-#' @keywords internal
-#' @noRd
-# .getExecutionContext <- function(n=2) {
-
-#     # name of function which called this function
-#     callStack <- rlang::trace_back()$calls
-#     context <- deparse(callStack[[length(callStack) - n]])
-
-#     # remove function arguments
-#     context <- gsub('\\(.*\\)', '', context)
-
-#     return(paste0('\n[', context, '] ', collapse='::'))
-# }
-
-
-

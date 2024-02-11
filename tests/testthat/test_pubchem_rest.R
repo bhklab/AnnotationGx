@@ -69,6 +69,8 @@ test_that("getPubchemCompound", {
     res4 <- getPubchemCompound('erlotinib', 'name', 'cids')
     expect_class(res4, "data.table")
 })
+
+
 test_that("getPubchemCompound Failure", {
 
     expect_error(getPubchemCompound(2244, properties = NULL))

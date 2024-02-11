@@ -28,10 +28,9 @@ build_pubchem_rest_query <- function(
     switch(domain,
         "compound" = {
             assert_choice(namespace, c('cid', 'name', 'smiles', 'inchi', 'sdf', 'inchikey', 'formula'))
-            assert(
-                test_choice(
-                    operation, c('record', 'synonyms', 'sids', 'cids', 'aids', 'assaysummary')) ||
-                        grepl('property', operation))
+            assert(test_choice(
+                operation, c('record', 'synonyms', 'sids', 'cids', 'aids', 'assaysummary')) ||
+                    grepl('property', operation))
         },
         "substance" = assert_choice(namespace, c('sid', 'sourceid', 'sourceall', 'name')),
         "assay" = assert_choice(namespace, c('aid', 'listkey', 'type', 'sourceall', 'target', 'activity')),
@@ -43,20 +42,18 @@ build_pubchem_rest_query <- function(
     assert_logical(raw, query_only)
     assert_atomic(id, all.missing = FALSE)
 
-    if(length(id) > 1 && namespace == 'name') stop("id must be a single value when namespace is 'name'")
 
     # -------------------------------------- Function context --------------------------------------
     funContext <- .funContext("query_pubchem_rest")
+    if(length(id) > 1 && namespace == 'name') .err(funContext, " id must be a single value when namespace is 'name'")
 
     url <- .buildURL(url, domain, namespace, id, operation, output)
-
+    .debug(funContext, " Query URL: ", url)
     if(query_only) return(url)
 
     # -------------------------------------- Querying PubChem REST API --------------------------------------
     .build_pubchem_request(url)
 }
-
-
 
 #' Retrieve PubChem compound information
 #'
@@ -80,8 +77,9 @@ build_pubchem_rest_query <- function(
 #' @export
 getPubchemCompound <- function(
     ids, from = 'cid', to = 'property', properties = c('Title', 'InChIKey'),
-    raw = FALSE, query_only = FALSE,output = 'JSON',...
+    raw = FALSE, query_only = FALSE,output = 'JSON', ...
     ){
+    funContext <- .funContext("getPubchemCompound")
 
     if(to == 'property'){
         checkmate::assert_atomic(properties, all.missing = FALSE)
@@ -89,24 +87,26 @@ getPubchemCompound <- function(
         to <- paste0(to, '/', paste0(properties, collapse = ','))
     }
 
-    res <- lapply(ids, function(x) {
+    requests <- lapply(ids, function(x) {
         build_pubchem_rest_query(
             id = x, domain = 'compound', namespace = from, operation = to, output = output,
             raw = raw, query_only = query_only, ...)
         }
     )
-    if(query_only) return(res)
+    if(query_only) return(requests)
 
-    resps_raw <- httr2::req_perform_sequential(res, on_error = "continue")
+    resps_raw <- httr2::req_perform_sequential(requests, on_error = "continue")
+    .debug(funContext, " Number of responses: ", length(resps_raw))
+
     if(raw) return(resps_raw)
     resps <- lapply(resps_raw, function(x){ .parse_resp_json(x) |> .parseQueryToDT() })
 
     names(resps) <- ids
 
     if(from != 'name'){
-        responses <- data.table::rbindlist(resps)
+        responses <- data.table::rbindlist(resps, fill= TRUE)
     }else{
-        responses <- data.table::rbindlist(resps, idcol = from)
+        responses <- data.table::rbindlist(resps, idcol = from, fill = TRUE)
     }
     data.table::setnames(responses, 'V1', to, skip_absent=TRUE)
 
