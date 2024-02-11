@@ -53,3 +53,26 @@ test_that("build_pubchem_rest_query Failure", {
     lapply(c('TSV', 'PDF', 'XLSX'), function(x) expect_error(build_pubchem_rest_query(2244,  output = x)))
 
 })
+
+
+test_that("getPubchemCompound", {
+    result <- getPubchemCompound(2244)
+    expect_class(result, "data.table")
+
+    res2 <- getPubchemCompound(c(3672), query_only = T)
+    expect_class(res2, "list")
+
+    res3 <- getPubchemCompound(c(3672), raw = T)
+    expect_class(res3, "list")
+    expect_class(res3[[1]], "httr2_response")
+
+    res4 <- getPubchemCompound('erlotinib', 'name', 'cids')
+    expect_class(res4, "data.table")
+})
+test_that("getPubchemCompound Failure", {
+
+    expect_error(getPubchemCompound(2244, properties = NULL))
+    expect_error(getPubchemCompound(2244, properties = c(1234, 1542)))
+
+    }
+)

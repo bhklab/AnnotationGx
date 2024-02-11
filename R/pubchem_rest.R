@@ -95,10 +95,10 @@ getPubchemCompound <- function(
             raw = raw, query_only = query_only, ...)
         }
     )
+    if(query_only) return(res)
 
     resps_raw <- httr2::req_perform_sequential(res, on_error = "continue")
     if(raw) return(resps_raw)
-
     resps <- lapply(resps_raw, function(x){ .parse_resp_json(x) |> .parseQueryToDT() })
 
     names(resps) <- ids
@@ -111,13 +111,5 @@ getPubchemCompound <- function(
     data.table::setnames(responses, 'V1', to, skip_absent=TRUE)
 
     responses
-}
-
-.parse_resp_json <- function(resp){
-    httr2::resp_body_json(resp, simplifyVector = TRUE)
-}
-
-.parseQueryToDT <- function(resp){
-    data.table::as.data.table(resp[[1]][[1]])
 }
 

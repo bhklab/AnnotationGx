@@ -11,6 +11,15 @@
 }
 
 
+.parse_resp_json <- function(resp){
+    httr2::resp_body_json(resp, simplifyVector = TRUE)
+}
+
+.parseQueryToDT <- function(resp){
+    data.table::as.data.table(resp[[1]][[1]])
+}
+
+
 # # getPubchemStatus <- function(sleep = FALSE, throttleMessage = FALSE){
     
 # #     response <- tryCatch(
