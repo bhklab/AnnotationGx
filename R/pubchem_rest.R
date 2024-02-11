@@ -10,18 +10,6 @@
         httr2::req_error(is_error = \(resp) FALSE)
 }
 
-
-# .send_pubchem_request <- function(url, query_only = FALSE, verbose = FALSE, ...){
-#     resp <- req |>
-#         httr2::req_retry(max_tries = 3) |>
-#         httr2::req_throttle(rate = 400/60) |>
-#         httr2::req_error(is_error = \(resp) FALSE) |>
-#         httr2::req_perform()
-
-#     return(resp)
-# }
-
-
 #' Query PubChem REST API
 #'
 #' This function queries the PubChem REST API to retrieve information
@@ -82,12 +70,7 @@ build_pubchem_rest_query <- function(
 
     # -------------------------------------- Querying PubChem REST API --------------------------------------
     .build_pubchem_request(url)
-    # if(raw) return(resp)
-    # if(output != 'JSON') .err(funContext, "Only JSON output is supported")
-    # resp <- resp |>  httr2::resp_body_json() |> .parseQueryToDT()
 }
-
-
 
 
 
@@ -107,7 +90,9 @@ build_pubchem_rest_query <- function(
 #'
 #' @return A data.table containing the retrieved compound information.
 #'
-#'
+#' @examples
+#' properties=c('Title', 'MolecularFormula', 'InChIKey', 'CanonicalSMILES')
+#' getPubchemCompound(c(3672, 176870), from = 'cid', to = 'property', properties = properties)
 #'
 #' @export
 getPubchemCompound <- function(
@@ -131,10 +116,8 @@ getPubchemCompound <- function(
     resps_raw <- httr2::req_perform_sequential(res, on_error = "continue")
     if(raw) return(resps_raw)
 
-    resps <- lapply(resps_raw, function(x){
-        x |>   .parse_resp_json() |> .parseQueryToDT()
-        }
-    )
+    resps <- lapply(resps_raw, function(x){ .parse_resp_json(x) |> .parseQueryToDT() })
+
     names(resps) <- ids
 
     if(from != 'name'){
@@ -142,9 +125,7 @@ getPubchemCompound <- function(
     }else{
         responses <- data.table::rbindlist(resps, idcol = from)
     }
-
     data.table::setnames(responses, 'V1', to, skip_absent=TRUE)
-
 
     responses
 }
@@ -156,3 +137,4 @@ getPubchemCompound <- function(
 .parseQueryToDT <- function(resp){
     data.table::as.data.table(resp[[1]][[1]])
 }
+

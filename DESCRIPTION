@@ -1,6 +1,6 @@
 Package: AnnotationGx
 Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
+Version: 0.0.0.9001
 Authors@R: 
     person("Jermiah", "Joseph", , "jermiah.joseph@gmail.com", role = c("aut", "cre"))
 Description: What the package does (one paragraph).
@@ -14,5 +14,6 @@ Imports:
     httr2,
     data.table
 Suggests: 
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    covr
 Config/testthat/edition: 3

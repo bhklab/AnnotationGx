@@ -2,8 +2,8 @@
 # AnnotationGx
 
 <!-- badges: start -->
-  [![R-CMD-check](https://github.com/jjjermiah/AnnotationGx/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jjjermiah/AnnotationGx/actions/workflows/R-CMD-check.yaml)
 [![R-CMD-check](https://github.com/jjjermiah/AnnotationGx/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jjjermiah/AnnotationGx/actions/workflows/R-CMD-check.yaml)
+
 <!-- badges: end -->
 
 The goal of AnnotationGx is to ...
