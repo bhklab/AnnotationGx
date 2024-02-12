@@ -4,6 +4,7 @@
 #' It calls the crayon::green function and the httr2::request function.
 #'
 #' @return None
+#' @keywords internal
 ignore_unused_imports <- function() {
     crayon::green
     httr2::request()

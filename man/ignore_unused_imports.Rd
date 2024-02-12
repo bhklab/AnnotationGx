@@ -13,3 +13,4 @@ None
 This function is used to ignore unused imports.
 It calls the crayon::green function and the httr2::request function.
 }
+\keyword{internal}

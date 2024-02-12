@@ -2,10 +2,11 @@
 % Please edit documentation in R/pubchem_view.R
 \name{.get_all_heading_types}
 \alias{.get_all_heading_types}
-\title{https://pubchem.ncbi.nlm.nih.gov/rest/pug/annotations/headings/JSON will return a list of all available headings}
+\title{Get all available annotation headings}
 \usage{
 .get_all_heading_types()
 }
 \description{
 https://pubchem.ncbi.nlm.nih.gov/rest/pug/annotations/headings/JSON will return a list of all available headings
 }
+\keyword{internal}

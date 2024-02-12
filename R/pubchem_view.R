@@ -68,7 +68,6 @@ getAnnotationHeadings <- function(
 #' @return The query URL
 #'
 #' @keywords internal
-#' @export
 .build_pubchem_view_query <- function(
     id, annotation = 'data', record = 'compound', page = NULL, version = NULL, heading = NULL, source = NULL, output = 'JSON', ...
     ){
@@ -120,7 +119,9 @@ getAnnotationHeadings <- function(
     url |> httr2::url_build()
 }
 
-#'  https://pubchem.ncbi.nlm.nih.gov/rest/pug/annotations/headings/JSON will return a list of all available headings
+#' Get all available annotation headings
+#'
+#' https://pubchem.ncbi.nlm.nih.gov/rest/pug/annotations/headings/JSON will return a list of all available headings
 #'
 #' @keywords internal
 .get_all_heading_types <- function(){

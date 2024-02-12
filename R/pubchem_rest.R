@@ -77,7 +77,6 @@ getPubchemCompound <- function(
 #' @importFrom checkmate assert assert_choice assert_logical assert_atomic test_choice
 #'
 #' @keywords internal
-#' @export
 .build_pubchem_rest_query <- function(
         id, domain='compound', namespace='name', operation='cids',
         output='JSON', url='https://pubchem.ncbi.nlm.nih.gov/rest/pug',
