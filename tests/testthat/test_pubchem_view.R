@@ -54,6 +54,11 @@ test_that("AnnotationGx:::.build_pubchem_view_query", {
         id = "176870", record = "substance", version = '1.2')
     expected_url <- "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/substance/176870/JSON?version=1.2"
     expect_equal(query, expected_url)
+
+    query <- AnnotationGx:::.build_pubchem_view_query(
+        id = "176870", version = 1)
+    expected_url <- "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/176870/JSON?version=1"
+    expect_equal(query, expected_url)
 })
 
 

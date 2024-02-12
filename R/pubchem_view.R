@@ -95,7 +95,7 @@ getAnnotationHeadings <- function(
         if(record == "substance") {
             checkmate::assert_string(version, min.chars = 1)
         } else {
-            checkmate::assert_integer(version, lower = 1)
+            checkmate::assert_numeric(version, lower = 1)
         }
         opts_ <- c(opts_, list(version = version))
     }
