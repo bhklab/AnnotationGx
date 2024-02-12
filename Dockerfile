@@ -1,4 +1,5 @@
 # Build with: docker build -t jjjermiah/annotationgx-r:$TAG -f Dockerfile .
+#  you can set TAG=$(grep  'Version:' DESCRIPTION  | grep -oE '[0-9]+(\.[0-9]+)*')
 FROM rocker/r-base
 
 RUN apt-get -qq update && \
