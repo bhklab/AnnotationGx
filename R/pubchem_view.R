@@ -81,7 +81,7 @@ getAnnotationHeadings <- function(
 
     opts_ = list()
     if(!is.null(heading)){
-        if("record" == "substance") {
+        if(record == "substance") {
             .debug(funContext,
                 " fyi: https://pubchem.ncbi.nlm.nih.gov/rest/pug/annotations/headings/JSON
                  has no substance headings")
@@ -95,10 +95,12 @@ getAnnotationHeadings <- function(
 
     if(!is.null(source)){
         checkmate::assert_string(source, min.chars = 1)
+        opts_ <- c(opts_, list(source = source))
     }
 
     if(!is.null(page)){
         checkmate::assert_numeric(page, lower = 1)
+        opts_ <- c(opts_, list(page = page))
     }
 
     if(!is.null(version)){
@@ -107,7 +109,9 @@ getAnnotationHeadings <- function(
         } else {
             checkmate::assert_string(version, min.chars = 1)
         }
+        opts_ <- c(opts_, list(version = version))
     }
+
     base_url <- "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view"
     url <- httr2::url_parse(base_url)
     url$path <- .buildURL(url$path, annotation, record, id, output)
@@ -116,15 +120,9 @@ getAnnotationHeadings <- function(
     url |> httr2::url_build()
 }
 
-
-
-# getAnnotationHeadings()
-# getAnnotationHeadings("Compound")
-# getAnnotationHeadings("Compound", "chembl")
-
 #'  https://pubchem.ncbi.nlm.nih.gov/rest/pug/annotations/headings/JSON will return a list of all available headings
 #'
-#'
+#' @keywords internal
 .get_all_heading_types <- function(){
     url <- "https://pubchem.ncbi.nlm.nih.gov/rest/pug/annotations/headings/JSON"
     req <- .build_pubchem_request(url)
