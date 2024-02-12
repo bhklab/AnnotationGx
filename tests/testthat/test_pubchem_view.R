@@ -61,7 +61,7 @@ test_that("AnnotationGx:::.build_pubchem_view_query Failure", {
   # Test case 1: Test with invalid annotation
   expect_error(AnnotationGx:::.build_pubchem_view_query(id = "67890", record = "substance",
     page = 2, version = 1, heading = "Heading1", source = "Source1", output = "XML"))
-
+    expect_error(AnnotationGx:::.build_pubchem_view_query(id = "67890", record ="substance",  version = 1.5))
     expect_error(AnnotationGx:::.build_pubchem_view_query(
         id = "176870", record = "substance", version = 1))
 

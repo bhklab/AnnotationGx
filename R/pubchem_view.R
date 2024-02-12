@@ -91,6 +91,14 @@ getAnnotationHeadings <- function(
         }
         opts_ <- c(opts_, list(heading = heading))
     }
+    if(!is.null(version)){
+        if(record == "substance") {
+            checkmate::assert_string(version, min.chars = 1)
+        } else {
+            checkmate::assert_integer(version, lower = 1)
+        }
+        opts_ <- c(opts_, list(version = version))
+    }
 
     if(!is.null(source)){
         checkmate::assert_string(source, min.chars = 1)
@@ -102,14 +110,7 @@ getAnnotationHeadings <- function(
         opts_ <- c(opts_, list(page = page))
     }
 
-    if(!is.null(version)){
-        if("record" == "substance") {
-            checkmate::assert_integer(version, lower = 1)
-        } else {
-            checkmate::assert_string(version, min.chars = 1)
-        }
-        opts_ <- c(opts_, list(version = version))
-    }
+
 
     base_url <- "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view"
     url <- httr2::url_parse(base_url)
