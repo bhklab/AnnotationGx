@@ -1,3 +1,62 @@
+#' Retrieve PubChem compound information
+#'
+#' This function retrieves compound information from PubChem using the PubChem REST API.
+#'
+#' @param ids A vector of compound identifiers.
+#' @param from The source namespace of the compound identifiers. Default is 'cid'.
+#' @param to The target namespace for the compound information. Default is 'property'.
+#' @param properties A character vector specifying the properties to retrieve.
+#' @param raw Logical indicating whether to return the raw query results. Default is FALSE.
+#' @param query_only Logical indicating whether to only perform the query without retrieving the results. Default is FALSE.
+#' @param output The format of the query results. Default is 'JSON'.
+#' @param ... Additional arguments to be passed to the query_pubchem_rest function.
+#'
+#' @return A data.table containing the retrieved compound information.
+#'
+#' @examples
+#' properties=c('Title', 'MolecularFormula', 'InChIKey', 'CanonicalSMILES')
+#' getPubchemCompound(c(3672, 176870), from = 'cid', to = 'property', properties = properties)
+#'
+#' @export
+getPubchemCompound <- function(
+    ids, from = 'cid', to = 'property', properties = c('Title', 'InChIKey'),
+    raw = FALSE, query_only = FALSE,output = 'JSON', ...
+    ){
+    funContext <- .funContext("getPubchemCompound")
+
+    if(to == 'property'){
+        checkmate::assert_atomic(properties, all.missing = FALSE)
+        checkmate::assert_character(properties)
+        to <- paste0(to, '/', paste0(properties, collapse = ','))
+    }
+
+    requests <- lapply(ids, function(x) {
+        .build_pubchem_rest_query(
+            id = x, domain = 'compound', namespace = from, operation = to, output = output,
+            raw = raw, query_only = query_only, ...)
+        }
+    )
+    if(query_only) return(requests)
+
+    resps_raw <- httr2::req_perform_sequential(requests, on_error = "continue")
+    .debug(funContext, " Number of responses: ", length(resps_raw))
+
+    if(raw) return(resps_raw)
+    resps <- lapply(resps_raw, function(x){ .parse_resp_json(x) |> .parseQueryToDT() })
+
+    names(resps) <- ids
+
+    if(from != 'name'){
+        responses <- data.table::rbindlist(resps, fill= TRUE)
+    }else{
+        responses <- data.table::rbindlist(resps, idcol = from, fill = TRUE)
+    }
+    data.table::setnames(responses, 'V1', to, skip_absent=TRUE)
+
+    responses
+}
+
+
 
 #' Build a query for the PubChem REST API
 #'
@@ -16,8 +75,10 @@
 #' @return The query URL or the parsed response, depending on the arguments.
 #'
 #' @importFrom checkmate assert assert_choice assert_logical assert_atomic test_choice
+#'
+#' @keywords internal
 #' @export
-build_pubchem_rest_query <- function(
+.build_pubchem_rest_query <- function(
         id, domain='compound', namespace='name', operation='cids',
         output='JSON', url='https://pubchem.ncbi.nlm.nih.gov/rest/pug',
         raw=FALSE, query_only=FALSE, ...){
@@ -53,63 +114,5 @@ build_pubchem_rest_query <- function(
 
     # -------------------------------------- Querying PubChem REST API --------------------------------------
     .build_pubchem_request(url)
-}
-
-#' Retrieve PubChem compound information
-#'
-#' This function retrieves compound information from PubChem using the PubChem REST API.
-#'
-#' @param ids A vector of compound identifiers.
-#' @param from The source namespace of the compound identifiers. Default is 'cid'.
-#' @param to The target namespace for the compound information. Default is 'property'.
-#' @param properties A character vector specifying the properties to retrieve.
-#' @param raw Logical indicating whether to return the raw query results. Default is FALSE.
-#' @param query_only Logical indicating whether to only perform the query without retrieving the results. Default is FALSE.
-#' @param output The format of the query results. Default is 'JSON'.
-#' @param ... Additional arguments to be passed to the query_pubchem_rest function.
-#'
-#' @return A data.table containing the retrieved compound information.
-#'
-#' @examples
-#' properties=c('Title', 'MolecularFormula', 'InChIKey', 'CanonicalSMILES')
-#' getPubchemCompound(c(3672, 176870), from = 'cid', to = 'property', properties = properties)
-#'
-#' @export
-getPubchemCompound <- function(
-    ids, from = 'cid', to = 'property', properties = c('Title', 'InChIKey'),
-    raw = FALSE, query_only = FALSE,output = 'JSON', ...
-    ){
-    funContext <- .funContext("getPubchemCompound")
-
-    if(to == 'property'){
-        checkmate::assert_atomic(properties, all.missing = FALSE)
-        checkmate::assert_character(properties)
-        to <- paste0(to, '/', paste0(properties, collapse = ','))
-    }
-
-    requests <- lapply(ids, function(x) {
-        build_pubchem_rest_query(
-            id = x, domain = 'compound', namespace = from, operation = to, output = output,
-            raw = raw, query_only = query_only, ...)
-        }
-    )
-    if(query_only) return(requests)
-
-    resps_raw <- httr2::req_perform_sequential(requests, on_error = "continue")
-    .debug(funContext, " Number of responses: ", length(resps_raw))
-
-    if(raw) return(resps_raw)
-    resps <- lapply(resps_raw, function(x){ .parse_resp_json(x) |> .parseQueryToDT() })
-
-    names(resps) <- ids
-
-    if(from != 'name'){
-        responses <- data.table::rbindlist(resps, fill= TRUE)
-    }else{
-        responses <- data.table::rbindlist(resps, idcol = from, fill = TRUE)
-    }
-    data.table::setnames(responses, 'V1', to, skip_absent=TRUE)
-
-    responses
 }
 
