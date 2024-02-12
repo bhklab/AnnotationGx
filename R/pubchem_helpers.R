@@ -9,7 +9,7 @@
         httr2::req_throttle(rate = 1000/60) |>
         httr2::req_error(is_error = \(resp) FALSE)
 }
-d
+
 
 .parse_resp_json <- function(resp){
     httr2::resp_body_json(resp, simplifyVector = TRUE)
