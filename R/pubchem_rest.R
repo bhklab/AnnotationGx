@@ -42,7 +42,9 @@ getPubchemCompound <- function(
     .debug(funContext, " Number of responses: ", length(resps_raw))
 
     if(raw) return(resps_raw)
-    resps <- lapply(resps_raw, function(x){ .parse_resp_json(x) |> .parseQueryToDT() })
+    resps <- lapply(resps_raw, function(x){
+        .parse_resp_json(x) |> .parseQueryToDT()
+    })
 
     names(resps) <- ids
 

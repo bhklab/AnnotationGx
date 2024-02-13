@@ -105,7 +105,7 @@ annotatePubchemCompound <- function(
     url <- "https://pubchem.ncbi.nlm.nih.gov/rest/pug/annotations/headings/JSON"
     req <- .build_pubchem_request(url)
     response <- httr2::req_perform(req) |> .parse_resp_json()
-    data.table::as.data.table(response[[1]][[1]])
+    .asDT(response[[1]][[1]])
 }
 
 
