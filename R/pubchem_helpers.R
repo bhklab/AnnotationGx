@@ -20,26 +20,16 @@
 }
 
 
-getPubchemStatus <- function(returnMessage = FALSE, printMessage = TRUE ){
+getPubchemStatus <- function(
+    returnMessage = FALSE, printMessage = TRUE,
+    url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/Aspirin/cids/JSON"
+    ){
     funContext <- .funContext("getPubchemStatus")
-    test_url <- .buildURL("https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/Aspirin/cids/JSON")
-    request <- .build_pubchem_request(test_url)
-    response <- tryCatch(
-    {
-        httr2::req_perform(request)
-    },
-        error = function(e) {
-            .err(funContext, e$message)
-            return(NULL)
-    })
+
+    request <- .buildURL(url) |> .build_pubchem_request()
+    response <- httr2::req_perform(request)
 
     status_code <- httr2::resp_status(response)
-    if (status_code == 503) {
-        .err(funContext, "The server is currently unable to
-            handle the request due to overload. Exiting.")
-    } else if(status_code != 200){
-        .err(funContext, "The server returned a status code of ", status_code, ". Exiting.")
-    }
     parsed_info <- .checkThrottlingStatus2(response, printMessage)
     if(returnMessage) return(parsed_info)
 }

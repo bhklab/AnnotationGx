@@ -26,14 +26,6 @@
 #'
 #' @keywords internal
 #' @noRd
-.info <- function(...) {
-    msg <- .log_fmt("INFO", ...)
-    optionIsTRUE <- options::opt("log_level") == "INFO"
-    message(crayon::green(msg))
-}
-
-#' @keywords internal
-#' @noRd
 .debug <- function(...) {
     msg <- .log_fmt("DEBUG", ...)
     optionIsTRUE <- options::opt("log_level") == "DEBUG"

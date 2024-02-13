@@ -56,6 +56,7 @@ test_that("AnnotationGx:::.build_pubchem_rest_query Failure", {
 
 
 test_that("getPubchemCompound", {
+    options::opt_set("log_level", "DEBUG")
     result <- getPubchemCompound(2244)
     expect_class(result, "data.table")
 
