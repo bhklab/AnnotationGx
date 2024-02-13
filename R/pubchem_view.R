@@ -154,9 +154,11 @@ annotatePubchemCompound <- function(
                 " fyi: https://pubchem.ncbi.nlm.nih.gov/rest/pug/annotations/headings/JSON
                  has no substance headings")
         } else {
-            checkmate::expect_character(
+            check <- checkmate::check_character(
                 unique(getPubchemAnnotationHeadings(record, heading)$Heading),
-                any.missing = F,  info = "see getPubchemAnnotationHeadings() for available headings")
+                any.missing = F)
+            if(!check) .err(funContext, "Invalid heading: ", heading,
+                ". Use getPubchemAnnotationHeadings() to get valid headings.")
         }
         opts_ <- c(opts_, list(heading = heading))
     }
