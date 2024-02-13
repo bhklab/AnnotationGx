@@ -66,7 +66,8 @@ annotatePubchemCompound <- function(
     funContext <- .funContext("annotatePubchemCompound")
     validHeaders <-  getPubchemAnnotationHeadings("Compound")$Heading
     if(!checkmate::test_choice(heading, validHeaders))
-        .err(funContext, "Invalid heading: ", heading, ". Use getPubchemAnnotationHeadings() to get valid headings.")
+        .err(funContext, "Invalid heading: ", heading,
+            ". Use getPubchemAnnotationHeadings() to get valid headings.")
 
     url <- .build_pubchem_view_query(
         id = cid, record = "compound", heading = heading,

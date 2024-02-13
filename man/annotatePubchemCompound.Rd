@@ -19,8 +19,6 @@ annotatePubchemCompound(
 \item{source}{The data source to use. Default is NULL.}
 
 \item{parse_function}{A custom parsing function to process the response. Default is the identity function.}
-
-\item{output}{The format of the output. Default is "JSON". Options include "JSON", "XML", "ASN"}
 }
 \value{
 The annotated information about the PubChem compound.
