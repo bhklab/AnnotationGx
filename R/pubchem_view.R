@@ -1,21 +1,22 @@
 
-#' Get annotation headings based on type and heading criteria.
+#' Get annotation headings (name only) based on type and heading criteria.
 #'
-#' @param type The type of annotation headings to retrieve. Options include "Compound", "Gene", "Taxonomy", "Element", "Assay", "Protein", "Cell", "Pathway", or "all" (default).
+#' @param type The type of annotation headings to retrieve.
+#' Options include "Compound", "Gene", "Taxonomy", "Element", "Assay", "Protein", "Cell", "Pathway", or "all" (default).
 #' @param heading The specific heading to filter the results by. Defaults to NULL, which retrieves all headings.
 #'
 #' @return A data frame containing the annotation headings that match the specified criteria.
 #'
 #' @examples
-#' getAnnotationHeadings()
-#' getAnnotationHeadings(type = "Compound")
-#' getAnnotationHeadings(heading = "ChEMBL*") # get all headings that contain "ChEMBL"
+#' getPubchemAnnotationHeadings()
+#' getPubchemAnnotationHeadings(type = "Compound")
+#' getPubchemAnnotationHeadings(heading = "ChEMBL*") # get all headings that contain "ChEMBL"
 #'
 #' @export
-getAnnotationHeadings <- function(
+getPubchemAnnotationHeadings <- function(
     type = "all", heading = NULL
     ){
-    funContext <- .funContext("getAnnotationHeadings")
+    funContext <- .funContext("getPubchemAnnotationHeadings")
     .debug(funContext, " type: ", type, " heading: ", heading)
 
     checkmate::assert(
@@ -35,9 +36,32 @@ getAnnotationHeadings <- function(
 
     if(nrow(ann_dt) == 0){
         .warn(funContext, " No headings found for type: `", type, "` and heading: `", heading,
-            "`.\nTry getAnnotationHeadings(type = 'all') for available headings and types")
+            "`.\nTry getPubchemAnnotationHeadings(type = 'all') for available headings and types")
     }
     ann_dt
+}
+
+annotatePubchemCompound <- function(cid, heading = "ChEMBL ID", output = "JSON", source = NULL){
+    funContext <- .funContext("annotatePubchemCompound")
+    url <- .build_pubchem_view_query(
+        id = cid, record = "compound", heading = heading, output = output, source = source)
+    .debug(funContext, " query: ", url)
+    query <- .build_pubchem_request(url)
+    response <- httr2::req_perform(query) |> .parse_resp_json()
+    response
+}
+
+
+#' Get all available annotation headings
+#'
+#' https://pubchem.ncbi.nlm.nih.gov/rest/pug/annotations/headings/JSON will return a list of all available headings
+#'
+#' @keywords internal
+.get_all_heading_types <- function(){
+    url <- "https://pubchem.ncbi.nlm.nih.gov/rest/pug/annotations/headings/JSON"
+    req <- .build_pubchem_request(url)
+    response <- httr2::req_perform(req) |> .parse_resp_json()
+    data.table::as.data.table(response[[1]][[1]])
 }
 
 
@@ -85,9 +109,9 @@ getAnnotationHeadings <- function(
                 " fyi: https://pubchem.ncbi.nlm.nih.gov/rest/pug/annotations/headings/JSON
                  has no substance headings")
         } else {
-            checkmate::expect_string(
-                unique(getAnnotationHeadings(record, heading)$Heading),
-                min.chars = 1, info = "see getAnnotationHeadings() for available headings")
+            checkmate::expect_character(
+                unique(getPubchemAnnotationHeadings(record, heading)$Heading),
+                any.missing = F,  info = "see getPubchemAnnotationHeadings() for available headings")
         }
         opts_ <- c(opts_, list(heading = heading))
     }
@@ -120,15 +144,4 @@ getAnnotationHeadings <- function(
     url |> httr2::url_build()
 }
 
-#' Get all available annotation headings
-#'
-#' https://pubchem.ncbi.nlm.nih.gov/rest/pug/annotations/headings/JSON will return a list of all available headings
-#'
-#' @keywords internal
-.get_all_heading_types <- function(){
-    url <- "https://pubchem.ncbi.nlm.nih.gov/rest/pug/annotations/headings/JSON"
-    req <- .build_pubchem_request(url)
-    response <- httr2::req_perform(req) |> .parse_resp_json()
-    data.table::as.data.table(response[[1]][[1]])
-}
 

@@ -12,19 +12,19 @@ test_that("AnnotationGx:::.get_all_heading_types", {
 })
 
 
-test_that("AnnotationGx::getAnnotationHeadings", {
-    query <- getAnnotationHeadings("compound", "ChEMBL ID")
+test_that("AnnotationGx::getPubchemAnnotationHeadings", {
+    query <- getPubchemAnnotationHeadings("compound", "ChEMBL ID")
     expect_data_table(query, ncols = 2, nrows = 1)
     expect_equal(names(query), c("Heading", "Type"))
 
     dt <- capture.output(
-        query <- capture.output(getAnnotationHeadings("compound", "fake_placeholder"), type = c("message")))
+        query <- capture.output(getPubchemAnnotationHeadings("compound", "fake_placeholder"), type = c("message")))
     assert(any(grepl("WARNING", query)))
     expect_equal(dt, "Empty data.table (0 rows and 2 cols): Heading,Type")
 })
 
 test_that("AnnotationGx::getAnotationHeadings Failure", {
-    expect_error( getAnnotationHeadings("substance", "ChEMBL ID"))
+    expect_error( getPubchemAnnotationHeadings("substance", "ChEMBL ID"))
 }
 )
 
