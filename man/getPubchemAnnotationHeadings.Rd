@@ -13,7 +13,7 @@ Options include "Compound", "Gene", "Taxonomy", "Element", "Assay", "Protein", "
 \item{heading}{The specific heading to filter the results by. Defaults to NULL, which retrieves all headings.}
 }
 \value{
-A data frame containing the annotation headings that match the specified criteria.
+A \code{data.table} containing the annotation headings and types.
 }
 \description{
 Get annotation headings (name only) based on type and heading criteria.
@@ -21,6 +21,7 @@ Get annotation headings (name only) based on type and heading criteria.
 \examples{
 getPubchemAnnotationHeadings()
 getPubchemAnnotationHeadings(type = "Compound")
-getPubchemAnnotationHeadings(heading = "ChEMBL*") # get all headings that contain "ChEMBL"
+getPubchemAnnotationHeadings(heading = "ChEMBL*")
+getPubchemAnnotationHeadings(type = "Compound", heading = "ChEMBL*")
 
 }

@@ -5,12 +5,13 @@
 #' Options include "Compound", "Gene", "Taxonomy", "Element", "Assay", "Protein", "Cell", "Pathway", or "all" (default).
 #' @param heading The specific heading to filter the results by. Defaults to NULL, which retrieves all headings.
 #'
-#' @return A data frame containing the annotation headings that match the specified criteria.
+#' @return A `data.table` containing the annotation headings and types.
 #'
 #' @examples
 #' getPubchemAnnotationHeadings()
 #' getPubchemAnnotationHeadings(type = "Compound")
-#' getPubchemAnnotationHeadings(heading = "ChEMBL*") # get all headings that contain "ChEMBL"
+#' getPubchemAnnotationHeadings(heading = "ChEMBL*")
+#' getPubchemAnnotationHeadings(type = "Compound", heading = "ChEMBL*")
 #'
 #' @export
 getPubchemAnnotationHeadings <- function(
@@ -19,9 +20,11 @@ getPubchemAnnotationHeadings <- function(
     funContext <- .funContext("getPubchemAnnotationHeadings")
     .debug(funContext, " type: ", type, " heading: ", heading)
 
+    # TODO:: messy...
     checkmate::assert(
         checkmate::test_choice(
-            tolower(type), tolower(c("Compound", "Gene", "Taxonomy", "Element", "Assay", "Protein", "Cell", "Pathway"))
+            tolower(type), tolower(c("Compound", "Gene", "Taxonomy", "Element",
+            "Assay", "Protein", "Cell", "Pathway"))
         ) || type == "all"
     )
 
@@ -41,20 +44,38 @@ getPubchemAnnotationHeadings <- function(
     ann_dt
 }
 
+#' Annotate PubChem Compound
+#'
+#' This function retrieves information about a PubChem compound based on the provided compound ID (CID).
+#'
+#' @param cid The compound ID (CID) of the PubChem compound.
+#' @param heading The type of information to retrieve. Default is "ChEMBL ID".
+#' @param source The data source to use. Default is NULL.
+#' @param parse_function A custom parsing function to process the response. Default is the identity function.
+#'
+#' @return The annotated information about the PubChem compound.
+#'
+#' @examples
+#' annotatePubchemCompound(cid = 12345)
+#' annotatePubchemCompound(cid = 67890, heading = "CAS")
+#'
+#' @export
 annotatePubchemCompound <- function(
-    cid, heading = "ChEMBL ID", output = "JSON", source = NULL,
-    parse_function = identity
+    cid, heading = "ChEMBL ID", source = NULL, parse_function = identity
     ){
     funContext <- .funContext("annotatePubchemCompound")
-    validHeaders <-  c(
-        'ChEMBL ID', 'NSC Number', 'Drug Induced Liver Injury', 'CAS', 'ATC Code')
+    validHeaders <-  getPubchemAnnotationHeadings("Compound")$Heading
+    if(!checkmate::test_choice(heading, validHeaders))
+        .err(funContext, "Invalid heading: ", heading, ". Use getPubchemAnnotationHeadings() to get valid headings.")
 
     url <- .build_pubchem_view_query(
         id = cid, record = "compound", heading = heading,
-        output = output, source = source)
+        output = "JSON", source = source)
+
     .debug(funContext, " query: ", url)
 
-    response <- .build_pubchem_request(url) |> httr2::req_perform() |> .parse_resp_json()
+    response <- .build_pubchem_request(url) |>
+        httr2::req_perform() |> .parse_resp_json()
 
     switch(heading,
         'ChEMBL ID' = .parseCHEMBLresponse(response),
@@ -78,6 +99,7 @@ annotatePubchemCompound <- function(
 #' https://pubchem.ncbi.nlm.nih.gov/rest/pug/annotations/headings/JSON will return a list of all available headings
 #'
 #' @keywords internal
+#' @noRd
 .get_all_heading_types <- function(){
     url <- "https://pubchem.ncbi.nlm.nih.gov/rest/pug/annotations/headings/JSON"
     req <- .build_pubchem_request(url)
@@ -113,6 +135,7 @@ annotatePubchemCompound <- function(
 #' @return The query URL
 #'
 #' @keywords internal
+#' @noRd
 .build_pubchem_view_query <- function(
     id, annotation = 'data', record = 'compound', page = NULL, version = NULL, heading = NULL, source = NULL, output = 'JSON', ...
     ){

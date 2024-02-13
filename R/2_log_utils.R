@@ -54,7 +54,7 @@
 .err <- function(...) {
     msg <- .log_fmt("ERROR", ...)
     optionIsTRUE <- options::opt("log_level") != NULL
-    stop(crayon::red(msg), call. = FALSE)
+    stop("\r",crayon::red(msg), call. = FALSE)
 }
 
 #' Generate a function context string
