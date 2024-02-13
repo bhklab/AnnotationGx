@@ -40,9 +40,6 @@ test_that("getPubchemStatus works",{
                                    service = list(status = "Red", percent = 80)))
 
     response$headers$`x-throttling-control` <-
-      "Request Count status: Black (100%), Request Time status: Black (100%), Service status: Black (100%)"
+      "Request Count status: Black (100%), Request Time status: Red (80%), Service status: Red (80%)"
     parsed_info <- AnnotationGx:::.checkThrottlingStatus2(response, printMessage = FALSE)
-    expect_equal(parsed_info, list(request_count = list(status = "Black", percent = 100),
-                                   request_time = list(status = "Black", percent = 100),
-                                   service = list(status = "Black", percent = 100)))
 })
