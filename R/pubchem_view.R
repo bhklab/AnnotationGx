@@ -41,14 +41,35 @@ getPubchemAnnotationHeadings <- function(
     ann_dt
 }
 
-annotatePubchemCompound <- function(cid, heading = "ChEMBL ID", output = "JSON", source = NULL){
+annotatePubchemCompound <- function(
+    cid, heading = "ChEMBL ID", output = "JSON", source = NULL,
+    parse_function = identity
+    ){
     funContext <- .funContext("annotatePubchemCompound")
+    validHeaders <-  c(
+        'ChEMBL ID', 'NSC Number', 'Drug Induced Liver Injury', 'CAS', 'ATC Code')
+
     url <- .build_pubchem_view_query(
-        id = cid, record = "compound", heading = heading, output = output, source = source)
+        id = cid, record = "compound", heading = heading,
+        output = output, source = source)
     .debug(funContext, " query: ", url)
-    query <- .build_pubchem_request(url)
-    response <- httr2::req_perform(query) |> .parse_resp_json()
-    response
+
+    response <- .build_pubchem_request(url) |> httr2::req_perform() |> .parse_resp_json()
+
+    switch(heading,
+        'ChEMBL ID' = .parseCHEMBLresponse(response),
+        'CAS' = .parseCASresponse(response),
+        'NSC Number' = .parseNSCresponse(response),
+        'ATC Code' = .parseATCresponse(response),
+        'Drug Induced Liver Injury' = .parseDILIresponse(response),
+        tryCatch({
+            parse_function(response)
+        }, error = function(e){
+            .warn(funContext, 'The parseFUN function failed: ', e,
+                '. Returning unparsed results instead. Please test the parseFUN
+                on the returned data.')
+            response
+        }))
 }
 
 

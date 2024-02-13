@@ -6,7 +6,5 @@ FROM rocker/r-base
 RUN apt-get -qq update && \
   apt-get install -y --no-install-recommends git libxml2-dev
 
-COPY DESCRIPTION .
-
 RUN Rscript -e "install.packages('pak', repos = 'https://r-lib.github.io/p/pak/dev/')"
-RUN Rscript -e "pak::local_install('.')"
+RUN Rscript -e "pak::pkg_install('jjjermiah/AnnotationGx', ask = F)"

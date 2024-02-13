@@ -28,6 +28,52 @@ test_that("AnnotationGx::getAnotationHeadings Failure", {
 }
 )
 
+
+test_that("AnnotationGx::annotatePubchemCompound",{
+    CID <- 176870   # Erlotonib
+    annotatePubchemCompound(CID, 'ChEMBL ID')
+    expected <- "CHEMBL553"
+    expect_equal(annotatePubchemCompound(CID, 'ChEMBL ID'), expected)
+
+    annotatePubchemCompound(CID, 'CAS')
+    expected <- "183321-74-6"
+    expect_equal(annotatePubchemCompound(CID, 'CAS'), expected)
+
+    annotatePubchemCompound(CID, 'NSC Number')
+    expected <- NULL
+    expect_equal(annotatePubchemCompound(CID, 'NSC Number'), expected)
+
+    annotatePubchemCompound(CID, 'ATC Code')
+    expected <- "L01EB02"
+    expect_equal(annotatePubchemCompound(CID, 'ATC Code'), expected)
+
+    annotatePubchemCompound(CID, 'Drug Induced Liver Injury')
+    expected <- "LT01214"
+    expect_equal(annotatePubchemCompound(CID, 'Drug Induced Liver Injury'), expected)
+
+
+    CID <- 3672   # Ibuprofen
+    annotatePubchemCompound(CID, 'ChEMBL ID')
+    expected <- "CHEMBL521"
+    expect_equal(annotatePubchemCompound(CID, 'ChEMBL ID'), expected)
+
+    annotatePubchemCompound(CID, 'CAS')
+    expected <- "15687-27-1"
+    expect_equal(annotatePubchemCompound(CID, 'CAS'), expected)
+
+    annotatePubchemCompound(CID, 'NSC Number')
+    expected <- "NSC 757073; NSC 256857"
+    expect_equal(annotatePubchemCompound(CID, 'NSC Number'), expected)
+
+    annotatePubchemCompound(CID, 'ATC Code')
+    expected <- "M02AA13; C01EB16; R02AX02; G02CC01; M01AE01"
+    expect_equal(annotatePubchemCompound(CID, 'ATC Code'), expected)
+
+    annotatePubchemCompound(CID, 'Drug Induced Liver Injury')
+    expected <- "LT00199"
+    expect_equal(annotatePubchemCompound(CID, 'Drug Induced Liver Injury'), expected)
+})
+
 test_that("AnnotationGx:::.build_pubchem_view_query", {
   # Test case 1: Test with default parameters
     query <- AnnotationGx:::.build_pubchem_view_query(id = "12345")

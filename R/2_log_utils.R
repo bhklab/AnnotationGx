@@ -28,10 +28,7 @@
 #' @noRd
 .info <- function(...) {
     msg <- .log_fmt("INFO", ...)
-    # optionName <- paste0(packageName(), ".verbose")
     optionIsTRUE <- options::opt("log_level") == "INFO"
-    # verboseIsTRUE <- getOption("verbose")
-    # if (optionIsTRUE || verboseIsTRUE)
     message(crayon::green(msg))
 }
 
@@ -39,12 +36,8 @@
 #' @noRd
 .debug <- function(...) {
     msg <- .log_fmt("DEBUG", ...)
-    # optionName <- paste0(packageName(), ".debug")
-    # # to set the debug option, use options("myPackage.debug" = TRUE)
     optionIsTRUE <- options::opt("log_level") == "DEBUG"
-    # optionIsTRUE <- !is.null(getOption(optionName)) && getOption(optionName)
-    verboseIsTRUE <- options::opt("verbose")
-    if (optionIsTRUE || verboseIsTRUE)
+    if (optionIsTRUE)
         message(crayon::blue(msg))
 }
 
@@ -52,7 +45,6 @@
 #' @noRd
 .warn <- function(...) {
     msg <- .log_fmt("WARNING", ...)
-
     optionIsTRUE <- options::opt("log_level") != "ERROR"
     message(crayon::yellow(msg))
 }
@@ -65,15 +57,6 @@
     stop(crayon::red(msg), call. = FALSE)
 }
 
-
-
-# # test
-# .debug("This is a debug message")
-# .info("This is an info message")
-# .warn("This is a warning message")
-# .error("This is an error message")
-
-
 #' Generate a function context string
 #'
 #' This function takes the name of a function and returns a string that
@@ -83,3 +66,9 @@
 #' @keywords internal
 #' @noRd
 .funContext <- function(funName) paste0("[", utils::packageName(), "::", funName, "]")
+
+# # test
+# .debug("This is a debug message")
+# .info("This is an info message")
+# .warn("This is a warning message")
+# .error("This is an error message")
