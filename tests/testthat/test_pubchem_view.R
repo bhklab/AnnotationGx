@@ -72,6 +72,18 @@ test_that("AnnotationGx::annotatePubchemCompound",{
     annotatePubchemCompound(CID, 'Drug Induced Liver Injury')
     expected <- "LT00199"
     expect_equal(annotatePubchemCompound(CID, 'Drug Induced Liver Injury'), expected)
+
+    expect_error(annotatePubchemCompound(CID, heading = 'fake_placeholder'))
+
+    ### Test with custom parsing function
+    wiki_ <- annotatePubchemCompound(CID, heading = 'Wikipedia')
+    expect_list(wiki_, min.len = 1)
+    expect_equal(names(wiki_), "Record")
+
+    fake_parser <- function(x) {
+        x <- x[[2]]
+    }
+    expect_error(annotatePubchemCompound(CID, heading = 'fake_placeholder', parse_function = fake_parser))
 })
 
 test_that("AnnotationGx:::.build_pubchem_view_query", {
@@ -118,5 +130,8 @@ test_that("AnnotationGx:::.build_pubchem_view_query Failure", {
 
     expect_error(AnnotationGx:::.build_pubchem_view_query(
         id = "176870",output = "JSON", source = ""))
+
+    expect_error(AnnotationGx:::.build_pubchem_view_query(
+        id = "176870", record = "compound", heading = "fale"))
 })
 

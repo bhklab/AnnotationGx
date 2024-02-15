@@ -130,6 +130,15 @@ getChemblMechanism <- function(
     })
 
     if(returnURL || raw) return(response_dts)
+    all_cols <- .chembl_mechanism_cols()
+    # If any cols are missing, fill with NA
+    response_dts <- lapply(response_dts, function(x){
+        missing_cols <- setdiff(all_cols, names(x))
+        if(length(missing_cols) > 0){
+            x[, (missing_cols) := NA]
+        }
+        x
+    })
 
     data.table::rbindlist(response_dts)
 }

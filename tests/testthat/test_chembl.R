@@ -32,6 +32,12 @@ test_that("getChemblMechanism works", {
   expect_equal(ncol(mechanism), 17)
   expect_equal(mechanism$target_chembl_id, c("CHEMBL2363058","CHEMBL2366381"))
 
+
+  url <- getChemblMechanism(chembl_id, returnURL = T)
+  expect_list(url)
+  expect_equal(url[[1]], "https://www.ebi.ac.uk/chembl/api/data/mechanism?format=json&molecule_chembl_id__in=CHEMBL1413")
+
+
 })
 
 

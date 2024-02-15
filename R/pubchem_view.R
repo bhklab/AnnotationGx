@@ -156,8 +156,8 @@ annotatePubchemCompound <- function(
         } else {
             check <- checkmate::check_character(
                 unique(getPubchemAnnotationHeadings(record, heading)$Heading),
-                any.missing = F)
-            if(!check) .err(funContext, "Invalid heading: ", heading,
+                min.chars = 1, min.len = 1)
+            if(!isTRUE(check)) .err(funContext, "Invalid heading: ", heading,
                 ". Use getPubchemAnnotationHeadings() to get valid headings.")
         }
         opts_ <- c(opts_, list(heading = heading))
