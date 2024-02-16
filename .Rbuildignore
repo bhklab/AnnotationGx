@@ -11,3 +11,4 @@ Dockerfile
 ^LICENSE\.md$
 trash
 ^data-raw$
+.vscode/launch.json

@@ -28,21 +28,20 @@ test_that(".build_cellosaurus_request is acting as expected",{
     request <- AnnotationGx:::.build_cellosaurus_request()
 
     expect_class(request,"httr2_request")
-    expect_equal(request$url, "https://api.cellosaurus.org/search/cell-line?q=id%3AHela&fields=id%2Cac%2Cca%2Csx%2Cag%2Cdi%2Cderived-from-site%2Cmisspelling&format=tsv&rows=1")
+    expect_equal(request$url, "https://api.cellosaurus.org/search/cell-line?q=id%3AHeLa&fields=id%2Cac%2Cca%2Csx%2Cag%2Cdi%2Cderived-from-site%2Cmisspelling&format=tsv&rows=1")
 
     response <- AnnotationGx:::.perform_request(request) |> AnnotationGx:::.parse_resp_tsv(show_col_types = FALSE, skip = 14)
     expect_class(response, "spec_tbl_df")
     expect_equal(nrow(response), 1)
 
     request2 <- AnnotationGx:::.build_cellosaurus_request(
-        from = "id",
-        query = "Hela",
+        query = "id:HeLa",
         to = c("id", "ac", "sy", "acas", "sx", "ag", "di", "dio", "din", "dr", "cell-type",
             "derived-from-site", "misspelling", "dt", "dtc", "dtu", "dtv", "genome-ancestry"
         ),
-        numResults = 2, extResource = NULL, apiResource = "search/cell-line", output = "TSV")
+        numResults = 2, apiResource = "search/cell-line", output = "TSV")
     expect_equal(request2$url,
-    "https://api.cellosaurus.org/search/cell-line?q=id%3AHela&fields=id%2Cac%2Csy%2Cacas%2Csx%2Cag%2Cdi%2Cdio%2Cdin%2Cdr%2Ccell-type%2Cderived-from-site%2Cmisspelling%2Cdt%2Cdtc%2Cdtu%2Cdtv%2Cgenome-ancestry&format=tsv&rows=2")
+    "https://api.cellosaurus.org/search/cell-line?q=id%3AHeLa&fields=id%2Cac%2Csy%2Cacas%2Csx%2Cag%2Cdi%2Cdio%2Cdin%2Cdr%2Ccell-type%2Cderived-from-site%2Cmisspelling%2Cdt%2Cdtc%2Cdtu%2Cdtv%2Cgenome-ancestry&format=tsv&rows=2")
     response <- AnnotationGx:::.perform_request(request2) |> AnnotationGx:::.parse_resp_tsv(show_col_types = FALSE, skip = 14)
     expect_equal(nrow(response), 2)
 

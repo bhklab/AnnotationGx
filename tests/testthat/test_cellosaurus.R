@@ -20,7 +20,7 @@ test_that("mapCell2Accession works as expected",{
 
     # Test case 1: Test with a valid cell line name
     cell_line1 <- "hela"
-    expected1 <- data.table::data.table(id = "HeLa",ac = "CVCL_0030",  query = "hela")
+    expected1 <- data.table::data.table(id = "HeLa",ac = "CVCL_0030", `query:id` = "hela", query = "id:hela")
     result1 <- mapCell2Accession(cell_line1)
     expect_equal(result1, expected1)
 
@@ -47,13 +47,5 @@ test_that("mapCell2Accession works as expected",{
 
 
 #     cell_lines <- treatment_metadata[["GDSC.BROAD_ID"]] |> unique() |>  sample(10)
-#     mapped <- mapCell2Accession(names = cell_lines, from = "dr", extResource = "Cell_Model_Passport")
-#     expect_data_table(mapped)
-#     expect_equal(names(mapped), c("id", "ac", "query"))
-
-#     if(nrow(mapped) > 0){
-#         expect_character(mapped$query,
-#             info="If youre seeing this that means that the query column isnt being returned properly")
-#     }
 # })
 

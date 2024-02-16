@@ -1,0 +1,60 @@
+Line code	Content	Description
+ID    Recommended name    Most frequently the name of the cell line as provided in the original publication.
+AC    Primary accession    It is the unique identifier of the cell line. It is normally stable across Cellosaurus versions but when two entries are merged, one of the two accessions stays primary while the second one becomes secondary (see ACAS)
+AS    Primary and secondary accession    Secondary accession are former primary accession kept here to ensure the access to a cell line via old identifiers.
+SY    List of synonyms    We try to list all the different synonyms for the cell line, including alternative use of lower and upper cases characters. Misspellings are not included in synonyms (see the "misspelling" tag).
+DR    Cross-references to external resources    A cross-reference has two parts: the short name of the resource (i.e. CCLE) and an identifier used to locate a particular entry of the resource related to the cell line.
+DI    Disease(s)    Disease(s) suffered by the individual from which the cell line originated with its NCI Thesaurus or ORDO identifier.
+DI    Disease(s)    Disease(s) suffered by the individual from which the cell line originated with its NCI Thesaurus or ORDO identifier.
+DIN    Disease(s)    Disease(s) suffered by the individual from which the cell line originated, restricted to diseases having a NCI Thesaurus identifier.
+DIO    Disease(s)    Disease(s) suffered by the individual from which the cell line originated, restricted to diseases having an ORDO identifier.
+OX    Species of origin    Species of the individual from which the cell line originates with its NCBI taxon identifier.
+SX    Sex of the individual    Sex of the individual from which the cell line originates.
+AG    Age of donor at sampling    Age at sampling time of the individual from which the cell line was established.
+OI    Cell line(s) originating from same individual(s)    Cell line(s) originating from same individual (sister cell lines).
+HI    Parent cell line    Parent cell line from which the cell line originates.
+CH    Cell line(s) originated from the cell line    Cell line(s) originated from the cell line (child cell lines).
+CA    Category    Category to which a cell line belongs, one of 14 defined terms. Example: cancer cell line, hybridoma, transformed cell line.
+CEL    Cell type    Cell type from which the cell line is derived.
+DT    Creation date    Creation date, last modification date and version number of the cell line Cellosaurus entry.
+DTC    Creation date    Creation date of the cell line Cellosaurus entry.
+DTU    Last modification date    Last modification date of the cell line Cellosaurus entry.
+DTV    Version number    Version number of the cell line Cellosaurus entry.
+DER    Derived from site    Body part (tissue or organ) the cell line is derived from.
+FROM    From    Laboratory, research institute, university having established the cell line.
+GROUP    Group    Specific group the cell line belongs to (example: fish cell lines, vaccine production cell lines).
+KARY    Karyotype    Information relevant to the chromosomes of a cell line (often to describe chromosomal abnormalities).
+KO    Knockout    Gene(s) knocked-out in the cell line and method to obtain the KO.
+RX    Publication cross-reference    The cross-reference has two parts: the short name of the online resource (i.e. PubMed, DOI, CLPUB or Patent) and an identifier used to locate the particular publication (i.e. pmid) related to the cell line.
+WW    Web page related to the cell line    Web page related to the cell line
+CC    Comment(s)    Any content described in fields genome-ancestry, hla, registration, sequence-variation, anecdotal, biotechnology, breed, caution, characteristics, discontinued, donor-info, doubling-time, from, group, karyotype, knockout, miscellaneous, misspelling, mab-isotype, mab-target, msi, omics, population, problematic, resistance, senescence, transfected, transformant, virology.
+ST    Short tandem repeat profile    STR profile data
+OX    Species of origin    Species of the individual from which the cell line originates with its NCBI taxon identifier.
+HI    Parent cell line    Parent cell line from which the cell line originates.
+OI    Cell line(s) originating from same individual(s)    Cell line(s) originating from same individual (sister cell lines).
+SX    Sex of cell    Sex of the individual from which the cell line originates.
+AG    Age of donor at sampling    Age at sampling time of the individual from which the cell line was established.
+CA    Category    Category to which a cell line belongs, one of 14 defined terms.
+DT    Creation date    Creation date, last modification date and version number of the cell line Cellosaurus entry.
+AN    Anecdotal details    Anecdotal details regarding the cell line (its origin, its name or any other particularity).
+BIO    Biotechnology    Type of use of the cell line in a biotechnological context.
+BRE    Breed    Breed or subspecies an animal cell line is derived from.
+CHAR    Characteristics    Production process or specific biological properties of the cell line.
+DON    Donor info    Miscellaneous information relevant to the donor of the cell line.
+DISC    Discontinued    Discontinuation status of the cell line in a cell line catalog.
+DTIME    Doubling time    Population doubling-time of the cell line.
+RESIST    Resistance    Selected to be resistant to some chemical compound (like a drug used in chemotherapy) or toxin. with a cross-reference to either ChEBI, DrugBank, NCIt or UniProtKB.
+SENESC    Senescence    When a finite cell line will senesce.
+TRANSF    Transfected    Transfected genetic element(s) in the cell line: gene name and identifier in UniProtKB, HGNC, MGI, RGD, VGNC and FlyBase.
+TRANSFMT    Transformant    What caused the cell line to be transformed: generally a virus (with a cross-reference to NCBI taxon identifier), a chemical compound (with a cross-reference to ChEBI) or a form of irradiation (with a cross-reference to NCIt).
+VIRO    Virology    Susceptibility of the cell line to viral infection, presence of integrated viruses or any other virology-related information.
+OMICS    Omics    "Omics" study(ies) carried out on the cell line.
+MISC    Miscellaneous    Miscellaneous remarks about the cell line.
+MISP    Misspelling    Identified misspelling(s) of the cell line name with in some case the specific publication or external resource entry where it appears.
+MABISO    Monoclonal antibody isotype    Monoclonal antibody isotype. Examples: IgG2a, kappa; IgM, lambda.
+MABTAR    Monoclonal antibody target    Monoclonal antibody target molecule. Generally a specific protein or chemical compound.
+PART    Part of    The cell line belongs to a specific panel or collection of cell lines.
+POP    Population    Ethnic group, nationality of the individual from which the cell line was sampled.
+PROB    Problematic    Known problem(s) related to the cell line: contaminated, misidentified, misclassified cell line or appearing in a retracted paper.
+CA    Category    Category to which a cell line belongs, one of 14 defined terms.
+DT    Date (entry history)    Creation date, last modification date and version number of the cell line Cellosaurus entry.
