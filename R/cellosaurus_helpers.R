@@ -13,7 +13,7 @@
     query = c("id:HeLa"),
     to = c("id", "ac", "ca", "sx", "ag", "di", "derived-from-site",  "misspelling"),
     numResults = 1, apiResource= "search/cell-line", output = "TSV",
-    query_only = FALSE
+    query_only = FALSE, fuzzy = FALSE, ...
 ){
     # checkmate::assert_character(c(from, query, output))
     checkmate::assert_subset(to, .cellosaurus_fields())
@@ -22,6 +22,9 @@
 
     opts <- list()
     opts$q <- paste0(query, collapse = " ")
+    # if fuzzy, add a tilde to the query
+    if(fuzzy) opts$q <- paste0(opts$q, "~")
+
     opts$fields <- paste0(to, collapse = ",")
     opts$format <- tolower(output)
     opts$rows <- numResults

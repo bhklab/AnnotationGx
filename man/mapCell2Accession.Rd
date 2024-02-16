@@ -11,6 +11,7 @@ mapCell2Accession(
   to = c("id", "ac"),
   query_only = FALSE,
   raw = FALSE,
+  BPPARAM = BiocParallel::SerialParam(),
   ...
 )
 }
@@ -26,6 +27,8 @@ mapCell2Accession(
 \item{query_only}{If TRUE, returns the query URL instead of the results. Default is FALSE.}
 
 \item{raw}{If TRUE, returns the raw response instead of a data table. Default is FALSE.}
+
+\item{BPPARAM}{A BiocParallel parameter object controlling the parallelization.}
 
 \item{...}{Additional arguments to pass to the request.}
 }

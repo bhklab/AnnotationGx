@@ -10,6 +10,7 @@
 #' @param to The field to query to. Default is both "id" and "ac".
 #' @param query_only If TRUE, returns the query URL instead of the results. Default is FALSE.
 #' @param raw If TRUE, returns the raw response instead of a data table. Default is FALSE.
+#' @param BPPARAM A BiocParallel parameter object controlling the parallelization.
 #' @param ... Additional arguments to pass to the request.
 #'
 #' @return A data table with the mapping information, including the cell line name,
@@ -20,7 +21,7 @@
 #' @export
 mapCell2Accession <- function(
     ids,  numResults = 1, from = "id", to= c("id", "ac"),
-    query_only = FALSE, raw = FALSE, ...
+    query_only = FALSE, raw = FALSE, BPPARAM = BiocParallel::SerialParam(), ...
     ){
     if(!is.character(ids)) {
         .warn("Input names are not character, coercing to character")
@@ -31,11 +32,12 @@ mapCell2Accession <- function(
     queries <- .create_query_list(ids, from)
     names(queries) <- ids
 
-    requests <- lapply(queries, function(q){
+    requests <- .bplapply(queries, function(q){
         .build_cellosaurus_request(
         query = q, to = to,
         output = "TSV", numResults = numResults,...)
-    })
+    }, BPPARAM = BPPARAM
+    )
     if(query_only) return(lapply(requests, function(req) req$url))
 
     responses <- .perform_request_parallel(requests)
