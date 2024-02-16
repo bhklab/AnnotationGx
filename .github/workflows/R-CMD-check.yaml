@@ -87,7 +87,7 @@ jobs:
         with:
           images: |
             ${{ secrets.DOCKERHUB_USERNAME }}/annotationgx-r:${{ env.TAG }}
-            ghcr.io/${{ github.repository }}/annotationgx-r:${{ env.TAG }}
+
       - name: Build
         uses: docker/build-push-action@v5
         with:
@@ -97,4 +97,3 @@ jobs:
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/annotationgx-r:${{ env.TAG }}
-            ghcr.io/${{ github.repository }}/annotationgx-r:${{ env.TAG }}
