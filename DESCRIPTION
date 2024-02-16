@@ -1,6 +1,6 @@
 Package: AnnotationGx
 Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9019
+Version: 0.0.0.9030
 Authors@R: 
     person("Jermiah", "Joseph", , "jermiah.joseph@gmail.com", role = c("aut", "cre"))
 Description: What the package does (one paragraph).
@@ -15,6 +15,8 @@ Imports:
     options
 Suggests: 
     testthat (>= 3.0.0),
-    covr
+    covr,
+    readr,
+    tibble
 Config/testthat/edition: 3
 License: GPL (>= 3) + file LICENSE
