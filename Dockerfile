@@ -3,9 +3,16 @@
 # To push to dockerhub run docker push jjjermiah/annotationgx-r:$TAG
 FROM rocker/r-base
 
-# RUN apt-get -qq update && \
-#   apt-get install -y --no-install-recommends git libxml2-dev
+# copy the current directory contents into the container at /app
+COPY . /app
+
+# set a working directory
+WORKDIR /app
+
+RUN apt-get -qq update && \
+  apt-get install -y --no-install-recommends git libxml2-dev
 
 RUN Rscript -e "install.packages('pak', repos = 'https://r-lib.github.io/p/pak/dev/')"
 RUN Rscript -e "pak::pkg_install(c('jsonlite','jjjermiah/AnnotationGx'), ask = F)"
+
 
