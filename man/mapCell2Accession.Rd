@@ -4,14 +4,16 @@
 \alias{mapCell2Accession}
 \title{Maps cell line names to accession numbers}
 \usage{
-mapCell2Accession(names, numResults = 1, from = "id", ...)
+mapCell2Accession(ids, numResults = 1, from = "id", to = c("id", "ac"), ...)
 }
 \arguments{
-\item{names}{A vector of cell line names to be mapped.}
+\item{ids}{A vector of cell line names to be mapped.}
 
 \item{numResults}{The maximum number of results to retrieve for each cell line name.}
 
 \item{from}{The field to search for the cell line name in the Cellosaurus database.}
+
+\item{to}{The field to map to, default is both cell line name (id) and accession number (ac).}
 
 \item{...}{Additional arguments to be passed to the Cellosaurus API.}
 }
