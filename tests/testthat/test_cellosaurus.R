@@ -34,7 +34,7 @@ test_that("mapCell2Accession works as expected",{
 # Ok read_tsv seems to throw some error on github actions rip
 # test_that("mapCell2AccessionWorks on granular level", {
 
-#     data_path <- system.file("data", "GDSC_8.4_preprocessed_sampleMetadata.tsv", package = "AnnotationGx")
+#     data_path <- system.file("extdata", "GDSC_8.4_preprocessed_sampleMetadata.tsv", package = "AnnotationGx")
 #     treatment_metadata <- data.table::fread(data_path)
 
 #     # randomly sample 10 cell lines from the treatment metadata

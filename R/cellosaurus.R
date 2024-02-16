@@ -13,7 +13,7 @@
 #' accession number, and Cellosaurus ID.
 #'
 #' @examples
-#' mapCellline2Accession(c("A549", "HeLa"))
+#' mapCell2Accession(c("A549", "HeLa"))
 #' @export
 mapCell2Accession <- function(
     names,  numResults = 1, from = "id", ...

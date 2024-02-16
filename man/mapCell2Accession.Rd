@@ -25,5 +25,5 @@ using the Cellosaurus database. It performs a parallel request to retrieve the
 mapping information and returns a data table with the results.
 }
 \examples{
-mapCellline2Accession(c("A549", "HeLa"))
+mapCell2Accession(c("A549", "HeLa"))
 }
