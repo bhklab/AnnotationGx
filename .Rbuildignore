@@ -12,3 +12,7 @@ Dockerfile
 trash
 ^data-raw$
 .vscode/launch.json
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^\.github$
