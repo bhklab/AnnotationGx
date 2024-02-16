@@ -16,7 +16,7 @@
     query_only = FALSE, fuzzy = FALSE, ...
 ){
     # checkmate::assert_character(c(from, query, output))
-    checkmate::assert_subset(to, .cellosaurus_fields())
+    checkmate::assert_subset(to, c(.cellosaurus_fields(), paste0("dr:",.cellosaurus_extResources())))
     checkmate::assert_choice(apiResource, c("search/cell-line", "cell-line", "release-info"))
     checkmate::assert_choice(output, c("TSV", "TXT", "JSON", "XML"))
 

@@ -19,10 +19,9 @@
 #'
 #' @param X A list or vector to apply the function to.
 #' @param FUN The function to apply to each element of \code{X}.
-#' @param ... Additional arguments to be passed to \code{FUN}.
+#' @param ... Additional arguments to pass to \code{FUN}.
 #' @param BPPARAM A BiocParallel parameter object controlling the parallelization.
-#'   Defaults to the SerialParam object.
-#'
+#' @inheritParams BiocParallel::bplapply
 #' @return A list containing the results of applying \code{FUN} to each element of \code{X}.
 #'
 #' @import BiocParallel

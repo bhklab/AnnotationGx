@@ -19,9 +19,12 @@ Imports:
 Suggests: 
     testthat (>= 3.0.0),
     covr,
-    readxl
+    readxl,
+    knitr,
+    rmarkdown
 Config/testthat/edition: 3
 License: GPL (>= 3) + file LICENSE
 Depends: 
     R (>= 2.10)
 LazyData: true
+VignetteBuilder: knitr
