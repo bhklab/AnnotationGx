@@ -40,19 +40,23 @@ mapCell2Accession <- function(
 
     responses <- .perform_request_parallel(requests)
     if(raw) return(responses)
+
+
     names(responses) <- as.character(ids) # in case its an numeric ID  like cosmic ids
     lapply(ids, function(name){
         resp <- responses[[name]]
         resp <- readr::read_tsv(resp$body, skip = 14, show_col_types = FALSE)
         # if tibble has no rows, add a row of NAs
-        if(nrow(resp)==0) resp <- tibble::tibble(ac = NA, id = NA, query = name)
+        if(nrow(resp)==0) {
+            resp <- tibble::tibble(ac = NA, id = NA, query = queries[[name]])
+        }
         else {
-            resp[[paste0("query:",from)]] <- name
             resp$query <- queries[[name]]
         }
+        resp[[paste0("query:",from)]] <- name
         # add name to the response tibble
         resp |> .asDT()
-    })|> data.table::rbindlist(use.names=TRUE)
+    })|> data.table::rbindlist(use.names=TRUE, fill=TRUE)
 
 }
 
