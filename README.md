@@ -4,9 +4,11 @@
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/jjjermiah/AnnotationGx/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jjjermiah/AnnotationGx/actions/workflows/R-CMD-check.yaml)
 [![codecov](https://codecov.io/github/jjjermiah/AnnotationGx/graph/badge.svg?token=Nb1x0FcJoi)](https://codecov.io/github/jjjermiah/AnnotationGx)
+![Docker Pulls](https://img.shields.io/docker/pulls/jjjermiah/annotationgx-r)
+![CRAN/METACRAN Version](https://img.shields.io/cran/v/AnnotationGx)
 <!-- badges: end -->
 
-The goal of AnnotationGx is to ...
+
 
 ## Installation
 
@@ -14,7 +16,7 @@ You can install the development version of AnnotationGx from [GitHub](https://gi
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("jjjermiah/AnnotationGx")
+pak::pkg_install("jjjermiah/AnnotationGx")
 ```
 
 ## Example
