@@ -13,6 +13,6 @@ RUN apt-get -qq update && \
   apt-get install -y --no-install-recommends git libxml2-dev
 
 RUN Rscript -e "install.packages('pak', repos = 'https://r-lib.github.io/p/pak/dev/')"
-RUN Rscript -e "pak::pkg_install(c('jsonlite','jjjermiah/AnnotationGx'), ask = F)"
+RUN Rscript -e "pak::pkg_install(c('jsonlite','bhklab/AnnotationGx@newAnnotationGx'), ask = F)"
 
 
