@@ -1,0 +1,87 @@
+---
+title: "Cellosaurus"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Cellosaurus}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(AnnotationGx)
+library(data.table)
+data(gdsc_sampleMetadata)
+data(cell_model_passports_models)
+```
+
+```{r view data}
+head(gdsc_sampleMetadata)
+
+```
+
+```{r view data2}
+head(cell_model_passports_models)
+
+```
+
+```{r setup for mapping}
+gdsc_sampleMetadata <- gdsc_sampleMetadata[1:10]
+cell_model_passports_models <- cell_model_passports_models[1:10]
+fields <- c("id", "ac", "sy", "sx", "ag", "derived-from-site")
+
+```
+
+```{r map one name}
+# By default, the function will try to map using the common identifier name to the Cellosaurus accession number
+AnnotationGx::mapCell2Accession(gdsc_sampleMetadata[["GDSC.Sample_Name"]])
+
+```
+
+
+```{r map one name to fields}
+# By passing the fields argument, the function will return the information for the fields specified
+AnnotationGx::mapCell2Accession(cell_model_passports_models[["CMP.model_name"]], to=fields) |> head()
+
+```
+
+
+```{r map using names}
+field_map <- list(
+    "id" = "id",
+    "ac" = "accession",
+    "sy" = "synonyms",
+    "misspelling" = "misspellings",
+    "di" = "diseases",
+    "ca" = "category",
+    "sx" = "sexOfCell",
+    "ag" = "ageAtSampling",
+    "derived-from-site" = "samplingSite"
+)
+fields <- names(field_map)
+gdsc_sampleMetadata[, paste0("cellosaurus.", fields ) := {
+    mapped <- AnnotationGx::mapCell2Accession(
+        as.character(GDSC.COSMIC_ID),
+        from = "dr",
+        to = fields
+    )
+    return(mapped[, 1:length(fields)])
+    }
+]
+
+
+
+# rename using map
+for (i in names(field_map)) {
+    data.table::setnames(gdsc_sampleMetadata,
+    paste0("cellosaurus.", i), paste0("cellosaurus.", field_map[[i]]), skip_absent = TRUE)
+}
+
+str(gdsc_sampleMetadata[1])
+```

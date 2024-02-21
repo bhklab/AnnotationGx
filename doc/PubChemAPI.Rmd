@@ -1,0 +1,55 @@
+---
+title: "Querying PubChem with AnnotationGx"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Querying PubChem with AnnotationGx}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Introduction to PubChem APIs
+
+PubChem is a database of chemical molecules and their biological activities. 
+It is a part of the National Center for Biotechnology Information (NCBI), 
+which is a part of the National Institutes of Health (NIH). PubChem provides
+a set of APIs to query its database. The `AnnotationGx` package provides a set 
+of functions to query PubChem using these APIs.
+
+The first of these APIs is the `PubChem PUG REST API` which is designed to 
+- make specific queries based on some input *identifier* and return data which
+PubChem has labelled or computed internally [1]. 
+  - This API is useful for querying information about a specific chemical compound
+such as getting the standardized PubChem identifier (CID) for a given chemical name or
+smiles string, or getting the chemical structure for a given CID.
+  - It provides access to a wide range of data including chemical properties, 
+bioassay data, and chemical classification data, given a specific identifier.
+
+The second API is the `PubChem PUG VIEW API` which is designed to:
+- give accesse to aggregated annotations for a given chemical compound [3] that 
+is mapped to their data, but not curated by PubChem itself. 
+  - i.e it provides access to annotations from external sources such as
+UniProt, ChEBI, and ChEMBL, given a specific identifier.
+
+
+# Setup
+
+```{r setup}
+library(AnnotationGx)
+```
+
+
+# 
+
+
+# References
+1. PUG REST. PubChem Docs [website]. Retrieved from https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest.
+2. Kim S, Thiessen PA, Cheng T, Yu B, Bolton EE. An update on PUG-REST: RESTful interface for programmatic access to PubChem. Nucleic Acids Res. 2018 July 2; 46(W1):W563-570. doi:10.1093/nar/gky294.
+4. PUG VIEW. PubChem Docs [webiste]. Retrieved from https://pubchemdocs.ncbi.nlm.nih.gov/pug-view.
+3. Kim S, Thiessen PA, Cheng T, Zhang J, Gindulyte A, Bolton EE. PUG-View: programmatic access to chemical annotations integrated in PubChem. J Cheminform. 2019 Aug 9; 11:56. doi:10.1186/s13321-019-0375-2.
