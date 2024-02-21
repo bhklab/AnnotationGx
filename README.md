@@ -12,12 +12,13 @@
 
 ## Installation
 
-You can install the development version of AnnotationGx from [GitHub](https://github.com/) with:
+You can install from github using:
 
 ``` r
-# install.packages("devtools")
-pak::pkg_install("jjjermiah/AnnotationGx")
+remotes::install_github("bhklab/AnnotationGx", build_manual=TRUE, build_vignettes=TRUE)
 ```
+
+
 
 ## Example
 
