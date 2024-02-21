@@ -23,7 +23,7 @@
 ..Rcheck
 data/
 output/
-
+sandbox
 # Spreadsheets
 *.csv
 !inst/*
@@ -45,3 +45,4 @@ local_data/*
 docs
 /doc/
 /Meta/
+

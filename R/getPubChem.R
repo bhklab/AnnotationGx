@@ -351,19 +351,25 @@ getPubChemCompound <- function(ids, from='cid', to='property', ...,
         properties='Title', batch=TRUE, raw=FALSE, options=NA,
         query_only=FALSE) {
     if (!is.character(ids)) ids <- as.character(ids)
-    if (from %in% c('name', 'xref', 'smiles', 'inchi', 'sdf', 'inchikey')) {
-        if (isTRUE(batch)) .warning('Batch queries cannot be used when mapping
-            from name, xref, smiles, inchi, sdf, or inchikey. Setting to FALSE.')
-        batch <- FALSE
-    }
-    if (grepl('fast', from)) {
-        if (isTRUE(batch)) .warning('The fastsearch API does not support batch
-            queries. Setting to FALSE.')
-        batch <- FALSE
+
+    if(isTRUE(batch)){
+        if (from %in% c('name', 'xref', 'smiles', 'inchi', 'sdf', 'inchikey')) {
+            .warning('Batch queries cannot be used when mapping
+                from name, xref, smiles, inchi, sdf, or inchikey. Setting to FALSE.')
+            batch <- FALSE
+        }
+        else if (grepl('fast', from)) {
+            .warning('The fastsearch API does not support batch
+                queries. Setting to FALSE.')
+            batch <- FALSE
+        }
     }
 
     if (to == 'property') to <- paste0(to, '/', paste0(properties, collapse=','))
     
+    # normally return data in JSON format
+    # if raw, returns the raw query results
+    # if query_only, returns the query string
     queryRes <- queryPubChem(ids, domain='compound', namespace=from,
         operation=to, batch=batch, raw=raw, 
         operation_options=options, query_only=query_only, ...)
