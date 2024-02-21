@@ -2,8 +2,10 @@ pandoc: 2.19.2
 pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
-  ChEMBLAPIQueries: ChEMBLAPIQueries.html
-  PubChemAPIQueries: PubChemAPIQueries.html
-  UniChemAPIQueries: UniChemAPIQueries.html
-last_built: 2024-02-06T01:13Z
+  Cellosaurus: Cellosaurus.html
+  PubChemAPI: PubChemAPI.html
+last_built: 2024-02-21T19:32Z
+urls:
+  reference: https://bhklab.github.io/AnnotationGx/reference
+  article: https://bhklab.github.io/AnnotationGx/articles
 

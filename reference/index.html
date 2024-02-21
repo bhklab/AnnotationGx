@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">AnnotationGx</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.5.9100</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9061</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,13 +24,9 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/ChEMBLAPIQueries.html">Querying ChEMBL with AnnotationGx</a>
-    <a class="dropdown-item" href="../articles/PubChemAPIQueries.html">Querying PubChem with AnnotationGx</a>
-    <a class="dropdown-item" href="../articles/UniChemAPIQueries.html">Querying UniChem with AnnotationGx</a>
+    <a class="dropdown-item" href="../articles/Cellosaurus.html">Cellosaurus</a>
+    <a class="dropdown-item" href="../articles/PubChemAPI.html">Querying PubChem with AnnotationGx</a>
   </div>
-</li>
-<li class="nav-item">
-  <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
@@ -58,338 +54,75 @@
 
       <dl><dt>
           
-          <code><a href="addAnnotationColumnToDrugs.html">addAnnotationColumnToDrugs()</a></code> 
+          <code><a href="annotatePubchemCompound.html">annotatePubchemCompound()</a></code> 
         </dt>
-        <dd>Adds a new column to the drugs with ids table</dd>
+        <dd>Annotate PubChem Compound</dd>
       </dl><dl><dt>
           
-          <code><a href="characterToNamedVector.html">characterToNamedVector()</a></code> 
+          <code><a href="cell_model_passports_models.html">cell_model_passports_models</a></code> 
         </dt>
-        <dd>Convert a character string to a named vector.</dd>
+        <dd>cell_model_passports_models is a preprocessed version of the cell model passports dataset</dd>
       </dl><dl><dt>
           
-          <code><a href="cleanCellnames.html">cleanCellnames()</a></code> 
-        </dt>
-        <dd>Clean cell line names in XML</dd>
-      </dl><dl><dt>
-          
-          <code><a href="compoundQuery.html">compoundQuery()</a></code> 
-        </dt>
-        <dd>Query the ChEMBL compound API end-point</dd>
-      </dl><dl><dt>
-          
-          <code><a href="constructChemblQuery.html">constructChemblQuery()</a></code> 
+          <code><a href="dot-build_chembl_request.html">.build_chembl_request()</a></code> 
         </dt>
         <dd>A general function for creating Queries to the ChEMBL API</dd>
       </dl><dl><dt>
           
-          <code><a href="depositZenodo.html">depositZenodo()</a></code> 
+          <code><a href="dot-parse_resp_json.html">.parse_resp_json()</a></code> 
         </dt>
-        <dd>Upload and optionally publish data to Zenodo</dd>
+        <dd>Parses the JSON response from an HTTP request.</dd>
       </dl><dl><dt>
           
-          <code><a href="dot-buildURL.html">.buildURL()</a></code> 
+          <code><a href="dot-perform_request.html">.perform_request()</a></code> 
         </dt>
-        <dd>Helper function to connect</dd>
+        <dd>Performs an HTTP request.</dd>
       </dl><dl><dt>
           
-          <code><a href="dot-checkThrottlingStatus.html">.checkThrottlingStatus()</a></code> 
+          <code><a href="gdsc_sampleMetadata.html">gdsc_sampleMetadata</a></code> 
         </dt>
-        <dd>Checks the throttling status of a request and sleeps if necessary</dd>
-      </dl><dl><dt>
-          
-          <code><a href="dot-getPubChemAnnotationDT.html">.getPubChemAnnotationDT()</a></code> 
-        </dt>
-        <dd>Function that returns a data.table of getPubChemAnnotation results</dd>
-      </dl><dl><dt>
-          
-          <code><a href="dot-groupListByName.html">.groupListByName()</a></code> 
-        </dt>
-        <dd>Collect repeated list item names into a single list item</dd>
-      </dl><dl><dt>
-          
-          <code><a href="dot-parseATCresponse.html">.parseATCresponse()</a></code> 
-        </dt>
-        <dd>Function that parses the results of the PubChem PUG-VIEW API for the ATC Code header</dd>
-      </dl><dl><dt>
-          
-          <code><a href="dot-parseCASresponse.html">.parseCASresponse()</a></code> 
-        </dt>
-        <dd>Function that parses the results of the PubChem PUG-VIEW API for the CAS header</dd>
-      </dl><dl><dt>
-          
-          <code><a href="dot-parseCHEMBLresponse.html">.parseCHEMBLresponse()</a></code> 
-        </dt>
-        <dd>Function that parses the results of the PubChem PUG-VIEW API for the CHEMBL ID header</dd>
-      </dl><dl><dt>
-          
-          <code><a href="dot-parseCellosaurusTSVResponse.html">.parseCellosaurusTSVResponse()</a></code> 
-        </dt>
-        <dd>Parse Cellosaurus TSV Response</dd>
-      </dl><dl><dt>
-          
-          <code><a href="dot-parseDILIresponse.html">.parseDILIresponse()</a></code> 
-        </dt>
-        <dd>Function that parses the results of the PubChem PUG-VIEW API for the DILI header</dd>
-      </dl><dl><dt>
-          
-          <code><a href="dot-parseNSCresponse.html">.parseNSCresponse()</a></code> 
-        </dt>
-        <dd>Function that parses the results of the PubChem PUG-VIEW API for the NSC Number header</dd>
-      </dl><dl><dt>
-          
-          <code><a href="downloadAndExtract.html">downloadAndExtract()</a></code> 
-        </dt>
-        <dd>Download a compressed file from a remote URL and extract it.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="downloadFDAOrangeBook.html">downloadFDAOrangeBook()</a></code> 
-        </dt>
-        <dd>Download and extract the FDA OrangeBook files from the FDA website</dd>
-      </dl><dl><dt>
-          
-          <code><a href="find_remote_files_recursive.html">find_remote_files_recursive()</a></code> 
-        </dt>
-        <dd>Recursively find file URLs from URL with an embedded HTML table (a remote directory)</dd>
-      </dl><dl><dt>
-          
-          <code><a href="fsquash.html">fsquash()</a></code> 
-        </dt>
-        <dd>Recursively flatten a <code>data.frame</code> while correctly handling nested lists
-of <code>data.frame</code>s within <code>list</code> columns.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="getAllPubChemAnnotations.html">getAllPubChemAnnotations()</a></code> 
-        </dt>
-        <dd>Get a selected annotation for all PubChem entries</dd>
-      </dl><dl><dt>
-          
-          <code><a href="getBrainArrayTable.html">getBrainArrayTable()</a></code> 
-        </dt>
-        <dd>Retrieve a table of all available CDF files from BrainArray</dd>
-      </dl><dl><dt>
-          
-          <code><a href="getCellosaurus.html">getCellosaurus()</a></code> 
-        </dt>
-        <dd>Build a <code>data.table</code> of annotations from query list.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="getCellosaurusAccesions.html">getCellosaurusAccesions()</a></code> 
-        </dt>
-        <dd>getCellosaurusAccesions Function</dd>
-      </dl><dl><dt>
-          
-          <code><a href="getCelloxml.html">getCelloxml()</a></code> 
-        </dt>
-        <dd>Access and parse Cellosaurus xml for regular users</dd>
-      </dl><dl><dt>
-          
-          <code><a href="getChemblAllMechanisms.html">getChemblAllMechanisms()</a></code> 
-        </dt>
-        <dd>Retrieve a <code>data.table</code> of all molecule mechanisms of action from ChEMBL</dd>
+        <dd>gdsc_sampleMetadata is some preprocessed sample metadata from the GDSC dataset</dd>
       </dl><dl><dt>
           
           <code><a href="getChemblMechanism.html">getChemblMechanism()</a></code> 
         </dt>
-        <dd>Query the ChEMBL mechanism API end-point for a given CHEMBL_ID or list of CHEMBL_IDs</dd>
+        <dd>Get ChEMBL Mechanism</dd>
       </dl><dl><dt>
           
-          <code><a href="getDrugTargets.html">getDrugTargets()</a></code> 
+          <code><a href="getChemblResourceFields.html">getChemblResourceFields()</a></code> 
         </dt>
-        <dd>Extract all drug targets from the <code>target</code> node of the DrugBank .XML file</dd>
+        <dd>Get the fields of a Chembl resource</dd>
       </dl><dl><dt>
           
-          <code><a href="getFDAOrangeBookProducts.html">getFDAOrangeBookProducts()</a></code> 
+          <code><a href="getPubchemAnnotationHeadings.html">getPubchemAnnotationHeadings()</a></code> 
         </dt>
-        <dd>Download and load the FDA OrangeBook products file</dd>
+        <dd>Get annotation headings (name only) based on type and heading criteria.</dd>
       </dl><dl><dt>
           
-          <code><a href="getFailed.html">getFailed()</a></code> 
+          <code><a href="getPubchemCompound.html">getPubchemCompound()</a></code> 
         </dt>
-        <dd>Get the failed attribute of an object</dd>
+        <dd>Retrieve PubChem compound information</dd>
       </dl><dl><dt>
           
-          <code><a href="getFailedIDs.html">getFailedIDs()</a></code> 
+          <code><a href="mapCell2Accession.html">mapCell2Accession()</a></code> 
         </dt>
-        <dd>Get the failed IDs from an object</dd>
+        <dd>Maps cell line names to accession numbers</dd>
       </dl><dl><dt>
           
-          <code><a href="getFailureMessages.html">getFailureMessages()</a></code> 
+          <code><a href="options.html">options</a></code> 
         </dt>
-        <dd>Get failure messages from an object</dd>
+        <dd>AnnotationGx Options</dd>
       </dl><dl><dt>
           
-          <code><a href="getGencodeAvailableFiles.html">getGencodeAvailableFiles()</a></code> 
+          <code><a href="standardize_names.html">standardize_names()</a></code> 
         </dt>
-        <dd>Retrieve a list of files and their descriptions available for a Gencode
-release and reference genome version.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="getGencodeFTPTable.html">getGencodeFTPTable()</a></code> 
-        </dt>
-        <dd>Retrieve the index table for the Gencode FTP web page</dd>
-      </dl><dl><dt>
-          
-          <code><a href="getGencodeFile.html">getGencodeFile()</a></code> 
-        </dt>
-        <dd>Download files from the Gencode FTP site and load them as the appropriate
-Bioconductor classes.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="getGencodeFilesTable.html">getGencodeFilesTable()</a></code> 
-        </dt>
-        <dd>Retrieve a table listing all files available from Gencode for a specific
-database release.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="getGencodeGRangesAnnotated.html">getGencodeGRangesAnnotated()</a></code> 
-        </dt>
-        <dd>Retrieve a GRanges object for a specific Gencode release with added metadata</dd>
-      </dl><dl><dt>
-          
-          <code><a href="getGuideToPharm.html">getGuideToPharm()</a></code> 
-        </dt>
-        <dd>Get data from the Guide to PHARMACOLOGY Database Web Services</dd>
-      </dl><dl><dt>
-          
-          <code><a href="getInfoFromCelllineInput.html">getInfoFromCelllineInput()</a></code> 
-        </dt>
-        <dd>Filter parent node cell-line and parse child nodes for required annotations</dd>
-      </dl><dl><dt>
-          
-          <code><a href="getPathways.html">getPathways()</a></code> 
-        </dt>
-        <dd>Extract the <code>pathway</code> item from a node in the DrugBank .xml file</dd>
-      </dl><dl><dt>
-          
-          <code><a href="getPubChemAnnotation.html">getPubChemAnnotation()</a></code> 
-        </dt>
-        <dd>getPubChemAnnotation</dd>
-      </dl><dl><dt>
-          
-          <code><a href="getPubChemAnnotations.html">getPubChemAnnotations()</a></code> 
-        </dt>
-        <dd>Retrieve PubChem annotations for a given compound</dd>
-      </dl><dl><dt>
-          
-          <code><a href="getPubChemCompound.html">getPubChemCompound()</a></code> 
-        </dt>
-        <dd>getPubChemCompound</dd>
-      </dl><dl><dt>
-          
-          <code><a href="getPubChemFromNSC.html">getPubChemFromNSC()</a></code> 
-        </dt>
-        <dd>getPubChemFromNSC</dd>
-      </dl><dl><dt>
-          
-          <code><a href="getPubChemSubstance.html">getPubChemSubstance()</a></code> 
-        </dt>
-        <dd>Retrieve PubChem substance information</dd>
-      </dl><dl><dt>
-          
-          <code><a href="getRequestPubChem.html">getRequestPubChem()</a></code> 
-        </dt>
-        <dd>Constructs and executes a GET request to the PubChem PUG REST API</dd>
-      </dl><dl><dt>
-          
-          <code><a href="getUniChemSources.html">getUniChemSources()</a></code> 
-        </dt>
-        <dd>Fetch a table of cheminformatic databases which can be mapped between using
-the UniChem 2.0 API</dd>
-      </dl><dl><dt>
-          
-          <code><a href="get_remote_table.html">get_remote_table()</a></code> 
-        </dt>
-        <dd>Get all HTML tables from a remote URL.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="grep_directory_names.html">grep_directory_names()</a></code> 
-        </dt>
-        <dd>Extracts directory names from a given vector of paths.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="grep_file_names.html">grep_file_names()</a></code> 
-        </dt>
-        <dd>Find file names matching specified extensions in a vector of file paths.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="httpRequestUniChem.html">httpRequestUniChem()</a></code> 
-        </dt>
-        <dd>Generic helper method to make arbitary REST API request to UniChem v2</dd>
-      </dl><dl><dt>
-          
-          <code><a href="infer_gencode_type.html">infer_gencode_type()</a></code> 
-        </dt>
-        <dd>Guess the type of a Gencode file from its name</dd>
-      </dl><dl><dt>
-          
-          <code><a href="listColToDT.html">listColToDT()</a></code> 
-        </dt>
-        <dd>Convert a list column in a <code>data.table</code> to a <code>data.table</code></dd>
-      </dl><dl><dt>
-          
-          <code><a href="mapCellosaursAccessionsToFields.html">mapCellosaursAccessionsToFields()</a></code> 
-        </dt>
-        <dd>Maps Cellosaurus accessions to specified fields</dd>
-      </dl><dl><dt>
-          
-          <code><a href="moleculeQuery.html">moleculeQuery()</a></code> 
-        </dt>
-        <dd>Query the ChEMBL molecule API end-point</dd>
-      </dl><dl><dt>
-          
-          <code><a href="parseJSON.html">parseJSON()</a></code> 
-        </dt>
-        <dd>Parse a JSON into a list</dd>
-      </dl><dl><dt>
-          
-          <code><a href="postRequestUniChem.html">postRequestUniChem()</a></code> 
-        </dt>
-        <dd>Make POST requests to UniChem 2.0 compounds or connectivity endpoint</dd>
-      </dl><dl><dt>
-          
-          <code><a href="queryCellosaurus.html">queryCellosaurus()</a></code> 
-        </dt>
-        <dd>Access and parse Cellosaurus xml for developers</dd>
-      </dl><dl><dt>
-          
-          <code><a href="queryPubChem.html">queryPubChem()</a></code> 
-        </dt>
-        <dd>queryPubChem</dd>
-      </dl><dl><dt>
-          
-          <code><a href="queryRequestPubChem.html">queryRequestPubChem()</a></code> 
-        </dt>
-        <dd>Query the PubChem REST API, with the result automatically converted from
-JSON to a list. This only works when <code>output='JSON'</code> in <code>getRequestPubChem</code>.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="queryUniChem.html">queryUniChem()</a></code> 
-        </dt>
-        <dd>Use the UniChem 2.0 API to map compound identifiers between different public
-databases</dd>
-      </dl><dl><dt>
-          
-          <code><a href="scrapeRemoteFTPFilesTable.html">scrapeRemoteFTPFilesTable()</a></code> 
-        </dt>
-        <dd>Retrieve a table of files available from an FTP download site by scraping
-the first HTML table at the specified URL.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="searchCellosaurusAPI.html">searchCellosaurusAPI()</a></code> 
-        </dt>
-        <dd>Search Cellosaurus API</dd>
-      </dl><dl><dt>
-          
-          <code><a href="zenodoMetadata.html">zenodoMetadata()</a></code> 
-        </dt>
-        <dd>Build the required metadata for uploading a file to zenodo</dd>
+        <dd>Standardize Names</dd>
       </dl></div>
   </main></div>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Christopher Eeles, Jermiah Joseph, Sisira Nair, Petr Smirnov, Shahzada Farooq, Benjamin Haibe-Kains.</p>
+  <p></p><p>Developed by Jermiah Joseph, Christopher Eeles, Benjamin Haibe-Kains.</p>
 </div>
 
 <div class="pkgdown-footer-right">

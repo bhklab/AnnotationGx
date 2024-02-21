@@ -1,252 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>/404.html</loc>
+    <loc>https://bhklab.github.io/AnnotationGx/404.html</loc>
   </url>
   <url>
-    <loc>/CODE_OF_CONDUCT.html</loc>
+    <loc>https://bhklab.github.io/AnnotationGx/LICENSE-text.html</loc>
   </url>
   <url>
-    <loc>/CONTRIBUTING.html</loc>
+    <loc>https://bhklab.github.io/AnnotationGx/LICENSE.html</loc>
   </url>
   <url>
-    <loc>/LICENSE.html</loc>
+    <loc>https://bhklab.github.io/AnnotationGx/articles/Cellosaurus.html</loc>
   </url>
   <url>
-    <loc>/articles/ChEMBLAPIQueries.html</loc>
+    <loc>https://bhklab.github.io/AnnotationGx/articles/PubChemAPI.html</loc>
   </url>
   <url>
-    <loc>/articles/PubChemAPIQueries.html</loc>
+    <loc>https://bhklab.github.io/AnnotationGx/articles/index.html</loc>
   </url>
   <url>
-    <loc>/articles/UniChemAPIQueries.html</loc>
+    <loc>https://bhklab.github.io/AnnotationGx/authors.html</loc>
   </url>
   <url>
-    <loc>/articles/index.html</loc>
+    <loc>https://bhklab.github.io/AnnotationGx/index.html</loc>
   </url>
   <url>
-    <loc>/authors.html</loc>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/AnnotationGx-package.html</loc>
   </url>
   <url>
-    <loc>/index.html</loc>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/annotatePubchemCompound.html</loc>
   </url>
   <url>
-    <loc>/news/index.html</loc>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/cell_model_passports_models.html</loc>
   </url>
   <url>
-    <loc>/reference/addAnnotationColumnToDrugs.html</loc>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/dot-build_chembl_request.html</loc>
   </url>
   <url>
-    <loc>/reference/characterToNamedVector.html</loc>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/dot-build_pubchem_rest_query.html</loc>
   </url>
   <url>
-    <loc>/reference/cleanCellnames.html</loc>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/dot-checkThrottlingStatus2.html</loc>
   </url>
   <url>
-    <loc>/reference/compoundQuery.html</loc>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/dot-parse_resp_json.html</loc>
   </url>
   <url>
-    <loc>/reference/constructChemblQuery.html</loc>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/dot-perform_request.html</loc>
   </url>
   <url>
-    <loc>/reference/depositZenodo.html</loc>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/gdsc_sampleMetadata.html</loc>
   </url>
   <url>
-    <loc>/reference/dot-buildURL.html</loc>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/getChemblMechanism.html</loc>
   </url>
   <url>
-    <loc>/reference/dot-checkThrottlingStatus.html</loc>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/getChemblResourceFields.html</loc>
   </url>
   <url>
-    <loc>/reference/dot-constructCellosaurusURL.html</loc>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/getPubchemAnnotationHeadings.html</loc>
   </url>
   <url>
-    <loc>/reference/dot-error.html</loc>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/getPubchemCompound.html</loc>
   </url>
   <url>
-    <loc>/reference/dot-formatMessage.html</loc>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/index.html</loc>
   </url>
   <url>
-    <loc>/reference/dot-funContext.html</loc>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/mapCell2Accession.html</loc>
   </url>
   <url>
-    <loc>/reference/dot-getPubChemAnnotationDT.html</loc>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/options.html</loc>
   </url>
   <url>
-    <loc>/reference/dot-groupListByName.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dot-message.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dot-parseATCresponse.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dot-parseCASresponse.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dot-parseCHEMBLresponse.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dot-parseCellosaurusTSVResponse.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dot-parseDILIresponse.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dot-parseNSCresponse.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dot-warning.html</loc>
-  </url>
-  <url>
-    <loc>/reference/downloadAndExtract.html</loc>
-  </url>
-  <url>
-    <loc>/reference/downloadFDAOrangeBook.html</loc>
-  </url>
-  <url>
-    <loc>/reference/find_remote_files_recursive.html</loc>
-  </url>
-  <url>
-    <loc>/reference/fsquash.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getAllPubChemAnnotations.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getBrainArrayTable.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getCellosaurus.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getCellosaurusAccesions.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getCelloxml.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getChemblAllMechanisms.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getChemblMechanism.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getDrugTargets.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getFDAOrangeBookProducts.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getFailed.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getFailedIDs.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getFailureMessages.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getGencodeAvailableFiles.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getGencodeFTPTable.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getGencodeFile.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getGencodeFilesTable.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getGencodeGRangesAnnotated.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getGuideToPharm.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getInfoFromCelllineInput.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getPathways.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getPubChemAnnotation.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getPubChemAnnotations.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getPubChemCompound.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getPubChemFromNSC.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getPubChemStatus.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getPubChemSubstance.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getRequestPubChem.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getUniChemSources.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_remote_table.html</loc>
-  </url>
-  <url>
-    <loc>/reference/grep_directory_names.html</loc>
-  </url>
-  <url>
-    <loc>/reference/grep_file_names.html</loc>
-  </url>
-  <url>
-    <loc>/reference/httpRequestUniChem.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/infer_gencode_type.html</loc>
-  </url>
-  <url>
-    <loc>/reference/listColToDT.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mapCellosaursAccessionsToFields.html</loc>
-  </url>
-  <url>
-    <loc>/reference/moleculeQuery.html</loc>
-  </url>
-  <url>
-    <loc>/reference/parseJSON.html</loc>
-  </url>
-  <url>
-    <loc>/reference/postRequestUniChem.html</loc>
-  </url>
-  <url>
-    <loc>/reference/queryCellosaurus.html</loc>
-  </url>
-  <url>
-    <loc>/reference/queryPubChem.html</loc>
-  </url>
-  <url>
-    <loc>/reference/queryRequestPubChem.html</loc>
-  </url>
-  <url>
-    <loc>/reference/queryUniChem.html</loc>
-  </url>
-  <url>
-    <loc>/reference/scrapeRemoteFTPFilesTable.html</loc>
-  </url>
-  <url>
-    <loc>/reference/searchCellosaurusAPI.html</loc>
-  </url>
-  <url>
-    <loc>/reference/zenodoMetadata.html</loc>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/standardize_names.html</loc>
   </url>
 </urlset>
