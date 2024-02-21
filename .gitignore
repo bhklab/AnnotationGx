@@ -3,8 +3,11 @@
 .Rdata
 .httr-oauth
 .DS_Store
+*/.DS_Store
 .quarto
 trash
 .vscode/launch.json
 inst/doc
 docs
+/doc/
+/Meta/

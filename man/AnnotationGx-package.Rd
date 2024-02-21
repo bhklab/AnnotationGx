@@ -4,12 +4,25 @@
 \name{AnnotationGx-package}
 \alias{AnnotationGx}
 \alias{AnnotationGx-package}
-\title{AnnotationGx: What the Package Does (One Line, Title Case)}
+\title{AnnotationGx: AnnotationGx: A package for building, updating and querying an annotation database for pharmaco-genomic data}
 \description{
-What the package does (one paragraph).
+A package for building, updating and querying an annotation database for pharmaco-genomic data. Provides API interfaces to various bioinformatic and chemoinformatic databases, as well as a set of functions for curating your data using the annotations retrieved from those APIs.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://bhklab.github.io/AnnotationGx/}
+}
+
 }
 \author{
 \strong{Maintainer}: Jermiah Joseph \email{jermiah.joseph@gmail.com}
+
+Authors:
+\itemize{
+  \item Christopher Eeles \email{christopher.eeles@uhnresearch.ca}
+  \item Benjamin Haibe-Kains \email{benjamin.haibe.kains@utoronto.ca}
+}
 
 }
 \keyword{internal}
