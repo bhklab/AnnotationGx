@@ -23,7 +23,6 @@ jobs:
           - {os: ubuntu-latest,   r: 'release'}
           - {os: ubuntu-latest,   r: 'oldrel-1'}
 
-
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
@@ -48,12 +47,53 @@ jobs:
         with:
           upload-snapshots: true
 
+  Code-Coverage:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::covr
+          needs: coverage
+
+      - name: Test coverage
+        run: |
+          covr::codecov(
+            quiet = FALSE,
+            clean = FALSE,
+            install_path = file.path(normalizePath(Sys.getenv("RUNNER_TEMP"), winslash = "/"), "package"),
+            token = "${{ secrets.CODECOV_TOKEN }}"
+          )
+        shell: Rscript {0}
+
+      - name: Show testthat output
+        if: always()
+        run: |
+          ## --------------------------------------------------------------------
+          find ${{ runner.temp }}/package -name 'testthat.Rout*' -exec cat '{}' \; || true
+        shell: bash
+
+      - name: Upload test results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-test-failures
+          path: ${{ runner.temp }}/package
+
   Upload-Docker:
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/newAnnotationGx'
-    needs: R-CMD-check
+    # needs: R-CMD-check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -88,6 +128,7 @@ jobs:
         with:
           images: |
             ${{ secrets.BHKLAB_DOCKERHUB_USERNAME }}/annotationgx-r:${{ env.TAG }}
+            ${{ secrets.BHKLAB_DOCKERHUB_USERNAME }}/annotationgx-r:latest
 
       - name: Build
         uses: docker/build-push-action@v5
@@ -98,3 +139,4 @@ jobs:
           push: true
           tags: |
             ${{ secrets.BHKLAB_DOCKERHUB_USERNAME }}/annotationgx-r:${{ env.TAG }}
+            ${{ secrets.BHKLAB_DOCKERHUB_USERNAME }}/annotationgx-r:latest

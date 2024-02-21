@@ -2,9 +2,9 @@
 # AnnotationGx
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/jjjermiah/AnnotationGx/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jjjermiah/AnnotationGx/actions/workflows/R-CMD-check.yaml)
-[![codecov](https://codecov.io/github/jjjermiah/AnnotationGx/graph/badge.svg?token=Nb1x0FcJoi)](https://codecov.io/github/jjjermiah/AnnotationGx)
-![Docker Pulls](https://img.shields.io/docker/pulls/jjjermiah/annotationgx-r)
+[![R-CMD-check](https://github.com/bhklab/AnnotationGx/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/bhklab/AnnotationGx/actions/workflows/R-CMD-check.yaml)
+[![codecov](https://codecov.io/github/bhklab/AnnotationGx/graph/badge.svg?token=Nb1x0FcJoi)](https://codecov.io/github/bhklab/AnnotationGx)
+![Docker Pulls](https://img.shields.io/docker/pulls/bhklab/annotationgx-r)
 ![CRAN/METACRAN Version](https://img.shields.io/cran/v/AnnotationGx)
 <!-- badges: end -->
 
