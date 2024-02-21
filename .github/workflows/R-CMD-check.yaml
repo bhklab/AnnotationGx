@@ -127,8 +127,8 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: |
-            ${{ secrets.BHKLAB_DOCKERHUB_USERNAME }}/annotationgx-r:${{ env.TAG }}
-            ${{ secrets.BHKLAB_DOCKERHUB_USERNAME }}/annotationgx-r:latest
+            bhklab/annotationgx-r:${{ env.TAG }}
+            bhklab/annotationgx-r:latest
 
       - name: Build
         uses: docker/build-push-action@v5
@@ -138,5 +138,5 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            ${{ secrets.BHKLAB_DOCKERHUB_USERNAME }}/annotationgx-r:${{ env.TAG }}
-            ${{ secrets.BHKLAB_DOCKERHUB_USERNAME }}/annotationgx-r:latest
+            bhklab/annotationgx-r:${{ env.TAG }}
+            bhklab/annotationgx-r:latest
