@@ -98,6 +98,4 @@ mapCell2Accession <- function(
 
     parentACs <- na.omit(unique(responses_dt$parentAC))
 
-    # 
-    
 }
