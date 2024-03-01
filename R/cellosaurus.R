@@ -82,57 +82,22 @@ mapCell2Accession <- function(
         # add name to the response tibble
         resp |> .asDT()
     })|> data.table::rbindlist(use.names=TRUE, fill=TRUE)
-    # This block of code prioritizes parent records from the responses
-    # and is meant to deal with the issue of cell line names that may not be 
-    # exactly the same as the parent cell line names in the Cellosaurus database.
-    # i.e using BT474 would return 'CVCL_YX79' which corresponds to 'BT474 A3'
-    #       whereas BT-474 exists in the database as 'CVCL_0179'
-    # If prioritizeParent is FALSE, it returns the original data table.
-    # If prioritizeParent is TRUE, it performs the following steps:
-    # 1. Split the "hi" column into "parentAC" and "parentID" columns using "!" as the delimiter.
-    # 2. Remove the "hi" column.
-    # 3. Check if all the values in the "parentAC" column are NA. If so, return the data table 
-    #       with "parentAC" and "parentID" columns removed.
-    # 4. Get the unique values in the "parentAC" column.
-    # 5. Check if all the values in the "ac" column are present in the unique values of the "parentAC" column.
-    #    - If true, move all the rows that are parents to the top of the data table.
-    #    - If false, add the parentAC and parentID pairs to the top of the data table.
-    # 6. Remove the "parentAC" and "parentID" columns from the final data table and return it.
+
     if(!prioritizeParent) return(responses_dt)
     if(all(is.na(responses_dt$hi))) return(responses_dt)
-    
-    responses_dt[, c("parentAC", "parentID") := data.table::tstrsplit(responses_dt$hi, " ! ", fixed = TRUE)]
-    responses_dt[, c('hi') := NULL]
-    
 
-    # make sure all the unique parentAC values are also in the "ac" column
-    parentACs <- na.omit(unique(responses_dt$parentAC))
-    responses_dt <- 
-        if(all(parentACs %in% responses_dt$ac)) {
-            # if so, move all the rows that are parents to the top
-            parentRows <- responses_dt$ac %in% parentACs
-
-            parentDT <- responses_dt[parentRows, ]
-            childDT <- responses_dt[!parentRows, ]
-            rbind(parentDT, childDT)
-
-        } else{
-            # add the parentAC and parentID pairs to the top of the table
-
-            new_rows <- unique(
-                responses_dt[parentAC %in% parentACs[!parentACs %in% responses_dt$ac], .(ac = parentAC, id = parentID, query = query, `query:id` = `query:id`)]
-            )
-            parent_rows <- responses_dt[parentAC %in% parentACs,]
-            child_rows <- responses_dt[!parentAC %in% parentACs,]
-            new_dt <- data.table::rbindlist(list(parent_rows, new_rows, child_rows), use.names=TRUE, fill=TRUE)
-            new_dt[]
-        }
-    # groupby query and query:id 
-    # for each group, sort by the highest number of parentAC counts
-    if(orderby == "ac") data.table::setorderv(responses_dt, c("query","ac"))
-    responses_dt[, c("parentAC", "parentID") := NULL]
-
-    return(responses_dt[1:numResults])
+    return(.prioritize_parent(responses_dt))
 }
 
 
+.prioritize_parent <- function(responses_dt) {
+    responses_dt[, c("parentAC", "parentID") := tstrsplit(hi, "!", fixed = TRUE)]
+    responses_dt <- responses_dt[, -"hi"]
+
+    if(all(is.na(responses_dt$parentAC))) return(responses_dt[, -c("parentAC", "parentID")])
+
+    parentACs <- na.omit(unique(responses_dt$parentAC))
+
+    # 
+    
+}

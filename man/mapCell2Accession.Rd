@@ -7,7 +7,7 @@
 mapCell2Accession(
   ids,
   numResults = 1000,
-  from = "idsy",
+  from = "id",
   to = c("id", "ac"),
   prioritizeParent = FALSE,
   orderby = "ac",

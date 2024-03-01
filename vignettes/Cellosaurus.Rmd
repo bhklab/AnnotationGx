@@ -55,13 +55,17 @@ Usage and default values:
      )
 ```
 
-Let's see how we can use this function to map the "HeLa" and "A549" cell line names to the Cellosaurus database. 
-By default, the function will try to map using the common identifier name and will return the standard identifier
-and the Cellosaurus accession number. The function also returns two additional columns `query` and `query:<from>` which
+Let's see how we can use this function to map the "HeLa" and "A549" cell line names
+to the Cellosaurus database. 
+By default, the function will try to map using the common identifier (`from ="id"`) name and 
+will return the standard identifier `id` and the Cellosaurus accession ID `ac`. The 
+function also returns two additional columns `query` and `query:<from>` which
 can be used to identify the original query and the original identifier type if needed. 
-``` {r map one name each}
-mapCell2Accession("hela", from = "id", numResults=1)
+``` {r map heLa each}
+mapCell2Accession("hela", numResults=1)
 ```
+
+### misspelled or non-standard cell line names
 
 Sometimes the cell line name might be misspelled or might not be the standard name. 
 This is the case if we query for "A549" in the same way. 
@@ -76,22 +80,23 @@ mapCell2Accession("A-549", from = "id", numResults=1)
 mapCell2Accession("A549", from = "id", numResults=10)
 ```
 
-The main identifier for the A549 cell line is "A-549" with accesion id of "CVCL_0023" which does not appear in 
-even the first 10 results (note: it would be the 40th result if we set `numResults=1000`) and while we could manually 
-adjust every query to match the standard name, this is not feasible for hundreds of cell lines. 
+The main identifier for the A549 cell line is "A-549" with accesion id of "CVCL_0023" 
+which does not appear in even the first 10 results (note: it would be the 40th result 
+if we adjust the `numResults` parameter) and while we could manually adjust every query 
+to match the standard name, this is not feasible for hundreds of cell lines. 
 
 There are a few ways to deal with this issue. 
 The first method is based on the reasoning that many of the cell lines are derived from a parent cell line.
 To deal with this issue, we can use the `prioritizeParent` argument. 
-This argument will use the parent cell line of each returned result and prioritize the results based on the accession id
-of the parent cell line. 
+This argument will use the parent cell line of each returned result and prioritize the
+results based on the accession id of the parent cell line. 
 
-``` {r map one name each}
+``` {r map A549 each}
 mapCell2Accession("A549", from = "id", numResults=1, prioritizeParent=TRUE)
 ```
 
 
-``` {r map one name each}
+``` {r map BT474 each}
 mapCell2Accession("BT474", from = "id", numResults=1, prioritizeParent=TRUE)
 ```
 
