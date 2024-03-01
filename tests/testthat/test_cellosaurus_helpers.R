@@ -28,7 +28,7 @@ test_that(".build_cellosaurus_request is acting as expected",{
     request <- AnnotationGx:::.build_cellosaurus_request()
 
     expect_class(request,"httr2_request")
-    expect_equal(request$url, "https://api.cellosaurus.org/search/cell-line?q=id%3AHeLa&fields=id%2Cac%2Cca%2Csx%2Cag%2Cdi%2Cderived-from-site%2Cmisspelling&format=tsv&rows=1")
+    expect_equal(request$url, "https://api.cellosaurus.org/search/cell-line?q=id%3AHeLa&fields=id%2Cac%2Chi%2Cca%2Csx%2Cag%2Cdi%2Cderived-from-site%2Cmisspelling&format=tsv&rows=1")
 
     response <- AnnotationGx:::.perform_request(request) |> AnnotationGx:::.parse_resp_tsv(show_col_types = FALSE, skip = 14)
     expect_class(response, "spec_tbl_df")

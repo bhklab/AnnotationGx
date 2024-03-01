@@ -7,29 +7,42 @@ test_that("mapCell2Accession works as expected",{
     # Test case 1: Test with a valid cell line name
     cell_line1 <- "Hela"
     expected1 <- "CVCL_0030"
-    result1 <- mapCell2Accession(cell_line1, BPPARAM = BiocParallel::SerialParam())
+    result1 <- mapCell2Accession(cell_line1,from="id", BPPARAM = BiocParallel::SerialParam(), numResults=1)
     expect_data_table(result1)
     expect_equal(result1$ac, expected1)
 
     # Test case 2: Test with an invalid cell line name
     cell_line2 <- "InvalidCellLine"
     expected2 <- NA
-    result2 <- mapCell2Accession(cell_line2, BPPARAM = BiocParallel::SerialParam())
+    result2 <- mapCell2Accession(cell_line2,from="id", BPPARAM = BiocParallel::SerialParam(), numResults=1)
     expect_equal(result2$ac, expected2)
 
 
     # Test case 1: Test with a valid cell line name
     cell_line1 <- "hela"
     expected1 <- data.table::data.table(id = "HeLa",ac = "CVCL_0030", query = "id:hela", `query:id` = "hela")
-    result1 <- mapCell2Accession(cell_line1, BPPARAM = BiocParallel::SerialParam())
+    result1 <- mapCell2Accession(cell_line1,from="id", BPPARAM = BiocParallel::SerialParam(), numResults=1)
     expect_equal(result1, expected1)
 
     # Test case 2: Test with an invalid cell line name
     cell_line2 <- "InvalidCellLine"
     expected2 <- data.table::data.table(ac = NA, id = NA, query = "id:InvalidCellLine",`query:id` = "InvalidCellLine")
-    result2 <- mapCell2Accession(cell_line2, BPPARAM = BiocParallel::SerialParam())
+    result2 <- mapCell2Accession(cell_line2,from="id", BPPARAM = BiocParallel::SerialParam(), numResults=1)
     expect_equal(result2, expected2)
+
 })
+
+test_that("mapCell2Accession prioritizePatient works as expected",{
+
+    cell_line <- "BT474"
+
+    result1 <- mapCell2Accession(cell_line,from="id", BPPARAM = BiocParallel::SerialParam(), numResults=1, prioritizeParent = TRUE)
+    
+    expect_data_table(result1, nrows=2, ncols = 4)
+    expect_named(result1,  c("id", "ac", "query", "query:id"))
+})
+
+
 
 # Ok read_tsv seems to throw some error on github actions rip
 # test_that("mapCell2AccessionWorks on granular level", {

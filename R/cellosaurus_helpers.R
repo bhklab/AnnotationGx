@@ -1,17 +1,38 @@
-.create_query_list <- function(ids, from){
+#' Create a query list for Cellosaurus database
+#'
+#' This function creates a query list for the Cellosaurus database based on the provided IDs and fields.
+#' The query list is used to retrieve specific information from the database.
+#'
+#' @param ids A vector of IDs to be included in the query list.
+#' @param from A character vector specifying the fields to be included in the query list.
+#'             If the length of 'from' is 1, the same field will be used for all IDs.
+#'             If the length of 'from' is equal to the length of 'ids', each ID will be paired with its corresponding field.
+#'             Otherwise, an error will be thrown.
+#'
+#' @return A character vector representing the query list.
+#'
+#' @examples
+#' AnnotationGx:::.create_query_list(c("ID1", "ID2", "ID3"), "Accession")
+#' # Returns: "Accession:ID1" "Accession:ID2" "Accession:ID3"
+#'
+#' AnnotationGx:::.create_query_list(c("ID1", "ID2", "ID3"), c("Accession", "Name", "Species"))
+#' # Returns: "Accession:ID1" "Name:ID2" "Species:ID3"
+#'
+#' @keywords internal
+#' @noRd
+.create_query_list <- function(ids, from) {
     # either from has to be one field, or the same length as ids
-    if(length(from) == 1) return(paste0(from,":",ids))
-    if(length(from) != length(ids)){
-        stop("Length of from must be 1 or the same length as ids")
+    if (length(from) == 1) return(paste0(from, ":", ids))
+    if (length(from) != length(ids)) {
+        stop("Length of 'from' must be 1 or the same length as 'ids'")
     }
-    lapply(1:length(ids), function(i){
+    lapply(1:length(ids), function(i) {
         paste(from[i], ids[i])
     })
 }
 
 .build_cellosaurus_request <- function(
-    query = c("id:HeLa"),
-    to = c("id", "ac", "ca", "sx", "ag", "di", "derived-from-site",  "misspelling"),
+    query = c("id:HeLa"), to = c("id", "ac", "hi", "ca", "sx", "ag", "di", "derived-from-site",  "misspelling"),
     numResults = 1, apiResource= "search/cell-line", output = "TSV",
     query_only = FALSE, fuzzy = FALSE, ...
 ){
@@ -37,14 +58,6 @@
     url <- url |> httr2::url_build()
     if(query_only) return(url)
     url |>  .build_request()
-}
-
-.get_cellosaurus_schema <- function(){
-    url <- .buildURL("https://api.cellosaurus.org/openapi.json")
-    request <- .build_request(url)
-
-    resp <- .perform_request(request)
-    .parse_resp_json(resp)
 }
 
 #  The definition of the Cellosaurus is provided in the following format:
@@ -74,6 +87,16 @@
     schema <- .get_cellosaurus_schema()
     schema$components$schemas$Fields$enum
 }
+
+.get_cellosaurus_schema <- function(){
+    url <- .buildURL("https://api.cellosaurus.org/openapi.json")
+    request <- .build_request(url)
+
+    resp <- .perform_request(request)
+    .parse_resp_json(resp)
+}
+
+
 
 
 #  ---------  --------------------------------------  -------------------------------------------------
