@@ -1,6 +1,6 @@
-# Internal function that returns all possible chembl resources
-# @keywords internal
-# @noRd
+#' Internal function that returns all possible chembl resources
+#' @keywords internal
+#' @noRd
 .chembl_resources <- function(){
     c("activity", "assay", "atc_class", "binding_site", "biotherapeutic", "cell_line",
     "chembl_id_lookup", "compound_record", "compound_structural_alert", "document",
@@ -10,9 +10,9 @@
     "target", "target_component", "target_relation", "tissue", "xref_source")
 }
 
-# Internal function that returns all possible chembl filter types
-# @keywords internal
-# @noRd
+#' Internal function that returns all possible chembl filter types
+#' @keywords internal
+#' @noRd
 .chembl_filter_types <- function(){
     c("exact", "iexact", "contains", "icontains", "startswith", "istartswith",
     "endswith", "iendswith", "regex", "iregex", "gt", "gte", "lt", "lte",
