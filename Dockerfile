@@ -9,7 +9,7 @@ COPY . /app
 # set a working directory
 WORKDIR /app
 
-RUN R -e 'BiocManager::install("bhklab/AnnotationGx", ask=F, build_vignettes=T, upgrade = T)'
+RUN R -e 'BiocManager::install("bhklab/AnnotationGx", ask=F, build_vignettes=T)'
 
 # RUN install2.r --error --deps TRUE \
 #     qpdf \
