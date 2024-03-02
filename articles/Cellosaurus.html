@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">AnnotationGx</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9062</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9068</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,6 +44,9 @@
     <a class="dropdown-item" href="../articles/Cellosaurus.html">Cellosaurus</a>
     <a class="dropdown-item" href="../articles/PubChemAPI.html">Querying PubChem with AnnotationGx</a>
   </div>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
@@ -71,139 +74,183 @@
 
     
     
+<div class="section level2">
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h2>
+<p>Cellosaurus is a comprehensive knowledge resource dedicated to cell
+lines, providing a wealth of information about various types of cells
+used in biomedical research. It serves as a centralized repository that
+offers detailed data on cell lines, including their origins,
+characteristics, authentication methods, references, and more. Please
+view the Cellosaurus website at <a href="https://web.expasy.org/cellosaurus/" class="external-link uri">https://web.expasy.org/cellosaurus/</a> for more information
+and a detailed description can be found at <a href="https://www.cellosaurus.org/description.html" class="external-link uri">https://www.cellosaurus.org/description.html</a>.</p>
+<p>The <code>AnnotationGx</code> package provides a wrapper around the
+Cellosaurus API to map cell line identifiers to the Cellosaurus database
+fields.</p>
+<div class="section level3">
+<h3 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
+</h3>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bhklab.github.io/AnnotationGx/">AnnotationGx</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">gdsc_sampleMetadata</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">cell_model_passports_models</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">gdsc_sampleMetadata</span><span class="op">)</span></span>
-<span><span class="co">#&gt;    GDSC.Sample_Name GDSC.COSMIC_ID</span></span>
-<span><span class="co">#&gt;              &lt;char&gt;          &lt;num&gt;</span></span>
-<span><span class="co">#&gt; 1:             A253         906794</span></span>
-<span><span class="co">#&gt; 2:         BB30-HNC         753531</span></span>
-<span><span class="co">#&gt; 3:         BB49-HNC         753532</span></span>
-<span><span class="co">#&gt; 4:              BHY         753535</span></span>
-<span><span class="co">#&gt; 5:           BICR10        1290724</span></span>
-<span><span class="co">#&gt; 6:           BICR22        1240121</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="mapping-from-cell-line-name-to-accession-id">Mapping from Cell Line name to Accession id<a class="anchor" aria-label="anchor" href="#mapping-from-cell-line-name-to-accession-id"></a>
+</h3>
+<p>The main function that is provided by the package is
+<code>mapCell2Accession</code>. This function takes in a vector of cell
+line identifiers and returns a <code>data.table</code>.</p>
+<pre><code>Usage and default values:
+     mapCell2Accession(
+       ids,
+       numResults = 1000,
+       from = "id",
+       to = c("id", "ac"),
+       prioritizeParent = FALSE,
+       orderby = "ac",
+       query_only = FALSE,
+       raw = FALSE,
+       BPPARAM = BiocParallel::SerialParam(),
+       ...
+     )</code></pre>
+<p>Let’s see how we can use this function to map the “HeLa” and “A549”
+cell line names to the Cellosaurus database. By default, the function
+will try to map using the common identifier (<code>from ="id"</code>)
+name and will return the standard identifier <code>id</code> and the
+Cellosaurus accession ID <code>ac</code>. The function also returns two
+additional columns <code>query</code> and
+<code>query:&lt;from&gt;</code> which can be used to identify the
+original query and the original identifier type if needed.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">cell_model_passports_models</span><span class="op">)</span></span>
-<span><span class="co">#&gt;    CMP.model_id CMP.sample_id CMP.model_name CMP.cancer_type_ncit_id</span></span>
-<span><span class="co">#&gt;          &lt;char&gt;        &lt;char&gt;         &lt;char&gt;                  &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1:    SIDM01774     SIDS01659          PK-59                   C3850</span></span>
-<span><span class="co">#&gt; 2:    SIDM00192     SIDS00612       SNU-1033                   C9383</span></span>
-<span><span class="co">#&gt; 3:    SIDM01447     SIDS01466        SNU-466                   C3058</span></span>
-<span><span class="co">#&gt; 4:    SIDM01554     SIDS01363      IST-MES-2                  C45662</span></span>
-<span><span class="co">#&gt; 5:    SIDM01689     SIDS01631         MUTZ-5                   C8644</span></span>
-<span><span class="co">#&gt; 6:    SIDM01460     SIDS01493          TM-31                  C60781</span></span>
-<span><span class="co">#&gt;    CMP.COSMIC_ID CMP.BROAD_ID                              CMP.CCLE_ID</span></span>
-<span><span class="co">#&gt;           &lt;char&gt;       &lt;char&gt;                                   &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1:                 ACH-000205                            PK59_PANCREAS</span></span>
-<span><span class="co">#&gt; 2:                 ACH-000286                  SNU1033_LARGE_INTESTINE</span></span>
-<span><span class="co">#&gt; 3:                 ACH-000289            SNU466_CENTRAL_NERVOUS_SYSTEM</span></span>
-<span><span class="co">#&gt; 4:                 ACH-000331                           ISTMES2_PLEURA</span></span>
-<span><span class="co">#&gt; 5:                 ACH-000492 MUTZ5_HAEMATOPOIETIC_AND_LYMPHOID_TISSUE</span></span>
-<span><span class="co">#&gt; 6:                 ACH-000592              TM31_CENTRAL_NERVOUS_SYSTEM</span></span>
-<span><span class="co">#&gt;     CMP.RRID</span></span>
-<span><span class="co">#&gt;       &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1: CVCL_4897</span></span>
-<span><span class="co">#&gt; 2: CVCL_5002</span></span>
-<span><span class="co">#&gt; 3: CVCL_5064</span></span>
-<span><span class="co">#&gt; 4: CVCL_1312</span></span>
-<span><span class="co">#&gt; 5: CVCL_1873</span></span>
-<span><span class="co">#&gt; 6: CVCL_6735</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/mapCell2Accession.html">mapCell2Accession</a></span><span class="op">(</span><span class="st">"hela"</span>, numResults<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt;        id        ac   query query:id</span></span>
+<span><span class="co">#&gt;    &lt;char&gt;    &lt;char&gt;  &lt;char&gt;   &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1:   HeLa CVCL_0030 id:hela     hela</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="misspelled-or-non-standard-cell-line-names">misspelled or non-standard cell line names<a class="anchor" aria-label="anchor" href="#misspelled-or-non-standard-cell-line-names"></a>
+</h3>
+<p>Sometimes the cell line name might be misspelled or might not be the
+standard name. This is the case if we query for “A549” in the same
+way.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">gdsc_sampleMetadata</span> <span class="op">&lt;-</span> <span class="va">gdsc_sampleMetadata</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span></span>
-<span><span class="va">cell_model_passports_models</span> <span class="op">&lt;-</span> <span class="va">cell_model_passports_models</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span></span>
-<span><span class="va">fields</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"ac"</span>, <span class="st">"sy"</span>, <span class="st">"sx"</span>, <span class="st">"ag"</span>, <span class="st">"derived-from-site"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># our query:</span></span>
+<span><span class="fu"><a href="../reference/mapCell2Accession.html">mapCell2Accession</a></span><span class="op">(</span><span class="st">"A549"</span>, from <span class="op">=</span> <span class="st">"id"</span>, numResults<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt;           id        ac   query query:id</span></span>
+<span><span class="co">#&gt;       &lt;char&gt;    &lt;char&gt;  &lt;char&gt;   &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1: A549 Cas9 CVCL_DX70 id:A549     A549</span></span>
+<span></span>
+<span><span class="co"># if we use the actual standard name:</span></span>
+<span><span class="fu"><a href="../reference/mapCell2Accession.html">mapCell2Accession</a></span><span class="op">(</span><span class="st">"A-549"</span>, from <span class="op">=</span> <span class="st">"id"</span>, numResults<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt;        id        ac    query query:id</span></span>
+<span><span class="co">#&gt;    &lt;char&gt;    &lt;char&gt;   &lt;char&gt;   &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1:  A-549 CVCL_0023 id:A-549    A-549</span></span>
+<span></span>
+<span><span class="co"># trying to get the standard name with more results</span></span>
+<span><span class="fu"><a href="../reference/mapCell2Accession.html">mapCell2Accession</a></span><span class="op">(</span><span class="st">"A549"</span>, from <span class="op">=</span> <span class="st">"id"</span>, numResults<span class="op">=</span><span class="fl">10</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                   id        ac   query query:id</span></span>
+<span><span class="co">#&gt;               &lt;char&gt;    &lt;char&gt;  &lt;char&gt;   &lt;char&gt;</span></span>
+<span><span class="co">#&gt;  1:        A549 Cas9 CVCL_DX70 id:A549     A549</span></span>
+<span><span class="co">#&gt;  2:    A549 DHODH-/- CVCL_YZ46 id:A549     A549</span></span>
+<span><span class="co">#&gt;  3: A549 HIF1A -/-/- CVCL_C3C5 id:A549     A549</span></span>
+<span><span class="co">#&gt;  4:        A549 MX10 CVCL_LB65 id:A549     A549</span></span>
+<span><span class="co">#&gt;  5:         A549 OS8 CVCL_XY99 id:A549     A549</span></span>
+<span><span class="co">#&gt;  6:   A549 SMAD4 -/- CVCL_C3C4 id:A549     A549</span></span>
+<span><span class="co">#&gt;  7:           A549-1 CVCL_A1ZW id:A549     A549</span></span>
+<span><span class="co">#&gt;  8:         A549-5Fu CVCL_XE67 id:A549     A549</span></span>
+<span><span class="co">#&gt;  9:          A549-AC CVCL_D1JI id:A549     A549</span></span>
+<span><span class="co">#&gt; 10:        A549-ACE2 CVCL_C0Q5 id:A549     A549</span></span></code></pre></div>
+<p>The main identifier for the A549 cell line is “A-549” with accesion
+id of “CVCL_0023” which does not appear in even the first 10 results (it
+would be the 40th result if we adjust the <code>numResults</code>
+parameter) and while we could manually adjust every query to match the
+standard name, this is not feasible for hundreds of cell lines.</p>
+<p>There are a few ways to deal with this issue. The first method is
+based on the reasoning that many of the cell lines are derived from a
+parent cell line. To deal with this issue, we can use the
+<code>prioritizeParent</code> argument. This argument will use the
+parent cell line of each returned result and prioritize the results
+based on the accession id of the parent cell line.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># By default, the function will try to map using the common identifier name to the Cellosaurus accession number</span></span>
-<span><span class="fu">AnnotationGx</span><span class="fu">::</span><span class="fu"><a href="../reference/mapCell2Accession.html">mapCell2Accession</a></span><span class="op">(</span><span class="va">gdsc_sampleMetadata</span><span class="op">[[</span><span class="st">"GDSC.Sample_Name"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="co">#&gt;            ac       id       query query:id</span></span>
-<span><span class="co">#&gt;        &lt;char&gt;   &lt;char&gt;      &lt;char&gt;   &lt;char&gt;</span></span>
-<span><span class="co">#&gt;  1:      &lt;NA&gt;     &lt;NA&gt;     id:A253     A253</span></span>
-<span><span class="co">#&gt;  2: CVCL_1076 BB30-HNC id:BB30-HNC BB30-HNC</span></span>
-<span><span class="co">#&gt;  3: CVCL_1077 BB49-HNC id:BB49-HNC BB49-HNC</span></span>
-<span><span class="co">#&gt;  4: CVCL_1086      BHY      id:BHY      BHY</span></span>
-<span><span class="co">#&gt;  5:      &lt;NA&gt;     &lt;NA&gt;   id:BICR10   BICR10</span></span>
-<span><span class="co">#&gt;  6:      &lt;NA&gt;     &lt;NA&gt;   id:BICR22   BICR22</span></span>
-<span><span class="co">#&gt;  7:      &lt;NA&gt;     &lt;NA&gt;   id:BICR31   BICR31</span></span>
-<span><span class="co">#&gt;  8:      &lt;NA&gt;     &lt;NA&gt;   id:BICR78   BICR78</span></span>
-<span><span class="co">#&gt;  9: CVCL_1102   Ca9-22   id:Ca9-22   Ca9-22</span></span>
-<span><span class="co">#&gt; 10: CVCL_1107   CAL-27   id:CAL-27   CAL-27</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/mapCell2Accession.html">mapCell2Accession</a></span><span class="op">(</span><span class="st">"A549"</span>, from <span class="op">=</span> <span class="st">"id"</span>, numResults<span class="op">=</span><span class="fl">1</span>, prioritizeParent<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt;        id        ac   query query:id</span></span>
+<span><span class="co">#&gt;    &lt;char&gt;    &lt;char&gt;  &lt;char&gt;   &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1:  A-549 CVCL_0023 id:A549     A549</span></span></code></pre></div>
+<p>Another example using the BT474 cell line.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># By passing the fields argument, the function will return the information for the fields specified</span></span>
-<span><span class="fu">AnnotationGx</span><span class="fu">::</span><span class="fu"><a href="../reference/mapCell2Accession.html">mapCell2Accession</a></span><span class="op">(</span><span class="va">cell_model_passports_models</span><span class="op">[[</span><span class="st">"CMP.model_name"</span><span class="op">]</span><span class="op">]</span>, to<span class="op">=</span><span class="va">fields</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;          id        ac                                                     sy</span></span>
-<span><span class="co">#&gt;      &lt;char&gt;    &lt;char&gt;                                                 &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1:    PK-59 CVCL_4897                                                   PK59</span></span>
-<span><span class="co">#&gt; 2: SNU-1033 CVCL_5002                                                SNU1033</span></span>
-<span><span class="co">#&gt; 3:  SNU-466 CVCL_5064                                    SNU466; NCI-SNU-466</span></span>
-<span><span class="co">#&gt; 4:     &lt;NA&gt;      &lt;NA&gt;                                                   &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 5:   MUTZ-5 CVCL_1873 Mutz-5; MUTZ5; Menschliche Und Tierische Zellkulture-5</span></span>
-<span><span class="co">#&gt; 6:    TM-31 CVCL_6735                                                   TM31</span></span>
-<span><span class="co">#&gt;        sx     ag                                 derived-from-site        query</span></span>
-<span><span class="co">#&gt;    &lt;char&gt; &lt;char&gt;                                            &lt;char&gt;       &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1: Female    66Y         Metastatic; Liver; UBERON=UBERON_0002107.     id:PK-59</span></span>
-<span><span class="co">#&gt; 2: Female    45Y           In situ; Rectum; UBERON=UBERON_0001052.  id:SNU-1033</span></span>
-<span><span class="co">#&gt; 3:   Male    61Y            In situ; Brain; UBERON=UBERON_0000955.   id:SNU-466</span></span>
-<span><span class="co">#&gt; 4:   &lt;NA&gt;   &lt;NA&gt;                                              &lt;NA&gt; id:IST-MES-2</span></span>
-<span><span class="co">#&gt; 5:   Male    26Y In situ; Peripheral blood; UBERON=UBERON_0000178.    id:MUTZ-5</span></span>
-<span><span class="co">#&gt; 6: Female    42Y            In situ; Brain; UBERON=UBERON_0000955.     id:TM-31</span></span>
-<span><span class="co">#&gt;     query:id</span></span>
-<span><span class="co">#&gt;       &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1:     PK-59</span></span>
-<span><span class="co">#&gt; 2:  SNU-1033</span></span>
-<span><span class="co">#&gt; 3:   SNU-466</span></span>
-<span><span class="co">#&gt; 4: IST-MES-2</span></span>
-<span><span class="co">#&gt; 5:    MUTZ-5</span></span>
-<span><span class="co">#&gt; 6:     TM-31</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/mapCell2Accession.html">mapCell2Accession</a></span><span class="op">(</span><span class="st">"BT474"</span>, numResults<span class="op">=</span><span class="fl">1</span>, prioritizeParent<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">#&gt;          id        ac    query query:id</span></span>
+<span><span class="co">#&gt;      &lt;char&gt;    &lt;char&gt;   &lt;char&gt;   &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1: BT474 A3 CVCL_YX79 id:BT474    BT474</span></span>
+<span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/mapCell2Accession.html">mapCell2Accession</a></span><span class="op">(</span><span class="st">"BT474"</span>, numResults<span class="op">=</span><span class="fl">1</span>, prioritizeParent<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt;        id        ac    query query:id</span></span>
+<span><span class="co">#&gt;    &lt;char&gt;    &lt;char&gt;   &lt;char&gt;   &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1: BT-474 CVCL_0179 id:BT474    BT474</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="example-pipeline-to-annotate-a-dataset">Example pipeline to annotate a dataset<a class="anchor" aria-label="anchor" href="#example-pipeline-to-annotate-a-dataset"></a>
+</h3>
+<p>#TODO::incomplete</p>
+<p>We will be working with some data from the GDSC and Cell Model
+Passports datasets for this vignette. The GDSC dataset contains
+information about the cell lines in the Genomics of Drug Sensitivity in
+Cancer (GDSC) project. The Cell Model Passports dataset contains
+information about all the models in the the database.</p>
+<p>The GDSC sampleMetadata contains two columns,
+<code>GDSC.Sample_Name</code> and <code>GDSC.COSMIC_ID</code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">field_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>    <span class="st">"id"</span> <span class="op">=</span> <span class="st">"id"</span>,</span>
-<span>    <span class="st">"ac"</span> <span class="op">=</span> <span class="st">"accession"</span>,</span>
-<span>    <span class="st">"sy"</span> <span class="op">=</span> <span class="st">"synonyms"</span>,</span>
-<span>    <span class="st">"misspelling"</span> <span class="op">=</span> <span class="st">"misspellings"</span>,</span>
-<span>    <span class="st">"di"</span> <span class="op">=</span> <span class="st">"diseases"</span>,</span>
-<span>    <span class="st">"ca"</span> <span class="op">=</span> <span class="st">"category"</span>,</span>
-<span>    <span class="st">"sx"</span> <span class="op">=</span> <span class="st">"sexOfCell"</span>,</span>
-<span>    <span class="st">"ag"</span> <span class="op">=</span> <span class="st">"ageAtSampling"</span>,</span>
-<span>    <span class="st">"derived-from-site"</span> <span class="op">=</span> <span class="st">"samplingSite"</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">fields</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">field_map</span><span class="op">)</span></span>
-<span><span class="va">gdsc_sampleMetadata</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"cellosaurus."</span>, <span class="va">fields</span> <span class="op">)</span> <span class="op">:=</span> <span class="op">{</span></span>
-<span>    <span class="va">mapped</span> <span class="op">&lt;-</span> <span class="fu">AnnotationGx</span><span class="fu">::</span><span class="fu"><a href="../reference/mapCell2Accession.html">mapCell2Accession</a></span><span class="op">(</span></span>
-<span>        <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">GDSC.COSMIC_ID</span><span class="op">)</span>,</span>
-<span>        from <span class="op">=</span> <span class="st">"dr"</span>,</span>
-<span>        to <span class="op">=</span> <span class="va">fields</span></span>
-<span>    <span class="op">)</span></span>
-<span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">mapped</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">fields</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
-<span>    <span class="op">}</span></span>
-<span><span class="op">]</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">gdsc_sampleMetadata</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">cell_model_passports_models</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># head(gdsc_sampleMetadata)</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># By default, the function will try to map using the common identifier name to the Cellosaurus accession number</span></span>
+<span><span class="co"># AnnotationGx::mapCell2Accession(gdsc_sampleMetadata[["GDSC.Sample_Name"]])</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># head(cell_model_passports_models)</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># fields &lt;- c("id", "ac", "sy", "sx", "ag", "derived-from-site")</span></span>
+<span></span>
+<span><span class="co"># By passing the fields argument, the function will return the information for the fields specified</span></span>
+<span><span class="co"># AnnotationGx::mapCell2Accession(cell_model_passports_models[["CMP.model_name"]], to=fields) |&gt; head()</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># field_map &lt;- list(</span></span>
+<span><span class="co">#     "id" = "id",</span></span>
+<span><span class="co">#     "ac" = "accession",</span></span>
+<span><span class="co">#     "sy" = "synonyms",</span></span>
+<span><span class="co">#     "misspelling" = "misspellings",</span></span>
+<span><span class="co">#     "di" = "diseases",</span></span>
+<span><span class="co">#     "ca" = "category",</span></span>
+<span><span class="co">#     "sx" = "sexOfCell",</span></span>
+<span><span class="co">#     "ag" = "ageAtSampling",</span></span>
+<span><span class="co">#     "derived-from-site" = "samplingSite"</span></span>
+<span><span class="co"># )</span></span>
+<span><span class="co"># fields &lt;- names(field_map)</span></span>
+<span><span class="co"># gdsc_sampleMetadata[, paste0("cellosaurus.", fields ) := {</span></span>
+<span><span class="co">#     mapped &lt;- AnnotationGx::mapCell2Accession(</span></span>
+<span><span class="co">#         as.character(GDSC.COSMIC_ID),</span></span>
+<span><span class="co">#         from = "dr",</span></span>
+<span><span class="co">#         to = fields</span></span>
+<span><span class="co">#     )</span></span>
+<span><span class="co">#     return(mapped[, 1:length(fields)])</span></span>
+<span><span class="co">#     }</span></span>
+<span><span class="co"># ]</span></span>
 <span></span>
 <span></span>
 <span></span>
-<span><span class="co"># rename using map</span></span>
-<span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">field_map</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/setattr.html" class="external-link">setnames</a></span><span class="op">(</span><span class="va">gdsc_sampleMetadata</span>,</span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"cellosaurus."</span>, <span class="va">i</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"cellosaurus."</span>, <span class="va">field_map</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>, skip_absent <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
+<span><span class="co"># # rename using map</span></span>
+<span><span class="co"># for (i in names(field_map)) {</span></span>
+<span><span class="co">#     data.table::setnames(gdsc_sampleMetadata,</span></span>
+<span><span class="co">#     paste0("cellosaurus.", i), paste0("cellosaurus.", field_map[[i]]), skip_absent = TRUE)</span></span>
+<span><span class="co"># }</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">gdsc_sampleMetadata</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Classes 'data.table' and 'data.frame':   1 obs. of  11 variables:</span></span>
-<span><span class="co">#&gt;  $ GDSC.Sample_Name         : chr "A253"</span></span>
-<span><span class="co">#&gt;  $ GDSC.COSMIC_ID           : num 906794</span></span>
-<span><span class="co">#&gt;  $ cellosaurus.id           : chr "A-253"</span></span>
-<span><span class="co">#&gt;  $ cellosaurus.accession    : chr "CVCL_1060"</span></span>
-<span><span class="co">#&gt;  $ cellosaurus.synonyms     : chr "A 253; A253"</span></span>
-<span><span class="co">#&gt;  $ cellosaurus.misspellings : logi NA</span></span>
-<span><span class="co">#&gt;  $ cellosaurus.diseases     : chr "NCIt; C5943; Submandibular gland squamous cell carcinoma|ORDO; Orphanet_500481; Squamous cell carcinoma of salivary glands"</span></span>
-<span><span class="co">#&gt;  $ cellosaurus.category     : chr "Cancer cell line"</span></span>
-<span><span class="co">#&gt;  $ cellosaurus.sexOfCell    : chr "Male"</span></span>
-<span><span class="co">#&gt;  $ cellosaurus.ageAtSampling: chr "54Y"</span></span>
-<span><span class="co">#&gt;  $ cellosaurus.samplingSite : chr "In situ; Salivary gland, submandibular gland; UBERON=UBERON_0001736."</span></span>
-<span><span class="co">#&gt;  - attr(*, ".internal.selfref")=&lt;externalptr&gt;</span></span></code></pre></div>
-  </main>
+<span><span class="co"># str(gdsc_sampleMetadata[1])</span></span></code></pre></div>
+</div>
+</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
