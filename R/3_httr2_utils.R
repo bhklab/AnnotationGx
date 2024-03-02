@@ -22,11 +22,19 @@
 #'
 #' @param request The HTTP request to perform.
 #' @return The response of the HTTP request.
+#' @noRd
 .perform_request <- function(request){
     httr2::req_perform(request)
 }
 
-
+#' Performs an HTTP request in parallel.
+#' @param reqs The HTTP requests to perform.
+#' @param on_error The action to take when an error occurs. Can be "stop" or "continue".
+#' @param progress Whether to show a progress bar.
+#' 
+#' @return The responses of the HTTP requests.
+#' 
+#' @noRd
 .perform_request_parallel <- function(reqs, on_error = "continue", progress = TRUE, ...){
     httr2::req_perform_parallel(reqs, on_error = on_error, progress = progress,...)
 }
@@ -36,6 +44,7 @@
 #'
 #' @param resp The response object from the HTTP request.
 #' @return The parsed JSON response.
+#' @noRd
 .parse_resp_json <- function(resp){
     httr2::resp_body_json(resp, simplifyVector = TRUE)
 }
