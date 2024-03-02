@@ -109,6 +109,8 @@ mapCell2Accession("BT474", numResults=1, prioritizeParent=TRUE)
 
 
 ### Example pipeline to annotate a dataset
+#TODO::incomplete
+
 We will be working with some data from the GDSC and Cell Model Passports datasets 
 for this vignette. The GDSC dataset contains information about the cell lines 
 in the Genomics of Drug Sensitivity in Cancer (GDSC) project. The Cell Model
