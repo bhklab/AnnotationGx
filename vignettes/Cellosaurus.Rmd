@@ -108,7 +108,7 @@ mapCell2Accession("BT474", numResults=1, prioritizeParent=TRUE)
 
 
 
-### Example pipeline to annotate a dataset
+### Example pipeline to annotate a dataseGSM1897356t
 #TODO::incomplete
 
 We will be working with some data from the GDSC and Cell Model Passports datasets 
