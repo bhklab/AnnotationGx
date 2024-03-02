@@ -10,7 +10,6 @@ mapCell2Accession(
   from = "id",
   to = c("id", "ac"),
   prioritizeParent = FALSE,
-  orderby = "ac",
   query_only = FALSE,
   raw = FALSE,
   BPPARAM = BiocParallel::SerialParam(),
@@ -34,8 +33,6 @@ An example of this is trying to map using id "BT474" which returns "CVCL_YX79" w
 to "BT474 A3" whereas "BT-474" exists in the database as "CVCL_0179". If prioritizeParent is TRUE,
 the function will prioritize "CVCL_0179" over "CVCL_YX79" since "BT-474" is the parent cell line of
 "BT474 A3".}
-
-\item{orderby}{The field to order the results by. Default is "ac" to order by accession number.}
 
 \item{query_only}{If TRUE, returns the query URL instead of the results. Default is FALSE.}
 

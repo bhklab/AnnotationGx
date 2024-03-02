@@ -19,7 +19,6 @@
 #'                        to "BT474 A3" whereas "BT-474" exists in the database as "CVCL_0179". If prioritizeParent is TRUE,
 #'                        the function will prioritize "CVCL_0179" over "CVCL_YX79" since "BT-474" is the parent cell line of 
 #'                        "BT474 A3".
-#' @param orderby The field to order the results by. Default is "ac" to order by accession number. 
 #' @param ... Additional arguments to pass to the request.
 #'
 #' @return Depending on parameters, either a:
@@ -32,7 +31,7 @@
 #' @export
 mapCell2Accession <- function(
     ids, numResults = 1000, from = "id", to = c("id", "ac"),
-    prioritizeParent = FALSE, orderby = "ac",
+    prioritizeParent = FALSE, 
     query_only = FALSE, raw = FALSE, BPPARAM = BiocParallel::SerialParam(), ...
 ) {
     
@@ -85,17 +84,55 @@ mapCell2Accession <- function(
 
     if(!prioritizeParent) return(responses_dt)
     if(all(is.na(responses_dt$hi))) return(responses_dt)
+    
+    if((prioritizeParent) && from != "id") .err("Prioritize parent is only available when querying from 'id'")
 
-    return(.prioritize_parent(responses_dt))
+    return(.prioritize_parent(responses_dt, numResults))
 }
 
-
-.prioritize_parent <- function(responses_dt) {
-    responses_dt[, c("parentAC", "parentID") := tstrsplit(hi, "!", fixed = TRUE)]
+#' @import data.table
+#' 
+#' @keywords internal
+#' @noRd
+.prioritize_parent <- function(responses_dt, numResults ) {
+    responses_dt[, c("parentAC", "parentID") := data.table::tstrsplit(hi, " ! ", fixed = TRUE)]
     responses_dt <- responses_dt[, -"hi"]
 
     if(all(is.na(responses_dt$parentAC))) return(responses_dt[, -c("parentAC", "parentID")])
 
     parentACs <- na.omit(unique(responses_dt$parentAC))
+    columns <- names(responses_dt)
 
+    responses_dt <- 
+        if(all(parentACs %in% responses_dt$ac)) {
+            # if so, move all the rows that are parents to the top
+            parentRows <- responses_dt$ac %in% parentACs
+
+            parentDT <- responses_dt[parentRows, ]
+            childDT <- responses_dt[!parentRows, ]
+            rbind(parentDT, childDT)
+
+        } else{
+            # add the parentAC and parentID pairs to the top of the table
+
+            new_rows <- unique(
+                responses_dt[parentAC %in% parentACs[!parentACs %in% responses_dt$ac], .(ac = parentAC, id = parentID, query = query, `query:id` = `query:id`)]
+            )
+            parent_rows <- responses_dt[parentAC %in% parentACs,]
+            child_rows <- responses_dt[!parentAC %in% parentACs,]
+            new_dt <- data.table::rbindlist(list(parent_rows, new_rows, child_rows), use.names=TRUE, fill=TRUE)
+            new_dt[]
+        }
+    # groupby query and query:id 
+    # for each group, sort by the highest number of parentAC counts
+    data.table::setorderv(responses_dt, c("query","ac"))
+    responses_dt[, c("parentAC", "parentID") := NULL]
+
+    # only return numResults rows for each group by query
+    responses_dt <- responses_dt[, .SD[1:min(.N, numResults)], by = .(query)]
+
+    # reorder the columns
+    responses_dt <- responses_dt[, c("id", "ac", "query", "query:id")]
+
+    return(na.omit(responses_dt[]))
 }

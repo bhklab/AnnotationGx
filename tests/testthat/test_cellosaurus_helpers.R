@@ -46,3 +46,40 @@ test_that(".build_cellosaurus_request is acting as expected",{
     expect_equal(nrow(response), 2)
 
 })
+test_that(".common_cellosaurus_fields returns the expected fields", {
+  fields <- AnnotationGx:::.common_cellosaurus_fields()
+  expect_character(fields)
+  
+  expected_fields <- c("ID", "AC", "AS", "SY", "DR", "DI", "DIN", "DIO", "OX", "SX", "AG", "OI",
+                      "HI", "CH", "CA", "CEL", "DT", "DTC", "DTU", "DTV", "DER", "FROM", "GROUP",
+                      "KARY", "KO")
+  
+  expect_equal(fields, expected_fields)
+})
+test_that(".cellosaurus_extResources returns the expected external resources", {
+  resources <- AnnotationGx:::.cellosaurus_extResources()
+  expect_character(resources)
+  
+  expected_resources <- c("4DN", "Abcam", "ABCD", "ABM", "AddexBio", "ArrayExpress",
+    "ATCC", "BCGO", "BCRC", "BCRJ", "BEI_Resources",
+    "BioGRID_ORCS_Cell_line", "BTO", "BioSample", "BioSamples",
+    "cancercelllines", "CancerTools", "CBA", "CCLV", "CCRID",
+    "CCTCC", "Cell_Biolabs", "Cell_Model_Passport", "CGH-DB",
+    "ChEMBL-Cells", "ChEMBL-Targets", "CLDB", "CLO", "CLS",
+    "ColonAtlas", "Coriell", "Cosmic", "Cosmic-CLP", "dbGAP",
+    "dbMHC", "DepMap", "DGRC", "DiscoverX", "DSHB", "DSMZ",
+    "DSMZCellDive", "EBiSC", "ECACC", "EFO", "EGA", "ENCODE",
+    "ESTDAB", "FCDI", "FCS-free", "FlyBase_Cell_line", "GDSC",
+    "GeneCopoeia", "GEO", "HipSci", "HIVReagentProgram", "Horizon_Discovery",
+    "hPSCreg", "IARC_TP53", "IBRC", "ICLC", "ICLDB", "IGRhCellID",
+    "IGSR", "IHW", "Imanis", "Innoprot", "IPD-IMGT/HLA", "ISCR",
+    "IZSLER", "JCRB", "KCB", "KCLB", "Kerafast", "KYinno", "LiGeA",
+    "LIMORE", "LINCS_HMS", "LINCS_LDP", "Lonza", "MCCL", "MeSH",
+    "MetaboLights", "Millipore", "MMRRC", "NCBI_Iran", "NCI-DTP", "NHCDR",
+    "NIHhESC", "NISES", "NRFC", "PerkinElmer", "PharmacoDB", "PRIDE",
+    "Progenetix", "PubChem_Cell_line", "RCB", "Rockland", "RSCB", "SKIP",
+    "SKY/M-FISH/CGH", "SLKBase", "TKG", "TNGB", "TOKU-E", "Ubigene",
+    "WiCell", "Wikidata", "Ximbio")
+  
+  expect_equal(resources, expected_resources)
+})

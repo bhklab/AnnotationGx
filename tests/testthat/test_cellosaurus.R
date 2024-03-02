@@ -38,8 +38,13 @@ test_that("mapCell2Accession prioritizePatient works as expected",{
 
     result1 <- mapCell2Accession(cell_line,from="id", BPPARAM = BiocParallel::SerialParam(), numResults=1, prioritizeParent = TRUE)
     
-    expect_data_table(result1, nrows=2, ncols = 4)
+    expect_data_table(result1, nrows=1, ncols = 4)
     expect_named(result1,  c("id", "ac", "query", "query:id"))
+
+
+    # cant prioritizeParent if from != "id".. yet
+    expect_error(mapCell2Accession("BT474", numResults=1, from="idsy",  prioritizeParent=T))
+
 })
 
 

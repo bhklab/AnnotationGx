@@ -83,11 +83,33 @@
 #  CA         Category                        Once
 #  DT         Date (entry history)            Once
 #  //         Terminator                      Once; ends an entry
+
+#' Get the list of fields in the Cellosaurus schema
+#'
+#' This function retrieves the list of fields available in the Cellosaurus schema.
+#' It internally calls the `.get_cellosaurus_schema()` function to fetch the schema
+#' and extracts the list of fields from it.
+#'
+#' @return A character vector containing the list of fields in the Cellosaurus schema.
+#'
+#' @keywords internal
+#' @noRd
 .cellosaurus_fields <- function(){
     schema <- .get_cellosaurus_schema()
     schema$components$schemas$Fields$enum
 }
 
+#' Get the Cellosaurus schema
+#'
+#' This function retrieves the Cellosaurus schema from the Cellosaurus API.
+#' It internally calls the `.buildURL()`, `.build_request()`, `.perform_request()`,
+#' and `.parse_resp_json()` functions to construct the API URL, send the request,
+#' and parse the response.
+#'
+#' @return A list representing the Cellosaurus schema.
+#'
+#' @keywords internal
+#' @noRd
 .get_cellosaurus_schema <- function(){
     url <- .buildURL("https://api.cellosaurus.org/openapi.json")
     request <- .build_request(url)
@@ -95,7 +117,6 @@
     resp <- .perform_request(request)
     .parse_resp_json(resp)
 }
-
 
 
 
@@ -129,6 +150,12 @@
 #  KARY       Karyotype                               Information relevant to the chromosomes of a cell line (often to describe chromosomal abnormalities).
 #  KO         Knockout                                Gene(s) knocked-out in the cell line and method to obtain the KO.
 #  //         Terminator                             Once; ends an entry
+
+
+#' Internal function to return the list of fields available in Cellosaurus
+#' 
+#' @keywords internal
+#' @noRd
 .common_cellosaurus_fields <- function(){
     c("ID", "AC", "AS", "SY", "DR", "DI", "DIN", "DIO", "OX", "SX", "AG", "OI",
     "HI", "CH", "CA", "CEL", "DT", "DTC", "DTU", "DTV", "DER", "FROM", "GROUP",
@@ -157,7 +184,11 @@
 
 # Cell_Model_Passport, DepMap, ATCC, Cosmic, Cosmic-CLP
 
-
+#' Internal function to return the list of external resources available in Cellosaurus
+#' @return A character vector of external resources available in Cellosaurus
+#' 
+#' @keywords internal
+#' @noRd
 .cellosaurus_extResources <- function(){
     c("4DN", "Abcam", "ABCD", "ABM", "AddexBio", "ArrayExpress",
     "ATCC", "BCGO", "BCRC", "BCRJ", "BEI_Resources",
