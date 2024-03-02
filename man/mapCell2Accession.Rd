@@ -6,9 +6,10 @@
 \usage{
 mapCell2Accession(
   ids,
-  numResults = 1,
+  numResults = 1000,
   from = "id",
   to = c("id", "ac"),
+  prioritizeParent = FALSE,
   query_only = FALSE,
   raw = FALSE,
   BPPARAM = BiocParallel::SerialParam(),
@@ -24,6 +25,15 @@ mapCell2Accession(
 
 \item{to}{The field to query to. Default is both "id" and "ac".}
 
+\item{prioritizeParent}{If TRUE, prioritizes the parent cell line when multiple matches are found. Default is FALSE.
+When prioritizeParent is TRUE, if multiple matches are found for a cell line name, the function
+will prioritize the parent cell lines over other matches. This can be useful when dealing with
+cell line hierarchies where the parent cell line represents a broader category.
+An example of this is trying to map using id "BT474" which returns "CVCL_YX79" which corresponds
+to "BT474 A3" whereas "BT-474" exists in the database as "CVCL_0179". If prioritizeParent is TRUE,
+the function will prioritize "CVCL_0179" over "CVCL_YX79" since "BT-474" is the parent cell line of
+"BT474 A3".}
+
 \item{query_only}{If TRUE, returns the query URL instead of the results. Default is FALSE.}
 
 \item{raw}{If TRUE, returns the raw response instead of a data table. Default is FALSE.}
@@ -33,8 +43,10 @@ mapCell2Accession(
 \item{...}{Additional arguments to pass to the request.}
 }
 \value{
-A data table with the mapping information, including the cell line name,
-accession number, and Cellosaurus ID.
+Depending on parameters, either a:
+\code{data.table} with the "id", "ac", "query", and "query:id" columns.
+\code{list} of query URLs if \code{query_only} is TRUE.
+\code{list} of raw responses if \code{raw} is TRUE.
 }
 \description{
 This function takes a vector of cell line names and maps them to accession numbers
