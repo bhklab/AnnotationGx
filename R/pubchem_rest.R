@@ -24,15 +24,16 @@ getPubchemCompound <- function(
     ){
     funContext <- .funContext("getPubchemCompound")
 
-    if(to == 'property'){
+        
+    to_ <- if(to == 'property'){
         checkmate::assert_atomic(properties, all.missing = FALSE)
         checkmate::assert_character(properties)
         to <- paste0(to, '/', paste0(properties, collapse = ','))
-    }
+    }else to
 
     requests <- lapply(ids, function(x) {
         .build_pubchem_rest_query(
-            id = x, domain = 'compound', namespace = from, operation = to, output = output,
+            id = x, domain = 'compound', namespace = from, operation = to_, output = output,
             raw = raw, query_only = query_only, ...)
         }
     )
@@ -40,13 +41,20 @@ getPubchemCompound <- function(
 
     resps_raw <- httr2::req_perform_sequential(requests, on_error = "continue")
     .debug(funContext, " Number of responses: ", length(resps_raw))
-
+    names(resps_raw) <- ids
     if(raw) return(resps_raw)
-    resps <- lapply(resps_raw, function(x){
-        .parse_resp_json(x) |> .parseQueryToDT()
-    })
 
-    names(resps) <- ids
+
+    # Parse the responses
+    resps <- .parse_pubchem_rest_responses(resps_raw)
+    failed <- sapply(resps_raw, httr2::resp_is_error, USE.NAMES = T)
+
+    if(any(failed)){
+        .warn(funContext, " Some queries failed. See the 'failed' object for details.")
+        failures <- lapply(resps_raw[failed], function(resp){
+            .parse_resp_json(resp)$Fault
+        })
+    }else failures <- NULL
 
     if(from != 'name'){
         responses <- data.table::rbindlist(resps, fill= TRUE)
@@ -55,8 +63,53 @@ getPubchemCompound <- function(
     }
     data.table::setnames(responses, 'V1', to, skip_absent=TRUE)
 
+    attributes(responses)$failed <- failures 
+
     responses
 }
+
+
+#' Map compound names to PubChem CIDs
+#'
+#' This function maps compound names to PubChem CIDs using the PubChem REST API.
+#'
+#' @param names A character vector of compound names.
+#' @param raw Logical indicating whether to return the raw response from the API (default is FALSE).
+#' @param query_only Logical indicating whether to only perform the query without retrieving the data (default is FALSE).
+#' @param output The format of the output, either 'JSON' or 'XML' (default is 'JSON').
+#' @param ... Additional arguments to be passed to the getPubchemCompound function.
+#'
+#' @return A character vector of PubChem CIDs.
+#'
+#' @examples
+#' mapCompound2CID(c("aspirin", "caffeine"))
+#'
+#' @export
+mapCompound2CID <- function(names, raw = FALSE, query_only = FALSE, output = 'JSON', ...){
+    getPubchemCompound(ids = names, from = 'name', to = 'cids', raw = raw, query_only = query_only, output = output, ...)
+}
+
+.parse_pubchem_rest_responses <- function(responses){
+    checkmate::assert_list(
+        x = responses,
+        any.missing = FALSE,
+        names = 'named',
+        min.len = 1
+    )
+
+    responses_parsed <- lapply(names(responses), function(i){
+        resp <- responses[[i]]
+        body <- .parse_resp_json(resp)
+        if(httr2::resp_is_error(resp)) return(.parseQueryToDT(NA_integer_))
+
+        return(.parseQueryToDT(body))
+    })
+    names(responses_parsed) <- names(responses)
+    return(responses_parsed)
+    
+}
+
+
 
 
 
@@ -76,7 +129,7 @@ getPubchemCompound <- function(
 #'
 #' @return The query URL or the parsed response, depending on the arguments.
 #'
-#' @importFrom checkmate assert assert_choice assert_logical assert_atomic test_choice
+#' @importFrom checkmate assert assert_choice assert_logical assert_atomic test_choice assert_integerish test_atomic
 #'
 #' @keywords internal
 .build_pubchem_rest_query <- function(
@@ -102,8 +155,9 @@ getPubchemCompound <- function(
     )
     assert_choice(output, c('JSON', 'XML', 'SDF', 'TXT', 'CSV'))
     assert_logical(raw, query_only)
-    assert_atomic(id, all.missing = FALSE)
+    if(!test_atomic(id, any.missing = FALSE)) .err("id must be an atomic vector with no missing/NA values")
 
+    if(namespace == 'cid') assert_integerish(id)
 
     # -------------------------------------- Function context --------------------------------------
     funContext <- .funContext("query_pubchem_rest")

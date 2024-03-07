@@ -42,10 +42,43 @@ UniProt, ChEBI, and ChEMBL, given a specific identifier.
 
 ```{r setup}
 library(AnnotationGx)
+
+
+
 ```
 
 
 # 
+
+### Mapping from chemical name to PubChem CID
+The main function that is provided by the package is `mapCompound2CID`. 
+
+``` {r map aspirin to cid}
+mapCompound2CID("aspirin")
+```
+
+In the case of a compound that can't be mapped, `NA` will be returned and a warning will be issued.
+
+``` {r map non existent compound to cid}
+
+(result <- mapCompound2CID(c("non existent compound", "another bad compound")))
+
+failed <- attributes(result)$failed
+
+# get the list of failed inputs 
+names(failed)
+
+# get the error message for the failed input
+failed[1]
+
+```
+
+### Mapping from PubChem CID to Properties
+TODO::
+
+
+### Mapping from PubChem CID to Annotations
+TODO::
 
 
 # References
