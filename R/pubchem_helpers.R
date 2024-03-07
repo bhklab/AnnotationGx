@@ -37,11 +37,11 @@ getPubchemStatus <- function(
     }
     # Check if the request count or request time is
     if(parsed_info$service$status == "Black"){
-        message("WARNING: The request limit has been exceeded and requests are being blocked.")
+        .warn("The request limit has been exceeded and requests are being blocked.")
     }else if(parsed_info$service$status %in% c("Red", "Yellow")){
-        message("WARNING: The request limit has been reached or is close to being reached.")
+        .warn("The request limit has been reached or is close to being reached.")
     }else{
-        message("The request limit is not close to being reached.")
+        .warn("The request limit is not close to being reached.")
     }
     return(parsed_info)
 }

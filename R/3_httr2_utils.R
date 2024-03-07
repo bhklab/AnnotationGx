@@ -45,8 +45,8 @@
 #' @param resp The response object from the HTTP request.
 #' @return The parsed JSON response.
 #' @noRd
-.parse_resp_json <- function(resp){
-    httr2::resp_body_json(resp, simplifyVector = TRUE)
+.parse_resp_json <- function(resp, simplifyVector = TRUE){
+    httr2::resp_body_json(resp, simplifyVector = simplifyVector)
 }
 
 
