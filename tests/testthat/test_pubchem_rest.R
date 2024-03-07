@@ -2,6 +2,48 @@ library(AnnotationGx)
 library(testthat)
 library(checkmate)
 
+compounds <- c('temozolomide', 'erlotinib', 'TRETINOIN', 'TRAMETINIB', 'epigallocatechin-3-monogallate')
+
+# Comprehensive Tests:
+test_that("AnnotationGx::getPubchemCompound 5 Correct Drugs", {
+    # Test for all possible combinations of domain, namespace, operation, and output
+    domains <- c('compound')
+    
+    expected_cids <- c(5394, 176870, 444795, 11707110, 65064)
+
+    result <- getPubchemCompound(ids = compounds, from = 'name', to = 'cids')
+    expect_data_table(
+        x = result,
+        types = c('character', 'integer'),
+        any.missing = FALSE,
+        ncols = 2,
+        nrows = length(compounds),
+        col.names = 'named'
+    )
+})
+
+test_that("AnnotationGx::getPubchemCompound 1 Incorrect Drug", {
+    # Test for an incorrect drug, scoped so it doesnt affect the other tests
+    compounds <- c('BAD_DRUG_NAME', compounds)
+    getPubchemCompound(ids = compounds, from = 'name', to = 'cids')
+
+    result <- getPubchemCompound('BAD', from='name', to = 'cids', raw = T)[[1]] |> 
+    AnnotationGx:::.parse_resp_json() |> 
+    AnnotationGx:::.parseQueryToDT()
+
+    expect_data_table(
+        x = result,
+        types = c('character', 'integer'),
+        any.missing = FALSE,
+        ncols = 1,
+        nrows = 1,
+        col.names = 'named'
+    )
+    
+})
+
+
+# Basic Tests
 options::opt_set("log_level", "DEBUG")
 test_that("AnnotationGx:::.build_pubchem_rest_query", {
     res <- AnnotationGx:::.build_pubchem_rest_query('erlotinib')
