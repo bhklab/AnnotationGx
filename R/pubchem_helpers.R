@@ -1,17 +1,3 @@
-#' Parses the query response into a data table
-#'
-#' This function takes a query response and converts it into a data table using the `as.data.table` function from the `data.table` package.
-#'
-#' @param resp The query response to be parsed
-#' @return A data table containing the parsed query response
-#'
-#' @noRd
-#' @keywords internal
-.parseQueryToDT <- function(resp) {
-  data.table::as.data.table(resp[[1]][[1]])
-}
-
-
 #' Parses PubChem REST responses
 #'
 #' This function takes a list of PubChem REST responses and parses them into a
@@ -104,4 +90,15 @@
 
   # -------------------------------------- Querying PubChem REST API --------------------------------------
   .build_pubchem_request(url)
+}
+
+
+#' Builds a PubChem HTTP request using the provided URL.
+#'
+#' @param url The URL for the request.
+#' @return The built PubChem HTTP request.
+#' @noRd
+.build_pubchem_request <- function(url) {
+  .build_request(url) |>
+    httr2::req_throttle(rate = 1000 / 60)
 }

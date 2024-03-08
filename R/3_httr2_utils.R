@@ -3,6 +3,7 @@
 #' @param ... The components of the URL.
 #' @return The encoded URL.
 #' @noRd
+#' @keywords internal
 .buildURL <- function(...) {
   paste0(stats::na.omit(unlist(list(...))), collapse = "/") |> utils::URLencode()
 }
@@ -12,6 +13,7 @@
 #' @param url The URL for the request.
 #' @return The built HTTP request.
 #' @noRd
+#' @keywords internal
 .build_request <- function(url) {
   httr2::request(url) |>
     httr2::req_retry(max_tries = 3) |>
@@ -23,6 +25,7 @@
 #' @param request The HTTP request to perform.
 #' @return The response of the HTTP request.
 #' @noRd
+#' @keywords internal
 .perform_request <- function(request) {
   httr2::req_perform(request)
 }
@@ -35,6 +38,7 @@
 #' @return The responses of the HTTP requests.
 #'
 #' @noRd
+#' @keywords internal
 .perform_request_parallel <- function(reqs, on_error = "continue", progress = TRUE, ...) {
   httr2::req_perform_parallel(reqs, on_error = on_error, progress = progress, ...)
 }
@@ -45,6 +49,7 @@
 #' @param resp The response object from the HTTP request.
 #' @return The parsed JSON response.
 #' @noRd
+#' @keywords internal
 .parse_resp_json <- function(resp, simplifyVector = TRUE) {
   httr2::resp_body_json(resp, simplifyVector = simplifyVector)
 }
@@ -54,19 +59,7 @@
 #' @param resp The response object from the HTTP request.
 #' @return The parsed TSV response.
 #' @noRd
-#' @export
-#'
-#'
+#' @keywords internal
 .parse_resp_tsv <- function(resp, show_col_types = FALSE, skip = 0) {
   readr::read_tsv(resp$body, skip = skip, show_col_types = show_col_types)
-}
-
-#' Builds a PubChem HTTP request using the provided URL.
-#'
-#' @param url The URL for the request.
-#' @return The built PubChem HTTP request.
-#' @noRd
-.build_pubchem_request <- function(url) {
-  .build_request(url) |>
-    httr2::req_throttle(rate = 1000 / 60)
 }

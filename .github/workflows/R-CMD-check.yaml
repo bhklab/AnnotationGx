@@ -1,10 +1,10 @@
 on:
   push:
-    branches: [main, development, devel]
+    branches: [main]
   pull_request:
-    branches: [main, development, devel]
+    branches: [main, development]
 
-name: R-CMD-check
+name: CI/CD
 
 jobs:
   R-CMD-check:
@@ -119,6 +119,7 @@ jobs:
   Upload-Docker:
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/newAnnotationGx'
     # needs: R-CMD-check
+    needs: R-CMD-check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

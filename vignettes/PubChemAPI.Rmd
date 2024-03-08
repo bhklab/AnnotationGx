@@ -46,7 +46,7 @@ library(AnnotationGx)
 
 
 
-### Mapping from chemical name to PubChem CID
+# Mapping from chemical name to PubChem CID
 The main function that is provided by the package is `mapCompound2CID`. 
 
 ``` {r map aspirin to cid}
@@ -65,7 +65,7 @@ mapCompound2CID(drugs)
 ```
 
 It is possible for names to multimap to CIDs. This is the case for
-'Vincaleukoblastine' in the above query. In cases of multimapping, usually
+'*Vincaleukoblastine*' in the above query. In cases of multimapping, usually
 the first entry has the highest similarity to the requested drug. To subset
 to only the first occurrence of each of drug name:
 
@@ -88,7 +88,7 @@ names(failed)
 print(failed[1])
 ```
 
-### Mapping from PubChem CID to Properties
+# Mapping from PubChem CID to Properties
 Once CIDs are obtained, they can be used to query the properties of the compound.
 To view the available properties from Pubchem, use the `getPubchemProperties` function.
 
@@ -96,6 +96,7 @@ To view the available properties from Pubchem, use the `getPubchemProperties` fu
 getPubchemProperties()
 ```
 
+After deciding which properties to query, you can use the `mapCID2Properties` function to get the properties for a specific CID.
 
 ``` {r get properties for a single cid}
 properties <- c("Title", "MolecularFormula", "InChIKey", "MolecularWeight")
@@ -106,7 +107,7 @@ result[!is.na(cids), mapCID2Properties(ids = cids, properties = properties)]
 
 
 
-### Mapping from PubChem CID to Annotations
+# Mapping from PubChem CID to Annotations
 Pubchem's VIEW API provides access to annotations from external sources such as
 UniProt, ChEBI, and ChEMBL, given a specific identifier. 
 Before querying annotations, we need to use the exact heading we want to query.
@@ -114,31 +115,33 @@ Before querying annotations, we need to use the exact heading we want to query.
 You can use the `getPubchemAnnotationHeadings` function to get the available 
 annotation headings and types.
 
-To get ALL available annotation headings:
+### Get ALL available annotation headings:
 ``` {r get annotation headings}
 getPubchemAnnotationHeadings()
 ```
   
-To get annotation headings for a specific type:
+### Get annotation headings for a specific type:
 ``` {r get annotation headings for a specific type}
 getPubchemAnnotationHeadings(type = "Compound")
 ```
 
-To get annotation headings for a specific heading:
+### Get annotation headings for a specific heading:
 ``` {r get annotation headings for a specific heading}
 getPubchemAnnotationHeadings(heading = "CAS*")
 ```
 
-To get annotation headings for a specific type **and** heading:
+### Get annotation headings for a specific type **and** heading:
 ``` {r get annotation headings for a specific type and heading}
 getPubchemAnnotationHeadings(type = "Compound", heading = "CAS*")
 ```
 
+
+### Query annotations for a specific CID and heading
+
 We can then use the heading to query the annotations for a specific CID.
 
 ``` {r get annotations for a single cid}
-heading <- "CAS"
-result[, CAS := lapply(cids, annotatePubchemCompound, heading = "CAS")]
+result[!is.na(cids), CAS := annotatePubchemCompound(cids, "CAS")]
 result
 ```
   
