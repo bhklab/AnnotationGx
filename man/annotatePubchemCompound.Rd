@@ -5,20 +5,27 @@
 \title{Annotate PubChem Compound}
 \usage{
 annotatePubchemCompound(
-  cid,
+  cids,
   heading = "ChEMBL ID",
   source = NULL,
-  parse_function = identity
+  parse_function = identity,
+  query_only = FALSE,
+  raw = FALSE,
+  ...
 )
 }
 \arguments{
-\item{cid}{The compound ID (CID) of the PubChem compound.}
+\item{cids}{The compound ID (CID) of the PubChem compound.}
 
 \item{heading}{The type of information to retrieve. Default is "ChEMBL ID".}
 
 \item{source}{The data source to use. Default is NULL.}
 
 \item{parse_function}{A custom parsing function to process the response. Default is the identity function.}
+
+\item{query_only}{Logical indicating whether to return the query URL only. Default is FALSE.}
+
+\item{raw}{Logical indicating whether to return the raw response. Default is FALSE.}
 }
 \value{
 The annotated information about the PubChem compound.
@@ -27,7 +34,7 @@ The annotated information about the PubChem compound.
 This function retrieves information about a PubChem compound based on the provided compound ID (CID).
 }
 \examples{
-annotatePubchemCompound(cid = 12345)
-annotatePubchemCompound(cid = 67890, heading = "CAS")
+annotatePubchemCompound(cid = 2244)
+annotatePubchemCompound(cid = c(2244, 67890), heading = "CAS")
 
 }

@@ -35,3 +35,17 @@
 .bplapply <- function(X, FUN, ..., BPPARAM = BiocParallel::SerialParam()) {
   BiocParallel::bplapply(X, FUN, ..., BPPARAM = BPPARAM)
 }
+
+
+#' Parses the query response into a data table
+#'
+#' This function takes a query response and converts it into a data table using the `as.data.table` function from the `data.table` package.
+#'
+#' @param resp The query response to be parsed
+#' @return A data table containing the parsed query response
+#'
+#' @noRd
+#' @keywords internal
+.parseQueryToDT <- function(resp) {
+  data.table::as.data.table(resp[[1]][[1]])
+}
