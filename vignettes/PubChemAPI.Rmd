@@ -67,7 +67,7 @@ It is possible for names to multimap to CIDs. This is the case for
 the first entry has the highest similarity to the requested drug. To subset
 to only the first occurrence of each of drug name:
 
-``` {r map multiple compounds to cid}
+``` {r map multiple compounds to cid and subset to first}
 mapCompound2CID(drugs, first = TRUE)
 ```
 
