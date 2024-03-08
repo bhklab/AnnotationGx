@@ -131,6 +131,7 @@ mapCompound2CID <- function(names, raw = FALSE, query_only = FALSE, output = 'JS
 #'
 #' @importFrom checkmate assert assert_choice assert_logical assert_atomic test_choice assert_integerish test_atomic
 #'
+#' @noRd
 #' @keywords internal
 .build_pubchem_rest_query <- function(
         id, domain='compound', namespace='name', operation='cids',

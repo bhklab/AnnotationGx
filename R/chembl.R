@@ -60,8 +60,8 @@
 #' @param value `character(1)` Value to query
 #' @param format `character(1)` Format of the response
 #' 
-#' @md
-#' @export
+#' @noRd
+#' @keywords internal
 .build_chembl_request <- function(
     resource,
     field = NULL, filter_type = NULL, value = NULL, format = "json"){

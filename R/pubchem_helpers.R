@@ -5,20 +5,6 @@
 }
 
 
-getPubchemStatus <- function(
-    returnMessage = FALSE, printMessage = TRUE,
-    url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/Aspirin/cids/JSON"
-    ){
-    funContext <- .funContext("getPubchemStatus")
-
-    request <- .buildURL(url) |> .build_pubchem_request()
-    response <- httr2::req_perform(request)
-
-    status_code <- httr2::resp_status(response)
-    parsed_info <- .checkThrottlingStatus2(response, printMessage)
-    if(returnMessage) return(parsed_info)
-}
-
 
 #' names are: request_count, request_time and service
 #' each has status and percent
@@ -30,7 +16,7 @@ getPubchemStatus <- function(
 #'  Black - the limit has been exceeded and requests are being blocked
 #' @keywords internal
 .checkThrottlingStatus2 <- function(response, printMessage){
-    message <- httr2::resp_headers(response)$`x-throttling-control`
+    message <- httr2::resp_headers(response)$"X-Throttling-Control"
     parsed_info <- .parse_throttling_message(message)
     if(printMessage){
         message("Throttling status:\n", paste0(strsplit(message, ", ")[[1]], collapse = "\n"))

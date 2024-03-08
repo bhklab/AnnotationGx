@@ -28,15 +28,13 @@ test_that("checkThrottlingStatus Works", {
                                    request_time = list(status = "Yellow", percent = 60),
                                    service = list(status = "Yellow", percent = 60)))
 
-    response$headers["X-Throttling-Control"] <- 
-      "Request Count status: Red (80%), Request Time status: Red (80%), Service status: Red (80%)"
+    response$headers["X-Throttling-Control"] <- "Request Count status: Red (80%), Request Time status: Red (80%), Service status: Red (80%)"
     parsed_info <- AnnotationGx:::.checkThrottlingStatus2(response, printMessage = FALSE)
     expect_equal(parsed_info, list(request_count = list(status = "Red", percent = 80),
                                    request_time = list(status = "Red", percent = 80),
                                    service = list(status = "Red", percent = 80)))
 
-    response$headers["X-Throttling-Control"] <- 
-      "Request Count status: Black (100%), Request Time status: Red (80%), Service status: Red (80%)"
+    response$headers["X-Throttling-Control"] <- "Request Count status: Black (100%), Request Time status: Red (80%), Service status: Red (80%)"
     parsed_info <- AnnotationGx:::.checkThrottlingStatus2(response, printMessage = FALSE)
     expect_equal(parsed_info, list(request_count = list(status = "Black", percent = 100),
                                     request_time = list(status = "Red", percent = 80),

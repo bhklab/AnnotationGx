@@ -95,12 +95,12 @@ mapCell2Accession <- function(
 #' @keywords internal
 #' @noRd
 .prioritize_parent <- function(responses_dt, numResults ) {
-    responses_dt[, c("parentAC", "parentID") := data.table::tstrsplit(hi, " ! ", fixed = TRUE)]
+    responses_dt[, c("parentAC", "parentID") := data.table::tstrsplit(responses_dt$hi, " ! ", fixed = TRUE)]
     responses_dt <- responses_dt[, -"hi"]
 
     if(all(is.na(responses_dt$parentAC))) return(responses_dt[, -c("parentAC", "parentID")])
 
-    parentACs <- na.omit(unique(responses_dt$parentAC))
+    parentACs <- stats::na.omit(unique(responses_dt$parentAC))
     columns <- names(responses_dt)
 
     responses_dt <- 
@@ -116,10 +116,18 @@ mapCell2Accession <- function(
             # add the parentAC and parentID pairs to the top of the table
 
             new_rows <- unique(
-                responses_dt[parentAC %in% parentACs[!parentACs %in% responses_dt$ac], .(ac = parentAC, id = parentID, query = query, `query:id` = `query:id`)]
+                responses_dt[
+                    "parentAC" %in% parentACs[!parentACs %in% responses_dt$ac], 
+                    list(
+                        ac = responses_dt$parentAC, 
+                        id = responses_dt$parentID, 
+                        query = responses_dt$query, 
+                        `query:id` = responses_dt$`query:id`
+                    )
+                ]
             )
-            parent_rows <- responses_dt[parentAC %in% parentACs,]
-            child_rows <- responses_dt[!parentAC %in% parentACs,]
+            parent_rows <- responses_dt["parentAC" %in% parentACs,]
+            child_rows <- responses_dt[!"parentAC" %in% parentACs,]
             new_dt <- data.table::rbindlist(list(parent_rows, new_rows, child_rows), use.names=TRUE, fill=TRUE)
             new_dt[]
         }
@@ -129,10 +137,10 @@ mapCell2Accession <- function(
     responses_dt[, c("parentAC", "parentID") := NULL]
 
     # only return numResults rows for each group by query
-    responses_dt <- responses_dt[, .SD[1:min(.N, numResults)], by = .(query)]
+    responses_dt <- responses_dt[, .SD[1:min(.N, numResults)], by = c("query")]
 
     # reorder the columns
     responses_dt <- responses_dt[, c("id", "ac", "query", "query:id")]
 
-    return(na.omit(responses_dt[]))
+    return(stats::na.omit(responses_dt[]))
 }
