@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">AnnotationGx</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9070</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9075</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -122,7 +122,7 @@ additional columns <code>query</code> and
 <code>query:&lt;from&gt;</code> which can be used to identify the
 original query and the original identifier type if needed.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/mapCell2Accession.html">mapCell2Accession</a></span><span class="op">(</span><span class="st">"hela"</span>, numResults<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/mapCell2Accession.html">mapCell2Accession</a></span><span class="op">(</span><span class="st">"hela"</span>, numResults <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co">#&gt;        id        ac   query query:id</span></span>
 <span><span class="co">#&gt;    &lt;char&gt;    &lt;char&gt;  &lt;char&gt;   &lt;char&gt;</span></span>
 <span><span class="co">#&gt; 1:   HeLa CVCL_0030 id:hela     hela</span></span></code></pre></div>
@@ -135,19 +135,19 @@ standard name. This is the case if we query for “A549” in the same
 way.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># our query:</span></span>
-<span><span class="fu"><a href="../reference/mapCell2Accession.html">mapCell2Accession</a></span><span class="op">(</span><span class="st">"A549"</span>, from <span class="op">=</span> <span class="st">"id"</span>, numResults<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/mapCell2Accession.html">mapCell2Accession</a></span><span class="op">(</span><span class="st">"A549"</span>, from <span class="op">=</span> <span class="st">"id"</span>, numResults <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co">#&gt;           id        ac   query query:id</span></span>
 <span><span class="co">#&gt;       &lt;char&gt;    &lt;char&gt;  &lt;char&gt;   &lt;char&gt;</span></span>
 <span><span class="co">#&gt; 1: A549 Cas9 CVCL_DX70 id:A549     A549</span></span>
 <span></span>
 <span><span class="co"># if we use the actual standard name:</span></span>
-<span><span class="fu"><a href="../reference/mapCell2Accession.html">mapCell2Accession</a></span><span class="op">(</span><span class="st">"A-549"</span>, from <span class="op">=</span> <span class="st">"id"</span>, numResults<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/mapCell2Accession.html">mapCell2Accession</a></span><span class="op">(</span><span class="st">"A-549"</span>, from <span class="op">=</span> <span class="st">"id"</span>, numResults <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co">#&gt;        id        ac    query query:id</span></span>
 <span><span class="co">#&gt;    &lt;char&gt;    &lt;char&gt;   &lt;char&gt;   &lt;char&gt;</span></span>
 <span><span class="co">#&gt; 1:  A-549 CVCL_0023 id:A-549    A-549</span></span>
 <span></span>
 <span><span class="co"># trying to get the standard name with more results</span></span>
-<span><span class="fu"><a href="../reference/mapCell2Accession.html">mapCell2Accession</a></span><span class="op">(</span><span class="st">"A549"</span>, from <span class="op">=</span> <span class="st">"id"</span>, numResults<span class="op">=</span><span class="fl">10</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/mapCell2Accession.html">mapCell2Accession</a></span><span class="op">(</span><span class="st">"A549"</span>, from <span class="op">=</span> <span class="st">"id"</span>, numResults <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                   id        ac   query query:id</span></span>
 <span><span class="co">#&gt;               &lt;char&gt;    &lt;char&gt;  &lt;char&gt;   &lt;char&gt;</span></span>
 <span><span class="co">#&gt;  1:        A549 Cas9 CVCL_DX70 id:A549     A549</span></span>
@@ -172,22 +172,22 @@ parent cell line. To deal with this issue, we can use the
 parent cell line of each returned result and prioritize the results
 based on the accession id of the parent cell line.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/mapCell2Accession.html">mapCell2Accession</a></span><span class="op">(</span><span class="st">"A549"</span>, from <span class="op">=</span> <span class="st">"id"</span>, numResults<span class="op">=</span><span class="fl">1</span>, prioritizeParent<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt;        id        ac   query query:id</span></span>
-<span><span class="co">#&gt;    &lt;char&gt;    &lt;char&gt;  &lt;char&gt;   &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1:  A-549 CVCL_0023 id:A549     A549</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/mapCell2Accession.html">mapCell2Accession</a></span><span class="op">(</span><span class="st">"A549"</span>, from <span class="op">=</span> <span class="st">"id"</span>, numResults <span class="op">=</span> <span class="fl">1</span>, prioritizeParent <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt;            id        ac   query query:id</span></span>
+<span><span class="co">#&gt;        &lt;char&gt;    &lt;char&gt;  &lt;char&gt;   &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1: A549(VM)28 CVCL_4V06 id:A549     A549</span></span></code></pre></div>
 <p>Another example using the BT474 cell line.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/mapCell2Accession.html">mapCell2Accession</a></span><span class="op">(</span><span class="st">"BT474"</span>, numResults<span class="op">=</span><span class="fl">1</span>, prioritizeParent<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/mapCell2Accession.html">mapCell2Accession</a></span><span class="op">(</span><span class="st">"BT474"</span>, numResults <span class="op">=</span> <span class="fl">1</span>, prioritizeParent <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt;          id        ac    query query:id</span></span>
 <span><span class="co">#&gt;      &lt;char&gt;    &lt;char&gt;   &lt;char&gt;   &lt;char&gt;</span></span>
 <span><span class="co">#&gt; 1: BT474 A3 CVCL_YX79 id:BT474    BT474</span></span>
 <span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/mapCell2Accession.html">mapCell2Accession</a></span><span class="op">(</span><span class="st">"BT474"</span>, numResults<span class="op">=</span><span class="fl">1</span>, prioritizeParent<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt;        id        ac    query query:id</span></span>
-<span><span class="co">#&gt;    &lt;char&gt;    &lt;char&gt;   &lt;char&gt;   &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1: BT-474 CVCL_0179 id:BT474    BT474</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/mapCell2Accession.html">mapCell2Accession</a></span><span class="op">(</span><span class="st">"BT474"</span>, numResults <span class="op">=</span> <span class="fl">1</span>, prioritizeParent <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt;              id        ac    query query:id</span></span>
+<span><span class="co">#&gt;          &lt;char&gt;    &lt;char&gt;   &lt;char&gt;   &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1: BT474-5FU[r] CVCL_4V65 id:BT474    BT474</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="example-pipeline-to-annotate-a-datasegsm1897356t">Example pipeline to annotate a dataseGSM1897356t<a class="anchor" aria-label="anchor" href="#example-pipeline-to-annotate-a-datasegsm1897356t"></a>

@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">AnnotationGx</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9070</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9075</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -104,9 +104,244 @@ identifier.</p>
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bhklab.github.io/AnnotationGx/">AnnotationGx</a></span><span class="op">)</span></span></code></pre></div>
+<div class="section level4">
+<h4 id="mapping-from-chemical-name-to-pubchem-cid">Mapping from chemical name to PubChem CID<a class="anchor" aria-label="anchor" href="#mapping-from-chemical-name-to-pubchem-cid"></a>
+</h4>
+<p>The main function that is provided by the package is
+<code>mapCompound2CID</code>.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/mapCompound2CID.html">mapCompound2CID</a></span><span class="op">(</span><span class="st">"aspirin"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;       name  cids</span></span>
+<span><span class="co">#&gt;     &lt;char&gt; &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1: aspirin  2244</span></span></code></pre></div>
+<p>You can pass in a list of compound names to get the CIDs for all of
+them at once.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">drugs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>  <span class="st">"Aspirin"</span>, <span class="st">"Erlotinib"</span>, <span class="st">"Acadesine"</span>, <span class="st">"Camptothecin"</span>, <span class="st">"Vincaleukoblastine"</span>,</span>
+<span>  <span class="st">"Cisplatin"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/mapCompound2CID.html">mapCompound2CID</a></span><span class="op">(</span><span class="va">drugs</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                  name    cids</span></span>
+<span><span class="co">#&gt;                &lt;char&gt;   &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1:            Aspirin    2244</span></span>
+<span><span class="co">#&gt; 2:          Erlotinib  176870</span></span>
+<span><span class="co">#&gt; 3:          Acadesine   17513</span></span>
+<span><span class="co">#&gt; 4:       Camptothecin   24360</span></span>
+<span><span class="co">#&gt; 5: Vincaleukoblastine   13342</span></span>
+<span><span class="co">#&gt; 6: Vincaleukoblastine  241903</span></span>
+<span><span class="co">#&gt; 7: Vincaleukoblastine 3823887</span></span>
+<span><span class="co">#&gt; 8:          Cisplatin 5702198</span></span></code></pre></div>
+<p>It is possible for names to multimap to CIDs. This is the case for
+‘Vincaleukoblastine’ in the above query. In cases of multimapping,
+usually the first entry has the highest similarity to the requested
+drug. To subset to only the first occurrence of each of drug name:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/mapCompound2CID.html">mapCompound2CID</a></span><span class="op">(</span><span class="va">drugs</span>, first <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                  name    cids</span></span>
+<span><span class="co">#&gt;                &lt;char&gt;   &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1:            Aspirin    2244</span></span>
+<span><span class="co">#&gt; 2:          Erlotinib  176870</span></span>
+<span><span class="co">#&gt; 3:          Acadesine   17513</span></span>
+<span><span class="co">#&gt; 4:       Camptothecin   24360</span></span>
+<span><span class="co">#&gt; 5: Vincaleukoblastine   13342</span></span>
+<span><span class="co">#&gt; 6:          Cisplatin 5702198</span></span></code></pre></div>
+<p>In the case of a compound that can’t be mapped, <code>NA</code> will
+be returned and a warning will be issued.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="op">(</span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mapCompound2CID.html">mapCompound2CID</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">drugs</span>, <span class="st">"non existent compound"</span>, <span class="st">"another bad compound"</span><span class="op">)</span>, first <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">[17:34:45] [WARNING] [AnnotationGx::getPubchemCompound] Some queries failed. See the 'failed' object for details.</span></span></span>
+<span><span class="co">#&gt;                     name    cids</span></span>
+<span><span class="co">#&gt;                   &lt;char&gt;   &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1:               Aspirin    2244</span></span>
+<span><span class="co">#&gt; 2:             Erlotinib  176870</span></span>
+<span><span class="co">#&gt; 3:             Acadesine   17513</span></span>
+<span><span class="co">#&gt; 4:          Camptothecin   24360</span></span>
+<span><span class="co">#&gt; 5:    Vincaleukoblastine   13342</span></span>
+<span><span class="co">#&gt; 6:             Cisplatin 5702198</span></span>
+<span><span class="co">#&gt; 7: non existent compound      NA</span></span>
+<span><span class="co">#&gt; 8:  another bad compound      NA</span></span>
+<span></span>
+<span><span class="va">failed</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/attributes.html" class="external-link">attributes</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span><span class="op">$</span><span class="va">failed</span></span>
+<span></span>
+<span><span class="co"># get the list of failed inputs</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">failed</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "non existent compound" "another bad compound"</span></span>
+<span></span>
+<span><span class="co"># get the error message for the failed input</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">failed</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $`non existent compound`</span></span>
+<span><span class="co">#&gt; $`non existent compound`$Code</span></span>
+<span><span class="co">#&gt; [1] "PUGREST.NotFound"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $`non existent compound`$Message</span></span>
+<span><span class="co">#&gt; [1] "No CID found"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $`non existent compound`$Details</span></span>
+<span><span class="co">#&gt; [1] "No CID found that matches the given name"</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="section"></h2>
+<div class="section level4">
+<h4 id="mapping-from-pubchem-cid-to-properties">Mapping from PubChem CID to Properties<a class="anchor" aria-label="anchor" href="#mapping-from-pubchem-cid-to-properties"></a>
+</h4>
+<p>Once CIDs are obtained, they can be used to query the properties of
+the compound. To view the available properties from Pubchem, use the
+<code>getPubchemProperties</code> function.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/getPubchemProperties.html">getPubchemProperties</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                         name         type</span></span>
+<span><span class="co">#&gt;                       &lt;char&gt;       &lt;char&gt;</span></span>
+<span><span class="co">#&gt;  1:                      CID          int</span></span>
+<span><span class="co">#&gt;  2:         MolecularFormula       string</span></span>
+<span><span class="co">#&gt;  3:          MolecularWeight       string</span></span>
+<span><span class="co">#&gt;  4:          CanonicalSMILES       string</span></span>
+<span><span class="co">#&gt;  5:           IsomericSMILES       string</span></span>
+<span><span class="co">#&gt;  6:                    InChI       string</span></span>
+<span><span class="co">#&gt;  7:                 InChIKey       string</span></span>
+<span><span class="co">#&gt;  8:                IUPACName       string</span></span>
+<span><span class="co">#&gt;  9:                    XLogP       double</span></span>
+<span><span class="co">#&gt; 10:                ExactMass       string</span></span>
+<span><span class="co">#&gt; 11:         MonoisotopicMass       string</span></span>
+<span><span class="co">#&gt; 12:                     TPSA       double</span></span>
+<span><span class="co">#&gt; 13:               Complexity          int</span></span>
+<span><span class="co">#&gt; 14:                   Charge          int</span></span>
+<span><span class="co">#&gt; 15:          HBondDonorCount          int</span></span>
+<span><span class="co">#&gt; 16:       HBondAcceptorCount          int</span></span>
+<span><span class="co">#&gt; 17:       RotatableBondCount          int</span></span>
+<span><span class="co">#&gt; 18:           HeavyAtomCount          int</span></span>
+<span><span class="co">#&gt; 19:         IsotopeAtomCount          int</span></span>
+<span><span class="co">#&gt; 20:          AtomStereoCount          int</span></span>
+<span><span class="co">#&gt; 21:   DefinedAtomStereoCount          int</span></span>
+<span><span class="co">#&gt; 22: UndefinedAtomStereoCount          int</span></span>
+<span><span class="co">#&gt; 23:          BondStereoCount          int</span></span>
+<span><span class="co">#&gt; 24:   DefinedBondStereoCount          int</span></span>
+<span><span class="co">#&gt; 25: UndefinedBondStereoCount          int</span></span>
+<span><span class="co">#&gt; 26:        CovalentUnitCount          int</span></span>
+<span><span class="co">#&gt; 27:                 Volume3D       double</span></span>
+<span><span class="co">#&gt; 28:      XStericQuadrupole3D       double</span></span>
+<span><span class="co">#&gt; 29:      YStericQuadrupole3D       double</span></span>
+<span><span class="co">#&gt; 30:      ZStericQuadrupole3D       double</span></span>
+<span><span class="co">#&gt; 31:           FeatureCount3D          int</span></span>
+<span><span class="co">#&gt; 32:   FeatureAcceptorCount3D          int</span></span>
+<span><span class="co">#&gt; 33:      FeatureDonorCount3D          int</span></span>
+<span><span class="co">#&gt; 34:      FeatureAnionCount3D          int</span></span>
+<span><span class="co">#&gt; 35:     FeatureCationCount3D          int</span></span>
+<span><span class="co">#&gt; 36:       FeatureRingCount3D          int</span></span>
+<span><span class="co">#&gt; 37: FeatureHydrophobeCount3D          int</span></span>
+<span><span class="co">#&gt; 38:     ConformerModelRMSD3D       double</span></span>
+<span><span class="co">#&gt; 39:    EffectiveRotorCount3D       double</span></span>
+<span><span class="co">#&gt; 40:         ConformerCount3D          int</span></span>
+<span><span class="co">#&gt; 41:            Fingerprint2D base64Binary</span></span>
+<span><span class="co">#&gt; 42:                    Title       string</span></span>
+<span><span class="co">#&gt; 43:              PatentCount          int</span></span>
+<span><span class="co">#&gt; 44:        PatentFamilyCount          int</span></span>
+<span><span class="co">#&gt; 45:          LiteratureCount          int</span></span>
+<span><span class="co">#&gt;                         name         type</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">properties</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Title"</span>, <span class="st">"MolecularFormula"</span>, <span class="st">"InChIKey"</span>, <span class="st">"MolecularWeight"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Need to remove NA values from the query as they will cause an error</span></span>
+<span><span class="va">result</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">cids</span><span class="op">)</span>, <span class="fu"><a href="../reference/mapCID2Properties.html">mapCID2Properties</a></span><span class="op">(</span>ids <span class="op">=</span> <span class="va">cids</span>, properties <span class="op">=</span> <span class="va">properties</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt;        CID MolecularFormula MolecularWeight                    InChIKey</span></span>
+<span><span class="co">#&gt;      &lt;int&gt;           &lt;char&gt;          &lt;char&gt;                      &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1:    2244           C9H8O4          180.16 BSYNRYMUTXBXSQ-UHFFFAOYSA-N</span></span>
+<span><span class="co">#&gt; 2:  176870       C22H23N3O4           393.4 AAKJLRGGTJKAMG-UHFFFAOYSA-N</span></span>
+<span><span class="co">#&gt; 3:   17513        C9H14N4O5          258.23 RTRQQBHATOEIAF-UUOKFMHZSA-N</span></span>
+<span><span class="co">#&gt; 4:   24360       C20H16N2O4           348.4 VSJKWCGYPAHWDS-FQEVSTJZSA-N</span></span>
+<span><span class="co">#&gt; 5:   13342       C46H58N4O9           811.0 JXLYSJRDGCGARV-CFWMRBGOSA-N</span></span>
+<span><span class="co">#&gt; 6: 5702198        Cl2H6N2Pt          300.05 LXZZYRPGZAFOLE-UHFFFAOYSA-L</span></span>
+<span><span class="co">#&gt;                     Title</span></span>
+<span><span class="co">#&gt;                    &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1:                Aspirin</span></span>
+<span><span class="co">#&gt; 2:              Erlotinib</span></span>
+<span><span class="co">#&gt; 3:              Acadesine</span></span>
+<span><span class="co">#&gt; 4:           Camptothecin</span></span>
+<span><span class="co">#&gt; 5:            Vinblastine</span></span>
+<span><span class="co">#&gt; 6: azane;dichloroplatinum</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="mapping-from-pubchem-cid-to-annotations">Mapping from PubChem CID to Annotations<a class="anchor" aria-label="anchor" href="#mapping-from-pubchem-cid-to-annotations"></a>
+</h4>
+<p>Pubchem’s VIEW API provides access to annotations from external
+sources such as UniProt, ChEBI, and ChEMBL, given a specific identifier.
+Before querying annotations, we need to use the exact heading we want to
+query.</p>
+<p>You can use the <code>getPubchemAnnotationHeadings</code> function to
+get the available annotation headings and types.</p>
+<p>To get ALL available annotation headings:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/getPubchemAnnotationHeadings.html">getPubchemAnnotationHeadings</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;               Heading     Type</span></span>
+<span><span class="co">#&gt;                &lt;char&gt;   &lt;char&gt;</span></span>
+<span><span class="co">#&gt;   1:  11B NMR Spectra Compound</span></span>
+<span><span class="co">#&gt;   2:  13C NMR Spectra Compound</span></span>
+<span><span class="co">#&gt;   3:  15N NMR Spectra Compound</span></span>
+<span><span class="co">#&gt;   4:  17O NMR Spectra Compound</span></span>
+<span><span class="co">#&gt;   5:  19F NMR Spectra Compound</span></span>
+<span><span class="co">#&gt;  ---                          </span></span>
+<span><span class="co">#&gt; 629: Wiley References Compound</span></span>
+<span><span class="co">#&gt; 630:      WormBase ID     Gene</span></span>
+<span><span class="co">#&gt; 631:      WormBase ID  Protein</span></span>
+<span><span class="co">#&gt; 632:  Xenbase Gene ID     Gene</span></span>
+<span><span class="co">#&gt; 633:          ZFIN ID     Gene</span></span></code></pre></div>
+<p>To get annotation headings for a specific type:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/getPubchemAnnotationHeadings.html">getPubchemAnnotationHeadings</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"Compound"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                                        Heading     Type</span></span>
+<span><span class="co">#&gt;                                         &lt;char&gt;   &lt;char&gt;</span></span>
+<span><span class="co">#&gt;   1:                           11B NMR Spectra Compound</span></span>
+<span><span class="co">#&gt;   2:                           13C NMR Spectra Compound</span></span>
+<span><span class="co">#&gt;   3:                           15N NMR Spectra Compound</span></span>
+<span><span class="co">#&gt;   4:                           17O NMR Spectra Compound</span></span>
+<span><span class="co">#&gt;   5:                           19F NMR Spectra Compound</span></span>
+<span><span class="co">#&gt;  ---                                                   </span></span>
+<span><span class="co">#&gt; 472: Volatilization from Water/Soil (Complete) Compound</span></span>
+<span><span class="co">#&gt; 473:                   WHO Essential Medicines Compound</span></span>
+<span><span class="co">#&gt; 474:                                  Wikidata Compound</span></span>
+<span><span class="co">#&gt; 475:                                 Wikipedia Compound</span></span>
+<span><span class="co">#&gt; 476:                          Wiley References Compound</span></span></code></pre></div>
+<p>To get annotation headings for a specific heading:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/getPubchemAnnotationHeadings.html">getPubchemAnnotationHeadings</a></span><span class="op">(</span>heading <span class="op">=</span> <span class="st">"CAS*"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                             Heading     Type</span></span>
+<span><span class="co">#&gt;                              &lt;char&gt;   &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1:                              CAS Compound</span></span>
+<span><span class="co">#&gt; 2:                   Deprecated CAS Compound</span></span>
+<span><span class="co">#&gt; 3:        MICAD Imaging Information Compound</span></span>
+<span><span class="co">#&gt; 4:                      Related CAS Compound</span></span>
+<span><span class="co">#&gt; 5:                TSCA Requirements Compound</span></span>
+<span><span class="co">#&gt; 6:            TSCA Test Submissions Compound</span></span>
+<span><span class="co">#&gt; 7: TSCA Test Submissions (Complete) Compound</span></span></code></pre></div>
+<p>To get annotation headings for a specific type <strong>and</strong>
+heading:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/getPubchemAnnotationHeadings.html">getPubchemAnnotationHeadings</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"Compound"</span>, heading <span class="op">=</span> <span class="st">"CAS*"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                             Heading     Type</span></span>
+<span><span class="co">#&gt;                              &lt;char&gt;   &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1:                              CAS Compound</span></span>
+<span><span class="co">#&gt; 2:                   Deprecated CAS Compound</span></span>
+<span><span class="co">#&gt; 3:        MICAD Imaging Information Compound</span></span>
+<span><span class="co">#&gt; 4:                      Related CAS Compound</span></span>
+<span><span class="co">#&gt; 5:                TSCA Requirements Compound</span></span>
+<span><span class="co">#&gt; 6:            TSCA Test Submissions Compound</span></span>
+<span><span class="co">#&gt; 7: TSCA Test Submissions (Complete) Compound</span></span></code></pre></div>
+<p>We can then use the heading to query the annotations for a specific
+CID.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">heading</span> <span class="op">&lt;-</span> <span class="st">"CAS"</span></span>
+<span><span class="va">result</span><span class="op">[</span>, <span class="va">CAS</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">cids</span>, <span class="va">annotatePubchemCompound</span>, heading <span class="op">=</span> <span class="st">"CAS"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">result</span></span>
+<span><span class="co">#&gt;                     name    cids                                CAS</span></span>
+<span><span class="co">#&gt;                   &lt;char&gt;   &lt;int&gt;                             &lt;list&gt;</span></span>
+<span><span class="co">#&gt; 1:               Aspirin    2244                            50-78-2</span></span>
+<span><span class="co">#&gt; 2:             Erlotinib  176870                        183321-74-6</span></span>
+<span><span class="co">#&gt; 3:             Acadesine   17513                          2627-69-2</span></span>
+<span><span class="co">#&gt; 4:          Camptothecin   24360                          7689-03-4</span></span>
+<span><span class="co">#&gt; 5:    Vincaleukoblastine   13342                           865-21-4</span></span>
+<span><span class="co">#&gt; 6:             Cisplatin 5702198 15663-27-1; 26035-31-4; 14913-33-8</span></span>
+<span><span class="co">#&gt; 7: non existent compound      NA                                   </span></span>
+<span><span class="co">#&gt; 8:  another bad compound      NA</span></span></code></pre></div>
+</div>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>

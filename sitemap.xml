@@ -37,13 +37,7 @@
     <loc>https://bhklab.github.io/AnnotationGx/reference/cell_model_passports_models.html</loc>
   </url>
   <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/dot-build_chembl_request.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/dot-build_pubchem_rest_query.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/dot-checkThrottlingStatus2.html</loc>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/ctrp_treatmentIDs.html</loc>
   </url>
   <url>
     <loc>https://bhklab.github.io/AnnotationGx/reference/gdsc_sampleMetadata.html</loc>
@@ -61,10 +55,22 @@
     <loc>https://bhklab.github.io/AnnotationGx/reference/getPubchemCompound.html</loc>
   </url>
   <url>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/getPubchemProperties.html</loc>
+  </url>
+  <url>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/getPubchemStatus.html</loc>
+  </url>
+  <url>
     <loc>https://bhklab.github.io/AnnotationGx/reference/index.html</loc>
   </url>
   <url>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/mapCID2Properties.html</loc>
+  </url>
+  <url>
     <loc>https://bhklab.github.io/AnnotationGx/reference/mapCell2Accession.html</loc>
+  </url>
+  <url>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/mapCompound2CID.html</loc>
   </url>
   <url>
     <loc>https://bhklab.github.io/AnnotationGx/reference/options.html</loc>
