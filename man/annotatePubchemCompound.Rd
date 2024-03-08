@@ -10,8 +10,7 @@ annotatePubchemCompound(
   source = NULL,
   parse_function = identity,
   query_only = FALSE,
-  raw = FALSE,
-  ...
+  raw = FALSE
 )
 }
 \arguments{
