@@ -29,6 +29,7 @@ test_that("AnnotationGx::getAnotationHeadings Failure", {
 })
 
 
+
 test_that("AnnotationGx::annotatePubchemCompound", {
   CID <- 176870 # Erlotonib
   expected <- "CHEMBL553"
@@ -36,6 +37,12 @@ test_that("AnnotationGx::annotatePubchemCompound", {
 
   expected <- "183321-74-6"
   expect_equal(annotatePubchemCompound(CID, "CAS"), expected)
+
+  query <- annotatePubchemCompound(CID, "ChEMBL ID", query_only=T)
+  expect_class(query[[1]], "httr2_request")
+
+  response <- annotatePubchemCompound(CID, "ChEMBL ID", raw=T)
+  expect_class(response[[1]], "httr2_response")
 
   expected <- NULL
   expect_equal(annotatePubchemCompound(CID, "NSC Number"), expected)
@@ -65,8 +72,12 @@ test_that("AnnotationGx::annotatePubchemCompound", {
 
   expect_error(annotatePubchemCompound(CID, heading = "fake_placeholder"))
 
-
   expect_error(annotatePubchemCompound(CID, heading = "fake_placeholder", parse_function = fake_parser))
+  
+  fake_parser <- function(x) {
+    return(data.table::data.table(Heading = "CAS", Value = "fake_value"))
+  }
+  annotatePubchemCompound(CID, heading = "CAS", parse_function = fake_parser)
 })
 
 test_that("AnnotationGx:::.build_pubchem_view_query", {
