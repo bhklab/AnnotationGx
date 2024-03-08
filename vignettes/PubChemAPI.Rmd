@@ -45,9 +45,104 @@ library(AnnotationGx)
 ```
 
 
-# 
+
+### Mapping from chemical name to PubChem CID
+The main function that is provided by the package is `mapCompound2CID`. 
+
+``` {r map aspirin to cid}
+mapCompound2CID("aspirin")
+```
+
+You can pass in a list of compound names to get the CIDs for all of them at once.
+
+``` {r map multiple compounds to cid}
+drugs <- c(
+  "Aspirin", "Erlotinib", "Acadesine", "Camptothecin", "Vincaleukoblastine",
+  "Cisplatin"
+)
+
+mapCompound2CID(drugs)
+```
+
+It is possible for names to multimap to CIDs. This is the case for
+'Vincaleukoblastine' in the above query. In cases of multimapping, usually
+the first entry has the highest similarity to the requested drug. To subset
+to only the first occurrence of each of drug name:
+
+``` {r map multiple compounds to cid and subset to first}
+mapCompound2CID(drugs, first = TRUE)
+```
 
 
+In the case of a compound that can't be mapped, `NA` will be returned and a warning will be issued.
+
+``` {r map non existent compound to cid}
+(result <- mapCompound2CID(c(drugs, "non existent compound", "another bad compound"), first = TRUE))
+
+failed <- attributes(result)$failed
+
+# get the list of failed inputs
+names(failed)
+
+# get the error message for the failed input
+print(failed[1])
+```
+
+### Mapping from PubChem CID to Properties
+Once CIDs are obtained, they can be used to query the properties of the compound.
+To view the available properties from Pubchem, use the `getPubchemProperties` function.
+
+``` {r get pubchem properties}
+getPubchemProperties()
+```
+
+
+``` {r get properties for a single cid}
+properties <- c("Title", "MolecularFormula", "InChIKey", "MolecularWeight")
+
+# Need to remove NA values from the query as they will cause an error
+result[!is.na(cids), mapCID2Properties(ids = cids, properties = properties)]
+```
+
+
+
+### Mapping from PubChem CID to Annotations
+Pubchem's VIEW API provides access to annotations from external sources such as
+UniProt, ChEBI, and ChEMBL, given a specific identifier. 
+Before querying annotations, we need to use the exact heading we want to query.
+
+You can use the `getPubchemAnnotationHeadings` function to get the available 
+annotation headings and types.
+
+To get ALL available annotation headings:
+``` {r get annotation headings}
+getPubchemAnnotationHeadings()
+```
+  
+To get annotation headings for a specific type:
+``` {r get annotation headings for a specific type}
+getPubchemAnnotationHeadings(type = "Compound")
+```
+
+To get annotation headings for a specific heading:
+``` {r get annotation headings for a specific heading}
+getPubchemAnnotationHeadings(heading = "CAS*")
+```
+
+To get annotation headings for a specific type **and** heading:
+``` {r get annotation headings for a specific type and heading}
+getPubchemAnnotationHeadings(type = "Compound", heading = "CAS*")
+```
+
+We can then use the heading to query the annotations for a specific CID.
+
+``` {r get annotations for a single cid}
+heading <- "CAS"
+result[, CAS := lapply(cids, annotatePubchemCompound, heading = "CAS")]
+result
+```
+  
+  
 # References
 1. PUG REST. PubChem Docs [website]. Retrieved from https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest.
 2. Kim S, Thiessen PA, Cheng T, Yu B, Bolton EE. An update on PUG-REST: RESTful interface for programmatic access to PubChem. Nucleic Acids Res. 2018 July 2; 46(W1):W563-570. doi:10.1093/nar/gky294.

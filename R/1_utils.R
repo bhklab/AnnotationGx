@@ -1,4 +1,3 @@
-
 #' simple wrapper for the data.table::as.data.table() function
 #' @param x object to convert to a data.table
 #' @param ... additional arguments to pass to data.table::as.data.table()
@@ -33,6 +32,6 @@
 #'
 #' @keywords internal
 #' @noRd
-.bplapply <- function(X, FUN, ..., BPPARAM = BiocParallel::SerialParam()){
-    BiocParallel::bplapply(X, FUN, ..., BPPARAM = BPPARAM)
+.bplapply <- function(X, FUN, ..., BPPARAM = BiocParallel::SerialParam()) {
+  BiocParallel::bplapply(X, FUN, ..., BPPARAM = BPPARAM)
 }

@@ -39,54 +39,52 @@
 #'
 #'
 #'
-#'|        Filter Type       |                                                  Description                                                 |
-#'|:------------------------:|:------------------------------------------------------------------------------------------------------------:|
-#'| exact (iexact)           | Exact match with query (case insensitive equivalent)                                                         |
-#'| contains (icontains)     | Wild card search with query (case insensitive equivalent)                                                    |
-#'| startswith (istartswith) | Starts with query (case insensitive equivalent)                                                              |
-#'| endswith (iendswith)     | Ends with query (case insensitive equivalent)                                                                |
-#'| regex (iregex)           | Regular expression query (case insensitive equivalent)                                                       |
-#'| gt (gte)                 | Greater than (or equal)                                                                                      |
-#'| lt (lte)                 | Less than (or equal)                                                                                         |
-#'| range                    | Within a range of values                                                                                     |
-#'| in                       | Appears within list of query values                                                                          |
-#'| isnull                   | Field is null                                                                                                |
-#'| search                   | Special type of filter allowing a full text search based on elastic search queries                           |
-#'| only                     | Select specific properties from the original endpoint and returns only the desired properties on each record |                                                                                                         |
+#' |        Filter Type       |                                                  Description                                                 |
+#' |:------------------------:|:------------------------------------------------------------------------------------------------------------:|
+#' | exact (iexact)           | Exact match with query (case insensitive equivalent)                                                         |
+#' | contains (icontains)     | Wild card search with query (case insensitive equivalent)                                                    |
+#' | startswith (istartswith) | Starts with query (case insensitive equivalent)                                                              |
+#' | endswith (iendswith)     | Ends with query (case insensitive equivalent)                                                                |
+#' | regex (iregex)           | Regular expression query (case insensitive equivalent)                                                       |
+#' | gt (gte)                 | Greater than (or equal)                                                                                      |
+#' | lt (lte)                 | Less than (or equal)                                                                                         |
+#' | range                    | Within a range of values                                                                                     |
+#' | in                       | Appears within list of query values                                                                          |
+#' | isnull                   | Field is null                                                                                                |
+#' | search                   | Special type of filter allowing a full text search based on elastic search queries                           |
+#' | only                     | Select specific properties from the original endpoint and returns only the desired properties on each record |                                                                                                         |
 #'
 #' @param resource `character(1)` Resource to query
 #' @param field `character(1)` Field to query
 #' @param filter_type `character(1)` Filter type
 #' @param value `character(1)` Value to query
 #' @param format `character(1)` Format of the response
-#' 
-#' @md
-#' @export
+#'
+#' @noRd
+#' @keywords internal
 .build_chembl_request <- function(
     resource,
-    field = NULL, filter_type = NULL, value = NULL, format = "json"){
+    field = NULL, filter_type = NULL, value = NULL, format = "json") {
+  # possible formats for now are XML, JSON and YAML
+  checkmate::assert_choice(resource, c(.chembl_resources(), paste0(.chembl_resources(), "/schema")))
+  checkmate::assert_choice(field, getChemblResourceFields(resource), null.ok = TRUE)
+  checkmate::assert_choice(filter_type, .chembl_filter_types(), null.ok = TRUE)
+  checkmate::assert_character(value, null.ok = TRUE)
+  checkmate::assert_choice(format, c("json", "xml", "yaml"))
 
-    # possible formats for now are XML, JSON and YAML
-    checkmate::assert_choice(resource, c(.chembl_resources(), paste0(.chembl_resources(), "/schema")))
-    checkmate::assert_choice(field, getChemblResourceFields(resource), null.ok = TRUE)
-    checkmate::assert_choice(filter_type, .chembl_filter_types(), null.ok = TRUE)
-    checkmate::assert_character(value, null.ok = TRUE)
-    checkmate::assert_choice(format, c("json", "xml", "yaml"))
+  # Construct the URL
+  base_url <- .buildURL("https://www.ebi.ac.uk/chembl/api/data", resource)
+  url <- httr2::url_parse(base_url)
 
-    # Construct the URL
-    base_url <- .buildURL("https://www.ebi.ac.uk/chembl/api/data", resource)
-    url <- httr2::url_parse(base_url)
+  # Add the query parameters
+  query <- list()
+  query[["format"]] <- format
+  fld <- paste0(field, "__", filter_type)
+  query[[fld]] <- value
+  url$query <- query
 
-    # Add the query parameters
-    query <- list()
-    query[["format"]] <- format
-    fld <- paste0(field, "__", filter_type)
-    query[[fld]] <- value
-    url$query <- query
-
-    final_url <- httr2::url_build(url)
-    final_url |> .build_request()
-
+  final_url <- httr2::url_build(url)
+  final_url |> .build_request()
 }
 
 
@@ -105,42 +103,47 @@
 #'
 #' @examples
 #' getChemblMechanism("CHEMBL1413")
-#' getChemblMechanism("CHEMBL1413", resources = "mechanism", field = "molecule_chembl_id",
-#'                    filter_type = "in", returnURL = FALSE, raw = FALSE)
-#'
+#' getChemblMechanism("CHEMBL1413",
+#'   resources = "mechanism", field = "molecule_chembl_id",
+#'   filter_type = "in", returnURL = FALSE, raw = FALSE
+#' )
 #'
 #' @export
 getChemblMechanism <- function(
     chembl.ID, resources = "mechanism", field = "molecule_chembl_id", filter_type = "in",
-    returnURL = FALSE, raw = FALSE
-    ){
+    returnURL = FALSE, raw = FALSE) {
+  # constructChemblQuery(resource = "mechanism", field = "molecule_chembl_id", filter_type = "in", value = "CHEMBL1413")
+  # urls <- constructChemblQuery(resource = resources, field = field, filter_type = filter_type, value = chembl.ID)
+  # urls <- URLencode(urls)
+  response_dts <- lapply(chembl.ID, function(chembl.ID) {
+    request <- .build_chembl_request(resource = resources, field = field, filter_type = filter_type, value = chembl.ID)
 
-    # constructChemblQuery(resource = "mechanism", field = "molecule_chembl_id", filter_type = "in", value = "CHEMBL1413")
-    # urls <- constructChemblQuery(resource = resources, field = field, filter_type = filter_type, value = chembl.ID)
-    # urls <- URLencode(urls)
-    response_dts <- lapply(chembl.ID, function(chembl.ID){
-        request <- .build_chembl_request(resource = resources, field = field, filter_type = filter_type, value = chembl.ID)
+    if (returnURL) {
+      return(request$url)
+    }
+    response <- .perform_request(request)
 
-        if(returnURL) return(request$url)
-        response <- .perform_request(request)
+    response_json <- .parse_resp_json(response)
+    if (raw) {
+      return(response_json)
+    }
+    .asDT(response_json[["mechanisms"]])
+  })
 
-        response_json <- .parse_resp_json(response)
-        if(raw)    return(response_json)
-        .asDT(response_json[["mechanisms"]])
-    })
+  if (returnURL || raw) {
+    return(response_dts)
+  }
+  all_cols <- .chembl_mechanism_cols()
+  # If any cols are missing, fill with NA
+  response_dts <- lapply(response_dts, function(x) {
+    missing_cols <- setdiff(all_cols, names(x))
+    if (length(missing_cols) > 0) {
+      x[, (missing_cols) := NA]
+    }
+    x
+  })
 
-    if(returnURL || raw) return(response_dts)
-    all_cols <- .chembl_mechanism_cols()
-    # If any cols are missing, fill with NA
-    response_dts <- lapply(response_dts, function(x){
-        missing_cols <- setdiff(all_cols, names(x))
-        if(length(missing_cols) > 0){
-            x[, (missing_cols) := NA]
-        }
-        x
-    })
-
-    data.table::rbindlist(response_dts)
+  data.table::rbindlist(response_dts)
 }
 
 
@@ -155,7 +158,7 @@ getChemblMechanism <- function(
 #' getChemblResourceFields("molecule")
 #'
 #' @export
-getChemblResourceFields <- function(resource){
-    checkmate::assert_choice(resource, .chembl_resources())
-    .chembl_resource_schema(resource)[["fields"]] |> names()
+getChemblResourceFields <- function(resource) {
+  checkmate::assert_choice(resource, .chembl_resources())
+  .chembl_resource_schema(resource)[["fields"]] |> names()
 }

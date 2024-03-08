@@ -37,9 +37,10 @@ A data.table containing the retrieved compound information.
 }
 \description{
 This function retrieves compound information from PubChem using the PubChem REST API.
+Used by other functions to retrieve compound information.
 }
 \examples{
-properties=c('Title', 'MolecularFormula', 'InChIKey', 'CanonicalSMILES')
-getPubchemCompound(c(3672, 176870), from = 'cid', to = 'property', properties = properties)
+properties <- c("Title", "MolecularFormula", "InChIKey", "CanonicalSMILES")
+getPubchemCompound(c(3672, 176870), from = "cid", to = "property", properties = properties)
 
 }
