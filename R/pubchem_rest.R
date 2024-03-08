@@ -85,8 +85,15 @@ getPubchemCompound <- function(
 #' mapCompound2CID(c("aspirin", "caffeine"))
 #'
 #' @export
-mapCompound2CID <- function(names, raw = FALSE, query_only = FALSE, output = 'JSON', ...){
-    getPubchemCompound(ids = names, from = 'name', to = 'cids', raw = raw, query_only = query_only, output = output, ...)
+mapCompound2CID <- function(
+    names, raw = FALSE, query_only = FALSE, output = 'JSON', first = FALSE, ...
+){
+    result <- getPubchemCompound(
+        ids = names, from = 'name', to = 'cids', raw = raw, query_only = query_only, output = output, ...
+    )
+
+    if(first) return(result[!duplicated(name),])
+    else return(result)
 }
 
 .parse_pubchem_rest_responses <- function(responses){
