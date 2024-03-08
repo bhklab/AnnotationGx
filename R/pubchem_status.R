@@ -61,7 +61,7 @@ getPubchemStatus <- function(
     return(parsed_info)
 }
 
-#'  Parses the throttling message from the response
+#' Parses the throttling message from the response
 #' @noRd
 #' @keywords internal
 .parse_throttling_message <- function(message) {

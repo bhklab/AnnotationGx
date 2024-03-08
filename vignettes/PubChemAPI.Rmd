@@ -76,7 +76,7 @@ In the case of a compound that can't be mapped, `NA` will be returned and a warn
 
 ``` {r map non existent compound to cid}
 
-(result <- mapCompound2CID(c("non existent compound", "another bad compound")))
+(result <- mapCompound2CID(c(drugs, "non existent compound", "another bad compound")))
 
 failed <- attributes(result)$failed
 
@@ -84,8 +84,7 @@ failed <- attributes(result)$failed
 names(failed)
 
 # get the error message for the failed input
-failed[1]
-
+print(failed[1])
 ```
 
 ### Mapping from PubChem CID to Properties
