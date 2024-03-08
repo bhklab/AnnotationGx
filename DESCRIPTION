@@ -14,7 +14,6 @@ Description: A package for building, updating and querying an
     annotation database for pharmaco-genomic data. Provides API interfaces
     to various bioinformatic and chemoinformatic databases, as well as a set
     of functions for curating your data using the annotations retrieved from
-    
     those APIs.
 Depends: 
     R (>= 2.10)
