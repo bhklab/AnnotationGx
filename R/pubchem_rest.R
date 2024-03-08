@@ -75,9 +75,7 @@ getPubchemCompound <- function(
 #' This function maps compound names to PubChem CIDs using the PubChem REST API.
 #'
 #' @param names A character vector of compound names.
-#' @param raw Logical indicating whether to return the raw response from the API (default is FALSE).
-#' @param query_only Logical indicating whether to only perform the query without retrieving the data (default is FALSE).
-#' @param output The format of the output, either 'JSON' or 'XML' (default is 'JSON').
+#' @param first Logical indicating whether to return only the first CID for each compound name (default is FALSE).
 #' @param ... Additional arguments to be passed to the getPubchemCompound function.
 #'
 #' @return A character vector of PubChem CIDs.
@@ -87,13 +85,66 @@ getPubchemCompound <- function(
 #'
 #' @export
 mapCompound2CID <- function(
-    names, raw = FALSE, query_only = FALSE, output = 'JSON', first = FALSE, ...
+    names, first = FALSE, ...
 ){
     result <- getPubchemCompound(
-        ids = names, from = 'name', to = 'cids', raw = raw, query_only = query_only, output = output, ...
+        ids = names, from = 'name', to = 'cids', ...
     )
 
     if(first) return(result[!duplicated(name),])
     else return(result)
 }
 
+
+#' Map PubChem Compound IDs to Properties
+#'
+#' This function maps PubChem Compound IDs to specified properties using the PubChem REST API.
+#' See `getPubchemProperties` for a list of available properties.
+#' 
+#' @param ids A vector of PubChem Compound IDs.
+#' @param properties A vector of property names to retrieve for each compound.
+#' @param ... Additional arguments to be passed to the `getPubchemCompound` function.
+#'
+#' @return A data frame containing the mapped properties for each compound.
+#'
+#' @examples
+#' mapCID2Properties(ids = c(123, 456), properties = c("MolecularWeight", "CanonicalSMILES"))
+#'
+#' @export
+mapCID2Properties <- function(
+    ids, properties,  ...
+){
+    getPubchemCompound(
+        ids = ids, from = 'cid', to = 'property', properties = properties, ...
+    )
+}
+
+#' Retrieves the PubChem XML schema and extracts property information.
+#'
+#' This function retrieves the PubChem XML schema from the specified URL and
+#' extracts the property information from it. The property information includes
+#' the name and type of each property.
+#'
+#' @return A data table containing the extracted property information.
+#'
+#' @examples
+#' getPubchemProperties()
+#'
+#'
+#' @export
+getPubchemProperties <- function(){
+    url <- "https://pubchem.ncbi.nlm.nih.gov/pug_rest/pug_rest.xsd"
+
+    node_list <- xml2::read_xml(url) |> 
+        xml2::xml_children()  |>
+        xml2::as_list()
+    
+    properties <- node_list[[3]]$complexType$sequence$element$complexType$sequence
+
+    lapply(properties, function(x) {
+        list(
+            name = attr(x, "name"),
+            type = gsub("xs:", "", attr(x, "type"))
+        ) |> .asDT()
+    }) |> data.table::rbindlist()
+}

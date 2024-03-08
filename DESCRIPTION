@@ -25,7 +25,8 @@ Imports:
     options,
     BiocParallel,
     readr,
-    tibble
+    tibble,
+    xml2
 Suggests: 
     testthat (>= 3.0.0),
     covr,

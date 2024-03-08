@@ -4,23 +4,12 @@
 \alias{mapCompound2CID}
 \title{Map compound names to PubChem CIDs}
 \usage{
-mapCompound2CID(
-  names,
-  raw = FALSE,
-  query_only = FALSE,
-  output = "JSON",
-  first = FALSE,
-  ...
-)
+mapCompound2CID(names, first = FALSE, ...)
 }
 \arguments{
 \item{names}{A character vector of compound names.}
 
-\item{raw}{Logical indicating whether to return the raw response from the API (default is FALSE).}
-
-\item{query_only}{Logical indicating whether to only perform the query without retrieving the data (default is FALSE).}
-
-\item{output}{The format of the output, either 'JSON' or 'XML' (default is 'JSON').}
+\item{first}{Logical indicating whether to return only the first CID for each compound name (default is FALSE).}
 
 \item{...}{Additional arguments to be passed to the getPubchemCompound function.}
 }
