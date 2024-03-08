@@ -17,11 +17,11 @@ test_that("getPubchemStatus works",{
 
 })
 
-url <- "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/Aspirin/cids/JSON"
-resp_ <- .buildURL(url) |> .build_pubchem_request() |> httr2::req_perform()
-test_that("checkThrottlingStatus Works", {
-    response <- resp_
 
+test_that("checkThrottlingStatus Works", {
+    url <- "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/Aspirin/cids/JSON"
+    
+    response <- .buildURL(url) |> .build_pubchem_request() |> httr2::req_perform()
     response$headers["X-Throttling-Control"] <- "Request Count status: Yellow (60%), Request Time status: Yellow (60%), Service status: Yellow (60%)"
     parsed_info <- AnnotationGx:::.checkThrottlingStatus2(response, printMessage = FALSE)
     expect_equal(parsed_info, list(request_count = list(status = "Yellow", percent = 60),
