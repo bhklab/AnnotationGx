@@ -21,43 +21,46 @@
 #' @keywords internal
 #' @noRd
 .create_query_list <- function(ids, from) {
-    # either from has to be one field, or the same length as ids
-    if (length(from) == 1) return(paste0(from, ":", ids))
-    if (length(from) != length(ids)) {
-        stop("Length of 'from' must be 1 or the same length as 'ids'")
-    }
-    lapply(1:length(ids), function(i) {
-        paste(from[i], ids[i])
-    })
+  # either from has to be one field, or the same length as ids
+  if (length(from) == 1) {
+    return(paste0(from, ":", ids))
+  }
+  if (length(from) != length(ids)) {
+    stop("Length of 'from' must be 1 or the same length as 'ids'")
+  }
+  lapply(1:length(ids), function(i) {
+    paste(from[i], ids[i])
+  })
 }
 
 .build_cellosaurus_request <- function(
-    query = c("id:HeLa"), to = c("id", "ac", "hi", "ca", "sx", "ag", "di", "derived-from-site",  "misspelling"),
-    numResults = 1, apiResource= "search/cell-line", output = "TSV",
-    query_only = FALSE, fuzzy = FALSE, ...
-){
-    # checkmate::assert_character(c(from, query, output))
-    checkmate::assert_subset(to, c(.cellosaurus_fields(), paste0("dr:",.cellosaurus_extResources())))
-    checkmate::assert_choice(apiResource, c("search/cell-line", "cell-line", "release-info"))
-    checkmate::assert_choice(output, c("TSV", "TXT", "JSON", "XML"))
+    query = c("id:HeLa"), to = c("id", "ac", "hi", "ca", "sx", "ag", "di", "derived-from-site", "misspelling"),
+    numResults = 1, apiResource = "search/cell-line", output = "TSV",
+    query_only = FALSE, fuzzy = FALSE, ...) {
+  # checkmate::assert_character(c(from, query, output))
+  checkmate::assert_subset(to, c(.cellosaurus_fields(), paste0("dr:", .cellosaurus_extResources())))
+  checkmate::assert_choice(apiResource, c("search/cell-line", "cell-line", "release-info"))
+  checkmate::assert_choice(output, c("TSV", "TXT", "JSON", "XML"))
 
-    opts <- list()
-    opts$q <- paste0(query, collapse = " ")
-    # if fuzzy, add a tilde to the query
-    if(fuzzy) opts$q <- paste0(opts$q, "~")
+  opts <- list()
+  opts$q <- paste0(query, collapse = " ")
+  # if fuzzy, add a tilde to the query
+  if (fuzzy) opts$q <- paste0(opts$q, "~")
 
-    opts$fields <- paste0(to, collapse = ",")
-    opts$format <- tolower(output)
-    opts$rows <- numResults
+  opts$fields <- paste0(to, collapse = ",")
+  opts$format <- tolower(output)
+  opts$rows <- numResults
 
 
-    base_url <- "https://api.cellosaurus.org"
-    url <- httr2::url_parse(base_url)
-    url$path <- .buildURL(url$path, apiResource)
-    url$query <- opts
-    url <- url |> httr2::url_build()
-    if(query_only) return(url)
-    url |>  .build_request()
+  base_url <- "https://api.cellosaurus.org"
+  url <- httr2::url_parse(base_url)
+  url$path <- .buildURL(url$path, apiResource)
+  url$query <- opts
+  url <- url |> httr2::url_build()
+  if (query_only) {
+    return(url)
+  }
+  url |> .build_request()
 }
 
 #  The definition of the Cellosaurus is provided in the following format:
@@ -94,9 +97,9 @@
 #'
 #' @keywords internal
 #' @noRd
-.cellosaurus_fields <- function(){
-    schema <- .get_cellosaurus_schema()
-    schema$components$schemas$Fields$enum
+.cellosaurus_fields <- function() {
+  schema <- .get_cellosaurus_schema()
+  schema$components$schemas$Fields$enum
 }
 
 #' Get the Cellosaurus schema
@@ -110,12 +113,12 @@
 #'
 #' @keywords internal
 #' @noRd
-.get_cellosaurus_schema <- function(){
-    url <- .buildURL("https://api.cellosaurus.org/openapi.json")
-    request <- .build_request(url)
+.get_cellosaurus_schema <- function() {
+  url <- .buildURL("https://api.cellosaurus.org/openapi.json")
+  request <- .build_request(url)
 
-    resp <- .perform_request(request)
-    .parse_resp_json(resp)
+  resp <- .perform_request(request)
+  .parse_resp_json(resp)
 }
 
 
@@ -153,13 +156,15 @@
 
 
 #' Internal function to return the list of fields available in Cellosaurus
-#' 
+#'
 #' @keywords internal
 #' @noRd
-.common_cellosaurus_fields <- function(){
-    c("ID", "AC", "AS", "SY", "DR", "DI", "DIN", "DIO", "OX", "SX", "AG", "OI",
+.common_cellosaurus_fields <- function() {
+  c(
+    "ID", "AC", "AS", "SY", "DR", "DI", "DIN", "DIO", "OX", "SX", "AG", "OI",
     "HI", "CH", "CA", "CEL", "DT", "DTC", "DTU", "DTV", "DER", "FROM", "GROUP",
-    "KARY", "KO")
+    "KARY", "KO"
+  )
 }
 
 
@@ -186,11 +191,12 @@
 
 #' Internal function to return the list of external resources available in Cellosaurus
 #' @return A character vector of external resources available in Cellosaurus
-#' 
+#'
 #' @keywords internal
 #' @noRd
-.cellosaurus_extResources <- function(){
-    c("4DN", "Abcam", "ABCD", "ABM", "AddexBio", "ArrayExpress",
+.cellosaurus_extResources <- function() {
+  c(
+    "4DN", "Abcam", "ABCD", "ABM", "AddexBio", "ArrayExpress",
     "ATCC", "BCGO", "BCRC", "BCRJ", "BEI_Resources",
     "BioGRID_ORCS_Cell_line", "BTO", "BioSample", "BioSamples",
     "cancercelllines", "CancerTools", "CBA", "CCLV", "CCRID",
@@ -209,5 +215,6 @@
     "NIHhESC", "NISES", "NRFC", "PerkinElmer", "PharmacoDB", "PRIDE",
     "Progenetix", "PubChem_Cell_line", "RCB", "Rockland", "RSCB", "SKIP",
     "SKY/M-FISH/CGH", "SLKBase", "TKG", "TNGB", "TOKU-E", "Ubigene",
-    "WiCell", "Wikidata", "Ximbio")
+    "WiCell", "Wikidata", "Ximbio"
+  )
 }

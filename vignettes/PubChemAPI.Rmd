@@ -56,8 +56,10 @@ mapCompound2CID("aspirin")
 You can pass in a list of compound names to get the CIDs for all of them at once.
 
 ``` {r map multiple compounds to cid}
-drugs <- c("Aspirin", "Erlotinib", "Acadesine", "Camptothecin", "Vincaleukoblastine",
-    "Cisplatin")
+drugs <- c(
+  "Aspirin", "Erlotinib", "Acadesine", "Camptothecin", "Vincaleukoblastine",
+  "Cisplatin"
+)
 
 mapCompound2CID(drugs)
 ```
@@ -75,12 +77,11 @@ mapCompound2CID(drugs, first = TRUE)
 In the case of a compound that can't be mapped, `NA` will be returned and a warning will be issued.
 
 ``` {r map non existent compound to cid}
-
 (result <- mapCompound2CID(c(drugs, "non existent compound", "another bad compound"), first = TRUE))
 
 failed <- attributes(result)$failed
 
-# get the list of failed inputs 
+# get the list of failed inputs
 names(failed)
 
 # get the error message for the failed input
@@ -97,7 +98,7 @@ getPubchemProperties()
 
 
 ``` {r get properties for a single cid}
-properties=c('Title', 'MolecularFormula', 'InChIKey', 'MolecularWeight')
+properties <- c("Title", "MolecularFormula", "InChIKey", "MolecularWeight")
 
 # Need to remove NA values from the query as they will cause an error
 result[!is.na(cids), mapCID2Properties(ids = cids, properties = properties)]
@@ -136,7 +137,7 @@ getPubchemAnnotationHeadings(type = "Compound", heading = "CAS*")
 We can then use the heading to query the annotations for a specific CID.
 
 ``` {r get annotations for a single cid}
-heading <- "CAS" 
+heading <- "CAS"
 result[, CAS := lapply(cids, annotatePubchemCompound, heading = "CAS")]
 result
 ```

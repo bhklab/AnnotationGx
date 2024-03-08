@@ -27,26 +27,27 @@
 #' @keywords internal
 #' @noRd
 .debug <- function(...) {
-    msg <- .log_fmt("DEBUG", ...)
-    optionIsTRUE <- options::opt("log_level") == "DEBUG"
-    if (optionIsTRUE)
-        message(crayon::blue(msg))
+  msg <- .log_fmt("DEBUG", ...)
+  optionIsTRUE <- options::opt("log_level") == "DEBUG"
+  if (optionIsTRUE) {
+    message(crayon::blue(msg))
+  }
 }
 
 #' @keywords internal
 #' @noRd
 .warn <- function(...) {
-    msg <- .log_fmt("WARNING", ...)
-    optionIsTRUE <- options::opt("log_level") != "ERROR"
-    message(crayon::yellow(msg))
+  msg <- .log_fmt("WARNING", ...)
+  optionIsTRUE <- options::opt("log_level") != "ERROR"
+  message(crayon::yellow(msg))
 }
 
 #' @keywords internal
 #' @noRd
 .err <- function(...) {
-    msg <- .log_fmt("ERROR", ...)
-    optionIsTRUE <- options::opt("log_level") != NULL
-    stop("\r",crayon::red(msg), call. = FALSE)
+  msg <- .log_fmt("ERROR", ...)
+  optionIsTRUE <- options::opt("log_level") != NULL
+  stop("\r", crayon::red(msg), call. = FALSE)
 }
 
 #' Generate a function context string

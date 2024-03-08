@@ -1,5 +1,3 @@
-
-
 #' Standardize Names
 #'
 #' This function takes a character vector and standardizes the names by converting them to lowercase,
@@ -12,27 +10,27 @@
 #' standardize_names(c("John Doe", "Jane Smith (Manager)", "Alice, PhD"))
 #' # Output: [1] "JOHNDOE" "JANESMITH" "ALICE"
 #' @export
-standardize_names<- function(object) {
-    checkmate::assert_character(object, all.missing=F)
-    object <- tolower(object)
-    object <- gsub(
-        pattern = ",\\s.+$",
-        replacement = "",
-        x = object
-    )
-    object <- sub(
-        pattern = "\\s[\\[\\(].+$",
-        replacement = "",
-        x = object
-    )
-    object <- gsub(
-        pattern = "[^[:alnum:]]+",
-        replacement = "",
-        x = object
-    )
-    if (any(object == "")) {
-        object[object == ""] <- NA
-    }
-    object <- toupper(object)
-    object
+standardize_names <- function(object) {
+  checkmate::assert_character(object, all.missing = F)
+  object <- tolower(object)
+  object <- gsub(
+    pattern = ",\\s.+$",
+    replacement = "",
+    x = object
+  )
+  object <- sub(
+    pattern = "\\s[\\[\\(].+$",
+    replacement = "",
+    x = object
+  )
+  object <- gsub(
+    pattern = "[^[:alnum:]]+",
+    replacement = "",
+    x = object
+  )
+  if (any(object == "")) {
+    object[object == ""] <- NA
+  }
+  object <- toupper(object)
+  object
 }

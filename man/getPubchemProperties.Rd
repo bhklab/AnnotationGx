@@ -14,8 +14,3 @@ This function retrieves the PubChem XML schema from the specified URL and
 extracts the property information from it. The property information includes
 the name and type of each property.
 }
-\examples{
-getPubchemProperties()
-
-
-}

@@ -4,11 +4,11 @@
 #'
 #' @param resp The query response to be parsed
 #' @return A data table containing the parsed query response
-#' 
+#'
 #' @noRd
 #' @keywords internal
-.parseQueryToDT <- function(resp){
-    data.table::as.data.table(resp[[1]][[1]])
+.parseQueryToDT <- function(resp) {
+  data.table::as.data.table(resp[[1]][[1]])
 }
 
 
@@ -24,24 +24,25 @@
 #'
 #' @noRd
 #' @keywords internal
-.parse_pubchem_rest_responses <- function(responses){
-    checkmate::assert_list(
-        x = responses,
-        any.missing = FALSE,
-        names = 'named',
-        min.len = 1
-    )
+.parse_pubchem_rest_responses <- function(responses) {
+  checkmate::assert_list(
+    x = responses,
+    any.missing = FALSE,
+    names = "named",
+    min.len = 1
+  )
 
-    responses_parsed <- lapply(names(responses), function(i){
-        resp <- responses[[i]]
-        body <- .parse_resp_json(resp)
-        if(httr2::resp_is_error(resp)) return(.parseQueryToDT(NA_integer_))
+  responses_parsed <- lapply(names(responses), function(i) {
+    resp <- responses[[i]]
+    body <- .parse_resp_json(resp)
+    if (httr2::resp_is_error(resp)) {
+      return(.parseQueryToDT(NA_integer_))
+    }
 
-        return(.parseQueryToDT(body))
-    })
-    names(responses_parsed) <- names(responses)
-    return(responses_parsed)
-    
+    return(.parseQueryToDT(body))
+  })
+  names(responses_parsed) <- names(responses)
+  return(responses_parsed)
 }
 
 
@@ -66,42 +67,41 @@
 #'
 #' @noRd
 #' @keywords internal
-.build_pubchem_rest_query <- function(
-        id, domain='compound', namespace='name', operation='cids',
-        output='JSON', url='https://pubchem.ncbi.nlm.nih.gov/rest/pug',
-        raw=FALSE, query_only=FALSE, ...){
+.build_pubchem_rest_query <- function(id, domain = "compound", namespace = "name", operation = "cids",
+                                      output = "JSON", url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug",
+                                      raw = FALSE, query_only = FALSE, ...) {
+  # -------------------------------------- Argument checking --------------------------------------
+  assert_choice(domain, c("compound", "substance", "assay", "cell", "gene", "protein"))
+  switch(domain,
+    "compound" = {
+      assert_choice(namespace, c("cid", "name", "smiles", "inchi", "sdf", "inchikey", "formula"))
+      assert(test_choice(
+        operation, c("record", "synonyms", "sids", "cids", "aids", "assaysummary")
+      ) ||
+        grepl("property", operation))
+    },
+    "substance" = assert_choice(namespace, c("sid", "sourceid", "sourceall", "name")),
+    "assay" = assert_choice(namespace, c("aid", "listkey", "type", "sourceall", "target", "activity")),
+    "cell" = assert_choice(namespace, c("cellacc", "synonym")),
+    "gene" = assert_choice(namespace, c("geneid", "genesymbol", "synonym")),
+    "protein" = assert_choice(namespace, c("accession", "gi", "synonym"))
+  )
+  assert_choice(output, c("JSON", "XML", "SDF", "TXT", "CSV"))
+  assert_logical(raw, query_only)
+  if (!test_atomic(id, any.missing = FALSE)) .err("id must be an atomic vector with no missing/NA values")
 
+  if (namespace == "cid") assert_integerish(id)
 
-    # -------------------------------------- Argument checking --------------------------------------
-    assert_choice(domain, c('compound', 'substance', 'assay', 'cell', 'gene', 'protein'))
-    switch(domain,
-        "compound" = {
-            assert_choice(namespace, c('cid', 'name', 'smiles', 'inchi', 'sdf', 'inchikey', 'formula'))
-            assert(test_choice(
-                operation, c('record', 'synonyms', 'sids', 'cids', 'aids', 'assaysummary')) ||
-                    grepl('property', operation))
-        },
-        "substance" = assert_choice(namespace, c('sid', 'sourceid', 'sourceall', 'name')),
-        "assay" = assert_choice(namespace, c('aid', 'listkey', 'type', 'sourceall', 'target', 'activity')),
-        "cell" = assert_choice(namespace, c('cellacc', 'synonym')),
-        "gene" = assert_choice(namespace, c('geneid', 'genesymbol', 'synonym')),
-        "protein" = assert_choice(namespace, c('accession', 'gi', 'synonym'))
-    )
-    assert_choice(output, c('JSON', 'XML', 'SDF', 'TXT', 'CSV'))
-    assert_logical(raw, query_only)
-    if(!test_atomic(id, any.missing = FALSE)) .err("id must be an atomic vector with no missing/NA values")
+  # -------------------------------------- Function context --------------------------------------
+  funContext <- .funContext("query_pubchem_rest")
+  if (length(id) > 1 && namespace == "name") .err(funContext, " id must be a single value when namespace is 'name'")
 
-    if(namespace == 'cid') assert_integerish(id)
+  url <- .buildURL(url, domain, namespace, id, operation, output)
+  .debug(funContext, " Query URL: ", url)
+  if (query_only) {
+    return(url)
+  }
 
-    # -------------------------------------- Function context --------------------------------------
-    funContext <- .funContext("query_pubchem_rest")
-    if(length(id) > 1 && namespace == 'name') .err(funContext, " id must be a single value when namespace is 'name'")
-
-    url <- .buildURL(url, domain, namespace, id, operation, output)
-    .debug(funContext, " Query URL: ", url)
-    if(query_only) return(url)
-
-    # -------------------------------------- Querying PubChem REST API --------------------------------------
-    .build_pubchem_request(url)
+  # -------------------------------------- Querying PubChem REST API --------------------------------------
+  .build_pubchem_request(url)
 }
-

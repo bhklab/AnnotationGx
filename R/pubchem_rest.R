@@ -15,58 +15,65 @@
 #' @return A data.table containing the retrieved compound information.
 #'
 #' @examples
-#' properties=c('Title', 'MolecularFormula', 'InChIKey', 'CanonicalSMILES')
-#' getPubchemCompound(c(3672, 176870), from = 'cid', to = 'property', properties = properties)
+#' properties <- c("Title", "MolecularFormula", "InChIKey", "CanonicalSMILES")
+#' getPubchemCompound(c(3672, 176870), from = "cid", to = "property", properties = properties)
 #'
 #' @export
 getPubchemCompound <- function(
-    ids, from = 'cid', to = 'property', properties = c('Title', 'InChIKey'),
-    raw = FALSE, query_only = FALSE,output = 'JSON', ...
-    ){
-    funContext <- .funContext("getPubchemCompound")
+    ids, from = "cid", to = "property", properties = c("Title", "InChIKey"),
+    raw = FALSE, query_only = FALSE, output = "JSON", ...) {
+  funContext <- .funContext("getPubchemCompound")
 
-        
-    to_ <- if(to == 'property'){
-        checkmate::assert_atomic(properties, all.missing = FALSE)
-        checkmate::assert_character(properties)
-        to <- paste0(to, '/', paste0(properties, collapse = ','))
-    }else to
 
-    requests <- lapply(ids, function(x) {
-        .build_pubchem_rest_query(
-            id = x, domain = 'compound', namespace = from, operation = to_, output = output,
-            raw = raw, query_only = query_only, ...)
-        }
+  to_ <- if (to == "property") {
+    checkmate::assert_atomic(properties, all.missing = FALSE)
+    checkmate::assert_character(properties)
+    to <- paste0(to, "/", paste0(properties, collapse = ","))
+  } else {
+    to
+  }
+
+  requests <- lapply(ids, function(x) {
+    .build_pubchem_rest_query(
+      id = x, domain = "compound", namespace = from, operation = to_, output = output,
+      raw = raw, query_only = query_only, ...
     )
-    if(query_only) return(requests)
+  })
+  if (query_only) {
+    return(requests)
+  }
 
-    resps_raw <- httr2::req_perform_sequential(requests, on_error = "continue")
-    .debug(funContext, " Number of responses: ", length(resps_raw))
-    names(resps_raw) <- ids
-    if(raw) return(resps_raw)
+  resps_raw <- httr2::req_perform_sequential(requests, on_error = "continue")
+  .debug(funContext, " Number of responses: ", length(resps_raw))
+  names(resps_raw) <- ids
+  if (raw) {
+    return(resps_raw)
+  }
 
 
-    # Parse the responses
-    resps <- .parse_pubchem_rest_responses(resps_raw)
-    failed <- sapply(resps_raw, httr2::resp_is_error, USE.NAMES = T)
+  # Parse the responses
+  resps <- .parse_pubchem_rest_responses(resps_raw)
+  failed <- sapply(resps_raw, httr2::resp_is_error, USE.NAMES = T)
 
-    if(any(failed)){
-        .warn(funContext, " Some queries failed. See the 'failed' object for details.")
-        failures <- lapply(resps_raw[failed], function(resp){
-            .parse_resp_json(resp)$Fault
-        })
-    }else failures <- NULL
+  if (any(failed)) {
+    .warn(funContext, " Some queries failed. See the 'failed' object for details.")
+    failures <- lapply(resps_raw[failed], function(resp) {
+      .parse_resp_json(resp)$Fault
+    })
+  } else {
+    failures <- NULL
+  }
 
-    if(from != 'name'){
-        responses <- data.table::rbindlist(resps, fill= TRUE)
-    }else{
-        responses <- data.table::rbindlist(resps, idcol = from, fill = TRUE)
-    }
-    data.table::setnames(responses, 'V1', to, skip_absent=TRUE)
+  if (from != "name") {
+    responses <- data.table::rbindlist(resps, fill = TRUE)
+  } else {
+    responses <- data.table::rbindlist(resps, idcol = from, fill = TRUE)
+  }
+  data.table::setnames(responses, "V1", to, skip_absent = TRUE)
 
-    attributes(responses)$failed <- failures 
+  attributes(responses)$failed <- failures
 
-    responses
+  responses
 }
 
 
@@ -85,14 +92,16 @@ getPubchemCompound <- function(
 #'
 #' @export
 mapCompound2CID <- function(
-    names, first = FALSE, ...
-){
-    result <- getPubchemCompound(
-        ids = names, from = 'name', to = 'cids', ...
-    )
+    names, first = FALSE, ...) {
+  result <- getPubchemCompound(
+    ids = names, from = "name", to = "cids", ...
+  )
 
-    if(first) return(result[!duplicated(name),])
-    else return(result)
+  if (first) {
+    return(result[!duplicated(result$name), ])
+  } else {
+    return(result)
+  }
 }
 
 
@@ -100,7 +109,7 @@ mapCompound2CID <- function(
 #'
 #' This function maps PubChem Compound IDs to specified properties using the PubChem REST API.
 #' See `getPubchemProperties` for a list of available properties.
-#' 
+#'
 #' @param ids A vector of PubChem Compound IDs.
 #' @param properties A vector of property names to retrieve for each compound.
 #' @param ... Additional arguments to be passed to the `getPubchemCompound` function.
@@ -112,11 +121,10 @@ mapCompound2CID <- function(
 #'
 #' @export
 mapCID2Properties <- function(
-    ids, properties,  ...
-){
-    getPubchemCompound(
-        ids = ids, from = 'cid', to = 'property', properties = properties, ...
-    )
+    ids, properties, ...) {
+  getPubchemCompound(
+    ids = ids, from = "cid", to = "property", properties = properties, ...
+  )
 }
 
 #' Retrieves the PubChem XML schema and extracts property information.
@@ -127,24 +135,22 @@ mapCID2Properties <- function(
 #'
 #' @return A data table containing the extracted property information.
 #'
-#' @examples
-#' getPubchemProperties()
-#'
-#'
 #' @export
-getPubchemProperties <- function(){
-    url <- "https://pubchem.ncbi.nlm.nih.gov/pug_rest/pug_rest.xsd"
+getPubchemProperties <- function() {
+  url <- "https://pubchem.ncbi.nlm.nih.gov/pug_rest/pug_rest.xsd"
+  response <- .build_request(url) |>
+    .perform_request()
 
-    node_list <- xml2::read_xml(url) |> 
-        xml2::xml_children()  |>
-        xml2::as_list()
-    
-    properties <- node_list[[3]]$complexType$sequence$element$complexType$sequence
+  node_list <- xml2::read_xml(response$body) |>
+    xml2::xml_children() |>
+    xml2::as_list()
 
-    lapply(properties, function(x) {
-        list(
-            name = attr(x, "name"),
-            type = gsub("xs:", "", attr(x, "type"))
-        ) |> .asDT()
-    }) |> data.table::rbindlist()
+  properties <- node_list[[3]]$complexType$sequence$element$complexType$sequence
+
+  lapply(properties, function(x) {
+    list(
+      name = attr(x, "name"),
+      type = gsub("xs:", "", attr(x, "type"))
+    ) |> .asDT()
+  }) |> data.table::rbindlist()
 }

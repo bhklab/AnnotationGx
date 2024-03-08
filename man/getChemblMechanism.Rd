@@ -34,8 +34,9 @@ This function retrieves information about the mechanism of action for a given Ch
 }
 \examples{
 getChemblMechanism("CHEMBL1413")
-getChemblMechanism("CHEMBL1413", resources = "mechanism", field = "molecule_chembl_id",
-                   filter_type = "in", returnURL = FALSE, raw = FALSE)
-
+getChemblMechanism("CHEMBL1413",
+  resources = "mechanism", field = "molecule_chembl_id",
+  filter_type = "in", returnURL = FALSE, raw = FALSE
+)
 
 }
