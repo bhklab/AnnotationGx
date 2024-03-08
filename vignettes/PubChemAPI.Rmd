@@ -42,13 +42,9 @@ UniProt, ChEBI, and ChEMBL, given a specific identifier.
 
 ```{r setup}
 library(AnnotationGx)
-
-
-
 ```
 
 
-# 
 
 ### Mapping from chemical name to PubChem CID
 The main function that is provided by the package is `mapCompound2CID`. 

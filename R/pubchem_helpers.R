@@ -16,7 +16,7 @@
 #'  Black - the limit has been exceeded and requests are being blocked
 #' @keywords internal
 .checkThrottlingStatus2 <- function(response, printMessage){
-    message <- response$headers["X-Throttling-Control"]
+    message <- response$headers[["X-Throttling-Control"]]
     parsed_info <- .parse_throttling_message(message)
     if(printMessage){
         message("Throttling status:\n", paste0(strsplit(message, ", ")[[1]], collapse = "\n"))
