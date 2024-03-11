@@ -13,10 +13,16 @@
     <loc>https://bhklab.github.io/AnnotationGx/articles/Cellosaurus.html</loc>
   </url>
   <url>
+    <loc>https://bhklab.github.io/AnnotationGx/articles/OncoTree.html</loc>
+  </url>
+  <url>
     <loc>https://bhklab.github.io/AnnotationGx/articles/PubChemAPI.html</loc>
   </url>
   <url>
     <loc>https://bhklab.github.io/AnnotationGx/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>https://bhklab.github.io/AnnotationGx/articles/treatment_pipeline.html</loc>
   </url>
   <url>
     <loc>https://bhklab.github.io/AnnotationGx/authors.html</loc>
@@ -49,6 +55,15 @@
     <loc>https://bhklab.github.io/AnnotationGx/reference/getChemblResourceFields.html</loc>
   </url>
   <url>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/getOncotreeMainTypes.html</loc>
+  </url>
+  <url>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/getOncotreeTumorTypes.html</loc>
+  </url>
+  <url>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/getOncotreeVersions.html</loc>
+  </url>
+  <url>
     <loc>https://bhklab.github.io/AnnotationGx/reference/getPubchemAnnotationHeadings.html</loc>
   </url>
   <url>
@@ -59,6 +74,9 @@
   </url>
   <url>
     <loc>https://bhklab.github.io/AnnotationGx/reference/getPubchemStatus.html</loc>
+  </url>
+  <url>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/getUnichemSources.html</loc>
   </url>
   <url>
     <loc>https://bhklab.github.io/AnnotationGx/reference/index.html</loc>
@@ -74,6 +92,9 @@
   </url>
   <url>
     <loc>https://bhklab.github.io/AnnotationGx/reference/options.html</loc>
+  </url>
+  <url>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/queryUnichem.html</loc>
   </url>
   <url>
     <loc>https://bhklab.github.io/AnnotationGx/reference/standardize_names.html</loc>

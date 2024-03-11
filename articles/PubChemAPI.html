@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">AnnotationGx</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9076</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9080</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,7 +42,9 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/Cellosaurus.html">Cellosaurus</a>
+    <a class="dropdown-item" href="../articles/OncoTree.html">Querying OncoTree</a>
     <a class="dropdown-item" href="../articles/PubChemAPI.html">Querying PubChem with AnnotationGx</a>
+    <a class="dropdown-item" href="../articles/treatment_pipeline.html">Annotating Treatments Pipeline</a>
   </div>
 </li>
 <li class="nav-item">
@@ -164,8 +166,7 @@ be returned and a warning will be issued.</p>
 <span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■       </span></span></span>
 <span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■    </span></span></span>
 <span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span></span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">[20:10:03] [WARNING] [AnnotationGx::getPubchemCompound] Some queries failed. See the 'failed' object for details.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">[17:42:37] [WARNING] [AnnotationGx::getPubchemCompound] Some queries failed. See the 'failed' object for details.</span></span></span>
 <span><span class="co">#&gt;                     name    cids</span></span>
 <span><span class="co">#&gt;                   &lt;char&gt;   &lt;int&gt;</span></span>
 <span><span class="co">#&gt; 1:               Aspirin    2244</span></span>
@@ -298,11 +299,11 @@ get the available annotation headings and types.</p>
 <span><span class="co">#&gt;   4:  17O NMR Spectra Compound</span></span>
 <span><span class="co">#&gt;   5:  19F NMR Spectra Compound</span></span>
 <span><span class="co">#&gt;  ---                          </span></span>
-<span><span class="co">#&gt; 629: Wiley References Compound</span></span>
-<span><span class="co">#&gt; 630:      WormBase ID     Gene</span></span>
-<span><span class="co">#&gt; 631:      WormBase ID  Protein</span></span>
-<span><span class="co">#&gt; 632:  Xenbase Gene ID     Gene</span></span>
-<span><span class="co">#&gt; 633:          ZFIN ID     Gene</span></span></code></pre></div>
+<span><span class="co">#&gt; 631: Wiley References Compound</span></span>
+<span><span class="co">#&gt; 632:      WormBase ID     Gene</span></span>
+<span><span class="co">#&gt; 633:      WormBase ID  Protein</span></span>
+<span><span class="co">#&gt; 634:  Xenbase Gene ID     Gene</span></span>
+<span><span class="co">#&gt; 635:          ZFIN ID     Gene</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="get-annotation-headings-for-a-specific-type">Get annotation headings for a specific type:<a class="anchor" aria-label="anchor" href="#get-annotation-headings-for-a-specific-type"></a>
@@ -317,42 +318,32 @@ get the available annotation headings and types.</p>
 <span><span class="co">#&gt;   4:                           17O NMR Spectra Compound</span></span>
 <span><span class="co">#&gt;   5:                           19F NMR Spectra Compound</span></span>
 <span><span class="co">#&gt;  ---                                                   </span></span>
-<span><span class="co">#&gt; 472: Volatilization from Water/Soil (Complete) Compound</span></span>
-<span><span class="co">#&gt; 473:                   WHO Essential Medicines Compound</span></span>
-<span><span class="co">#&gt; 474:                                  Wikidata Compound</span></span>
-<span><span class="co">#&gt; 475:                                 Wikipedia Compound</span></span>
-<span><span class="co">#&gt; 476:                          Wiley References Compound</span></span></code></pre></div>
+<span><span class="co">#&gt; 473: Volatilization from Water/Soil (Complete) Compound</span></span>
+<span><span class="co">#&gt; 474:                   WHO Essential Medicines Compound</span></span>
+<span><span class="co">#&gt; 475:                                  Wikidata Compound</span></span>
+<span><span class="co">#&gt; 476:                                 Wikipedia Compound</span></span>
+<span><span class="co">#&gt; 477:                          Wiley References Compound</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="get-annotation-headings-for-a-specific-heading">Get annotation headings for a specific heading:<a class="anchor" aria-label="anchor" href="#get-annotation-headings-for-a-specific-heading"></a>
 </h4>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/getPubchemAnnotationHeadings.html">getPubchemAnnotationHeadings</a></span><span class="op">(</span>heading <span class="op">=</span> <span class="st">"CAS*"</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                             Heading     Type</span></span>
-<span><span class="co">#&gt;                              &lt;char&gt;   &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1:                              CAS Compound</span></span>
-<span><span class="co">#&gt; 2:                   Deprecated CAS Compound</span></span>
-<span><span class="co">#&gt; 3:        MICAD Imaging Information Compound</span></span>
-<span><span class="co">#&gt; 4:                      Related CAS Compound</span></span>
-<span><span class="co">#&gt; 5:                TSCA Requirements Compound</span></span>
-<span><span class="co">#&gt; 6:            TSCA Test Submissions Compound</span></span>
-<span><span class="co">#&gt; 7: TSCA Test Submissions (Complete) Compound</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/getPubchemAnnotationHeadings.html">getPubchemAnnotationHeadings</a></span><span class="op">(</span>heading <span class="op">=</span> <span class="st">"ChEMBL ID"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;      Heading     Type</span></span>
+<span><span class="co">#&gt;       &lt;char&gt;   &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1: ChEMBL ID Compound</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="get-annotation-headings-for-a-specific-type-and-heading">Get annotation headings for a specific type <strong>and</strong>
 heading:<a class="anchor" aria-label="anchor" href="#get-annotation-headings-for-a-specific-type-and-heading"></a>
 </h4>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/getPubchemAnnotationHeadings.html">getPubchemAnnotationHeadings</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"Compound"</span>, heading <span class="op">=</span> <span class="st">"CAS*"</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                             Heading     Type</span></span>
-<span><span class="co">#&gt;                              &lt;char&gt;   &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1:                              CAS Compound</span></span>
-<span><span class="co">#&gt; 2:                   Deprecated CAS Compound</span></span>
-<span><span class="co">#&gt; 3:        MICAD Imaging Information Compound</span></span>
-<span><span class="co">#&gt; 4:                      Related CAS Compound</span></span>
-<span><span class="co">#&gt; 5:                TSCA Requirements Compound</span></span>
-<span><span class="co">#&gt; 6:            TSCA Test Submissions Compound</span></span>
-<span><span class="co">#&gt; 7: TSCA Test Submissions (Complete) Compound</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/getPubchemAnnotationHeadings.html">getPubchemAnnotationHeadings</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"Compound"</span>, heading <span class="op">=</span> <span class="st">"CAS"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;           Heading     Type</span></span>
+<span><span class="co">#&gt;            &lt;char&gt;   &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1:            CAS Compound</span></span>
+<span><span class="co">#&gt; 2: Deprecated CAS Compound</span></span>
+<span><span class="co">#&gt; 3:    Related CAS Compound</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="query-annotations-for-a-specific-cid-and-heading">Query annotations for a specific CID and heading<a class="anchor" aria-label="anchor" href="#query-annotations-for-a-specific-cid-and-heading"></a>
@@ -362,28 +353,27 @@ CID.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">cids</span><span class="op">)</span>, <span class="va">CAS</span> <span class="op">:=</span> <span class="fu"><a href="../reference/annotatePubchemCompound.html">annotatePubchemCompound</a></span><span class="op">(</span><span class="va">cids</span>, <span class="st">"CAS"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■                              </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■                             </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■                          </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■                       </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■                    </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■                 </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■              </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■           </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■        </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■     </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■                           </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■                        </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■                      </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■                   </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■                </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■             </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■          </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■      </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   </span></span></span>
 <span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span></span></span>
 <span><span class="va">result</span></span>
-<span><span class="co">#&gt;                     name    cids                                CAS</span></span>
-<span><span class="co">#&gt;                   &lt;char&gt;   &lt;int&gt;                             &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1:               Aspirin    2244                            50-78-2</span></span>
-<span><span class="co">#&gt; 2:             Erlotinib  176870                        183321-74-6</span></span>
-<span><span class="co">#&gt; 3:             Acadesine   17513                          2627-69-2</span></span>
-<span><span class="co">#&gt; 4:          Camptothecin   24360                          7689-03-4</span></span>
-<span><span class="co">#&gt; 5:    Vincaleukoblastine   13342                           865-21-4</span></span>
-<span><span class="co">#&gt; 6:             Cisplatin 5702198 15663-27-1; 26035-31-4; 14913-33-8</span></span>
-<span><span class="co">#&gt; 7: non existent compound      NA                               &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 8:  another bad compound      NA                               &lt;NA&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt;                     name    cids         CAS</span></span>
+<span><span class="co">#&gt;                   &lt;char&gt;   &lt;int&gt;      &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1:               Aspirin    2244     50-78-2</span></span>
+<span><span class="co">#&gt; 2:             Erlotinib  176870 183321-74-6</span></span>
+<span><span class="co">#&gt; 3:             Acadesine   17513   2627-69-2</span></span>
+<span><span class="co">#&gt; 4:          Camptothecin   24360   7689-03-4</span></span>
+<span><span class="co">#&gt; 5:    Vincaleukoblastine   13342    865-21-4</span></span>
+<span><span class="co">#&gt; 6:             Cisplatin 5702198        &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 7: non existent compound      NA        &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 8:  another bad compound      NA        &lt;NA&gt;</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
