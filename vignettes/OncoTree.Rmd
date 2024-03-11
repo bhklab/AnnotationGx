@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Introduction
+# Introduction
 OncoTree is a standardized classification system used in cancer research 
 and clinical practice to categorize different types of cancer based on 
 their tissue of origin, molecular characteristics, and other relevant factors. 
@@ -31,35 +31,35 @@ a structured tree-like diagram.
   reported across different studies and clinical settings.
 
 
-## Setup
+# Setup
 ```{r setup}
 library(AnnotationGx)
 ```
 
-## Querying OncoTree
+# Querying OncoTree
 
 AnnotationGx provides a set of functions for querying OncoTree to retrieve
 three types of information:
-1) OncoTree release versions
-2) Main Cancer types
-3) Subtypes of a specific cancer type and their relationships
+- OncoTree release versions
+- Main Cancer types
+- Subtypes of a specific cancer type and their relationships
 
-### OncoTree release versions
+## OncoTree release versions
 The `getOncotreeVersions` function retrieves the available OncoTree release.
 ```{r getOncotreeVersions}
 getOncotreeVersions()
 ```
 
-### Main Cancer types
+## Main Cancer types
 The `getMainCancerTypes` function retrieves the main cancer types in OncoTree.
 ```{r getMainCancerTypes}
 getOncotreeMainTypes()
 ```
 
-### Subtypes of a specific cancer type
+## Subtypes of a specific cancer type
 The `getCancerSubtypes` function retrieves the subtypes of a specific cancer type.
 ```{r getCancerSubtypes}
-getOncotreeTumorTypes("Lung")
+getOncotreeTumorTypes()
 ```
 
 

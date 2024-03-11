@@ -44,7 +44,7 @@ test_that("AnnotationGx::annotatePubchemCompound", {
   response <- annotatePubchemCompound(CID, "ChEMBL ID", raw=T)
   expect_class(response[[1]], "httr2_response")
 
-  expected <- NULL
+  expected <- NA_character_
   expect_equal(annotatePubchemCompound(CID, "NSC Number"), expected)
 
   expected <- "L01EB02"
