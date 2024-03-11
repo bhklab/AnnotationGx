@@ -24,16 +24,18 @@
 #' 
 #' @export
 getUnichemSources <- function() {
+    funContext <- .funContext("AnnotationGx::getUnichemSources")
+
     response <- .build_unichem_query("sources") |>
         .build_request() |>
         .perform_request() |>
         .parse_resp_json() 
     
     if(response$response != "Success"){
-        .err("Unichem API request failed.")
+        .err(funContext, "Unichem API request failed.")
     }
 
-    .debug(sprintf("Unichem sourceCount: %s", response$totalSources))
+    .debug(funContext, sprintf("Unichem sourceCount: %s", response$totalSources))
 
     sources_dt <- .asDT(response$sources)
 
@@ -65,7 +67,7 @@ getUnichemSources <- function() {
 #' This function queries the UniChem API for a compound based on the provided parameters.
 #' 
 #' @param type `character` The type of compound identifier to search for. Valid types are "uci", "inchi", "inchikey", and "sourceID".
-#' @param compound `character` The compound identifier to search for.
+#' @param compound `character` or `integer` The compound identifier to search for.
 #' @param sourceID `integer` The source ID to search for if the type is "sourceID". Defaults to NULL.
 #' @param request_only `boolean` Whether to return the request only. Defaults to FALSE.
 #' @param raw `boolean` Whether to return the raw response. Defaults to FALSE.
@@ -81,7 +83,7 @@ queryUnichem <- function(
     type, compound, sourceID = NA_integer_, request_only = FALSE, raw = FALSE, ...
 ){
     checkmate::assert_string(type)
-    checkmate::assert_string(compound)
+    checkmate::assert_atomic(compound)
     checkmate::assert_integerish(sourceID)
     checkmate::assertLogical(request_only)
     checkmate::assertLogical(raw)

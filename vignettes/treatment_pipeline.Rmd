@@ -34,13 +34,12 @@ names_to_cids <- AnnotationGx::mapCompound2CID(treatmentMetadata$CTRP.treatmenti
 ```{r use CID in unichem}
 
 sources <- getUnichemSources()
-response <- .build_compound_query(
+response <- queryUnichem(
   type = "sourceID", 
-  names_to_cids[1, cids], 
+  compound = names_to_cids[1, cids], 
   sourceID = sources[Name == "pubchem", SourceID]
 ) 
 
-response |> asdt()
-
+response
 ```
 

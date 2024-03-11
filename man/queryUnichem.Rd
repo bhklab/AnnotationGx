@@ -16,7 +16,7 @@ queryUnichem(
 \arguments{
 \item{type}{\code{character} The type of compound identifier to search for. Valid types are "uci", "inchi", "inchikey", and "sourceID".}
 
-\item{compound}{\code{character} The compound identifier to search for.}
+\item{compound}{\code{character} or \code{integer} The compound identifier to search for.}
 
 \item{sourceID}{\code{integer} The source ID to search for if the type is "sourceID". Defaults to NULL.}
 

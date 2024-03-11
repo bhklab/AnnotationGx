@@ -16,6 +16,7 @@
 .build_unichem_query <- function(
     endpoint, query_only = FALSE
 ) {
+    funContext <- .funContext("AnnotationGx:::.build_unichem_query")
 
     valid_endpoints <- c("compounds", "connectivity", "images", "sources")
     checkmate::assert_subset(endpoint, valid_endpoints)
@@ -23,6 +24,8 @@
     unichem_api <- "https://www.ebi.ac.uk/unichem/api/v1"
     url <- httr2::url_parse(unichem_api)
     url$path <- .buildURL(url$path, endpoint)
+
+    .debug(funContext, "URL: ", capture.output(show(url)))
 
     if (query_only) return(url)
 
@@ -50,10 +53,14 @@
 .build_unichem_compound_req <- function(
     type, compound, sourceID = NULL, ...
 ){
+    funContext <- .funContext("AnnotationGx:::.build_unichem_compound_req")
+
     valid_types <- c("uci", "inchi", "inchikey", "sourceID")
     checkmate::assert_subset(type, valid_types)
 
     base_url <- .build_unichem_query("compounds")
+
+    .debug(funContext, "Base URL: ", capture.output(show(base_url)))
 
     body <- list(
         type = type,
@@ -75,6 +82,6 @@
         .build_request() |>
         httr2::req_body_json(body) 
 
+    .debug(funContext, "Request: ", capture.output(show(request)))
     return(request)
-
 }
