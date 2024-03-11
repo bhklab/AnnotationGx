@@ -127,12 +127,12 @@ getPubchemAnnotationHeadings(type = "Compound")
 
 ### Get annotation headings for a specific heading:
 ``` {r get annotation headings for a specific heading}
-getPubchemAnnotationHeadings(heading = "CAS*")
+getPubchemAnnotationHeadings(heading = "ChEMBL ID")
 ```
 
 ### Get annotation headings for a specific type **and** heading:
 ``` {r get annotation headings for a specific type and heading}
-getPubchemAnnotationHeadings(type = "Compound", heading = "CAS*")
+getPubchemAnnotationHeadings(type = "Compound", heading = "CAS")
 ```
 
 

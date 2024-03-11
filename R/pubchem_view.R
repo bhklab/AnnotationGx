@@ -113,5 +113,11 @@ annotatePubchemCompound <- function(
     )
   })
 
-  parsed_responses |> unlist()
+  sapply(parsed_responses, .replace_null)
+
+}
+
+# helper function to replace NULL with NA
+.replace_null <- function(x) {
+  ifelse(is.null(x), NA_character_, x)
 }
