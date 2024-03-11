@@ -1,0 +1,45 @@
+---
+title: "Annotating Treatments Pipeline"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Annotating Treatments Pipeline}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# THIS VIGNETTE IS A WORK IN PROGRESS
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(AnnotationGx)
+```
+
+```{r mapCompounds to CID}
+
+data(ctrp_treatmentIDs)
+treatmentMetadata <- ctrp_treatmentIDs[1:5]
+treatmentMetadata
+names_to_cids <- AnnotationGx::mapCompound2CID(treatmentMetadata$CTRP.treatmentid, first = TRUE) 
+
+
+```
+
+
+```{r use CID in unichem}
+
+sources <- getUnichemSources()
+response <- queryUnichem(
+  type = "sourceID", 
+  compound = names_to_cids[1, cids], 
+  sourceID = sources[Name == "pubchem", SourceID]
+) 
+
+response
+```
+
