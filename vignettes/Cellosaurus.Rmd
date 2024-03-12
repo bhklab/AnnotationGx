@@ -1,8 +1,8 @@
 ---
-title: "Cellosaurus"
+title: "Querying Cellosaurus"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Cellosaurus}
+  %\VignetteIndexEntry{Querying Cellosaurus}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -106,76 +106,3 @@ mapCell2Accession("BT474", numResults = 1, prioritizeParent = TRUE)
 
 
 
-
-### Example pipeline to annotate a dataseGSM1897356t
-#TODO::incomplete
-
-We will be working with some data from the GDSC and Cell Model Passports datasets 
-for this vignette. The GDSC dataset contains information about the cell lines 
-in the Genomics of Drug Sensitivity in Cancer (GDSC) project. The Cell Model
-Passports dataset contains information about all the models in the the database.
-
-
-The GDSC sampleMetadata contains two columns, `GDSC.Sample_Name` and `GDSC.COSMIC_ID`.
-``` {r setup data}
-data(gdsc_sampleMetadata)
-data(cell_model_passports_models)
-```
-
-```{r view data}
-# head(gdsc_sampleMetadata)
-```
-
-
-```{r map one name}
-# By default, the function will try to map using the common identifier name to the Cellosaurus accession number
-# AnnotationGx::mapCell2Accession(gdsc_sampleMetadata[["GDSC.Sample_Name"]])
-```
-
-
-```{r view data2}
-# head(cell_model_passports_models)
-```
-
-
-```{r map one name to fields}
-# fields <- c("id", "ac", "sy", "sx", "ag", "derived-from-site")
-
-# By passing the fields argument, the function will return the information for the fields specified
-# AnnotationGx::mapCell2Accession(cell_model_passports_models[["CMP.model_name"]], to=fields) |> head()
-```
-
-
-```{r map using names}
-# field_map <- list(
-#     "id" = "id",
-#     "ac" = "accession",
-#     "sy" = "synonyms",
-#     "misspelling" = "misspellings",
-#     "di" = "diseases",
-#     "ca" = "category",
-#     "sx" = "sexOfCell",
-#     "ag" = "ageAtSampling",
-#     "derived-from-site" = "samplingSite"
-# )
-# fields <- names(field_map)
-# gdsc_sampleMetadata[, paste0("cellosaurus.", fields ) := {
-#     mapped <- AnnotationGx::mapCell2Accession(
-#         as.character(GDSC.COSMIC_ID),
-#         from = "dr",
-#         to = fields
-#     )
-#     return(mapped[, 1:length(fields)])
-#     }
-# ]
-
-
-
-# # rename using map
-# for (i in names(field_map)) {
-#     data.table::setnames(gdsc_sampleMetadata,
-#     paste0("cellosaurus.", i), paste0("cellosaurus.", field_map[[i]]), skip_absent = TRUE)
-# }
-
-# str(gdsc_sampleMetadata[1])
-```

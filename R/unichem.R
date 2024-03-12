@@ -58,7 +58,7 @@ getUnichemSources <- function() {
         "UpdateComments"
     )
 
-    sources_dt[, ..new_order]
+    sources_dt[, new_order, with = FALSE]
 
 }
 
@@ -104,10 +104,11 @@ queryUnichem <- function(
     # Mapping names to be consistent with other API calls
     mapped_sources_dt <- .asDT(response$compounds$sources)
     old_names <- c("compoundId", "shortName", "longName", "id", "url")
+
     new_names <- c("compoundID", "Name", "NameLong", "sourceID", "sourcURL")
     setnames(mapped_sources_dt, old = old_names, new = new_names)
 
-    External_Mappings <- mapped_sources_dt[, ..new_names]
+    External_Mappings <- mapped_sources_dt[, new_names, with = FALSE]
     
     UniChem_Mappings <- list(
         UniChem.UCI = response$compounds$uci,
