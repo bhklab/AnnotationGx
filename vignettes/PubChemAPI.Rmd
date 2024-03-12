@@ -1,8 +1,8 @@
 ---
-title: "Querying PubChem with AnnotationGx"
+title: "Querying PubChem"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Querying PubChem with AnnotationGx}
+  %\VignetteIndexEntry{Querying PubChem}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
