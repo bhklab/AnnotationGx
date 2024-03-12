@@ -6,12 +6,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="AnnotationGx">
-<title>Cellosaurus • AnnotationGx</title>
+<title>Querying Cellosaurus • AnnotationGx</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Cellosaurus">
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Querying Cellosaurus">
 <meta property="og:description" content="AnnotationGx">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -41,10 +41,9 @@
 <li class="active nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/Cellosaurus.html">Cellosaurus</a>
+    <a class="dropdown-item" href="../articles/Cellosaurus.html">Querying Cellosaurus</a>
     <a class="dropdown-item" href="../articles/OncoTree.html">Querying OncoTree</a>
-    <a class="dropdown-item" href="../articles/PubChemAPI.html">Querying PubChem with AnnotationGx</a>
-    <a class="dropdown-item" href="../articles/treatment_pipeline.html">Annotating Treatments Pipeline</a>
+    <a class="dropdown-item" href="../articles/PubChemAPI.html">Querying PubChem</a>
   </div>
 </li>
 <li class="nav-item">
@@ -67,7 +66,7 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="" class="logo" alt=""><h1>Cellosaurus</h1>
+      <img src="" class="logo" alt=""><h1>Querying Cellosaurus</h1>
             
       
       
@@ -190,65 +189,6 @@ based on the accession id of the parent cell line.</p>
 <span><span class="co">#&gt;              id        ac    query query:id</span></span>
 <span><span class="co">#&gt;          &lt;char&gt;    &lt;char&gt;   &lt;char&gt;   &lt;char&gt;</span></span>
 <span><span class="co">#&gt; 1: BT474-5FU[r] CVCL_4V65 id:BT474    BT474</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="example-pipeline-to-annotate-a-datasegsm1897356t">Example pipeline to annotate a dataseGSM1897356t<a class="anchor" aria-label="anchor" href="#example-pipeline-to-annotate-a-datasegsm1897356t"></a>
-</h3>
-<p>#TODO::incomplete</p>
-<p>We will be working with some data from the GDSC and Cell Model
-Passports datasets for this vignette. The GDSC dataset contains
-information about the cell lines in the Genomics of Drug Sensitivity in
-Cancer (GDSC) project. The Cell Model Passports dataset contains
-information about all the models in the the database.</p>
-<p>The GDSC sampleMetadata contains two columns,
-<code>GDSC.Sample_Name</code> and <code>GDSC.COSMIC_ID</code>.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">gdsc_sampleMetadata</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">cell_model_passports_models</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># head(gdsc_sampleMetadata)</span></span></code></pre></div>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># By default, the function will try to map using the common identifier name to the Cellosaurus accession number</span></span>
-<span><span class="co"># AnnotationGx::mapCell2Accession(gdsc_sampleMetadata[["GDSC.Sample_Name"]])</span></span></code></pre></div>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># head(cell_model_passports_models)</span></span></code></pre></div>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># fields &lt;- c("id", "ac", "sy", "sx", "ag", "derived-from-site")</span></span>
-<span></span>
-<span><span class="co"># By passing the fields argument, the function will return the information for the fields specified</span></span>
-<span><span class="co"># AnnotationGx::mapCell2Accession(cell_model_passports_models[["CMP.model_name"]], to=fields) |&gt; head()</span></span></code></pre></div>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># field_map &lt;- list(</span></span>
-<span><span class="co">#     "id" = "id",</span></span>
-<span><span class="co">#     "ac" = "accession",</span></span>
-<span><span class="co">#     "sy" = "synonyms",</span></span>
-<span><span class="co">#     "misspelling" = "misspellings",</span></span>
-<span><span class="co">#     "di" = "diseases",</span></span>
-<span><span class="co">#     "ca" = "category",</span></span>
-<span><span class="co">#     "sx" = "sexOfCell",</span></span>
-<span><span class="co">#     "ag" = "ageAtSampling",</span></span>
-<span><span class="co">#     "derived-from-site" = "samplingSite"</span></span>
-<span><span class="co"># )</span></span>
-<span><span class="co"># fields &lt;- names(field_map)</span></span>
-<span><span class="co"># gdsc_sampleMetadata[, paste0("cellosaurus.", fields ) := {</span></span>
-<span><span class="co">#     mapped &lt;- AnnotationGx::mapCell2Accession(</span></span>
-<span><span class="co">#         as.character(GDSC.COSMIC_ID),</span></span>
-<span><span class="co">#         from = "dr",</span></span>
-<span><span class="co">#         to = fields</span></span>
-<span><span class="co">#     )</span></span>
-<span><span class="co">#     return(mapped[, 1:length(fields)])</span></span>
-<span><span class="co">#     }</span></span>
-<span><span class="co"># ]</span></span>
-<span></span>
-<span></span>
-<span></span>
-<span><span class="co"># # rename using map</span></span>
-<span><span class="co"># for (i in names(field_map)) {</span></span>
-<span><span class="co">#     data.table::setnames(gdsc_sampleMetadata,</span></span>
-<span><span class="co">#     paste0("cellosaurus.", i), paste0("cellosaurus.", field_map[[i]]), skip_absent = TRUE)</span></span>
-<span><span class="co"># }</span></span>
-<span></span>
-<span><span class="co"># str(gdsc_sampleMetadata[1])</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
