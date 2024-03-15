@@ -34,3 +34,65 @@ standardize_names <- function(object) {
   object <- toupper(object)
   object
 }
+
+
+#' Clean character strings by removing special characters and formatting.
+#'
+#' This function takes a character string as input and performs several cleaning operations
+#' to remove special characters, formatting, and unwanted substrings. The cleaned string
+#' is then returned as the output.
+#'
+#' @param name A character string to be cleaned.
+#' @param space_action A character vector specifying the actions to be taken for space characters.
+#'                     One of c("", "-", " ").
+#' @return The cleaned character string.
+#'
+#' @examples
+#' cleanCharacterStrings("Cisplatin: 1 mg/mL (1.5 mM); 5 mM in DMSO")
+#'
+#' @export
+cleanCharacterStrings <- function(name, space_action = "") {
+
+  # make sure name is a string
+  name <- as.character(name)
+
+  # replace space characters based on space_action
+  if (space_action == "-") {
+    name <- gsub(" ", "-", name)
+  } else if (space_action == " ") {
+    name <- gsub(" ", " ", name)
+  }else{
+    name <- gsub(" ", "", name)
+  }
+
+  # if there is a colon like in "Cisplatin: 1 mg/mL (1.5 mM); 5 mM in DMSO"
+  # remove everything after the colon
+  name <- gsub(":.*", "", name)
+
+  # remove ,  ;  -  +  *  $  %  #  ^  _  as well as any spaces
+  name <- gsub("[\\,\\;\\+\\*\\$\\%\\#\\^\\_]", "", name, perl = TRUE)
+
+  # remove hyphen 
+  if (!space_action == "-")  name <- gsub("-", "", name)
+
+  # remove substring of round brackets and contents
+  name <- gsub("\\s*\\(.*\\)", "", name)
+
+  # remove substring of square brackets and contents
+  name <- gsub("\\s*\\[.*\\]", "", name)
+
+  # remove substring of curly brackets and contents
+  name <- gsub("\\s*\\{.*\\}", "", name)
+
+
+
+  # convert entire string to uppercase
+  name <- toupper(name)
+
+  # dealing with unicode characters 
+  name <- gsub("Unicode", "", iconv(name, "LATIN1", "ASCII", "Unicode"), perl=TRUE)
+
+  name
+}
+
+

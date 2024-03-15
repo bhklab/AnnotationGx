@@ -25,11 +25,12 @@
     url <- httr2::url_parse(unichem_api)
     url$path <- .buildURL(url$path, endpoint)
 
-    .debug(funContext, "URL: ", utils::capture.output(show(url)))
+    output <- httr2::url_build(url)
+
+    .debug(funContext, "URL: ", output )
 
     if (query_only) return(url)
-
-    return(httr2::url_build(url))
+    httr2::url_build(url) 
 }
 
 
@@ -60,7 +61,7 @@
 
     base_url <- .build_unichem_query("compounds")
 
-    .debug(funContext, "Base URL: ", utils::capture.output(show(base_url)))
+    .debug(funContext, "Base URL: ", base_url)
 
     body <- list(
         type = type,
@@ -82,6 +83,6 @@
         .build_request() |>
         httr2::req_body_json(body) 
 
-    .debug(funContext, "Request: ", utils::capture.output(show(request)))
+    .debug(funContext, "Request: ", request)
     return(request)
 }

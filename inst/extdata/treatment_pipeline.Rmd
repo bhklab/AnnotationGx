@@ -37,7 +37,7 @@ sources <- getUnichemSources()
 
 lapply(
   names_to_cids[1:2, cids],
-  queryUnichem,
+  queryUnichemCompound,
   type = "sourceID", 
   sourceID = sources[Name == "pubchem", SourceID]
 )
