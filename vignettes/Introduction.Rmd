@@ -14,7 +14,7 @@ output:
 date: "`r doc_date()`"
 package: "`r pkg_ver('AnnotationGx')`"
 vignette: >
-  %\VignetteIndexEntry{Querying ChEMBL Database}
+  %\VignetteIndexEntry{1. Introduction to AnnotationGx}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}  
 ---
