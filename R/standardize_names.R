@@ -84,8 +84,7 @@ cleanCharacterStrings <- function(name, space_action = "") {
   # remove substring of curly brackets and contents
   name <- gsub("\\s*\\{.*\\}", "", name)
 
-  # remove any accented characters like é
-  name <- .remove_accent(name)
+
 
   # convert entire string to uppercase
   name <- toupper(name)
@@ -97,22 +96,3 @@ cleanCharacterStrings <- function(name, space_action = "") {
 }
 
 
-#' Remove accents from a string
-#' 
-#' @keywords internal
-#' 
-#' @noRd
-.remove_accent <- function(input_string) {
-  # Define a vector of accented characters and their replacements
-  accented <- c("á", "é", "í", "ó", "ú", "Á", "É", "Í", "Ó", "Ú", "à", "è", "ì", "ò", "ù", "À", "È", "Ì", "Ò", "Ù", 
-                "â", "ê", "î", "ô", "û", "Â", "Ê", "Î", "Ô", "Û", "ä", "ë", "ï", "ö", "ü", "Ä", "Ë", "Ï", "Ö", "Ü",
-                "ã", "õ", "Ã", "Õ", "ñ", "Ñ", "ç", "Ç", "ß")
-  replacement <- c("a", "e", "i", "o", "u", "A", "E", "I", "O", "U", "a", "e", "i", "o", "u", "A", "E", "I", "O", "U",
-                   "a", "e", "i", "o", "u", "A", "E", "I", "O", "U", "a", "e", "i", "o", "u", "A", "E", "I", "O", "U",
-                   "a", "o", "A", "O", "n", "N", "c", "C", "ss")
-  
-  # Replace accented characters with their non-accented equivalents
-  output_string <- chartr(paste(accented, collapse = ""), paste(replacement, collapse = ""), input_string)
-  
-  return(output_string)
-}
