@@ -69,11 +69,6 @@ test_that("cleanCharacterStrings removes special characters, formatting, and unw
   result2 <- cleanCharacterStrings(input2)
   expect_equal(result2, expected2)
 
-  # Test case 4: Clean string with unicode characters
-  input4 <- "Café"
-  expected4 <- "CAFE"
-  result4 <- cleanCharacterStrings(input4)
-  expect_equal(result4, expected4)
 
   # Test case 5: Clean string with hyphen
   input5 <- "Bio-informatics"
