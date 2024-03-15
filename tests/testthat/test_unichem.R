@@ -3,7 +3,7 @@ library(AnnotationGx)
 library(checkmate)
 
 test_that("getUnichemSources returns a data.table with the correct columns", {
-  sources <- getUnichemSources()
+  sources <- getUnichemSources(all_columns = TRUE)
   
   expected_columns <- c(
     "Name", "NameLabel", "NameLong", "SourceID", "CompoundCount", 
@@ -24,21 +24,21 @@ test_that("getUnichemSources returns a data.table with the correct columns", {
 })
 
 
-test_that("queryUnichem returns the expected results", {
+test_that("queryUnichemCompound returns the expected results", {
   # Test case 1
-  result1 <- queryUnichem(type = "sourceID", compound = "444795", sourceID = 22)
+  result1 <- queryUnichemCompound(type = "sourceID", compound = "444795", sourceID = 22)
   expect_true(is.list(result1))
   expect_true("External_Mappings" %in% names(result1))
   expect_true("UniChem_Mappings" %in% names(result1))
   
   # Test case 2
-  expect_error(queryUnichem(type = "inchikey", compound = "InchiKey123"))
+  expect_error(queryUnichemCompound(type = "inchikey", compound = "InchiKey123"))
 
 })
 
-test_that("queryUnichem returns the expected results 2", {
+test_that("queryUnichemCompound returns the expected results 2", {
   # Test case 1
-  result1 <- queryUnichem(type = "inchikey", compound = "BSYNRYMUTXBXSQ-UHFFFAOYSA-N", raw = T)
+  result1 <- queryUnichemCompound(type = "inchikey", compound = "BSYNRYMUTXBXSQ-UHFFFAOYSA-N", raw = T)
 
   expect_true(is.list(result1))
 
@@ -52,7 +52,7 @@ test_that("queryUnichem returns the expected results 2", {
     subset.of=c("inchi", "sources", "standardInchiKey", "uci")
   )
 
-  result2 <- queryUnichem(type = "inchikey", compound = "BSYNRYMUTXBXSQ-UHFFFAOYSA-N", raw = F)
+  result2 <- queryUnichemCompound(type = "inchikey", compound = "BSYNRYMUTXBXSQ-UHFFFAOYSA-N", raw = F)
 
   expect_true(is.list(result2))
 
