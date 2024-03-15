@@ -12,7 +12,7 @@ It returns the status code and, if specified, the parsed information from the re
     
     <a class="navbar-brand me-2" href="../index.html">AnnotationGx</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9080</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9081</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,6 +27,8 @@ It returns the status code and, if specified, the parsed information from the re
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/Cellosaurus.html">Querying Cellosaurus</a>
+    <a class="dropdown-item" href="../articles/ChEMBL.html">Querying ChEMBL Database</a>
+    <a class="dropdown-item" href="../articles/Introduction.html">1. Introduction to AnnotationGx</a>
     <a class="dropdown-item" href="../articles/OncoTree.html">Querying OncoTree</a>
     <a class="dropdown-item" href="../articles/PubChemAPI.html">Querying PubChem</a>
   </div>
@@ -88,20 +90,20 @@ It returns the status code and, if specified, the parsed information from the re
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">getPubchemStatus</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Throttling status:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Request Count status: Green (2%)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Request Count status: Green (1%)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Request Time status: Green (0%)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Service status: Green (13%)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Service status: Green (30%)</span>
 <span class="r-in"><span><span class="fu">getPubchemStatus</span><span class="op">(</span>returnMessage <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Throttling status:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Request Count status: Green (2%)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Request Count status: Green (1%)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Request Time status: Green (0%)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Service status: Green (7%)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Service status: Green (17%)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $request_count</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $request_count$status</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Green"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $request_count$percent</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $request_time</span>
@@ -117,7 +119,7 @@ It returns the status code and, if specified, the parsed information from the re
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Green"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $service$percent</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 17</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu">getPubchemStatus</span><span class="op">(</span>printMessage <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>

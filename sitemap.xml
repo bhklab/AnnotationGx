@@ -13,6 +13,12 @@
     <loc>https://bhklab.github.io/AnnotationGx/articles/Cellosaurus.html</loc>
   </url>
   <url>
+    <loc>https://bhklab.github.io/AnnotationGx/articles/ChEMBL.html</loc>
+  </url>
+  <url>
+    <loc>https://bhklab.github.io/AnnotationGx/articles/Introduction.html</loc>
+  </url>
+  <url>
     <loc>https://bhklab.github.io/AnnotationGx/articles/OncoTree.html</loc>
   </url>
   <url>
@@ -46,10 +52,16 @@
     <loc>https://bhklab.github.io/AnnotationGx/reference/gdsc_sampleMetadata.html</loc>
   </url>
   <url>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/getChemblFilterTypes.html</loc>
+  </url>
+  <url>
     <loc>https://bhklab.github.io/AnnotationGx/reference/getChemblMechanism.html</loc>
   </url>
   <url>
     <loc>https://bhklab.github.io/AnnotationGx/reference/getChemblResourceFields.html</loc>
+  </url>
+  <url>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/getChemblResources.html</loc>
   </url>
   <url>
     <loc>https://bhklab.github.io/AnnotationGx/reference/getOncotreeMainTypes.html</loc>
@@ -89,6 +101,9 @@
   </url>
   <url>
     <loc>https://bhklab.github.io/AnnotationGx/reference/options.html</loc>
+  </url>
+  <url>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/queryChemblAPI.html</loc>
   </url>
   <url>
     <loc>https://bhklab.github.io/AnnotationGx/reference/queryUnichem.html</loc>
