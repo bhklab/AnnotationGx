@@ -58,7 +58,7 @@ test_that("queryUnichemCompound returns the expected results 2", {
 
   checkmate::expect_names(
     names(result2$External_Mappings),
-    subset.of = c("compoundID", "Name", "NameLong", "sourceID", "sourcURL")
+    subset.of = c("compoundID", "Name", "NameLong", "sourceID", "sourceURL")
   )
 
   checkmate::expect_names(
