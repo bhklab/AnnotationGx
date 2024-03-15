@@ -4,12 +4,11 @@
 \alias{getUnichemSources}
 \title{Get the list of sources in UniChem.}
 \usage{
-getUnichemSources()
+getUnichemSources(all_columns = FALSE)
 }
-\value{
-A data.table with the list of sources in UniChem.
-}
-\description{
+\arguments{
+\item{all_columns}{\code{boolean} Whether to return all columns. Defaults to FALSE.
+
 Returns a \code{data.table} with the following columns:
 \itemize{
 \item \code{CompoundCount} (integer): Total of compounds provided by that source
@@ -25,5 +24,11 @@ Returns a \code{data.table} with the following columns:
 \item \code{ReleaseNumber} (integer): Release number of the source database data stored in UniChEM
 \item \code{URL} (string): Main URL for the source
 \item \code{UpdateComments} (string): Notes about the update process of that source to UniChEM
+}}
 }
+\value{
+A data.table with the list of sources in UniChem.
+}
+\description{
+Get the list of sources in UniChem.
 }

@@ -78,13 +78,36 @@
 
   # Add the query parameters
   query <- list()
-  query[["format"]] <- format
   fld <- paste0(field, "__", filter_type)
   query[[fld]] <- value
+  query[["format"]] <- format
   url$query <- query
 
   final_url <- httr2::url_build(url)
   final_url |> .build_request()
+}
+
+
+#' Query the ChEMBL API
+#'
+#' This function queries the ChEMBL API using the specified parameters and returns the response in JSON format.
+#'
+#' @param resource The resource to query in the ChEMBL API.
+#' @param field The field to filter on in the ChEMBL API.
+#' @param filter_type The type of filter to apply in the ChEMBL API.
+#' @param value The value to filter on in the ChEMBL API.
+#' @param format The format of the response (default is "json").
+#'
+#' @return The response from the ChEMBL API in JSON format.
+#'
+#' @examples
+#' queryChemblAPI("mechanism", "molecule_chembl_id", "in", "CHEMBL1413")
+#'
+#' @export
+queryChemblAPI <- function(resource, field, filter_type, value, format = "json") {
+  .build_chembl_request(resource, field, filter_type, value, format) |> 
+    .perform_request() |> 
+    .parse_resp_json()
 }
 
 
@@ -161,4 +184,32 @@ getChemblMechanism <- function(
 getChemblResourceFields <- function(resource) {
   checkmate::assert_choice(resource, .chembl_resources())
   .chembl_resource_schema(resource)[["fields"]] |> names()
+}
+
+#' getChemblResources function
+#'
+#' This function retrieves the Chembl resources.
+#'
+#' @return A list of Chembl resources.
+#'
+#' @examples
+#' getChemblResources()
+#'
+#' @export
+getChemblResources <- function(){
+  .chembl_resources()
+}
+
+#' Get the Chembl filter types
+#'
+#' This function retrieves the Chembl filter types.
+#'
+#' @return A list of Chembl filter types.
+#'
+#' @examples
+#' getChemblFilterTypes()
+#'
+#' @export
+getChemblFilterTypes <- function(){
+  .chembl_filter_types()
 }

@@ -1,8 +1,11 @@
 
 # Unichem API documentation: https://www.ebi.ac.uk/unichem/info/webservices
 
-
 #' Get the list of sources in UniChem.
+#' 
+#' @param all_columns `boolean` Whether to return all columns. Defaults to FALSE.
+#' 
+
 #' 
 #' Returns a `data.table` with the following columns:
 #' - `CompoundCount` (integer): Total of compounds provided by that source
@@ -23,7 +26,7 @@
 #' @return A data.table with the list of sources in UniChem.
 #' 
 #' @export
-getUnichemSources <- function() {
+getUnichemSources <- function(all_columns = FALSE) {
     funContext <- .funContext("AnnotationGx::getUnichemSources")
 
     response <- .build_unichem_query("sources") |>
@@ -58,7 +61,12 @@ getUnichemSources <- function() {
         "UpdateComments"
     )
 
-    sources_dt[, new_order, with = FALSE]
+
+    sources_dt <- sources_dt[, new_order, with = FALSE]
+
+    if(all_columns) return(sources_dt)
+
+    sources_dt[, c("Name", "SourceID")]
 
 }
 
@@ -66,8 +74,8 @@ getUnichemSources <- function() {
 #' 
 #' This function queries the UniChem API for a compound based on the provided parameters.
 #' 
-#' @param type `character` The type of compound identifier to search for. Valid types are "uci", "inchi", "inchikey", and "sourceID".
 #' @param compound `character` or `integer` The compound identifier to search for.
+#' @param type `character` The type of compound identifier to search for. Valid types are "uci", "inchi", "inchikey", and "sourceID".
 #' @param sourceID `integer` The source ID to search for if the type is "sourceID". Defaults to NULL.
 #' @param request_only `boolean` Whether to return the request only. Defaults to FALSE.
 #' @param raw `boolean` Whether to return the raw response. Defaults to FALSE.
@@ -76,11 +84,11 @@ getUnichemSources <- function() {
 #' @return A list with the external mappings and the UniChem mappings.
 #' 
 #' @examples
-#' queryUnichem(type = "sourceID", compound = "444795", sourceID = 22)
+#' queryUnichemCompound(type = "sourceID", compound = "444795", sourceID = 22)
 #' 
 #' @export
-queryUnichem <- function(
-    type, compound, sourceID = NA_integer_, request_only = FALSE, raw = FALSE, ...
+queryUnichemCompound <- function(
+    compound, type, sourceID = NA_integer_, request_only = FALSE, raw = FALSE, ...
 ){
     checkmate::assert_string(type)
     checkmate::assert_atomic(compound)
@@ -105,7 +113,7 @@ queryUnichem <- function(
     mapped_sources_dt <- .asDT(response$compounds$sources)
     old_names <- c("compoundId", "shortName", "longName", "id", "url")
 
-    new_names <- c("compoundID", "Name", "NameLong", "sourceID", "sourcURL")
+    new_names <- c("compoundID", "Name", "NameLong", "sourceID", "sourceURL")
     setnames(mapped_sources_dt, old = old_names, new = new_names)
 
     External_Mappings <- mapped_sources_dt[, new_names, with = FALSE]
