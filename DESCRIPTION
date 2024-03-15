@@ -1,7 +1,7 @@
 Package: AnnotationGx
 Title: AnnotationGx: A package for building, updating and querying an
     annotation database for pharmaco-genomic data
-Version: 0.0.0.9080
+Version: 0.0.0.9081
 Authors@R: c(
     person("Jermiah", "Joseph", role = c("aut", "cre"),
         email = "jermiah.joseph@gmail.com"),
@@ -32,7 +32,10 @@ Suggests:
     covr,
     readxl,
     knitr,
-    rmarkdown
+    rmarkdown,
+    BiocStyle,
+    RefManageR,
+    sessioninfo
 Config/testthat/edition: 3
 Config/testthat/parallel: true
 Config/testthat/start-first: watcher, parallel*
