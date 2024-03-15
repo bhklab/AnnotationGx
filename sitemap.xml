@@ -25,6 +25,9 @@
     <loc>https://bhklab.github.io/AnnotationGx/articles/PubChemAPI.html</loc>
   </url>
   <url>
+    <loc>https://bhklab.github.io/AnnotationGx/articles/Unichem.html</loc>
+  </url>
+  <url>
     <loc>https://bhklab.github.io/AnnotationGx/articles/index.html</loc>
   </url>
   <url>
@@ -44,6 +47,9 @@
   </url>
   <url>
     <loc>https://bhklab.github.io/AnnotationGx/reference/cell_model_passports_models.html</loc>
+  </url>
+  <url>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/cleanCharacterStrings.html</loc>
   </url>
   <url>
     <loc>https://bhklab.github.io/AnnotationGx/reference/ctrp_treatmentIDs.html</loc>
@@ -106,7 +112,7 @@
     <loc>https://bhklab.github.io/AnnotationGx/reference/queryChemblAPI.html</loc>
   </url>
   <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/queryUnichem.html</loc>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/queryUnichemCompound.html</loc>
   </url>
   <url>
     <loc>https://bhklab.github.io/AnnotationGx/reference/standardize_names.html</loc>
