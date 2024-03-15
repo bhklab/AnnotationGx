@@ -11,10 +11,10 @@ test_that("build_chembl_request constructs the correct URL", {
   format <- "json"
 
   # Call the function
-  url <- .build_chembl_request(resource, field, filter_type, value, format)
+  url <- AnnotationGx:::.build_chembl_request(resource, field, filter_type, value, format)
 
   # Check the constructed URL
-  expected_url <- "https://www.ebi.ac.uk/chembl/api/data/target?format=json&target_chembl_id__exact=CHEMBL2144069"
+  expected_url <-"https://www.ebi.ac.uk/chembl/api/data/target?target_chembl_id__exact=CHEMBL2144069&format=json"
   expect_equal(url$url, expected_url)
 })
 
@@ -35,7 +35,7 @@ test_that("getChemblMechanism works", {
 
   url <- getChemblMechanism(chembl_id, returnURL = T)
   expect_list(url)
-  expect_equal(url[[1]], "https://www.ebi.ac.uk/chembl/api/data/mechanism?format=json&molecule_chembl_id__in=CHEMBL1413")
+  expect_equal(url[[1]], "https://www.ebi.ac.uk/chembl/api/data/mechanism?molecule_chembl_id__in=CHEMBL1413&format=json")
 })
 
 
@@ -54,4 +54,42 @@ test_that("getChemblResourceFields works", {
     "parent_molecule_chembl_id", "record_id", "selectivity_comment",
     "site_id", "target_chembl_id", "variant_sequence"
   ))
+})
+
+test_that("queryChemblAPI constructs the correct URL and returns parsed JSON response", {
+  # Set up test data
+  resource <- "mechanism"
+  field <- "mechanism_of_action"
+  filter_type <- "icontains"
+  value <- "Muscarinic acetylcholine receptor"
+  format <- "json"
+  expected_url <- "https://www.ebi.ac.uk/chembl/api/data/mechanism?mechanism_of_action__icontains=Muscarinic%20acetylcholine%20receptor&format=json"
+
+  request <- AnnotationGx:::.build_chembl_request(resource, field, filter_type, value, format)
+  expect_equal(request$url, expected_url)
+
+  # Call the function
+  response <- queryChemblAPI(resource, field, filter_type, value, format)
+
+  expect_class(response, "list")
+
+  expect_length(response, 2)
+})
+
+test_that("getChemblFilterTypes works", {
+  result <- getChemblFilterTypes()
+
+  expect_class(result, "character")
+  expect_length(result, 19)
+
+  expect_true("in" %in% result)
+})
+
+test_that("getChemblResources works", {
+  result <- getChemblResources()
+
+  expect_class(result, "character")
+  expect_length(result, 32)
+
+  expect_true("activity" %in% result)
 })
