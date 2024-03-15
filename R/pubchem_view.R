@@ -87,7 +87,24 @@ annotatePubchemCompound <- function(
     return(resp_raw)
   }
 
-  responses <- lapply(resp_raw, .parse_resp_json)
+  responses <- lapply(seq_along(resp_raw), function(i){
+    resp <- resp_raw[[i]]
+    tryCatch(
+      {
+        .parse_resp_json(resp)
+      },
+      error = function(e) {
+        warnmsg <- sprintf(
+          "\nThe response could not be parsed:\n\t%s\tReturning NA instead for CID: %s for the heading: %s",
+          e, cids[i], heading
+        )
+        .warn(
+          funContext, warnmsg
+        )
+        resp
+      }
+    )
+  })
 
   # apply the parse function to each response depending on heading
   parsed_responses <- .bplapply(responses, function(response) {
