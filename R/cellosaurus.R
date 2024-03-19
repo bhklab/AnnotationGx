@@ -39,7 +39,11 @@ mapCell2Accession <- function(
     ids <- as.character(ids)
   }
 
-  if (prioritizeParent) to <- c(to, "hi")
+  if (prioritizeParent){
+    if (from != "id") .err("Prioritize parent is only available when querying from 'id'")
+    from <- "idsy"
+    to <- c(to, "hi")
+  }
 
   # create query list
   queries <- .create_query_list(ids, from)
@@ -50,13 +54,7 @@ mapCell2Accession <- function(
       query = query,
       to = to,
       output = "TSV",
-      numResults = {
-        if (prioritizeParent) {
-          1000
-        } else {
-          numResults
-        }
-      },
+      numResults = ifelse(prioritizeParent, 1000, numResults),
       ...
     )
   }, BPPARAM = BPPARAM)
@@ -85,14 +83,10 @@ mapCell2Accession <- function(
     resp |> .asDT()
   }) |> data.table::rbindlist(use.names = TRUE, fill = TRUE)
 
-  if (!prioritizeParent) {
-    return(responses_dt)
-  }
-  if (all(is.na(responses_dt$hi))) {
-    return(responses_dt)
-  }
+  if (!prioritizeParent) return(responses_dt)
 
-  if ((prioritizeParent) && from != "id") .err("Prioritize parent is only available when querying from 'id'")
+  if (all(is.na(responses_dt$hi))) return(responses_dt)
+  
 
   return(.prioritize_parent(responses_dt, numResults))
 }
@@ -112,6 +106,8 @@ mapCell2Accession <- function(
   parentACs <- stats::na.omit(unique(responses_dt$parentAC))
   columns <- names(responses_dt)
 
+
+  # In some cases, the parent cell line is not in the table 'ac' column
   responses_dt <-
     if (all(parentACs %in% responses_dt$ac)) {
       # if so, move all the rows that are parents to the top
@@ -122,10 +118,9 @@ mapCell2Accession <- function(
       rbind(parentDT, childDT)
     } else {
       # add the parentAC and parentID pairs to the top of the table
-
       new_rows <- unique(
         responses_dt[
-          "parentAC" %in% parentACs[!parentACs %in% responses_dt$ac],
+          responses_dt$parentAC %in% parentACs[!parentACs %in% responses_dt$ac],
           list(
             ac = responses_dt$parentAC,
             id = responses_dt$parentID,
@@ -134,11 +129,19 @@ mapCell2Accession <- function(
           )
         ]
       )
-      parent_rows <- responses_dt["parentAC" %in% parentACs, ]
-      child_rows <- responses_dt[!"parentAC" %in% parentACs, ]
-      new_dt <- data.table::rbindlist(list(parent_rows, new_rows, child_rows), use.names = TRUE, fill = TRUE)
+
+      # the ones where the parentAC is already in the table 
+      parent_rows <- responses_dt[responses_dt$ac %in% parentACs, ]
+      
+      # the ones where the parentAC is not in the table
+      child_rows <- responses_dt[!responses_dt$ac %in% parentACs, ]
+      
+      # combine all the rows 
+      new_dt <- rbind(new_rows, parent_rows, child_rows, fill =T)
+
       new_dt[]
     }
+
   # groupby query and query:id
   # for each group, sort by the highest number of parentAC counts
   data.table::setorderv(responses_dt, c("query", "ac"))
@@ -146,6 +149,10 @@ mapCell2Accession <- function(
 
   # only return numResults rows for each group by query
   responses_dt <- responses_dt[, .SD[1:min(.N, numResults)], by = c("query")]
+
+  data.table::setnames(responses_dt, "query:idsy", "query:id", skip_absent = TRUE)
+
+  responses_dt$query <- gsub("idsy", "id", responses_dt$query)
 
   # reorder the columns
   responses_dt <- responses_dt[, c("id", "ac", "query", "query:id")]

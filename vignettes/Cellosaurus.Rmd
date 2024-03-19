@@ -64,7 +64,7 @@ can be used to identify the original query and the original identifier type if n
 mapCell2Accession("hela", numResults = 1)
 ```
 
-### misspelled or non-standard cell line names
+### Misspelled or non-standard cell line names
 
 Sometimes the cell line name might be misspelled or might not be the standard name. 
 This is the case if we query for "A549" in the same way. 
@@ -74,14 +74,20 @@ mapCell2Accession("A549", from = "id", numResults = 1)
 
 # if we use the actual standard name:
 mapCell2Accession("A-549", from = "id", numResults = 1)
+```
 
+As seen above, the standard name for the A549 cell line is "A-549" and the accession id is "CVCL_0023".
+If we don't know which cell line name is the standard name, we can use the `numResults` parameter to get more results. 
+
+
+``` {r moreresults}
 # trying to get the standard name with more results
 mapCell2Accession("A549", from = "id", numResults = 10)
 ```
 
 The main identifier for the A549 cell line is "A-549" with accesion id of "CVCL_0023" 
 which does not appear in even the first 10 results (it would be the 40th result 
-if we adjust the `numResults` parameter) and while we could manually adjust every query 
+if we further adjusted the `numResults` parameter) and while we could manually adjust every query 
 to match the standard name, this is not feasible for hundreds of cell lines. 
 
 There are a few ways to deal with this issue. 
@@ -97,9 +103,13 @@ mapCell2Accession("A549", from = "id", numResults = 1, prioritizeParent = TRUE)
 Another example using the BT474 cell line. 
 
 ``` {r map BT474 each}
+# our query:
 mapCell2Accession("BT474", numResults = 1, prioritizeParent = FALSE)
 
+# if we use the actual standard name:
+mapCell2Accession("BT-474", numResults = 1, prioritizeParent = FALSE)
 
+# if we use our query and prioritize the parent cell line:
 mapCell2Accession("BT474", numResults = 1, prioritizeParent = TRUE)
 ```
 
