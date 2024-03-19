@@ -43,7 +43,12 @@ getPubchemCompound <- function(
     return(requests)
   }
 
-  resps_raw <- httr2::req_perform_sequential(requests, on_error = "continue")
+  tryCatch({
+    resps_raw <- httr2::req_perform_sequential(requests, on_error = "continue")
+  }, error = function(e) {
+    .err(funContext, " An error occurred while retrieving the compound information:\n", e)
+  })
+  
   .debug(funContext, " Number of responses: ", length(resps_raw))
   names(resps_raw) <- ids
   if (raw) {
