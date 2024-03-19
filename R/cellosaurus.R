@@ -85,9 +85,6 @@ mapCell2Accession <- function(
 
   if (!prioritizeParent) return(responses_dt)
 
-  if (all(is.na(responses_dt$hi))) return(responses_dt)
-  
-
   return(.prioritize_parent(responses_dt, numResults))
 }
 
@@ -96,11 +93,12 @@ mapCell2Accession <- function(
 #' @keywords internal
 #' @noRd
 .prioritize_parent <- function(responses_dt, numResults) {
+
   responses_dt[, c("parentAC", "parentID") := data.table::tstrsplit(responses_dt$hi, " ! ", fixed = TRUE)]
   responses_dt <- responses_dt[, -"hi"]
 
   if (all(is.na(responses_dt$parentAC))) {
-    return(responses_dt[, -c("parentAC", "parentID")])
+    .clean_prioritized_patients_responses_dt(responses_dt, numResults)
   }
 
   parentACs <- stats::na.omit(unique(responses_dt$parentAC))
@@ -129,7 +127,6 @@ mapCell2Accession <- function(
           )
         ]
       )
-
       # the ones where the parentAC is already in the table 
       parent_rows <- responses_dt[responses_dt$ac %in% parentACs, ]
       
@@ -147,15 +144,24 @@ mapCell2Accession <- function(
   data.table::setorderv(responses_dt, c("query", "ac"))
   responses_dt[, c("parentAC", "parentID") := NULL]
 
-  # only return numResults rows for each group by query
-  responses_dt <- responses_dt[, .SD[1:min(.N, numResults)], by = c("query")]
-
-  data.table::setnames(responses_dt, "query:idsy", "query:id", skip_absent = TRUE)
-
-  responses_dt$query <- gsub("idsy", "id", responses_dt$query)
-
-  # reorder the columns
-  responses_dt <- responses_dt[, c("id", "ac", "query", "query:id")]
+  responses_dt <- .clean_prioritized_patients_responses_dt(responses_dt, numResults)
 
   return(stats::na.omit(responses_dt[]))
+}
+
+
+.clean_prioritized_patients_responses_dt <- function(responses_dt, numResults){
+    
+
+    # only return numResults rows for each group by query
+    responses_dt <- responses_dt[, .SD[1:min(.N, numResults)], by = c("query")]
+
+    data.table::setnames(responses_dt, "query:idsy", "query:id", skip_absent = TRUE)
+
+    responses_dt$query <- gsub("idsy", "id", responses_dt$query)
+
+    # reorder the columns
+    responses_dt <- responses_dt[, c("id", "ac", "query", "query:id")]
+
+    return(responses_dt)
 }

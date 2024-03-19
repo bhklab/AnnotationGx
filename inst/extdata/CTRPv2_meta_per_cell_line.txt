@@ -1,0 +1,1108 @@
+master_ccl_id	ccl_name	ccl_availability	ccle_primary_site	ccle_primary_hist	ccle_hist_subtype_1
+1	697	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	acute_lymphoblastic_B_cell_leukaemia
+3	5637	ccle;public	urinary_tract	carcinoma	
+4	2313287	ccle;public	stomach	carcinoma	adenocarcinoma
+5	1321N1	ccle	central_nervous_system	glioma	astrocytoma
+6	143B	ccle	bone	osteosarcoma	
+7	22RV1	ccle;public	prostate	carcinoma	
+8	253J	ccle;public	urinary_tract	carcinoma	transitional_cell_carcinoma
+9	253JBV	ccle;public	urinary_tract	carcinoma	transitional_cell_carcinoma
+10	42MGBA	ccle;public	central_nervous_system	glioma	astrocytoma_Grade_IV
+13	59M	ccle	ovary	carcinoma	
+14	639V	ccle;public	urinary_tract	carcinoma	transitional_cell_carcinoma
+15	647V	ccle;public	urinary_tract	carcinoma	transitional_cell_carcinoma
+16	769P	ccle;public	kidney	carcinoma	clear_cell_renal_cell_carcinoma
+19	786O	ccle;public	kidney	carcinoma	clear_cell_renal_cell_carcinoma
+20	8305C	ccle;public	thyroid	carcinoma	anaplastic_carcinoma
+21	8505C	ccle;public	thyroid	carcinoma	anaplastic_carcinoma
+22	8MGBA	ccle;public	central_nervous_system	glioma	astrocytoma_Grade_IV
+23	A101D	ccle;public	skin	malignant_melanoma	
+24	A1207	ccle	central_nervous_system	glioma	
+25	A172	ccle;public	central_nervous_system	glioma	astrocytoma_Grade_IV
+26	A204	ccle;public	soft_tissue	rhabdoid_tumor	
+27	A2058	ccle;public	skin	malignant_melanoma	
+28	A253	ccle;public	salivary_gland	carcinoma	mucoepidermoid_carcinoma
+29	A2780	ccle;public	ovary	carcinoma	adenocarcinoma
+30	A375	ccle;public	skin	malignant_melanoma	
+31	A3KAW	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	diffuse_large_B_cell_lymphoma
+33	A498	ccle;public	kidney	carcinoma	renal_cell_carcinoma
+34	A4FUK	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	diffuse_large_B_cell_lymphoma
+35	A549	ccle;public	lung	carcinoma	non_small_cell_carcinoma
+37	A673	ccle;public	bone	Ewings_sarcoma_peripheral_primitive_neuroectodermal_tumor	
+39	A704	ccle	kidney	carcinoma	renal_cell_carcinoma
+40	ABC1	ccle	lung	carcinoma	non_small_cell_carcinoma
+41	ACCMESO1	ccle;public	pleura	mesothelioma	
+42	ACCS	ccle	urinary_tract	carcinoma	transitional_cell_carcinoma
+43	ACHN	ccle;public	kidney	carcinoma	renal_cell_carcinoma
+44	AGS	ccle;public	stomach	carcinoma	adenocarcinoma
+46	ALLSIL	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	acute_lymphoblastic_T_cell_leukaemia
+47	AM38	ccle;public	central_nervous_system	glioma	astrocytoma_Grade_IV
+48	AML193	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	acute_myeloid_leukaemia
+49	AMO1	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	plasma_cell_myeloma
+50	AN3CA	ccle;public	endometrium	carcinoma	adenocarcinoma
+52	ASPC1	ccle;public	pancreas	carcinoma	ductal_carcinoma
+53	AU565	ccle;public	breast	carcinoma	
+54	AZ521	ccle	stomach	carcinoma	
+55	BC3C	ccle;public	urinary_tract	carcinoma	transitional_cell_carcinoma
+56	BCP1	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	B_cell_lymphoma
+57	BCPAP	ccle;public	thyroid	carcinoma	papillary_carcinoma
+58	BDCM	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	acute_lymphoblastic_B_cell_leukaemia
+59	BECKER	ccle;public	central_nervous_system	glioma	astrocytoma_Grade_IV
+60	BEN	ccle;public	lung	carcinoma	
+61	BFTC905	ccle;public	urinary_tract	carcinoma	transitional_cell_carcinoma
+62	BFTC909	ccle;public	kidney	carcinoma	
+64	BHT101	ccle;public	thyroid	carcinoma	anaplastic_carcinoma
+65	BHY	ccle;public	upper_aerodigestive_tract	carcinoma	squamous_cell_carcinoma
+66	BICR16	ccle;public	upper_aerodigestive_tract	carcinoma	squamous_cell_carcinoma
+67	BICR18	ccle;public	upper_aerodigestive_tract	carcinoma	squamous_cell_carcinoma
+68	BICR22	ccle;public	upper_aerodigestive_tract	carcinoma	squamous_cell_carcinoma
+69	BICR31	ccle;public	upper_aerodigestive_tract	carcinoma	squamous_cell_carcinoma
+70	BICR56	ccle;public	upper_aerodigestive_tract	carcinoma	squamous_cell_carcinoma
+71	BICR6	ccle;public	upper_aerodigestive_tract	carcinoma	squamous_cell_carcinoma
+73	BJHTERT	ccle	skin		immortalized_fibroblast
+74	BL41	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	Burkitt_lymphoma
+75	BL70	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	Burkitt_lymphoma
+77	BT112	collaborator			
+78	BT131	collaborator			
+79	BT139	collaborator			
+80	BT145	collaborator			
+81	BT147	collaborator			
+82	BT159	collaborator			
+83	BT164	collaborator			
+84	BT172	collaborator			
+85	BT179	collaborator			
+88	BT187	collaborator			
+90	BT20	ccle;public	breast	carcinoma	ductal_carcinoma
+91	BT216	collaborator			
+92	BT224	collaborator			
+93	BT228	collaborator			
+94	BT231	collaborator			
+95	BT239	collaborator			
+96	BT248	collaborator			
+97	BT474	ccle;public	breast	carcinoma	ductal_carcinoma
+98	BT483	ccle	breast	carcinoma	ductal_carcinoma
+99	BT549	ccle;public	breast	carcinoma	ductal_carcinoma
+100	BV173	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	blast_phase; chronic_myeloid_leukaemia
+101	BXPC3	ccle;public	pancreas	carcinoma	ductal_carcinoma
+102	C2BBE1	ccle;public	large_intestine	carcinoma	adenocarcinoma
+103	C32	ccle;public	skin	malignant_melanoma	
+104	C3A	ccle	liver	carcinoma	hepatocellular_carcinoma
+106	CA46	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	Burkitt_lymphoma
+108	CADOES1	ccle;public	bone	Ewings_sarcoma_peripheral_primitive_neuroectodermal_tumor	
+109	CAKI1	ccle;public	kidney	carcinoma	clear_cell_renal_cell_carcinoma
+110	CAKI2	ccle;public	kidney	carcinoma	clear_cell_renal_cell_carcinoma
+111	CAL120	ccle;public	breast	carcinoma	
+112	CAL12T	ccle;public	lung	carcinoma	non_small_cell_carcinoma
+113	CAL148	ccle;public	breast	carcinoma	ductal_carcinoma
+114	CAL27	ccle;public	upper_aerodigestive_tract	carcinoma	squamous_cell_carcinoma
+115	CAL29	ccle;public	urinary_tract	carcinoma	transitional_cell_carcinoma
+116	CAL33	ccle;public	upper_aerodigestive_tract	carcinoma	squamous_cell_carcinoma
+117	CAL51	ccle;public	breast	carcinoma	
+118	CAL54	ccle;public	kidney	carcinoma	renal_cell_carcinoma
+119	CAL62	ccle;public	thyroid	carcinoma	anaplastic_carcinoma
+120	CAL78	ccle;public	bone	chondrosarcoma	dedifferentiated
+121	CAL851	ccle;public	breast	carcinoma	
+122	CALU1	ccle;public	lung	carcinoma	squamous_cell_carcinoma
+123	CALU3	ccle;public	lung	carcinoma	adenocarcinoma
+124	CALU6	ccle;public	lung	carcinoma	undifferentiated_carcinoma
+125	CAMA1	ccle;public	breast	carcinoma	
+126	CAOV3	ccle;public	ovary	carcinoma	adenocarcinoma
+127	CAOV4	ccle	ovary	carcinoma	adenocarcinoma
+128	CAPAN1	ccle;public	pancreas	carcinoma	ductal_carcinoma
+129	CAPAN2	ccle;public	pancreas	carcinoma	ductal_carcinoma
+130	CAS1	ccle;public	central_nervous_system	glioma	astrocytoma_Grade_IV
+131	CCFSTTG1	ccle;public	central_nervous_system	glioma	astrocytoma
+132	CCK81	ccle;public	large_intestine	carcinoma	adenocarcinoma
+138	CFPAC1	ccle;public	pancreas	carcinoma	ductal_carcinoma
+139	CGTHW1	ccle;public	thyroid	carcinoma	follicular_carcinoma
+140	CH157MN	ccle	central_nervous_system	meningioma	
+141	CHAGOK1	ccle;public	lung	carcinoma	
+142	CHL1	ccle	skin	malignant_melanoma	
+143	CHP126	ccle;public	autonomic_ganglia	neuroblastoma	
+144	CHP212	ccle;public	autonomic_ganglia	neuroblastoma	
+145	CI1	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	B_cell_lymphoma
+146	CJM	ccle;public	skin	malignant_melanoma	
+147	CL11	ccle;public	large_intestine	carcinoma	adenocarcinoma
+148	CL14	ccle	large_intestine	carcinoma	
+149	CL34	ccle;public	large_intestine	carcinoma	adenocarcinoma
+150	CL40	ccle	large_intestine	carcinoma	
+151	CMK	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	acute_myeloid_leukaemia
+152	CMK115	ccle	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	acute_myeloid_leukaemia
+153	CMK86	ccle	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	acute_myeloid_leukaemia
+154	CMLT1	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	blast_phase; chronic_myeloid_leukaemia
+155	COLO201	ccle;public	large_intestine	carcinoma	adenocarcinoma
+156	COLO205	ccle;public	large_intestine	carcinoma	adenocarcinoma
+157	COLO320	ccle;public	large_intestine	carcinoma	adenocarcinoma
+158	COLO668	ccle;public	lung	carcinoma	small_cell_carcinoma
+159	COLO677	ccle	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	plasma_cell_myeloma
+160	COLO678	ccle;public	large_intestine	carcinoma	adenocarcinoma
+161	COLO679	ccle;public	skin	malignant_melanoma	
+162	COLO680N	ccle;public	oesophagus	carcinoma	squamous_cell_carcinoma
+163	COLO684	ccle;public	endometrium	carcinoma	adenocarcinoma
+164	COLO699	public			
+165	COLO704	ccle	ovary	carcinoma	
+166	COLO741	ccle;public	skin	malignant_melanoma	
+167	COLO775	ccle	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	chronic_myeloid_leukaemia
+168	COLO783	ccle;public	skin	malignant_melanoma	
+169	COLO792	ccle;public	skin	malignant_melanoma	
+170	COLO800	ccle;public	skin	malignant_melanoma	
+171	COLO818	ccle	skin	malignant_melanoma	
+172	COLO829	ccle;public	skin	malignant_melanoma	
+173	COLO849	ccle	skin	malignant_melanoma	
+174	CORL105	ccle;public	lung	carcinoma	adenocarcinoma
+175	CORL23	ccle	lung	carcinoma	large_cell_carcinoma
+176	CORL24	ccle	lung	carcinoma	small_cell_carcinoma
+178	CORL279	ccle;public	lung	carcinoma	small_cell_carcinoma
+179	CORL311	ccle	lung	carcinoma	small_cell_carcinoma
+180	CORL47	ccle;public	lung	carcinoma	small_cell_carcinoma
+181	CORL51	ccle;public	lung	carcinoma	small_cell_carcinoma
+182	CORL88	ccle;public	lung	carcinoma	small_cell_carcinoma
+183	CORL95	ccle;public	lung	carcinoma	small_cell_carcinoma
+184	COV318	ccle;public	ovary	carcinoma	
+185	COV362	ccle;public	ovary	carcinoma	
+186	COV434	ccle;public	ovary	sex_cord_stromal_tumor	granulosa_cell_tumor
+187	COV504	ccle	ovary	carcinoma	
+188	COV644	ccle;public	ovary	carcinoma	
+189	CPCN	ccle	lung	carcinoma	small_cell_carcinoma
+190	CW2	ccle;public	large_intestine	carcinoma	
+193	D283MED	ccle;public	central_nervous_system	primitive_neuroectodermal_tumor_medulloblastoma	
+195	D341MED	ccle	central_nervous_system	primitive_neuroectodermal_tumor_medulloblastoma	
+201	DANG	ccle;public	pancreas	carcinoma	
+202	DAOY	ccle;public	central_nervous_system	primitive_neuroectodermal_tumor_medulloblastoma	
+203	DAUDI	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	Burkitt_lymphoma
+204	DB	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	diffuse_large_B_cell_lymphoma
+205	DBTRG05MG	ccle;public	central_nervous_system	glioma	astrocytoma_Grade_IV
+206	DEL	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	
+208	DETROIT562	ccle;public	upper_aerodigestive_tract	carcinoma	
+209	DFCI024	ccle	lung	carcinoma	adenocarcinoma
+211	DKMG	ccle;public	central_nervous_system	glioma	astrocytoma_Grade_IV
+212	DLD1	ccle;public	large_intestine	carcinoma	adenocarcinoma
+214	DM3	ccle;public	pleura	mesothelioma	
+215	DMS114	ccle;public	lung	carcinoma	small_cell_carcinoma
+216	DMS153	ccle	lung	carcinoma	small_cell_carcinoma
+217	DMS273	ccle;public	lung	carcinoma	small_cell_carcinoma
+218	DMS454	ccle;public	lung	carcinoma	small_cell_carcinoma
+219	DMS53	ccle;public	lung	carcinoma	small_cell_carcinoma
+220	DMS79	ccle;public	lung	carcinoma	small_cell_carcinoma
+221	DND41	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	acute_lymphoblastic_T_cell_leukaemia
+222	DOHH2	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	diffuse_large_B_cell_lymphoma
+223	DOV13	public			
+225	DU145	ccle;public	prostate	carcinoma	
+226	DU4475	ccle;public	breast	carcinoma	ductal_carcinoma
+227	DV90	ccle;public	lung	carcinoma	adenocarcinoma
+228	EB1	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	Burkitt_lymphoma
+229	EB2	ccle	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	Burkitt_lymphoma
+230	EBC1	ccle;public	lung	carcinoma	squamous_cell_carcinoma
+231	ECC10	ccle;public	stomach	carcinoma	small_cell_adenocarcinoma
+232	ECC12	ccle;public	stomach	carcinoma	small_cell_adenocarcinoma
+233	ECGI10	ccle;public	oesophagus	carcinoma	
+234	EFE184	ccle;public	endometrium	carcinoma	
+235	EFM19	ccle	breast	carcinoma	ductal_carcinoma
+236	EFM192A	ccle;public	breast	carcinoma	
+237	EFO21	ccle;public	ovary	carcinoma	serous_carcinoma
+238	EFO27	ccle;public	ovary	carcinoma	mucinous_carcinoma
+239	EHEB	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	chronic_lymphocytic_leukaemia; small_lymphocytic_lymphoma
+240	EJM	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	plasma_cell_myeloma
+241	EKVX	public			
+242	EM2	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	blast_phase; chronic_myeloid_leukaemia
+243	EN	ccle;public	endometrium	carcinoma	
+244	EOL1	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	acute_myeloid_leukaemia
+246	EPLC272H	ccle;public	lung	carcinoma	squamous_cell_carcinoma
+247	ES2	ccle;public	ovary	carcinoma	clear_cell_carcinoma
+248	ESS1	ccle;public	endometrium	carcinoma	carcinosarcoma; malignant_mesodermal_mixed_tumor
+249	EVSAT	ccle	breast	carcinoma	
+250	EW8	ccle	bone	Ewings_sarcoma_peripheral_primitive_neuroectodermal_tumor	
+251	EWS502	ccle	bone	Ewings_sarcoma_peripheral_primitive_neuroectodermal_tumor	
+253	F36P	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	acute_myeloid_leukaemia
+254	F5	ccle	central_nervous_system	meningioma	
+255	FADU	ccle;public	upper_aerodigestive_tract	carcinoma	squamous_cell_carcinoma
+257	FTC133	ccle;public	thyroid	carcinoma	follicular_carcinoma
+258	FTC238	ccle;public	thyroid	carcinoma	follicular_carcinoma
+259	FU97	ccle;public	stomach	carcinoma	diffuse_adenocarcinoma
+261	FUOV1	ccle;public	ovary	carcinoma	serous_carcinoma
+262	G292CLONEA141B1	ccle;public	bone	osteosarcoma	
+263	G361	ccle;public	skin	malignant_melanoma	
+264	G401	ccle;public	soft_tissue	rhabdoid_tumor	
+265	G402	ccle;public	soft_tissue	rhabdoid_tumor	
+266	GA10	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	Burkitt_lymphoma
+268	GAMG	ccle;public	central_nervous_system	glioma	
+269	GB1	ccle;public	central_nervous_system	glioma	astrocytoma_Grade_IV
+270	GCIY	ccle	stomach	carcinoma	adenocarcinoma
+271	GCT	ccle;public	soft_tissue	malignant_fibrous_histiocytoma_pleomorphic_sarcoma	
+272	GDM1	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	acute_myeloid_leukaemia
+274	GI1	ccle;public	central_nervous_system	glioma	gliosarcoma
+280	GMS10	ccle;public	central_nervous_system	glioma	astrocytoma_Grade_IV
+281	GOS3	ccle;public	central_nervous_system	glioma	astrocytoma
+282	GP2D	ccle;public	large_intestine	carcinoma	adenocarcinoma
+283	GRANTA519	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	mantle_cell_lymphoma
+284	GRM	ccle	skin	malignant_melanoma	
+285	GSS	ccle;public	stomach	carcinoma	adenocarcinoma
+286	GSU	ccle;public	stomach	carcinoma	adenocarcinoma
+290	H292	ccle;public	lung	carcinoma	mucoepidermoid_carcinoma
+291	H4	ccle	central_nervous_system	glioma	
+293	HARA	ccle;public	lung	carcinoma	squamous_cell_carcinoma
+295	HCC1143	ccle;public	breast	carcinoma	ductal_carcinoma
+296	HCC1171	ccle;public	lung	carcinoma	non_small_cell_carcinoma
+297	HCC1187	ccle	breast	carcinoma	ductal_carcinoma
+298	HCC1195	ccle;public	lung	carcinoma	mixed_adenosquamous_carcinoma
+299	HCC1359	ccle	lung	carcinoma	large_cell_carcinoma
+300	HCC1395	ccle;public	breast	carcinoma	ductal_carcinoma
+301	HCC1419	ccle;public	breast	carcinoma	ductal_carcinoma
+302	HCC1428	ccle;public	breast	carcinoma	
+303	HCC1438	ccle;public	lung	carcinoma	large_cell_carcinoma
+304	HCC15	ccle;public	lung	carcinoma	squamous_cell_carcinoma
+305	HCC1500	ccle;public	breast	carcinoma	ductal_carcinoma
+306	HCC1569	ccle;public	breast	carcinoma	metaplastic_carcinoma
+307	HCC1588	ccle;public	lung	carcinoma	squamous_cell_carcinoma
+308	HCC1599	ccle	breast	carcinoma	ductal_carcinoma
+309	HCC1806	ccle;public	breast	carcinoma	ductal_carcinoma
+310	HCC1833	ccle;public	lung	carcinoma	adenocarcinoma
+311	HCC1897	ccle	lung	carcinoma	squamous_cell_carcinoma
+313	HCC1937	ccle;public	breast	carcinoma	ductal_carcinoma
+314	HCC1954	ccle;public	breast	carcinoma	ductal_carcinoma
+315	HCC202	ccle;public	breast	carcinoma	ductal_carcinoma
+316	HCC2108	ccle;public	lung	carcinoma	adenocarcinoma
+317	HCC2157	ccle	breast	carcinoma	ductal_carcinoma
+318	HCC2218	ccle;public	breast	carcinoma	ductal_carcinoma
+319	HCC2279	ccle;public	lung	carcinoma	adenocarcinoma
+323	HCC2814	ccle	lung	carcinoma	squamous_cell_carcinoma
+324	HCC2935	ccle;public	lung	carcinoma	non_small_cell_carcinoma
+326	HCC33	ccle;public	lung	carcinoma	small_cell_carcinoma
+327	HCC364	ccle	lung	carcinoma	adenocarcinoma
+328	HCC366	ccle;public	lung	carcinoma	mixed_adenosquamous_carcinoma
+330	HCC38	ccle;public	breast	carcinoma	ductal_carcinoma
+331	HCC4006	ccle;public	lung	carcinoma	adenocarcinoma
+332	HCC44	ccle;public	lung	carcinoma	adenocarcinoma
+337	HCC56	ccle;public	large_intestine	carcinoma	adenocarcinoma
+338	HCC70	ccle	breast	carcinoma	ductal_carcinoma
+339	HCC78	ccle;public	lung	carcinoma	adenocarcinoma
+340	HCC827	ccle;public	lung	carcinoma	adenocarcinoma
+341	HCC827GR5	ccle	lung	carcinoma	adenocarcinoma
+342	HCC95	ccle;public	lung	carcinoma	squamous_cell_carcinoma
+343	HCT116	ccle;public	large_intestine	carcinoma	
+345	HCT15	ccle;public	large_intestine	carcinoma	adenocarcinoma
+346	HCT8	ccle;public	large_intestine	carcinoma	adenocarcinoma
+347	HDLM2	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	Hodgkin_lymphoma
+348	HDMYZ	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	Hodgkin_lymphoma
+349	HDQP1	ccle;public	breast	carcinoma	ductal_carcinoma
+350	HEC108	ccle;public	endometrium	carcinoma	adenocarcinoma
+351	HEC151	ccle;public	endometrium	carcinoma	adenocarcinoma
+352	HEC1A	ccle;public	endometrium	carcinoma	adenocarcinoma
+353	HEC1B	ccle;public	endometrium	carcinoma	adenocarcinoma
+354	HEC251	ccle;public	endometrium	carcinoma	adenocarcinoma
+355	HEC265	ccle;public	endometrium	carcinoma	adenocarcinoma
+356	HEC50B	ccle;public	endometrium	carcinoma	adenocarcinoma
+357	HEC59	ccle;public	endometrium	carcinoma	adenocarcinoma
+358	HEC6	ccle;public	endometrium	carcinoma	adenocarcinoma
+361	HEKTE	ccle	kidney		immortalized_epithelial
+362	HEL	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	acute_myeloid_leukaemia
+363	HEL9217	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	acute_myeloid_leukaemia
+364	HELA	public			
+365	HEP3B217	ccle;public	liver	carcinoma	hepatocellular_carcinoma
+366	HEPG2	ccle;public	liver	carcinoma	hepatocellular_carcinoma
+367	HEYA8	ccle;public	ovary	carcinoma	
+368	HGC27	ccle;public	stomach	carcinoma	undifferentiated_adenocarcinoma
+369	HH	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	adult_T_cell_lymphoma_leukaemia
+370	HK2	ccle	kidney		immortalized_epithelial
+371	HL60	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	acute_myeloid_leukaemia
+372	HLC1	ccle	lung	carcinoma	adenocarcinoma
+373	HLE	ccle	liver	carcinoma	hepatocellular_carcinoma
+374	HLF	ccle;public	liver	carcinoma	hepatocellular_carcinoma
+375	HLFA	ccle	lung	carcinoma	squamous_cell_carcinoma
+376	HMC18	ccle;public	breast	carcinoma	
+377	HMCB	ccle;public	skin	malignant_melanoma	
+378	HMEL	ccle	breast		immortalized_epithelial
+379	HN	ccle	upper_aerodigestive_tract	carcinoma	squamous_cell_carcinoma
+381	HOP62	public			
+382	HOP92	public			
+383	HOS	ccle;public	bone	osteosarcoma	
+384	HPAC	ccle;public	pancreas	carcinoma	ductal_carcinoma
+385	HPAFII	ccle;public	pancreas	carcinoma	ductal_carcinoma
+386	HPBALL	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	acute_lymphoblastic_T_cell_leukaemia
+387	HRT18	ccle	large_intestine	carcinoma	adenocarcinoma
+388	HS172T	ccle	urinary_tract	carcinoma	
+390	HS229T	ccle	lung	carcinoma	adenocarcinoma
+391	HS255T	ccle	large_intestine	carcinoma	adenocarcinoma
+393	HS274T	ccle	breast	carcinoma	
+394	HS281T	ccle	breast	carcinoma	
+395	HS294T	ccle;public	skin	malignant_melanoma	
+396	HS343T	ccle	breast	carcinoma	
+397	HS571T	ccle	ovary	carcinoma	
+399	HS578BST	public			
+400	HS578T	ccle;public	breast	carcinoma	ductal_carcinoma
+402	HS600T	ccle	skin	malignant_melanoma	
+403	HS604T	ccle	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	Hodgkin_lymphoma
+404	HS606T	ccle	breast	carcinoma	
+405	HS611T	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	Hodgkin_lymphoma
+406	HS616T	ccle	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	Hodgkin_lymphoma
+407	HS618T	ccle	lung	carcinoma	adenocarcinoma
+408	HS675T	ccle	large_intestine	carcinoma	
+409	HS683	ccle;public	central_nervous_system	glioma	
+410	HS688AT	ccle;public	skin	malignant_melanoma	
+411	HS695T	ccle	skin	malignant_melanoma	
+412	HS698T	ccle	large_intestine	carcinoma	adenocarcinoma
+413	HS706T	ccle	bone	giant_cell_tumor	
+414	HS729	ccle;public	soft_tissue	rhabdomyosarcoma	
+415	HS737T	ccle	bone		giant_cell_tumor
+416	HS739T	ccle	breast	carcinoma	
+417	HS742T	ccle	breast	carcinoma	
+418	HS746T	ccle;public	stomach	carcinoma	
+420	HS751T	ccle	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	Hodgkin_lymphoma
+421	HS766T	ccle;public	pancreas	carcinoma	ductal_carcinoma
+422	HS819T	ccle;public	bone	chondrosarcoma	
+423	HS821T	ccle	bone	giant_cell_tumor	
+424	HS822T	ccle;public	bone	Ewings_sarcoma_peripheral_primitive_neuroectodermal_tumor	
+425	HS834T	ccle	skin	malignant_melanoma	
+426	HS839T	ccle;public	skin	malignant_melanoma	
+427	HS840T	ccle	upper_aerodigestive_tract		papilloma
+428	HS852T	ccle;public	skin	malignant_melanoma	
+429	HS863T	ccle	bone	Ewings_sarcoma_peripheral_primitive_neuroectodermal_tumor	
+430	HS870T	ccle	bone	osteosarcoma	
+431	HS888LU	public			
+432	HS888T	ccle;public	bone	osteosarcoma	
+434	HS895T	ccle;public	skin	malignant_melanoma	
+436	HS934T	ccle;public	skin	malignant_melanoma	
+437	HS936T	ccle;public	skin	malignant_melanoma	
+438	HS939T	ccle	skin	malignant_melanoma	
+439	HS940T	ccle;public	skin	malignant_melanoma	
+440	HS944T	ccle;public	skin	malignant_melanoma	
+441	HSC2	ccle;public	upper_aerodigestive_tract	carcinoma	squamous_cell_carcinoma
+442	HSC3	ccle;public	upper_aerodigestive_tract	carcinoma	squamous_cell_carcinoma
+443	HSC4	ccle;public	upper_aerodigestive_tract	carcinoma	squamous_cell_carcinoma
+444	HSTS	collaborator			
+445	HT	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	B_cell_lymphoma
+446	HT1080	ccle;public	soft_tissue	fibrosarcoma	
+447	HT115	ccle;public	large_intestine	carcinoma	
+448	HT1197	ccle;public	urinary_tract	carcinoma	
+449	HT1376	ccle;public	urinary_tract	carcinoma	transitional_cell_carcinoma
+450	HT144	ccle;public	skin	malignant_melanoma	
+451	HT29	ccle;public	large_intestine	carcinoma	adenocarcinoma
+452	HT55	ccle;public	large_intestine	carcinoma	adenocarcinoma
+454	HTK	ccle	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	plasma_cell_myeloma
+455	HUCCT1	ccle;public	biliary_tract	carcinoma	
+456	HUG1N	ccle;public	stomach	carcinoma	
+457	HUH1	ccle;public	liver	carcinoma	hepatocellular_carcinoma
+458	HUH28	ccle;public	biliary_tract	carcinoma	
+459	HUH6	ccle;public	liver		hepatoblastoma
+460	HUH7	ccle	liver	carcinoma	hepatocellular_carcinoma
+461	HUNS1	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	plasma_cell_myeloma
+462	HUPT3	ccle;public	pancreas	carcinoma	
+463	HUPT4	ccle;public	pancreas	carcinoma	
+464	HUT102	ccle	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	Sezary_syndrome; mycosis_fungoides
+465	HUT78	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	Sezary_syndrome; mycosis_fungoides
+466	HUTU80	ccle	small_intestine	carcinoma	adenocarcinoma
+469	IALM	ccle;public	lung	carcinoma	large_cell_carcinoma
+470	IGR1	ccle;public	skin	malignant_melanoma	
+471	IGR37	ccle;public	skin	malignant_melanoma	
+472	IGR39	ccle;public	skin	malignant_melanoma	
+473	IGROV1	ccle;public	ovary	carcinoma	adenocarcinoma
+474	IM95	ccle;public	stomach	carcinoma	intestinal_adenocarcinoma
+475	IMR32	ccle;public	autonomic_ganglia	neuroblastoma	
+477	IOMMLEE	ccle	central_nervous_system	meningioma	
+478	IPC298	ccle;public	skin	malignant_melanoma	
+479	ISHIKAWAHERAKLIO02ER	ccle;public	endometrium	carcinoma	adenocarcinoma
+480	ISTMES1	ccle;public	pleura	mesothelioma	
+481	ISTMES2	ccle	pleura	mesothelioma	
+482	J82	ccle;public	urinary_tract	carcinoma	transitional_cell_carcinoma
+484	JEKO1	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	mantle_cell_lymphoma
+485	JHESOAD1	ccle	oesophagus	carcinoma	barrett_associated_adenocarcinoma
+486	JHH1	ccle;public	liver	carcinoma	hepatocellular_carcinoma
+487	JHH2	ccle;public	liver	carcinoma	hepatocellular_carcinoma
+488	JHH4	ccle;public	liver	carcinoma	hepatocellular_carcinoma
+489	JHH5	ccle;public	liver	carcinoma	hepatocellular_carcinoma
+490	JHH6	ccle;public	liver	carcinoma	hepatocellular_carcinoma
+491	JHH7	ccle	liver	carcinoma	hepatocellular_carcinoma
+492	JHOC5	ccle;public	ovary	carcinoma	clear_cell_carcinoma
+493	JHOM1	ccle;public	ovary	carcinoma	adenocarcinoma
+494	JHOM2B	ccle	ovary	carcinoma	adenocarcinoma
+495	JHOS2	ccle;public	ovary	carcinoma	adenocarcinoma
+496	JHOS4	ccle	ovary	carcinoma	adenocarcinoma
+497	JHUEM1	ccle;public	endometrium	carcinoma	adenocarcinoma
+498	JHUEM2	ccle;public	endometrium	carcinoma	adenocarcinoma
+499	JHUEM3	ccle;public	endometrium	carcinoma	adenocarcinoma
+500	JHUEM7	ccle;public	endometrium	carcinoma	adenocarcinoma
+501	JIMT1	ccle;public	breast	carcinoma	ductal_carcinoma
+502	JJN3	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	plasma_cell_myeloma
+503	JK1	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	blast_phase; chronic_myeloid_leukaemia
+504	JL1	ccle;public	pleura	mesothelioma	
+505	JM1	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	B_cell_lymphoma
+506	JMSU1	ccle;public	urinary_tract	carcinoma	
+508	JURKAT	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	acute_lymphoblastic_T_cell_leukaemia
+509	JURLMK1	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	blast_phase; chronic_myeloid_leukaemia
+510	JVM2	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	chronic_lymphocytic_leukaemia; small_lymphocytic_lymphoma
+511	JVM3	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	chronic_lymphocytic_leukaemia; small_lymphocytic_lymphoma
+512	K029AX	ccle;public	skin	malignant_melanoma	
+513	K562	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	blast_phase; chronic_myeloid_leukaemia
+514	KALS1	ccle;public	central_nervous_system	glioma	
+515	KARPAS299	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	anaplastic_large_cell_lymphoma
+516	KARPAS422	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	diffuse_large_B_cell_lymphoma
+517	KARPAS620	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	plasma_cell_myeloma
+518	KASUMI1	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	acute_myeloid_leukaemia
+519	KASUMI2	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	acute_lymphoblastic_B_cell_leukaemia
+521	KASUMI6	ccle	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	acute_myeloid_leukaemia
+522	KATOIII	ccle;public	stomach	carcinoma	adenocarcinoma
+523	KCIMOH1	ccle	pancreas	carcinoma	ductal_carcinoma
+524	KCL22	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	blast_phase; chronic_myeloid_leukaemia
+525	KE37	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	acute_lymphoblastic_T_cell_leukaemia
+526	KE39	ccle;public	stomach	carcinoma	
+527	KE97	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	plasma_cell_myeloma
+528	KELLY	ccle;public	autonomic_ganglia	neuroblastoma	
+529	KG1	ccle	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	acute_myeloid_leukaemia
+530	KG1C	ccle;public	central_nervous_system	glioma	astrocytoma_Grade_IV
+531	KHM1B	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	plasma_cell_myeloma
+532	KIJK	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	anaplastic_large_cell_lymphoma
+534	KLE	ccle;public	endometrium	carcinoma	adenocarcinoma
+535	KLM1	ccle	pancreas	carcinoma	ductal_carcinoma
+536	KM12	ccle;public	large_intestine	carcinoma	adenocarcinoma
+537	KMBC2	ccle;public	urinary_tract	carcinoma	
+538	KMH2	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	Hodgkin_lymphoma
+539	KMM1	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	plasma_cell_myeloma
+540	KMRC1	ccle;public	kidney	carcinoma	clear_cell_renal_cell_carcinoma
+541	KMRC2	ccle;public	kidney	carcinoma	clear_cell_renal_cell_carcinoma
+542	KMRC20	ccle;public	kidney	carcinoma	renal_cell_carcinoma
+543	KMRC3	ccle;public	kidney	carcinoma	clear_cell_renal_cell_carcinoma
+545	KMS11	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	plasma_cell_myeloma
+546	KMS12BM	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	plasma_cell_myeloma
+548	KMS18	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	plasma_cell_myeloma
+549	KMS20	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	plasma_cell_myeloma
+550	KMS21BM	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	plasma_cell_myeloma
+551	KMS26	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	plasma_cell_myeloma
+552	KMS27	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	plasma_cell_myeloma
+553	KMS28BM	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	plasma_cell_myeloma
+555	KMS34	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	plasma_cell_myeloma
+556	KNS42	ccle;public	central_nervous_system	glioma	
+557	KNS60	ccle;public	central_nervous_system	glioma	astrocytoma_Grade_IV
+558	KNS62	ccle;public	lung	carcinoma	squamous_cell_carcinoma
+559	KNS81	ccle;public	central_nervous_system	glioma	astrocytoma_Grade_IV
+561	KO52	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	acute_myeloid_leukaemia
+563	KOPN8	ccle	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	acute_lymphoblastic_B_cell_leukaemia
+564	KP1N	ccle	pancreas	carcinoma	ductal_carcinoma
+565	KP1NL	ccle	pancreas	carcinoma	ductal_carcinoma
+566	KP2	ccle;public	pancreas	carcinoma	
+567	KP3	ccle;public	pancreas	carcinoma	ductal_carcinoma
+568	KP4	ccle;public	pancreas	carcinoma	ductal_carcinoma
+569	KPL1	ccle;public	breast	carcinoma	ductal_carcinoma
+570	KPNRTBM1	ccle	autonomic_ganglia	neuroblastoma	
+571	KPNSI9S	ccle;public	autonomic_ganglia	neuroblastoma	
+572	KPNYN	ccle;public	autonomic_ganglia	neuroblastoma	
+573	KRIJ	collaborator			
+574	KS1	ccle	central_nervous_system	glioma	astrocytoma_Grade_IV
+575	KU1919	ccle;public	urinary_tract	carcinoma	transitional_cell_carcinoma
+576	KU812	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	chronic_myeloid_leukaemia
+577	KURAMOCHI	ccle;public	ovary	carcinoma	undifferentiated_carcinoma
+578	KYM1	ccle;public	soft_tissue	rhabdomyosarcoma	
+579	KYO1	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	blast_phase; chronic_myeloid_leukaemia
+580	KYSE140	ccle;public	oesophagus	carcinoma	squamous_cell_carcinoma
+581	KYSE150	ccle;public	oesophagus	carcinoma	squamous_cell_carcinoma
+582	KYSE180	ccle;public	oesophagus	carcinoma	squamous_cell_carcinoma
+583	KYSE270	ccle	oesophagus	carcinoma	squamous_cell_carcinoma
+584	KYSE30	ccle;public	oesophagus	carcinoma	squamous_cell_carcinoma
+585	KYSE410	ccle;public	oesophagus	carcinoma	squamous_cell_carcinoma
+586	KYSE450	ccle;public	oesophagus	carcinoma	squamous_cell_carcinoma
+587	KYSE510	ccle;public	oesophagus	carcinoma	squamous_cell_carcinoma
+588	KYSE520	ccle;public	oesophagus	carcinoma	squamous_cell_carcinoma
+589	KYSE70	ccle;public	oesophagus	carcinoma	squamous_cell_carcinoma
+590	L1236	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	Hodgkin_lymphoma
+591	L33	ccle;public	pancreas	carcinoma	
+592	L363	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	plasma_cell_myeloma
+593	L428	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	Hodgkin_lymphoma
+594	L540	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	Hodgkin_lymphoma
+595	LAMA84	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	blast_phase; chronic_myeloid_leukaemia
+597	LC1F	ccle;public	lung	carcinoma	squamous_cell_carcinoma
+598	LC1SQSF	ccle;public	lung	carcinoma	squamous_cell_carcinoma
+599	LCLC103H	ccle;public	lung	carcinoma	large_cell_carcinoma
+600	LCLC97TM1	ccle;public	lung	carcinoma	large_cell_carcinoma
+601	LI7	ccle;public	liver	carcinoma	hepatocellular_carcinoma
+602	LK2	ccle;public	lung	carcinoma	squamous_cell_carcinoma
+603	LMSU	ccle;public	stomach	carcinoma	adenocarcinoma
+604	LN18	ccle;public	central_nervous_system	glioma	astrocytoma_Grade_IV
+605	LN215	ccle	central_nervous_system	glioma	astrocytoma_Grade_IV
+606	LN229	ccle;public	central_nervous_system	glioma	astrocytoma_Grade_IV
+607	LN235	ccle	central_nervous_system	glioma	astrocytoma_Grade_IV
+608	LN319	ccle	central_nervous_system	glioma	astrocytoma_Grade_III
+609	LN340	ccle	central_nervous_system	glioma	astrocytoma_Grade_IV
+610	LN382	ccle	central_nervous_system	glioma	astrocytoma_Grade_IV
+613	LN428	ccle	central_nervous_system	glioma	astrocytoma_Grade_IV
+614	LN443	ccle	central_nervous_system	glioma	astrocytoma_Grade_IV
+616	LN464	ccle	central_nervous_system	glioma	astrocytoma_Grade_IV
+618	LNCAPCLONEFGC	ccle;public	prostate	carcinoma	adenocarcinoma
+619	LNZ308	ccle	central_nervous_system	glioma	astrocytoma_Grade_IV
+620	LOUCY	ccle	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	acute_lymphoblastic_T_cell_leukaemia
+621	LOUNH91	ccle;public	lung	carcinoma	squamous_cell_carcinoma
+622	LOVO	ccle;public	large_intestine	carcinoma	adenocarcinoma
+623	LOXIMVI	ccle;public	skin	malignant_melanoma	
+624	LP1	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	plasma_cell_myeloma
+626	LS1034	ccle;public	large_intestine	carcinoma	adenocarcinoma
+627	LS123	ccle;public	large_intestine	carcinoma	adenocarcinoma
+630	LS180	ccle;public	large_intestine	carcinoma	adenocarcinoma
+631	LS411N	ccle;public	large_intestine	carcinoma	adenocarcinoma
+632	LS513	ccle;public	large_intestine	carcinoma	adenocarcinoma
+633	LU65	ccle;public	lung	carcinoma	non_small_cell_carcinoma
+634	LU99	ccle;public	lung	carcinoma	large_cell_carcinoma
+635	LUDLU1	ccle;public	lung	carcinoma	squamous_cell_carcinoma
+636	LXF289	ccle;public	lung	carcinoma	adenocarcinoma
+638	M059K	ccle;public	central_nervous_system	glioma	astrocytoma_Grade_IV
+639	M07E	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	acute_myeloid_leukaemia
+641	MALME3M	ccle;public	skin	malignant_melanoma	
+642	MB157	ccle	breast	carcinoma	
+643	MC116	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	B_cell_lymphoma
+644	MCAS	ccle;public	ovary	carcinoma	adenocarcinoma
+646	MCF7	ccle;public	breast	carcinoma	
+647	MDAMB134VI	ccle	breast	carcinoma	ductal_carcinoma
+648	MDAMB157	ccle;public	breast	carcinoma	ductal_carcinoma
+649	MDAMB175VII	ccle;public	breast	carcinoma	ductal_carcinoma
+650	MDAMB231	ccle;public	breast	carcinoma	
+651	MDAMB361	ccle;public	breast	carcinoma	
+652	MDAMB415	ccle;public	breast	carcinoma	
+655	MDAMB435S	ccle;public	skin	malignant_melanoma	
+656	MDAMB436	ccle	breast	carcinoma	
+657	MDAMB453	ccle;public	breast	carcinoma	
+658	MDAMB468	ccle;public	breast	carcinoma	
+660	MDAPCA2B	ccle	prostate	carcinoma	adenocarcinoma
+661	MDST8	ccle;public	large_intestine	carcinoma	adenocarcinoma
+662	ME1	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	acute_myeloid_leukaemia
+663	MEC1	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	chronic_lymphocytic_leukaemia; small_lymphocytic_lymphoma
+664	MEC2	ccle	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	chronic_lymphocytic_leukaemia; small_lymphocytic_lymphoma
+665	MEG01	ccle	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	blast_phase; chronic_myeloid_leukaemia
+666	MELHO	ccle;public	skin	malignant_melanoma	
+667	MELJUSO	ccle;public	skin	malignant_melanoma	
+668	MESSA	ccle;public	soft_tissue	sarcoma	
+669	MEWO	ccle;public	skin	malignant_melanoma	
+670	MFE280	ccle	endometrium	carcinoma	adenocarcinoma
+671	MFE296	ccle;public	endometrium	carcinoma	adenocarcinoma
+672	MFE319	ccle;public	endometrium	carcinoma	adenocarcinoma
+673	MG63	ccle;public	bone	osteosarcoma	
+674	MHHCALL2	ccle	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	acute_lymphoblastic_B_cell_leukaemia
+675	MHHCALL3	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	acute_lymphoblastic_B_cell_leukaemia
+676	MHHCALL4	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	acute_lymphoblastic_B_cell_leukaemia
+677	MHHES1	ccle;public	bone	Ewings_sarcoma_peripheral_primitive_neuroectodermal_tumor	
+678	MHHNB11	ccle;public	autonomic_ganglia	neuroblastoma	
+679	MIAPACA2	ccle;public	pancreas	carcinoma	ductal_carcinoma
+680	MINO	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	mantle_cell_lymphoma
+681	MJ	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	Sezary_syndrome; mycosis_fungoides
+682	MKN1	ccle;public	stomach	carcinoma	mixed_adenosquamous_carcinoma
+683	MKN45	ccle;public	stomach	carcinoma	diffuse_adenocarcinoma
+684	MKN7	ccle;public	stomach	carcinoma	tubular_adenocarcinoma
+685	MKN74	ccle;public	stomach	carcinoma	tubular_adenocarcinoma
+686	ML1	ccle;public	thyroid	carcinoma	follicular_carcinoma
+688	MM1S	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	plasma_cell_myeloma
+690	MOGGCCM	ccle	central_nervous_system	glioma	astrocytoma
+691	MOGGUVW	ccle	central_nervous_system	glioma	astrocytoma
+692	MOLM13	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	acute_myeloid_leukaemia
+693	MOLM16	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	acute_myeloid_leukaemia
+694	MOLM6	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	blast_phase; chronic_myeloid_leukaemia
+695	MOLP2	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	plasma_cell_myeloma
+696	MOLP8	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	plasma_cell_myeloma
+697	MOLT13	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	acute_lymphoblastic_T_cell_leukaemia
+698	MOLT16	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	acute_lymphoblastic_T_cell_leukaemia
+699	MOLT3	public			
+700	MOLT4	ccle	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	acute_lymphoblastic_T_cell_leukaemia
+701	MONOMAC1	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	acute_myeloid_leukaemia
+702	MONOMAC6	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	acute_myeloid_leukaemia
+703	MORCPR	ccle;public	lung	carcinoma	adenocarcinoma
+704	MOTN1	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	T_cell_large_granular_lymphocytic_leukaemia
+705	MPP89	ccle;public	pleura	mesothelioma	
+706	MSTO211H	ccle;public	pleura	mesothelioma	
+708	MUTZ3	ccle	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	acute_myeloid_leukaemia
+709	MUTZ5	ccle	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	acute_lymphoblastic_B_cell_leukaemia
+710	MV411	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	acute_myeloid_leukaemia
+716	NALM1	ccle	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	blast_phase; chronic_myeloid_leukaemia
+717	NALM19	ccle	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	acute_lymphoblastic_B_cell_leukaemia
+718	NALM6	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	acute_lymphoblastic_B_cell_leukaemia
+719	NAMALWA	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	Burkitt_lymphoma
+720	NB1	ccle;public	autonomic_ganglia	neuroblastoma	
+721	NB4	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	acute_myeloid_leukaemia
+723	NCCSTCK140	ccle;public	stomach	carcinoma	
+851	NCO2	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	chronic_myeloid_leukaemia
+852	NH6	ccle;public	autonomic_ganglia	neuroblastoma	
+855	NMCG1	ccle;public	central_nervous_system	glioma	
+858	NOMO1	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	acute_myeloid_leukaemia
+874	NUDHL1	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	diffuse_large_B_cell_lymphoma
+875	NUDUL1	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	B_cell_lymphoma
+876	NUGC2	ccle	stomach	carcinoma	adenocarcinoma
+877	NUGC3	ccle;public	stomach	carcinoma	
+878	NUGC4	ccle;public	stomach	carcinoma	signet_ring_adenocarcinoma
+879	OAW28	ccle;public	ovary	carcinoma	
+880	OAW42	ccle;public	ovary	carcinoma	
+881	OC314	ccle;public	ovary	carcinoma	serous_carcinoma
+882	OC315	ccle	ovary	carcinoma	serous_carcinoma
+883	OC316	ccle	ovary	carcinoma	adenocarcinoma
+884	OCIAML2	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	acute_myeloid_leukaemia
+885	OCIAML3	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	acute_myeloid_leukaemia
+886	OCIAML5	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	acute_myeloid_leukaemia
+887	OCILY10	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	diffuse_large_B_cell_lymphoma
+888	OCILY19	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	diffuse_large_B_cell_lymphoma
+889	OCILY3	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	diffuse_large_B_cell_lymphoma
+890	OCIM1	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	acute_myeloid_leukaemia
+893	OCUM1	ccle;public	stomach	carcinoma	diffuse_adenocarcinoma
+894	OE19	ccle;public	oesophagus	carcinoma	adenocarcinoma
+895	OE21	ccle;public	oesophagus	carcinoma	squamous_cell_carcinoma
+896	OE33	ccle;public	oesophagus		metaplasia
+897	OELE	ccle	ovary		immortalized_epithelial
+898	ONCODG1	ccle;public	ovary	carcinoma	adenocarcinoma
+899	ONS76	ccle;public	central_nervous_system	primitive_neuroectodermal_tumor_medulloblastoma	
+901	OPM2	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	plasma_cell_myeloma
+902	OSRC2	ccle;public	kidney	carcinoma	renal_cell_carcinoma
+903	OUMS23	ccle;public	large_intestine	carcinoma	adenocarcinoma
+904	OUMS27	ccle	bone	chondrosarcoma	
+905	OV56	ccle;public	ovary	carcinoma	
+906	OV7	ccle;public	ovary	carcinoma	
+907	OV90	ccle;public	ovary	carcinoma	mixed_carcinoma
+908	OVCAR4	ccle;public	ovary	carcinoma	
+909	OVCAR5	public			
+910	OVCAR8	ccle;public	ovary	carcinoma	
+911	OVISE	ccle;public	ovary	carcinoma	clear_cell_carcinoma
+912	OVK18	ccle;public	ovary	carcinoma	endometrioid_carcinoma
+913	OVKATE	ccle;public	ovary	carcinoma	adenocarcinoma
+914	OVMANA	ccle;public	ovary	carcinoma	clear_cell_carcinoma
+915	OVSAHO	ccle;public	ovary	carcinoma	adenocarcinoma
+916	OVTOKO	ccle;public	ovary	carcinoma	clear_cell_carcinoma
+917	P12ICHIKAWA	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	acute_lymphoblastic_T_cell_leukaemia
+918	P31FUJ	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	acute_myeloid_leukaemia
+919	P3HR1	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	Burkitt_lymphoma
+920	PANC0203	ccle;public	pancreas	carcinoma	
+921	PANC0213	ccle	pancreas	carcinoma	
+922	PANC0327	ccle;public	pancreas	carcinoma	ductal_carcinoma
+923	PANC0403	ccle;public	pancreas	carcinoma	
+924	PANC0504	ccle;public	pancreas	carcinoma	
+925	PANC0813	ccle;public	pancreas	carcinoma	ductal_carcinoma
+926	PANC1	ccle;public	pancreas	carcinoma	ductal_carcinoma
+927	PANC1005	ccle;public	pancreas	carcinoma	ductal_carcinoma
+928	PATU8902	ccle;public	pancreas	carcinoma	ductal_carcinoma
+929	PATU8988S	ccle;public	pancreas	carcinoma	ductal_carcinoma
+930	PATU8988T	ccle;public	pancreas	carcinoma	ductal_carcinoma
+931	PC14	ccle;public	lung	carcinoma	non_small_cell_carcinoma
+932	PC3	ccle;public	prostate	carcinoma	adenocarcinoma
+934	PCM6	ccle	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	plasma_cell_myeloma
+935	PECAPJ15	ccle;public	upper_aerodigestive_tract	carcinoma	squamous_cell_carcinoma
+937	PECAPJ34CLONEC12	ccle;public	upper_aerodigestive_tract	carcinoma	squamous_cell_carcinoma
+939	PECAPJ41CLONED2	ccle;public	upper_aerodigestive_tract	carcinoma	squamous_cell_carcinoma
+940	PECAPJ49	ccle;public	upper_aerodigestive_tract	carcinoma	squamous_cell_carcinoma
+941	PEER	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	acute_lymphoblastic_T_cell_leukaemia
+942	PF382	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	acute_lymphoblastic_T_cell_leukaemia
+943	PFEIFFER	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	diffuse_large_B_cell_lymphoma
+944	PK1	ccle;public	pancreas	carcinoma	
+945	PK45H	ccle;public	pancreas	carcinoma	
+946	PK59	ccle;public	pancreas	carcinoma	
+947	PL21	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	acute_myeloid_leukaemia
+948	PL45	ccle	pancreas	carcinoma	ductal_carcinoma
+950	PLCPRF5	ccle;public	liver	carcinoma	hepatocellular_carcinoma
+951	PRECLH	ccle	prostate		immortalized_epithelial
+952	PSN1	ccle;public	pancreas	carcinoma	ductal_carcinoma
+953	PSTS	collaborator			
+954	QGP1	ccle;public	pancreas	carcinoma	
+955	RAJI	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	Burkitt_lymphoma
+956	RCC10RGB	ccle;public	kidney	carcinoma	renal_cell_carcinoma
+957	RCC4	ccle	kidney	carcinoma	clear_cell_renal_cell_carcinoma
+958	RCHACV	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	acute_lymphoblastic_B_cell_leukaemia
+960	RCM1	ccle;public	large_intestine	carcinoma	adenocarcinoma
+961	RD	ccle;public	soft_tissue	rhabdomyosarcoma	embryonal
+963	RDES	ccle;public	bone	Ewings_sarcoma_peripheral_primitive_neuroectodermal_tumor	
+964	REC1	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	mantle_cell_lymphoma
+965	REH	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	acute_lymphoblastic_B_cell_leukaemia
+966	RERFGC1B	ccle	stomach	carcinoma	
+967	RERFLCAD1	ccle;public	lung	carcinoma	adenocarcinoma
+968	RERFLCAD2	ccle;public	lung	carcinoma	adenocarcinoma
+969	RERFLCAI	ccle;public	lung	carcinoma	squamous_cell_carcinoma
+970	RERFLCKJ	ccle	lung	carcinoma	non_small_cell_carcinoma
+971	RERFLCMS	ccle;public	lung	carcinoma	non_small_cell_carcinoma
+972	RERFLCSQ1	ccle	lung	carcinoma	squamous_cell_carcinoma
+973	RH18	ccle;public	soft_tissue	rhabdomyosarcoma	alveolar
+975	RH30	ccle;public	soft_tissue	rhabdomyosarcoma	alveolar
+976	RH41	ccle;public	soft_tissue	rhabdomyosarcoma	alveolar
+977	RI1	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	B_cell_lymphoma
+978	RKN	ccle;public	soft_tissue	leiomyosarcoma	
+979	RKO	ccle;public	large_intestine	carcinoma	adenocarcinoma
+980	RL	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	B_cell_lymphoma
+981	RL952	ccle;public	endometrium	carcinoma	mixed_adenosquamous_carcinoma
+983	RMGI	ccle;public	ovary	carcinoma	clear_cell_carcinoma
+985	RMUGS	ccle;public	ovary	carcinoma	adenocarcinoma
+990	RPMI6666	public			
+991	RPMI7951	ccle;public	skin	malignant_melanoma	
+992	RPMI8226	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	plasma_cell_myeloma
+994	RPMI8402	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	acute_lymphoblastic_T_cell_leukaemia
+995	RS411	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	acute_lymphoblastic_B_cell_leukaemia
+996	RS5	ccle	pleura	mesothelioma	
+997	RT112	ccle;public	urinary_tract	carcinoma	transitional_cell_carcinoma
+998	RT11284	ccle	urinary_tract	carcinoma	
+999	RT4	ccle;public	urinary_tract	carcinoma	transitional_cell_carcinoma
+1000	RVH421	ccle;public	skin	malignant_melanoma	
+1002	S117	ccle;public	soft_tissue	sarcoma	
+1003	SALE	ccle	lung		immortalized_epithelial
+1004	SAOS2	ccle;public	bone	osteosarcoma	
+1005	SBC5	ccle;public	lung	carcinoma	small_cell_carcinoma
+1006	SCABER	ccle;public	urinary_tract	carcinoma	transitional_cell_carcinoma
+1007	SCC15	ccle	upper_aerodigestive_tract	carcinoma	squamous_cell_carcinoma
+1008	SCC25	ccle;public	upper_aerodigestive_tract	carcinoma	squamous_cell_carcinoma
+1009	SCC4	ccle;public	upper_aerodigestive_tract	carcinoma	squamous_cell_carcinoma
+1010	SCC9	ccle;public	upper_aerodigestive_tract	carcinoma	squamous_cell_carcinoma
+1011	SCLC21H	ccle;public	lung	carcinoma	small_cell_carcinoma
+1013	SEM	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	acute_lymphoblastic_B_cell_leukaemia
+1014	SET2	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	essential_thrombocythaemia
+1015	SF126	ccle;public	central_nervous_system	glioma	astrocytoma
+1016	SF172	ccle	central_nervous_system	glioma	astrocytoma_Grade_IV
+1017	SF268	public			
+1018	SF295	ccle;public	central_nervous_system	glioma	astrocytoma_Grade_IV
+1019	SF539	public			
+1021	SF767	ccle	central_nervous_system	glioma	astrocytoma_Grade_III
+1024	SH10TC	ccle;public	stomach	carcinoma	
+1025	SH4	ccle;public	skin	malignant_melanoma	
+1026	SHP77	ccle;public	lung	carcinoma	small_cell_carcinoma
+1027	SHSY5Y	ccle	autonomic_ganglia	neuroblastoma	
+1028	SIGM5	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	acute_myeloid_leukaemia
+1030	SIMA	ccle;public	autonomic_ganglia	neuroblastoma	
+1031	SJRH30	ccle	soft_tissue	rhabdomyosarcoma	
+1032	SJSA1	ccle;public	bone	osteosarcoma	
+1033	SKBR3	ccle;public	breast	carcinoma	
+1034	SKCO1	ccle;public	large_intestine	carcinoma	adenocarcinoma
+1035	SKES1	ccle;public	bone	Ewings_sarcoma_peripheral_primitive_neuroectodermal_tumor	
+1036	SKHEP1	ccle;public	liver	carcinoma	adenocarcinoma
+1037	SKLMS1	ccle;public	soft_tissue	sarcoma	
+1038	SKLU1	ccle;public	lung	carcinoma	adenocarcinoma
+1039	SKM1	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	acute_myeloid_leukaemia
+1040	SKMEL1	ccle;public	skin	malignant_melanoma	
+1041	SKMEL2	ccle;public	skin	malignant_melanoma	
+1042	SKMEL24	ccle;public	skin	malignant_melanoma	
+1043	SKMEL28	ccle;public	skin	malignant_melanoma	
+1044	SKMEL3	ccle;public	skin	malignant_melanoma	
+1045	SKMEL30	ccle;public	skin	malignant_melanoma	
+1046	SKMEL31	ccle;public	skin	malignant_melanoma	
+1047	SKMEL5	ccle;public	skin	malignant_melanoma	
+1048	SKMES1	ccle;public	lung	carcinoma	squamous_cell_carcinoma
+1050	SKMM2	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	plasma_cell_myeloma
+1051	SKNAS	ccle;public	autonomic_ganglia	neuroblastoma	
+1052	SKNBE2	ccle;public	autonomic_ganglia	neuroblastoma	
+1053	SKNDZ	ccle;public	autonomic_ganglia	neuroblastoma	
+1055	SKNFI	ccle;public	autonomic_ganglia	neuroblastoma	
+1056	SKNMC	ccle;public	bone	Ewings_sarcoma_peripheral_primitive_neuroectodermal_tumor	
+1058	SKNSH	ccle;public	autonomic_ganglia	neuroblastoma	
+1059	SKOV3	ccle;public	ovary	carcinoma	adenocarcinoma
+1060	SKRC20	ccle	kidney	carcinoma	renal_cell_carcinoma
+1061	SKRC31	ccle	kidney	carcinoma	renal_cell_carcinoma
+1063	SKUT1	ccle;public	soft_tissue	leiomyosarcoma	
+1064	SLR20	ccle	kidney	carcinoma	renal_cell_carcinoma
+1065	SLR21	ccle	kidney	carcinoma	renal_cell_carcinoma
+1066	SLR23	ccle	kidney	carcinoma	renal_cell_carcinoma
+1067	SLR24	ccle	kidney	carcinoma	renal_cell_carcinoma
+1068	SLR25	ccle	kidney	carcinoma	renal_cell_carcinoma
+1069	SLR26	ccle	kidney	carcinoma	renal_cell_carcinoma
+1072	SNB19	ccle	central_nervous_system	glioma	astrocytoma_Grade_IV
+1073	SNB75	public			
+1074	SNGM	ccle;public	endometrium	carcinoma	adenocarcinoma
+1075	SNU1	ccle;public	stomach	carcinoma	undifferentiated_adenocarcinoma
+1076	SNU1033	ccle;public	large_intestine	carcinoma	
+1077	SNU1040	ccle;public	large_intestine	carcinoma	
+1078	SNU1041	ccle;public	upper_aerodigestive_tract	carcinoma	
+1079	SNU1066	ccle;public	upper_aerodigestive_tract	carcinoma	squamous_cell_carcinoma
+1080	SNU1076	ccle;public	upper_aerodigestive_tract	carcinoma	squamous_cell_carcinoma
+1081	SNU1077	ccle;public	endometrium	carcinoma	carcinosarcoma; malignant_mesodermal_mixed_tumor
+1082	SNU1079	ccle;public	biliary_tract	carcinoma	
+1083	SNU1105	ccle;public	central_nervous_system	glioma	astrocytoma_Grade_IV
+1084	SNU119	ccle;public	ovary	carcinoma	adenocarcinoma
+1085	SNU1196	ccle;public	biliary_tract	carcinoma	
+1086	SNU1197	ccle	large_intestine	carcinoma	
+1087	SNU1214	ccle;public	upper_aerodigestive_tract	carcinoma	squamous_cell_carcinoma
+1088	SNU1272	ccle;public	kidney	carcinoma	clear_cell_renal_cell_carcinoma
+1089	SNU16	ccle;public	stomach	carcinoma	undifferentiated_adenocarcinoma
+1090	SNU175	ccle;public	large_intestine	carcinoma	
+1091	SNU182	ccle;public	liver	carcinoma	hepatocellular_carcinoma
+1092	SNU201	ccle;public	central_nervous_system	glioma	astrocytoma_Grade_IV
+1093	SNU213	ccle;public	pancreas	carcinoma	
+1094	SNU216	ccle;public	stomach	carcinoma	
+1095	SNU245	ccle;public	biliary_tract	carcinoma	
+1096	SNU283	ccle;public	large_intestine	carcinoma	
+1097	SNU308	ccle;public	biliary_tract	carcinoma	
+1098	SNU324	ccle	pancreas	carcinoma	
+1099	SNU349	ccle	kidney	carcinoma	clear_cell_renal_cell_carcinoma
+1100	SNU387	ccle;public	liver	carcinoma	hepatocellular_carcinoma
+1101	SNU398	ccle;public	liver	carcinoma	hepatocellular_carcinoma
+1102	SNU407	ccle;public	large_intestine	carcinoma	
+1103	SNU410	ccle;public	pancreas	carcinoma	
+1104	SNU423	ccle;public	liver	carcinoma	hepatocellular_carcinoma
+1105	SNU449	ccle;public	liver	carcinoma	hepatocellular_carcinoma
+1106	SNU46	ccle;public	upper_aerodigestive_tract	carcinoma	squamous_cell_carcinoma
+1107	SNU466	ccle;public	central_nervous_system	glioma	astrocytoma_Grade_IV
+1108	SNU475	ccle;public	liver	carcinoma	hepatocellular_carcinoma
+1109	SNU478	ccle;public	biliary_tract	carcinoma	
+1110	SNU489	ccle;public	central_nervous_system	glioma	astrocytoma_Grade_IV
+1111	SNU5	ccle;public	stomach	carcinoma	undifferentiated_adenocarcinoma
+1112	SNU503	ccle;public	large_intestine	carcinoma	
+1113	SNU520	ccle	stomach	carcinoma	
+1114	SNU601	ccle;public	stomach	carcinoma	
+1115	SNU61	ccle;public	large_intestine	carcinoma	
+1116	SNU620	ccle;public	stomach	carcinoma	
+1117	SNU626	ccle;public	central_nervous_system	glioma	astrocytoma_Grade_IV
+1118	SNU668	ccle;public	stomach	carcinoma	signet_ring_adenocarcinoma
+1119	SNU685	ccle;public	endometrium	carcinoma	carcinosarcoma; malignant_mesodermal_mixed_tumor
+1120	SNU719	ccle;public	stomach	carcinoma	
+1121	SNU738	ccle;public	central_nervous_system	glioma	oligodendroglioma
+1122	SNU761	ccle;public	liver	carcinoma	hepatocellular_carcinoma
+1123	SNU8	ccle;public	ovary	carcinoma	adenocarcinoma
+1124	SNU81	ccle;public	large_intestine	carcinoma	
+1125	SNU840	ccle;public	ovary	carcinoma	Brenner_tumor
+1126	SNU869	ccle;public	biliary_tract	carcinoma	
+1127	SNU878	ccle;public	liver	carcinoma	hepatocellular_carcinoma
+1128	SNU886	ccle;public	liver	carcinoma	hepatocellular_carcinoma
+1129	SNU899	ccle;public	upper_aerodigestive_tract	carcinoma	squamous_cell_carcinoma
+1130	SNUC1	ccle;public	large_intestine	carcinoma	adenocarcinoma
+1131	SNUC2A	ccle;public	large_intestine	carcinoma	adenocarcinoma
+1133	SNUC4	ccle;public	large_intestine	carcinoma	adenocarcinoma
+1134	SNUC5	ccle;public	large_intestine	carcinoma	adenocarcinoma
+1135	SQ1	ccle;public	lung	carcinoma	squamous_cell_carcinoma
+1136	SR786	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	anaplastic_large_cell_lymphoma
+1137	ST486	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	Burkitt_lymphoma
+1138	SU8686	ccle;public	pancreas	carcinoma	ductal_carcinoma
+1139	SUDHL1	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	anaplastic_large_cell_lymphoma
+1140	SUDHL10	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	diffuse_large_B_cell_lymphoma
+1141	SUDHL4	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	diffuse_large_B_cell_lymphoma
+1142	SUDHL5	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	diffuse_large_B_cell_lymphoma
+1143	SUDHL6	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	diffuse_large_B_cell_lymphoma
+1144	SUDHL8	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	diffuse_large_B_cell_lymphoma
+1145	SUIT2	ccle;public	pancreas	carcinoma	ductal_carcinoma
+1146	SUPB15	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	acute_lymphoblastic_B_cell_leukaemia
+1147	SUPHD1	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	Hodgkin_lymphoma
+1148	SUPM2	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	anaplastic_large_cell_lymphoma
+1149	SUPT1	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	acute_lymphoblastic_T_cell_leukaemia
+1150	SUPT11	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	peripheral_T_cell_lymphoma_unspecified
+1151	SW1088	ccle;public	central_nervous_system	glioma	
+1152	SW1116	ccle;public	large_intestine	carcinoma	adenocarcinoma
+1153	SW1271	ccle;public	lung	carcinoma	small_cell_carcinoma
+1154	SW1353	ccle;public	bone	chondrosarcoma	
+1155	SW1417	ccle;public	large_intestine	carcinoma	adenocarcinoma
+1156	SW1463	ccle;public	large_intestine	carcinoma	adenocarcinoma
+1157	SW1573	ccle;public	lung	carcinoma	squamous_cell_carcinoma
+1158	SW1710	ccle;public	urinary_tract	carcinoma	transitional_cell_carcinoma
+1159	SW1783	ccle;public	central_nervous_system	glioma	astrocytoma_Grade_III
+1160	SW1990	ccle;public	pancreas	carcinoma	ductal_carcinoma
+1161	SW403	ccle;public	large_intestine	carcinoma	adenocarcinoma
+1162	SW48	ccle;public	large_intestine	carcinoma	adenocarcinoma
+1163	SW480	ccle	large_intestine	carcinoma	adenocarcinoma
+1165	SW579	ccle;public	thyroid	carcinoma	anaplastic_carcinoma
+1166	SW620	ccle;public	large_intestine	carcinoma	adenocarcinoma
+1167	SW780	ccle	urinary_tract	carcinoma	transitional_cell_carcinoma
+1168	SW837	ccle;public	large_intestine	carcinoma	adenocarcinoma
+1169	SW900	ccle	lung	carcinoma	squamous_cell_carcinoma
+1170	SW948	ccle;public	large_intestine	carcinoma	adenocarcinoma
+1171	T173	ccle	bone	osteosarcoma	
+1172	T24	ccle;public	urinary_tract	carcinoma	transitional_cell_carcinoma
+1173	T3M10	ccle;public	lung	carcinoma	large_cell_carcinoma
+1174	T3M4	ccle	pancreas	carcinoma	ductal_carcinoma
+1175	T47D	ccle;public	breast	carcinoma	ductal_carcinoma
+1176	T84	ccle;public	large_intestine	carcinoma	adenocarcinoma
+1177	T98G	ccle;public	central_nervous_system	glioma	astrocytoma_Grade_IV
+1178	TALL1	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	acute_lymphoblastic_T_cell_leukaemia
+1179	TC32	ccle	bone	Ewings_sarcoma_peripheral_primitive_neuroectodermal_tumor	
+1180	TC71	ccle;public	bone	Ewings_sarcoma_peripheral_primitive_neuroectodermal_tumor	
+1182	TCCPAN2	ccle;public	pancreas	carcinoma	
+1183	TCCSUP	ccle;public	urinary_tract	carcinoma	transitional_cell_carcinoma
+1184	TE1	ccle;public	oesophagus	carcinoma	squamous_cell_carcinoma
+1185	TE10	ccle;public	oesophagus	carcinoma	squamous_cell_carcinoma
+1186	TE11	ccle;public	oesophagus	carcinoma	squamous_cell_carcinoma
+1187	TE125T	ccle;public	soft_tissue	rhabdomyosarcoma	
+1188	TE14	ccle;public	oesophagus	carcinoma	squamous_cell_carcinoma
+1189	TE15	ccle;public	oesophagus	carcinoma	squamous_cell_carcinoma
+1190	TE159T	ccle	soft_tissue	rhabdomyosarcoma	
+1191	TE4	ccle;public	oesophagus	carcinoma	squamous_cell_carcinoma
+1192	TE441T	ccle;public	soft_tissue	rhabdomyosarcoma	
+1193	TE5	ccle;public	oesophagus	carcinoma	squamous_cell_carcinoma
+1194	TE6	ccle;public	oesophagus	carcinoma	squamous_cell_carcinoma
+1195	TE617T	ccle;public	soft_tissue	rhabdomyosarcoma	
+1196	TE8	ccle;public	oesophagus	carcinoma	squamous_cell_carcinoma
+1197	TE9	ccle;public	oesophagus	carcinoma	squamous_cell_carcinoma
+1198	TEN	ccle	endometrium	carcinoma	clear_cell_carcinoma
+1199	TF1	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	acute_myeloid_leukaemia
+1200	TGBC11TKB	ccle	stomach	carcinoma	
+1201	THP1	ccle;public	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	acute_myeloid_leukaemia
+1202	TIG3TD	ccle	lung		immortalized_embryonic_fibroblast
+1204	TM31	ccle;public	central_nervous_system	glioma	astrocytoma
+1205	TO175T	ccle	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	Hodgkin_lymphoma
+1206	TOLEDO	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	diffuse_large_B_cell_lymphoma
+1208	TOV112D	ccle;public	ovary	carcinoma	endometrioid_carcinoma
+1209	TOV21G	ccle;public	ovary	carcinoma	clear_cell_carcinoma
+1210	TT2609C02	ccle;public	thyroid	carcinoma	follicular_carcinoma
+1211	TTOESOPHAGUS	ccle	oesophagus	carcinoma	squamous_cell_carcinoma
+1212	TTTHYROID	ccle;public	thyroid	carcinoma	medullary_carcinoma
+1213	TUHR10TKB	ccle;public	kidney	carcinoma	
+1214	TUHR14TKB	ccle;public	kidney	carcinoma	
+1216	TUHR4TKB	ccle;public	kidney	carcinoma	
+1217	TYKNU	ccle;public	ovary	carcinoma	undifferentiated_carcinoma
+1218	U118MG	ccle;public	central_nervous_system	glioma	astrocytoma
+1220	U138MG	ccle	central_nervous_system	glioma	astrocytoma
+1221	U178	ccle	central_nervous_system	glioma	astrocytoma_Grade_IV
+1223	U251MG	ccle;public	central_nervous_system	glioma	astrocytoma
+1225	U266B1	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	plasma_cell_myeloma
+1226	U2OS	ccle;public	bone	osteosarcoma	
+1227	U343	ccle	central_nervous_system	glioma	astrocytoma_Grade_IV
+1230	U87MG	ccle;public	central_nervous_system	glioma	astrocytoma
+1231	U937	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	diffuse_large_B_cell_lymphoma
+1232	UACC257	ccle;public	skin	malignant_melanoma	
+1233	UACC62	ccle;public	skin	malignant_melanoma	
+1234	UACC812	ccle;public	breast	carcinoma	ductal_carcinoma
+1235	UACC893	ccle	breast	carcinoma	ductal_carcinoma
+1236	UBLC1	ccle;public	urinary_tract	carcinoma	transitional_cell_carcinoma
+1239	UMRC2	ccle	kidney	carcinoma	clear_cell_renal_cell_carcinoma
+1240	UMRC6	ccle	kidney	carcinoma	renal_cell_carcinoma
+1243	UMUC1	ccle;public	urinary_tract	carcinoma	transitional_cell_carcinoma
+1244	UMUC3	ccle;public	urinary_tract	carcinoma	transitional_cell_carcinoma
+1245	UO31	public			
+1246	UOK101	ccle	kidney	carcinoma	clear_cell_renal_cell_carcinoma
+1247	UT7	ccle	haematopoietic_and_lymphoid_tissue	haematopoietic_neoplasm	acute_myeloid_leukaemia
+1249	VCAP	ccle;public	prostate	carcinoma	adenocarcinoma
+1250	VMCUB1	ccle;public	urinary_tract	carcinoma	transitional_cell_carcinoma
+1251	VMRCLCD	ccle;public	lung	carcinoma	adenocarcinoma
+1252	VMRCLCP	ccle	lung	carcinoma	squamous_cell_carcinoma
+1253	VMRCRCW	ccle;public	kidney	carcinoma	
+1254	VMRCRCZ	ccle;public	kidney	carcinoma	renal_cell_carcinoma
+1255	WM115	ccle;public	skin	malignant_melanoma	
+1256	WM1799	ccle;public	skin	malignant_melanoma	
+1260	WM2664	ccle;public	skin	malignant_melanoma	
+1270	WM793	ccle;public	skin	malignant_melanoma	
+1271	WM88	ccle;public	skin	malignant_melanoma	
+1273	WM983B	ccle;public	skin	malignant_melanoma	
+1274	WSUDLCL2	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	diffuse_large_B_cell_lymphoma
+1277	YAPC	ccle;public	pancreas	carcinoma	
+1278	YD10B	ccle;public	upper_aerodigestive_tract	carcinoma	squamous_cell_carcinoma
+1279	YD15	ccle;public	salivary_gland	carcinoma	mucoepidermoid_carcinoma
+1280	YD38	ccle;public	upper_aerodigestive_tract	carcinoma	squamous_cell_carcinoma
+1281	YD8	ccle;public	upper_aerodigestive_tract	carcinoma	squamous_cell_carcinoma
+1282	YH13	ccle;public	central_nervous_system	glioma	astrocytoma_Grade_IV
+1283	YKG1	ccle;public	central_nervous_system	glioma	astrocytoma_Grade_IV
+1284	YMB1	ccle	breast	carcinoma	
+1285	ZR751	ccle;public	breast	carcinoma	ductal_carcinoma
+1286	ZR7530	ccle;public	breast	carcinoma	ductal_carcinoma
+120597	BT498	collaborator			
+127978	NCIH1395	ccle;public	lung	carcinoma	adenocarcinoma
+127983	NCIH1666	ccle;public	lung	carcinoma	bronchioloalveolar_adenocarcinoma
+127984	NCIH1755	ccle;public	lung	carcinoma	adenocarcinoma
+127985	NCIH1975	ccle;public	lung	carcinoma	non_small_cell_carcinoma
+127988	NCIH2087	ccle;public	lung	carcinoma	adenocarcinoma
+127989	NCIH209	ccle;public	lung	carcinoma	small_cell_carcinoma
+127990	NCIH2122	ccle;public	lung	carcinoma	adenocarcinoma
+127991	NCIH23	ccle;public	lung	carcinoma	non_small_cell_carcinoma
+127997	NCIH358	ccle;public	lung	carcinoma	bronchioloalveolar_adenocarcinoma
+127999	NCIH441	ccle;public	lung	carcinoma	adenocarcinoma
+128000	NCIH446	ccle;public	lung	carcinoma	small_cell_carcinoma
+128001	NCIH460	ccle;public	lung	carcinoma	large_cell_carcinoma
+128003	NCIH508	ccle;public	large_intestine	carcinoma	adenocarcinoma
+128004	NCIH596	ccle;public	lung	carcinoma	mixed_adenosquamous_carcinoma
+128005	NCIH661	ccle;public	lung	carcinoma	large_cell_carcinoma
+128006	NCIH69	ccle;public	lung	carcinoma	small_cell_carcinoma
+128013	NCIH929	ccle;public	haematopoietic_and_lymphoid_tissue	lymphoid_neoplasm	plasma_cell_myeloma
+134841	NCIN87	ccle;public	stomach	carcinoma	
+135853	NIHOVCAR3	ccle	ovary	carcinoma	
+150887	SW982	collaborator			
+155285	NCIH28	ccle;public	pleura	mesothelioma	
+155288	NCIH82	ccle	lung	carcinoma	small_cell_carcinoma
+155292	NCIH146	ccle;public	lung	carcinoma	small_cell_carcinoma
+155294	NCIH196	ccle;public	lung	carcinoma	small_cell_carcinoma
+155295	NCIH211	ccle;public	lung	carcinoma	small_cell_carcinoma
+155297	NCIH226	ccle;public	lung	carcinoma	squamous_cell_carcinoma
+155305	NCIH322	ccle;public	lung	carcinoma	adenocarcinoma
+155322	NCIH510	ccle;public	lung	carcinoma	small_cell_carcinoma
+155324	NCIH520	ccle;public	lung	carcinoma	squamous_cell_carcinoma
+155325	NCIH522	ccle;public	lung	carcinoma	non_small_cell_carcinoma
+155326	NCIH524	ccle;public	lung	carcinoma	small_cell_carcinoma
+155327	NCIH526	ccle;public	lung	carcinoma	small_cell_carcinoma
+155339	NCIH647	ccle;public	lung	carcinoma	mixed_adenosquamous_carcinoma
+155340	NCIH650	ccle;public	lung	carcinoma	bronchioloalveolar_adenocarcinoma
+155341	NCIH660	ccle;public	prostate	carcinoma	small_cell_carcinoma
+155345	NCIH684	ccle	liver		hepatoblastoma
+155348	NCIH716	ccle;public	large_intestine	carcinoma	adenocarcinoma
+155352	NCIH727	ccle;public	lung	carcinoid_endocrine_tumor	
+155356	NCIH747	ccle;public	large_intestine	carcinoma	adenocarcinoma
+155362	NCIH810	ccle;public	lung	carcinoma	large_cell_carcinoma
+155365	NCIH838	ccle;public	lung	carcinoma	non_small_cell_carcinoma
+155366	NCIH841	ccle;public	lung	carcinoma	small_cell_carcinoma
+155368	NCIH854	ccle;public	lung	carcinoma	adenocarcinoma
+155371	NCIH889	ccle;public	lung	carcinoma	small_cell_carcinoma
+155380	NCIH1048	ccle	lung	carcinoma	small_cell_carcinoma
+155385	NCIH1092	ccle;public	lung	carcinoma	small_cell_carcinoma
+155387	NCIH1105	ccle;public	lung	carcinoma	small_cell_carcinoma
+155388	NCIH1155	ccle;public	lung	carcinoma	large_cell_carcinoma
+155390	NCIH1184	ccle;public	lung	carcinoma	small_cell_carcinoma
+155395	NCIH1299	ccle;public	lung	carcinoma	non_small_cell_carcinoma
+155399	NCIH1339	ccle;public	lung	carcinoma	small_cell_carcinoma
+155400	NCIH1341	ccle;public	lung	carcinoma	small_cell_carcinoma
+155401	NCIH1355	ccle;public	lung	carcinoma	adenocarcinoma
+155402	NCIH1373	ccle;public	lung	carcinoma	adenocarcinoma
+155404	NCIH1385	ccle;public	lung	carcinoma	squamous_cell_carcinoma
+155407	NCIH1435	ccle;public	lung	carcinoma	non_small_cell_carcinoma
+155408	NCIH1436	ccle	lung	carcinoma	small_cell_carcinoma
+155409	NCIH1437	ccle	lung	carcinoma	adenocarcinoma
+155421	NCIH1563	ccle;public	lung	carcinoma	adenocarcinoma
+155422	NCIH1568	ccle;public	lung	carcinoma	non_small_cell_carcinoma
+155424	NCIH1573	ccle;public	lung	carcinoma	adenocarcinoma
+155425	NCIH1581	ccle;public	lung	carcinoma	large_cell_carcinoma
+155429	NCIH1618	ccle	lung	carcinoma	small_cell_carcinoma
+155431	NCIH1623	ccle;public	lung	carcinoma	adenocarcinoma
+155433	NCIH1648	ccle	lung	carcinoma	adenocarcinoma
+155434	NCIH1650	ccle;public	lung	carcinoma	bronchioloalveolar_adenocarcinoma
+155435	NCIH1651	ccle;public	lung	carcinoma	adenocarcinoma
+155439	NCIH1693	ccle;public	lung	carcinoma	adenocarcinoma
+155440	NCIH1694	ccle;public	lung	carcinoma	small_cell_carcinoma
+155441	NCIH1703	ccle;public	lung	carcinoma	adenocarcinoma
+155445	NCIH1734	ccle;public	lung	carcinoma	adenocarcinoma
+155448	NCIH1781	ccle;public	lung	carcinoma	bronchioloalveolar_adenocarcinoma
+155450	NCIH1792	ccle;public	lung	carcinoma	adenocarcinoma
+155451	NCIH1793	ccle;public	lung	carcinoma	non_small_cell_carcinoma
+155454	NCIH1836	ccle	lung	carcinoma	small_cell_carcinoma
+155455	NCIH1838	ccle;public	lung	carcinoma	non_small_cell_carcinoma
+155456	NCIH1869	ccle;public	lung	carcinoma	squamous_cell_carcinoma
+155458	NCIH1876	ccle	lung	carcinoma	small_cell_carcinoma
+155463	NCIH1915	ccle;public	lung	carcinoma	large_cell_carcinoma
+155466	NCIH1930	ccle	lung	carcinoma	small_cell_carcinoma
+155467	NCIH1944	ccle;public	lung	carcinoma	non_small_cell_carcinoma
+155469	NCIH1963	ccle	lung	carcinoma	small_cell_carcinoma
+155476	NCIH2009	ccle;public	lung	carcinoma	adenocarcinoma
+155477	NCIH2023	ccle;public	lung	carcinoma	adenocarcinoma
+155479	NCIH2029	ccle;public	lung	carcinoma	small_cell_carcinoma
+155480	NCIH2030	ccle;public	lung	carcinoma	non_small_cell_carcinoma
+155481	NCIH2052	ccle;public	pleura	mesothelioma	
+155484	NCIH2066	ccle	lung	carcinoma	small_cell_carcinoma
+155485	NCIH2073	ccle;public	lung	carcinoma	adenocarcinoma
+155487	NCIH2081	ccle;public	lung	carcinoma	small_cell_carcinoma
+155488	NCIH2085	ccle;public	lung	carcinoma	adenocarcinoma
+155491	NCIH2106	ccle;public	lung	carcinoma	non_small_cell_carcinoma
+155493	NCIH2110	ccle;public	lung	carcinoma	non_small_cell_carcinoma
+155494	NCIH2126	ccle;public	lung	carcinoma	adenocarcinoma
+155496	NCIH2141	ccle;public	lung	carcinoma	small_cell_carcinoma
+155498	NCIH2170	ccle;public	lung	carcinoma	squamous_cell_carcinoma
+155499	NCIH2171	ccle;public	lung	carcinoma	small_cell_carcinoma
+155500	NCIH2172	ccle;public	lung	carcinoma	non_small_cell_carcinoma
+155502	NCIH2196	ccle;public	lung	carcinoma	small_cell_carcinoma
+155504	NCIH2227	ccle	lung	carcinoma	small_cell_carcinoma
+155505	NCIH2228	ccle;public	lung	carcinoma	adenocarcinoma
+155510	NCIH2286	ccle;public	lung	carcinoma	small_cell_carcinoma
+155511	NCIH2291	ccle;public	lung	carcinoma	adenocarcinoma
+155513	NCIH2342	ccle;public	lung	carcinoma	adenocarcinoma
+155514	NCIH2347	ccle	lung	carcinoma	adenocarcinoma
+155518	NCIH2405	ccle;public	lung	carcinoma	adenocarcinoma
+155519	NCIH2444	ccle;public	lung	carcinoma	non_small_cell_carcinoma
+155520	NCIH2452	ccle;public	pleura	mesothelioma	
+155524	NCIH3255	ccle	lung	carcinoma	adenocarcinoma
+155803	BT232	collaborator			
+155804	BT245	collaborator			
+155805	BT271	collaborator			
+155806	BT286	collaborator			
+155807	BT320	collaborator			
+155808	BT328	collaborator			
+155809	BT330	collaborator			
+155810	BT333	collaborator			
+155811	BT340	collaborator			
+155812	BT359	collaborator			
+155813	BT416	collaborator			
+155814	BT422	collaborator			
+155815	BT428	collaborator			
+155816	BT440	collaborator			
+155817	BT444	collaborator			
+155818	BT482	collaborator			
+155819	BT504	collaborator			
+155820	BT12	collaborator			
+155821	BT16	collaborator			
+155822	TM87-16	collaborator			
+155823	2004	collaborator			
+155824	TTC709	collaborator			
+155825	ASKA	collaborator			
+155826	YAMATO	collaborator			
+155827	SYO1	collaborator			
+155841	U-CH1	collaborator			
