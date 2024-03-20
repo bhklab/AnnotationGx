@@ -168,7 +168,7 @@ parse_cellosaurus_text <- function(resp, name, parsed, keep_duplicates = FALSE){
 ## and converts the resulting list into a data table.
 .processEntry <- function(x, requiredKeys, nestedKeys, optionalKeys) {
 
-  x <- AcidBase::strSplit(x, split = "   ")
+  x <- strSplit(x, split = "   ")
 
   x <- split(x[, 2L], f = x[, 1L])
 
@@ -217,4 +217,95 @@ parse_cellosaurus_text <- function(resp, name, parsed, keep_duplicates = FALSE){
       
   data.table::setnames(responses_dt, old = old_names, new = new_names, skip_absent = TRUE)
   responses_dt
+}
+
+
+
+strSplit <- function(x, split, fixed = TRUE, n = Inf) {
+
+    if (is.finite(n)) {
+        x <- .strSplitFinite(x = x, split = split, n = n, fixed = fixed)
+    } else {
+        x <- .strSplitInfinite(x = x, split = split, fixed = fixed)
+    }
+    n2 <- lengths(x)
+    assert(
+        length(unique(n2)) == 1L,
+        msg = sprintf(
+            "Split mismatch detected: %s.",
+            toString(which(n2 != n2[[1L]]))
+        )
+    )
+    n2 <- n2[[1L]]
+    x <- unlist(x = x, recursive = FALSE, use.names = FALSE)
+    x <- matrix(data = x, ncol = n2, byrow = TRUE)
+    x
+}
+
+
+
+
+#' Split a string into a finite number of capture groups
+#'
+.strSplitFinite <- function(x, split, n, fixed) {
+
+    checkmate::assertString(split)
+    checkmate::assertFlag(fixed)
+    checkmate::assert_integerish(n, lower = 2L, upper = Inf)
+    checkmate::assert_character(x)
+
+    m <- gregexpr(pattern = split, text = x, fixed = fixed)
+    ln <- lengths(m)
+    assert(
+        all((ln + 1L) >= n),
+        msg = sprintf(
+            "Not enough to split: %s.",
+            toString(which((ln + 1L) < n))
+        )
+    )
+    Map(
+        x = x,
+        m = m,
+        n = n,
+        f = function(x, m, n) {
+            ml <- attr(m, "match.length")
+            nl <- seq_len(n)
+            m <- m[nl]
+            ml <- ml[nl]
+            out <- substr(x = x, start = 1L, stop = m[[1L]] - 1L)
+            i <- 1L
+            while (i < (length(m) - 1L)) {
+                out <- append(
+                    x = out,
+                    values = substr(
+                        x = x,
+                        start = m[[i]] + ml[[i]],
+                        stop = m[[i + 1L]] - 1L
+                    )
+                )
+                i <- i + 1L
+            }
+            out <- append(
+                x = out,
+                values = substr(
+                    x = x,
+                    start = m[[n - 1L]] + ml[[n - 1L]],
+                    stop = nchar(x)
+                )
+            )
+            out
+        },
+        USE.NAMES = FALSE
+    )
+}
+
+
+
+
+#' Split a string into an finite number of capture groups
+.strSplitInfinite <- function(x, split, fixed) {
+    checkmate::assertCharacter(x)
+    checkmate::assertString(split)
+    checkmate::assertFlag(fixed)
+    strsplit(x = x, split = split, fixed = fixed)
 }

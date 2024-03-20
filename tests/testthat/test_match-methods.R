@@ -138,7 +138,7 @@ test_that("matchNested,data.table returns the correct index for a character valu
 
   idx <- matchNested(x, table, keep_duplicates = FALSE)
 
-  setkeyv(table, "col1")
+  data.table::setkeyv(table, "col1")
   matched <- table[idx]  
 
   # make sure that x is in one of the columns

@@ -64,8 +64,11 @@ will return the standard identifier `id` and the Cellosaurus accession ID `ac`. 
 function also returns two additional columns `query` and `query:<from>` which
 can be used to identify the original query and the original identifier type if needed. 
 ``` {r map heLa each}
-(result <- mapCell2Accession("hela", keep_duplicates = T, raw = F))
+(result <- mapCell2Accession("hela", keep_duplicates = T, raw = T))
 result$hela -> resp
+
+(result <- mapCell2Accession("hela", keep_duplicates = T, raw = F))
+
 ```
 
 
