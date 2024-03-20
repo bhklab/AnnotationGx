@@ -11,6 +11,24 @@
 }
 
 
+#' Info message function
+#' 
+#' This function is used to print messages when the verbose option is enabled.
+#' 
+#' @param ... `character` The messages to print
+#' 
+#' @keywords internal
+#' @noRd
+#' @export
+#' @examples
+#' \dontrun{
+#' .info("This is an info message")
+#' }
+.info <- function(...) {
+  msg <- .log_fmt("INFO", ...)
+  message(crayon::green(msg))
+}
+
 #' Custom message function for verbose output
 #'
 #' This function is used to print messages when the verbose option is enabled.

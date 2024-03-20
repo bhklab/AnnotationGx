@@ -7,9 +7,10 @@
 mapCell2Accession(
   ids,
   numResults = 1000,
-  from = "id",
-  to = c("id", "ac"),
+  from = "idsy",
+  to = fields,
   prioritizeParent = FALSE,
+  sort = "ac",
   query_only = FALSE,
   raw = FALSE,
   BPPARAM = BiocParallel::SerialParam(),
@@ -21,7 +22,7 @@ mapCell2Accession(
 
 \item{numResults}{The number of results to return for each query. Default is 1.}
 
-\item{from}{The field to query from. Default is "id".}
+\item{from}{The field to query from. Default is "idsy".}
 
 \item{to}{The field to query to. Default is both "id" and "ac".}
 
@@ -33,6 +34,8 @@ An example of this is trying to map using id "BT474" which returns "CVCL_YX79" w
 to "BT474 A3" whereas "BT-474" exists in the database as "CVCL_0179". If prioritizeParent is TRUE,
 the function will prioritize "CVCL_0179" over "CVCL_YX79" since "BT-474" is the parent cell line of
 "BT474 A3".}
+
+\item{sort}{The order in which to return the results. Default is NULL.}
 
 \item{query_only}{If TRUE, returns the query URL instead of the results. Default is FALSE.}
 

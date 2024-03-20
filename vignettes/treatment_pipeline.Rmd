@@ -49,9 +49,7 @@ BPPARAM = BiocParallel::MulticoreParam(progressbar=T)
 head(GDSC_sampleMetadata)
 
 mapCell2Accession(
-  GDSC_sampleMetadata$GDSC.Sample_Name[1:10],
-  numResults = 1, 
-  prioritizeParent = TRUE,
+  GDSC_sampleMetadata$GDSC.Sample_Name[1:300],
   BPPARAM = BPPARAM
 )
 ```
