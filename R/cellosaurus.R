@@ -170,7 +170,7 @@ parse_cellosaurus_text <- function(resp, name, parsed, keep_duplicates = FALSE){
 ## and converts the resulting list into a data table.
 .processEntry <- function(x, requiredKeys, nestedKeys, optionalKeys) {
 
-  x <- AcidBase::strSplit(x, split = "   ")
+  x <- strSplit(x, split = "   ")
 
   x <- split(x[, 2L], f = x[, 1L])
 

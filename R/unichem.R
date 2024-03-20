@@ -52,7 +52,7 @@ getUnichemSources <- function(all_columns = FALSE) {
         "NameLabel", "NameLong", "SourceID", "Details", "ReleaseDate",
         "ReleaseNumber", "URL", "UpdateComments")
     
-    setnames(sources_dt, old_names, new_names)
+    data.table::setnames(sources_dt, old_names, new_names)
 
     new_order <- c(
         "Name", "NameLabel", "NameLong", "SourceID", "CompoundCount", 

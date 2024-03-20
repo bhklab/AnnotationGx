@@ -25,7 +25,6 @@ Imports:
     options,
     BiocParallel,
     readr,
-    pipette,
     tibble,
     xml2
 Suggests: 
@@ -37,7 +36,6 @@ Suggests:
     BiocStyle,
     RefManageR,
     sessioninfo
-Additional_repositories: https://r.acidgenomics.com
 Config/testthat/edition: 3
 Config/testthat/parallel: true
 Config/testthat/start-first: watcher, parallel*
