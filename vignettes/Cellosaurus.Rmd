@@ -64,7 +64,7 @@ will return the standard identifier `id` and the Cellosaurus accession ID `ac`. 
 function also returns two additional columns `query` and `query:<from>` which
 can be used to identify the original query and the original identifier type if needed. 
 ``` {r map heLa each}
-da(); (result <- mapCell2Accession("hela", keep_duplicates = T))
+(result <- mapCell2Accession("hela", keep_duplicates = T))
 ```
 
 
@@ -79,60 +79,5 @@ Another example using the BT474 cell line.
 mapCell2Accession("BT474")
 
 mapCell2Accession(c("A549", "OOPS", "BT474"))
-
-```
-
-``` {r julia_mapping}
-
-mapping <- c("BT20" = "BT-20", "BT474" = "BT-474", "BT549" = "BT-549", "CAL120" = "CAL-120", "CAL148" = "CAL-148", 
-             "CAL51" = "CAL-51", "CAMA1" = "CAMA-1", "EFM19" = "EFM-19", "HDQP1" = "HDQ-P1", "HS578T" = "Hs 578T",
-             "JIMT1" = "JIMT-1", "KPL1" = "KPL-1", "LY2" = "MCF-7/LY2", "MCF7" = "MCF-7", "MDAMB157" = "MDA-MB-157",
-             "MDAMB175VII" = "MDA-MB-175-VII", "MDAMB231" = "MDA-MB-231", "MDAMB361" = "MDA-MB-361", 
-             "MDAMB436" = "MDA-MB-436", "MDAMB468" = "MDA-MB-468", "MX1" = "MX-1", "SKBR3" = "SK-BR-3", 
-             "SKBR5" = "SK-BR-5", "SKBR7" = "SK-BR-7", "SUM149" = "SUM149PT", "SUM159" = "SUM159PT", "T47D" = "T-47D",
-             "UACC812" = "UACC-812", "ZR751" = "ZR-75-1")
-
-result <- mapCell2Accession(names(mapping))
-
-setkeyv(result, "query")
-for(i in 1:length(mapping)){
-  if(mapping[[i]] !=  result[names(mapping)[i], "cellLineName"]){
-    print(sprintf("mapping failed. got: %s, expected: %s", result[names(mapping)[i], cellLineName], mapping[[i]]))
-  }
-}
-
-```
-
-
-``` {r testannato}
-cell_lines_all <- data.table::fread("/home/bioinf/bhklab/jermiah/Bioconductor/AnnotationGx/inst/extdata/cell_annotation_all.csv")
-setkeyv(test_dt, "unique.cellid")
-test_dt <- cell_lines_all[, .(unique.cellid, Cellosaurus.Accession.id, CCLE.cellid)]
-
-range <- 1:nrow(test_dt)
-result <- test_dt[range, mapCell2Accession(unique.cellid)]
-
-#merge  result["query"] on test_result["unique.cellid"] 
-test_dt <- merge(test_dt, result, by.x = "unique.cellid", by.y = "query", all.x = T)
-
-
-test_dt[!is.na(accession) & !is.na(Cellosaurus.Accession.id) & Cellosaurus.Accession.id != "" & Cellosaurus.Accession.id != accession]
-
-test_dt[
-  range & !is.na(Cellosaurus.Accession.id) & Cellosaurus.Accession.id != "" & Cellosaurus.Accession.id != accession, 
-  .(unique.cellid, Cellosaurus.Accession.id, accession, cellLineName)
-  ]
-
-```
-
-
-
-```  {r debug}
-da()
-mapCell2Accession("A-704", raw = F)
-mapCell2Accession("F5", raw = F, parsed = T, keep_duplicates = T) 
-name <- "F5"
-responses_dt[["cellLineName"]] %like% name
-responses_dt[matchNested("F5", responses_dt), ]
 
 ```

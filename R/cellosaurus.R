@@ -61,7 +61,7 @@ mapCell2Accession <- function(
     resp <- responses[[name]]
     response_dt <- switch(
       httr2::resp_content_type(resp),
-      "text/tab-separated-values" = parse_cellosaurus_tsv(resp, queries, name),
+      "text/tab-separated-values" = parse_cellosaurus_tsv(resp, name),
       "text/plain" = parse_cellosaurus_text(resp, name, parsed, keep_duplicates),
       .err("Response content type is not 'text/tab-separated-values' or 'text/plain'")
     )

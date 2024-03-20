@@ -8,12 +8,11 @@ mapCell2Accession(
   ids,
   numResults = 1000,
   from = "idsy",
-  to = fields,
-  prioritizeParent = FALSE,
   sort = "ac",
+  keep_duplicates = FALSE,
   query_only = FALSE,
   raw = FALSE,
-  BPPARAM = BiocParallel::SerialParam(),
+  parsed = FALSE,
   ...
 )
 }
@@ -24,26 +23,17 @@ mapCell2Accession(
 
 \item{from}{The field to query from. Default is "idsy".}
 
-\item{to}{The field to query to. Default is both "id" and "ac".}
-
-\item{prioritizeParent}{If TRUE, prioritizes the parent cell line when multiple matches are found. Default is FALSE.
-When prioritizeParent is TRUE, if multiple matches are found for a cell line name, the function
-will prioritize the parent cell lines over other matches. This can be useful when dealing with
-cell line hierarchies where the parent cell line represents a broader category.
-An example of this is trying to map using id "BT474" which returns "CVCL_YX79" which corresponds
-to "BT474 A3" whereas "BT-474" exists in the database as "CVCL_0179". If prioritizeParent is TRUE,
-the function will prioritize "CVCL_0179" over "CVCL_YX79" since "BT-474" is the parent cell line of
-"BT474 A3".}
-
 \item{sort}{The order in which to return the results. Default is NULL.}
 
 \item{query_only}{If TRUE, returns the query URL instead of the results. Default is FALSE.}
 
 \item{raw}{If TRUE, returns the raw response instead of a data table. Default is FALSE.}
 
-\item{BPPARAM}{A BiocParallel parameter object controlling the parallelization.}
-
 \item{...}{Additional arguments to pass to the request.}
+
+\item{to}{The field to query to. Default is both "id" and "ac".}
+
+\item{BPPARAM}{A BiocParallel parameter object controlling the parallelization.}
 }
 \value{
 Depending on parameters, either a:

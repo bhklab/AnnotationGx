@@ -25,7 +25,7 @@ Imports:
     options,
     BiocParallel,
     readr,
-    pipette (>= 0.15.2),
+    pipette,
     tibble,
     xml2
 Suggests: 
