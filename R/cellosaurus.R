@@ -61,7 +61,7 @@ mapCell2Accession <- function(
     resp <- responses[[name]]
     response_dt <- switch(
       httr2::resp_content_type(resp),
-      "text/tab-separated-values" = parse_cellosaurus_tsv(resp, name),
+      "text/tab-separated-values" = parse_cellosaurus_tsv(resp, queries, name),
       "text/plain" = parse_cellosaurus_text(resp, name, parsed, keep_duplicates),
       .err("Response content type is not 'text/tab-separated-values' or 'text/plain'")
     )
@@ -114,24 +114,22 @@ parse_cellosaurus_text <- function(resp, name, parsed, keep_duplicates = FALSE){
 
   responses_dt <- .formatSynonyms(responses_dt)
   # if(parsed) return(responses_dt)
-
-  data.table::setkeyv(responses_dt, "cellLineName")
-
-  # If theres an EXACT match return it
-  if(nrow(responses_dt[name]) > 0L){
-    result <- responses_dt[name]
+  query <- name
+  name <- cleanCharacterStrings(name)
+  # If theres an EXACT match 
+  if(any(responses_dt$cellLineName == query)){
+    result <- responses_dt[query]
   } else{
     result <- responses_dt[matchNested(name, responses_dt, keep_duplicates = keep_duplicates)]
   }
 
-
-  result$query <- name
+  result$query <-query 
   result <- result[, c("cellLineName", "accession", "query")]
 
   if (nrow(result) == 0L) {
-    .warn(paste0("No results found for ", name))
+    .warn(paste0("No results found for ", query))
     result <- data.table::data.table()
-    result$query <- name
+    result$query <-query 
     return(result)
   }else{
     return(result)
@@ -170,7 +168,7 @@ parse_cellosaurus_text <- function(resp, name, parsed, keep_duplicates = FALSE){
 ## and converts the resulting list into a data table.
 .processEntry <- function(x, requiredKeys, nestedKeys, optionalKeys) {
 
-  x <- strSplit(x, split = "   ")
+  x <- AcidBase::strSplit(x, split = "   ")
 
   x <- split(x[, 2L], f = x[, 1L])
 
