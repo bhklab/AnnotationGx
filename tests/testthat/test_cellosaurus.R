@@ -74,3 +74,60 @@ test_that("mapCell DOR 13 works", {
   expect_equal(result3$cellLineName, c(NA_character_, "HT"))
   expect_equal(result3$query, c("DOR 13", "HT"))
 })
+
+
+test_that("query only paramater works",{
+  result1 <- mapCell2Accession("DOR 13", query_only = TRUE)
+  expected <- "https://api.cellosaurus.org/search/cell-line?q=idsy%3ADOR%2013&sort=ac%20asc&fields=ac%2Cid%2Csy%2Cmisspelling%2Cdr%2Ccc&format=txt&rows=10000"
+  expect_equal(result1[[1]], expected)
+  expect_equal(names(result1), "DOR 13")
+})
+
+test_that("raw param works",{
+
+  result1 <- mapCell2Accession("HT", raw = TRUE)
+  expect_class(result1[[1]], "httr2_response")
+  expect_equal(names(result1), "HT")
+
+  resp <- result1$HT
+  lines <- httr2::resp_body_string(resp)  |>
+            strsplit("\n") |> 
+            unlist()
+
+  checkmate::expect_character(lines)
+  expect_true(length(lines) > 2000 & 10000 > length(lines) )
+
+
+  parsed_lines <- 
+    Map(
+      f = function(lines, i, j) {
+          lines[i:(j - 1L)]
+      },
+      i = grep(pattern = "^ID\\s+", x = lines, value = FALSE),
+      j = grep(pattern = "^//$", x = lines, value = FALSE),
+      MoreArgs = list("lines" = lines),
+      USE.NAMES = FALSE
+    )
+  x <- parsed_lines[[1]]
+  result <- AnnotationGx:::.processEntry(x)
+
+  expect_data_table(result, min.rows = 1, min.cols = 10)
+  expect_true(
+    all(
+      c("cellLineName", "accession", "comments", "synonyms") %in% colnames(result)
+      )
+    )
+
+})
+
+
+test_that("parsed works", {
+  result1 <- mapCell2Accession("hela", parsed = TRUE)
+  expect_data_table(result1, min.rows = 1, min.cols = 10)
+  expect_true(
+    all(
+      c("cellLineName", "accession", "query") %in% colnames(result1)
+      )
+    )
+
+})

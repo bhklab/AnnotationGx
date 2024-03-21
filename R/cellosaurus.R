@@ -130,10 +130,7 @@ parse_cellosaurus_text <- function(resp, name, parsed, keep_duplicates = FALSE){
   result <- result[, c("cellLineName", "accession", "query")]
 
   return(result)
-  parsed_lines[[2]] -> x
-  parsed_lines[[80]] -> x
-  debug(.processEntry)
-  .processEntry(x)
+
 }
 
 

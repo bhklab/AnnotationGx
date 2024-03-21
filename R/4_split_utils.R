@@ -132,7 +132,7 @@ strSplit <- function(x, split, fixed = TRUE, n = Inf) {
 #'
 #' @examples
 #' x <- c("apple,banana,orange", "cat,dog,rabbit")
-#' strSplitInfinite(x, ",", fixed = TRUE)
+#' .strSplitInfinite(x, ",", fixed = TRUE)
 #'
 #' @noRd
 #' @keywords internal

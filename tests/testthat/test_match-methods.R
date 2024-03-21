@@ -177,3 +177,26 @@ test_that("matchNested,data.table returns NULL for an empty data.table", {
   expect_error(matchNested(x, table))
 })
 
+test_that("matchNested returns the correct matches for character and data.frame inputs", {
+  # Test case 1: Matching single character with data.frame
+  x1 <- "apple"
+  table1 <- data.frame(fruit = c("apple", "banana", "orange"), color = c("red", "yellow", "orange"))
+  result1 <- matchNested(x1, table1)
+  expect_equal(result1, 1)
+
+  # Test case 2: Matching multiple characters with data.frame
+  x2 <- c("apple", "banana")
+  table2 <- data.frame(fruit = c("apple", "banana", "orange"), color = c("red", "yellow", "orange"))
+  expect_warning(result2 <-matchNested(x2, table2))
+
+  expect_equal(result2,  1)
+
+
+  x3 <- c("apple", "orange")
+  expect_warning(result3 <- matchNested(x3, table2))
+  expect_equal(result3,  1)
+
+  x4 <- c("red", "yellow")
+  expect_warning(result4 <- matchNested(x4, table2))
+  expect_equal(result4,  2)
+})
