@@ -13,6 +13,9 @@
 #' The values to be matched against.
 #' Applies across rows for `DataFrame` method.
 #' 
+#' @param ...
+#' Additional arguments to be passed to the method.
+#' 
 #' @param keep_duplicates
 #' A logical value indicating whether to keep duplicates.
 #' 
@@ -41,7 +44,7 @@ setGeneric(
 }
 
 `matchNested,data.table` <- 
-    function(x, table, ...){
+    function(x, table, keep_duplicates){
         checkmate::assert_data_table(table, min.rows = 1)
 
         dt <- apply(
@@ -61,7 +64,7 @@ setGeneric(
 
 
 `matchNested,data.frame`  <-
-    function(x, table, ...){
+    function(x, table, keep_duplicates){
         checkmate::assert_data_frame(table, min.rows = 1)
 
         dt <- apply(
@@ -176,6 +179,6 @@ setMethod(
 #' @export
 unlistNested <- function(element){
     unlist(element, recursive = TRUE, use.names = FALSE) |>
-        na.omit() |>
+        stats::na.omit() |>
         unique()
 }

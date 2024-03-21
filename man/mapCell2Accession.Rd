@@ -2,7 +2,7 @@
 % Please edit documentation in R/cellosaurus.R
 \name{mapCell2Accession}
 \alias{mapCell2Accession}
-\title{Maps cell line names to accession numbers}
+\title{Map Cell Line IDs to Accession Numbers}
 \usage{
 mapCell2Accession(
   ids,
@@ -17,35 +17,31 @@ mapCell2Accession(
 )
 }
 \arguments{
-\item{ids}{A character vector of cell line names.}
+\item{ids}{A character vector of cell line IDs.}
 
-\item{numResults}{The number of results to return for each query. Default is 1.}
+\item{numResults}{The maximum number of results to return for each query. Default is 1000.}
 
-\item{from}{The field to query from. Default is "idsy".}
+\item{from}{The type of input IDs. Possible values are "idsy" (default), "ac", "id", "sy", and "misspelling".}
 
-\item{sort}{The order in which to return the results. Default is NULL.}
+\item{sort}{The sorting order of the results. Possible values are "ac" (default), "id", "sy", and "misspelling".}
 
-\item{query_only}{If TRUE, returns the query URL instead of the results. Default is FALSE.}
+\item{keep_duplicates}{Logical indicating whether to keep duplicate results. Default is FALSE.}
 
-\item{raw}{If TRUE, returns the raw response instead of a data table. Default is FALSE.}
+\item{query_only}{Logical indicating whether to return only the query URLs. Default is FALSE.}
 
-\item{...}{Additional arguments to pass to the request.}
+\item{raw}{Logical indicating whether to return the raw HTTP responses. Default is FALSE.}
 
-\item{to}{The field to query to. Default is both "id" and "ac".}
+\item{parsed}{Logical indicating whether to parse the response text. Default is FALSE.}
 
-\item{BPPARAM}{A BiocParallel parameter object controlling the parallelization.}
+\item{...}{Additional arguments to be passed to the underlying functions.}
 }
 \value{
-Depending on parameters, either a:
-\code{data.table} with the "id", "ac", "query", and "query:id" columns.
-\code{list} of query URLs if \code{query_only} is TRUE.
-\code{list} of raw responses if \code{raw} is TRUE.
+A data.table containing the mapped cell line IDs and accession numbers.
 }
 \description{
-This function takes a vector of cell line names and maps them to accession numbers
-using the Cellosaurus database. It performs a parallel request to retrieve the
-mapping information and returns a data table with the results.
+This function maps cell line IDs to accession numbers using the Cellosaurus database.
 }
 \examples{
-mapCell2Accession(c("A549", "HeLa"))
+mapCell2Accession(ids = c("A549", "MCF7"))
+
 }

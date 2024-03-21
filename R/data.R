@@ -15,7 +15,17 @@
 #' data(GDSC_sampleMetadata)
 #' head(GDSC_sampleMetadata)
 #' @source https://www.cancerrxgene.org/
-#' 
-#' @noRd
 "GDSC_sampleMetadata"
 
+
+#' CCLE_sampleMetadata is some preprocessed sample metadata from the CCLE dataset
+#' 
+"CCLE_sampleMetadata"
+
+#' CTRP_sampleMetadata is some preprocessed sample metadata from the CTRP dataset
+#' 
+"CTRP_sampleMetadata"
+
+#' gCSI_sampleMetadata is some preprocessed sample metadata from the NCI60 dataset
+#' 
+"gCSI_sampleMetadata"

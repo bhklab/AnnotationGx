@@ -29,10 +29,34 @@
     stop("Length of 'from' must be 1 or the same length as 'ids'")
   }
   lapply(1:length(ids), function(i) {
-    paste(from[i], ids[i])
+    paste(from[i], ids[i], sep = ":")
   })
 }
 
+
+#' Build a Cellosaurus API request
+#'
+#' This function builds a Cellosaurus API request based on the provided parameters.
+#'
+#' @param query A character vector specifying the query terms for the Cellosaurus API.
+#' @param to A character vector specifying the fields to include in the API response.
+#' @param numResults An integer specifying the maximum number of results to return.
+#' @param apiResource A character string specifying the API resource to query.
+#' @param output A character string specifying the desired output format of the API response.
+#' @param sort A character string specifying the field to sort the results by.
+#' @param query_only A logical value indicating whether to return only the constructed URL without making the request.
+#' @param fuzzy A logical value indicating whether to perform a fuzzy search.
+#' @param ... Additional arguments to be passed to the function.
+#'
+#' @return A character string representing the constructed URL for the Cellosaurus API request.
+#'
+#' @examples
+#' .build_cellosaurus_request(query = c("id:HeLa"), to = c("id", "ac", "hi", "ca", "sx", "ag", "di", "derived-from-site", "misspelling"),
+#'                           numResults = 1, apiResource = "search/cell-line", output = "TSV", sort = NULL,
+#'                           query_only = FALSE, fuzzy = FALSE)
+#' 
+#' @keywords internal
+#' @noRd
 .build_cellosaurus_request <- function(
     query = c("id:HeLa"), to = c("id", "ac", "hi", "ca", "sx", "ag", "di", "derived-from-site", "misspelling"),
     numResults = 1, apiResource = "search/cell-line", output = "TSV", sort = NULL,
@@ -101,9 +125,6 @@
   .parse_resp_json(resp)
 }
 
-
-
-
 #' Internal function to return the list of fields available in Cellosaurus
 #'
 #' @keywords internal
@@ -115,7 +136,6 @@
     "KARY", "KO"
   )
 }
-
 
 #' Internal function to return the list of external resources available in Cellosaurus
 #' @return A character vector of external resources available in Cellosaurus

@@ -1,26 +1,24 @@
-#' Maps cell line names to accession numbers
+fields <- fields <- c("AC", "CA", "DT", "ID", "DI", "DR", "HI", "OI", "OX", "AG", "SX", "SY") |> tolower()
+
+#' Map Cell Line IDs to Accession Numbers
 #'
-#' This function takes a vector of cell line names and maps them to accession numbers
-#' using the Cellosaurus database. It performs a parallel request to retrieve the
-#' mapping information and returns a data table with the results.
+#' This function maps cell line IDs to accession numbers using the Cellosaurus database.
 #'
-#' @param ids A character vector of cell line names.
-#' @param numResults The number of results to return for each query. Default is 1.
-#' @param from The field to query from. Default is "idsy".
-#' @param to The field to query to. Default is both "id" and "ac".
-#' @param sort The order in which to return the results. Default is NULL.
-#' @param query_only If TRUE, returns the query URL instead of the results. Default is FALSE.
-#' @param raw If TRUE, returns the raw response instead of a data table. Default is FALSE.
-#' @param BPPARAM A BiocParallel parameter object controlling the parallelization.
-#' @param ... Additional arguments to pass to the request.
+#' @param ids A character vector of cell line IDs.
+#' @param numResults The maximum number of results to return for each query. Default is 1000.
+#' @param from The type of input IDs. Possible values are "idsy" (default), "ac", "id", "sy", and "misspelling".
+#' @param sort The sorting order of the results. Possible values are "ac" (default), "id", "sy", and "misspelling".
+#' @param keep_duplicates Logical indicating whether to keep duplicate results. Default is FALSE.
+#' @param query_only Logical indicating whether to return only the query URLs. Default is FALSE.
+#' @param raw Logical indicating whether to return the raw HTTP responses. Default is FALSE.
+#' @param parsed Logical indicating whether to parse the response text. Default is FALSE.
+#' @param ... Additional arguments to be passed to the underlying functions.
 #'
-#' @return Depending on parameters, either a:
-#' `data.table` with the "id", "ac", "query", and "query:id" columns.
-#' `list` of query URLs if `query_only` is TRUE.
-#' `list` of raw responses if `raw` is TRUE.
+#' @return A data.table containing the mapped cell line IDs and accession numbers.
 #'
 #' @examples
-#' mapCell2Accession(c("A549", "HeLa"))
+#' mapCell2Accession(ids = c("A549", "MCF7"))
+#'
 #' @export
 mapCell2Accession <- function(
     ids, numResults = 1000, from = "idsy", sort = "ac", keep_duplicates = FALSE, 
@@ -61,7 +59,7 @@ mapCell2Accession <- function(
     resp <- responses[[name]]
     response_dt <- switch(
       httr2::resp_content_type(resp),
-      "text/tab-separated-values" = parse_cellosaurus_tsv(resp, queries, name),
+      "text/tab-separated-values" = parse_cellosaurus_tsv(resp, name),
       "text/plain" = parse_cellosaurus_text(resp, name, parsed, keep_duplicates),
       .err("Response content type is not 'text/tab-separated-values' or 'text/plain'")
     )
@@ -72,12 +70,18 @@ mapCell2Accession <- function(
 
 }
 
-fields <- fields <- c("AC", "CA", "DT", "ID", "DI", "DR", "HI", "OI", "OX", "AG", "SX", "SY") |> tolower()
-
+#' parse responses
+#' 
+#' @noRd 
+#' @keywords internal
 parse_cellosaurus_tsv <- function(resp, name){
   .err("DEPRECATED: TSV parsing is not supported. Please use the txt parser.")
 }
 
+#' parse responses
+#' 
+#' @noRd 
+#' @keywords internal
 parse_cellosaurus_text <- function(resp, name, parsed, keep_duplicates = FALSE){
   lines <- httr2::resp_body_string(resp)  |>
             strsplit("\n") |> 
@@ -100,24 +104,18 @@ parse_cellosaurus_text <- function(resp, name, parsed, keep_duplicates = FALSE){
     result$query <- name
     return(result)
   }
-  
-  requiredKeys <- c("AC", "CA", "DT", "ID")
-  nestedKeys <- c("CC", "DI", "DR", "HI", "OI", "OX", "RX", "ST", "WW")
-  optionalKeys <- c("AG", "SX", "SY") #"AS",
   responses_dt <- parallel::mclapply(
       X = x,
-      FUN = .processEntry,
-      requiredKeys = requiredKeys,
-      nestedKeys = nestedKeys,
-      optionalKeys = optionalKeys
+      FUN = .processEntry
   ) |> data.table::rbindlist(fill = TRUE)
 
   responses_dt <- .formatSynonyms(responses_dt)
-  # if(parsed) return(responses_dt)
+  if(parsed) return(responses_dt)
   query <- name
   name <- cleanCharacterStrings(name)
   # If theres an EXACT match 
   if(any(responses_dt$cellLineName == query)){
+    data.table::setkeyv(responses_dt, "cellLineName")
     result <- responses_dt[query]
   } else{
     result <- responses_dt[matchNested(name, responses_dt, keep_duplicates = keep_duplicates)]
@@ -166,8 +164,12 @@ parse_cellosaurus_text <- function(resp, name, parsed, keep_duplicates = FALSE){
 ## It splits the input string, organizes the data into a nested list,
 ## handles optional keys, removes discontinued identifiers from the DR field,
 ## and converts the resulting list into a data table.
-.processEntry <- function(x, requiredKeys, nestedKeys, optionalKeys) {
-
+.processEntry <- function(
+  x, 
+  requiredKeys = c("AC", "CA", "DT", "ID"),
+  nestedKeys = c("CC", "DI", "DR", "HI", "OI", "OX", "RX", "ST", "WW"),
+  optionalKeys = c("AG", "SX", "SY")
+) {
   x <- strSplit(x, split = "   ")
 
   x <- split(x[, 2L], f = x[, 1L])
@@ -220,92 +222,3 @@ parse_cellosaurus_text <- function(resp, name, parsed, keep_duplicates = FALSE){
 }
 
 
-
-strSplit <- function(x, split, fixed = TRUE, n = Inf) {
-
-    if (is.finite(n)) {
-        x <- .strSplitFinite(x = x, split = split, n = n, fixed = fixed)
-    } else {
-        x <- .strSplitInfinite(x = x, split = split, fixed = fixed)
-    }
-    n2 <- lengths(x)
-    assert(
-        length(unique(n2)) == 1L,
-        msg = sprintf(
-            "Split mismatch detected: %s.",
-            toString(which(n2 != n2[[1L]]))
-        )
-    )
-    n2 <- n2[[1L]]
-    x <- unlist(x = x, recursive = FALSE, use.names = FALSE)
-    x <- matrix(data = x, ncol = n2, byrow = TRUE)
-    x
-}
-
-
-
-
-#' Split a string into a finite number of capture groups
-#'
-.strSplitFinite <- function(x, split, n, fixed) {
-
-    checkmate::assertString(split)
-    checkmate::assertFlag(fixed)
-    checkmate::assert_integerish(n, lower = 2L, upper = Inf)
-    checkmate::assert_character(x)
-
-    m <- gregexpr(pattern = split, text = x, fixed = fixed)
-    ln <- lengths(m)
-    assert(
-        all((ln + 1L) >= n),
-        msg = sprintf(
-            "Not enough to split: %s.",
-            toString(which((ln + 1L) < n))
-        )
-    )
-    Map(
-        x = x,
-        m = m,
-        n = n,
-        f = function(x, m, n) {
-            ml <- attr(m, "match.length")
-            nl <- seq_len(n)
-            m <- m[nl]
-            ml <- ml[nl]
-            out <- substr(x = x, start = 1L, stop = m[[1L]] - 1L)
-            i <- 1L
-            while (i < (length(m) - 1L)) {
-                out <- append(
-                    x = out,
-                    values = substr(
-                        x = x,
-                        start = m[[i]] + ml[[i]],
-                        stop = m[[i + 1L]] - 1L
-                    )
-                )
-                i <- i + 1L
-            }
-            out <- append(
-                x = out,
-                values = substr(
-                    x = x,
-                    start = m[[n - 1L]] + ml[[n - 1L]],
-                    stop = nchar(x)
-                )
-            )
-            out
-        },
-        USE.NAMES = FALSE
-    )
-}
-
-
-
-
-#' Split a string into an finite number of capture groups
-.strSplitInfinite <- function(x, split, fixed) {
-    checkmate::assertCharacter(x)
-    checkmate::assertString(split)
-    checkmate::assertFlag(fixed)
-    strsplit(x = x, split = split, fixed = fixed)
-}

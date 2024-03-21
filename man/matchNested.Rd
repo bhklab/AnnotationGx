@@ -15,19 +15,21 @@ matchNested(x, table, ..., keep_duplicates = FALSE)
 
 \S4method{matchNested}{numeric,list}(x, table, keep_duplicates)
 
-\S4method{matchNested}{character,data.table}(x, table, ..., keep_duplicates = FALSE)
+\S4method{matchNested}{character,data.table}(x, table, keep_duplicates)
 
-\S4method{matchNested}{numeric,data.table}(x, table, ..., keep_duplicates = FALSE)
+\S4method{matchNested}{numeric,data.table}(x, table, keep_duplicates)
 
-\S4method{matchNested}{character,data.frame}(x, table, ..., keep_duplicates = FALSE)
+\S4method{matchNested}{character,data.frame}(x, table, keep_duplicates)
 
-\S4method{matchNested}{character,data.frame}(x, table, ..., keep_duplicates = FALSE)
+\S4method{matchNested}{character,data.frame}(x, table, keep_duplicates)
 }
 \arguments{
 \item{x}{The values to be matched.}
 
 \item{table}{The values to be matched against.
 Applies across rows for \code{DataFrame} method.}
+
+\item{...}{Additional arguments to be passed to the method.}
 
 \item{keep_duplicates}{A logical value indicating whether to keep duplicates.}
 }
