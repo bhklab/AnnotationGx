@@ -43,19 +43,22 @@
     <loc>https://bhklab.github.io/AnnotationGx/reference/AnnotationGx-package.html</loc>
   </url>
   <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/annotatePubchemCompound.html</loc>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/CCLE_sampleMetadata.html</loc>
   </url>
   <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/cell_model_passports_models.html</loc>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/CTRP_sampleMetadata.html</loc>
+  </url>
+  <url>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/GDSC_sampleMetadata.html</loc>
+  </url>
+  <url>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/annotatePubchemCompound.html</loc>
   </url>
   <url>
     <loc>https://bhklab.github.io/AnnotationGx/reference/cleanCharacterStrings.html</loc>
   </url>
   <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/ctrp_treatmentIDs.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/gdsc_sampleMetadata.html</loc>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/gCSI_sampleMetadata.html</loc>
   </url>
   <url>
     <loc>https://bhklab.github.io/AnnotationGx/reference/getChemblFilterTypes.html</loc>
@@ -106,6 +109,9 @@
     <loc>https://bhklab.github.io/AnnotationGx/reference/mapCompound2CID.html</loc>
   </url>
   <url>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/matchNested.html</loc>
+  </url>
+  <url>
     <loc>https://bhklab.github.io/AnnotationGx/reference/options.html</loc>
   </url>
   <url>
@@ -116,5 +122,11 @@
   </url>
   <url>
     <loc>https://bhklab.github.io/AnnotationGx/reference/standardize_names.html</loc>
+  </url>
+  <url>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/strSplit.html</loc>
+  </url>
+  <url>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/unlistNested.html</loc>
   </url>
 </urlset>
