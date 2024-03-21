@@ -7,7 +7,10 @@
 #' @keywords internal
 #' @noRd
 .log_fmt <- function(level, ...) {
-  paste0(format(Sys.time(), "[%H:%M:%S]"), " [", level, "] ", ..., collapse = "\n")
+  time_str <- format(Sys.time(), "[%H:%M:%S]")
+  level_str <- paste0("[", level, "]")
+  msg <- paste0(..., sep = " ")
+  paste0(time_str, level_str, msg, sep = " ", collapse = "\n")
 }
 
 

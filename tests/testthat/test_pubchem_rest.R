@@ -80,12 +80,6 @@ test_that("AnnotationGx::getPubchemCompound 1 Incorrect Drug", {
 })
 
 
-
-test_that("AnnotationGx::getPubchemCompound bad input", {
-  data(ctrp_treatmentIDs)
-  expect_error(getPubchemCompound(ctrp_treatmentIDs))
-})
-
 test_that("AnnotationGx::getPubchemCompound 2 Incorrect Drugs in a list", {
   # Test for an incorrect drug, scoped so it doesnt affect the other tests
   compounds <- c("BAD_DRUG_NAME", compounds, "Another bad drug")

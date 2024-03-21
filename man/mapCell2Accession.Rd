@@ -6,10 +6,11 @@
 \usage{
 mapCell2Accession(
   ids,
-  numResults = 1000,
+  numResults = 10000,
   from = "idsy",
   sort = "ac",
   keep_duplicates = FALSE,
+  fuzzy = FALSE,
   query_only = FALSE,
   raw = FALSE,
   parsed = FALSE,
@@ -26,6 +27,8 @@ mapCell2Accession(
 \item{sort}{The sorting order of the results. Possible values are "ac" (default), "id", "sy", and "misspelling".}
 
 \item{keep_duplicates}{Logical indicating whether to keep duplicate results. Default is FALSE.}
+
+\item{fuzzy}{Logical indicating whether to perform a fuzzy search. Default is FALSE.}
 
 \item{query_only}{Logical indicating whether to return only the query URLs. Default is FALSE.}
 

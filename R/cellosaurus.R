@@ -9,6 +9,7 @@ fields <- fields <- c("AC", "CA", "DT", "ID", "DI", "DR", "HI", "OI", "OX", "AG"
 #' @param from The type of input IDs. Possible values are "idsy" (default), "ac", "id", "sy", and "misspelling".
 #' @param sort The sorting order of the results. Possible values are "ac" (default), "id", "sy", and "misspelling".
 #' @param keep_duplicates Logical indicating whether to keep duplicate results. Default is FALSE.
+#' @param fuzzy Logical indicating whether to perform a fuzzy search. Default is FALSE.
 #' @param query_only Logical indicating whether to return only the query URLs. Default is FALSE.
 #' @param raw Logical indicating whether to return the raw HTTP responses. Default is FALSE.
 #' @param parsed Logical indicating whether to parse the response text. Default is FALSE.
@@ -21,20 +22,26 @@ fields <- fields <- c("AC", "CA", "DT", "ID", "DI", "DR", "HI", "OI", "OX", "AG"
 #'
 #' @export
 mapCell2Accession <- function(
-    ids, numResults = 1000, from = "idsy", sort = "ac", keep_duplicates = FALSE, 
-    query_only = FALSE, raw = FALSE, parsed = FALSE, ...) {
+    ids, numResults = 10000, from = "idsy", sort = "ac", keep_duplicates = FALSE, 
+    fuzzy = FALSE, query_only = FALSE, raw = FALSE, parsed = FALSE, ...) {
+
+
+  funContext <- .funContext("mapCell2Accession")
 
   # Input validation and coercion
   if (!is.character(ids)) {
     .warn("Input names are not character, coercing to character")
     ids <- as.character(ids)
   }
-  to = c("ac", "id", "sy", "misspelling")
+  to = c("ac", "id", "sy", "misspelling", "dr", "cc")
 
   # create query list
-  queries <- .create_cellosaurus_queries(ids, from)
+  .info(funContext, "Creating Cellosaurus queries")
+
+  queries <- .create_cellosaurus_queries(ids, from, fuzzy)
   names(queries) <- ids
 
+  .info(funContext, "Building Cellosaurus requests")
   # build the list of requests
   requests <- parallel::mclapply(queries, function(query) {
     .build_cellosaurus_request(
@@ -43,6 +50,7 @@ mapCell2Accession <- function(
       numResults = numResults,
       sort = sort,
       output = "TXT",
+      fuzzy = fuzzy,
       ...
     )
   })
@@ -50,11 +58,13 @@ mapCell2Accession <- function(
   if (query_only) return(lapply(requests, function(req) req$url))
   
   # perform the requests
+  .info(funContext, "Performing Cellosaurus queries")
   responses <- .perform_request_parallel(requests)
   names(responses) <- as.character(ids) # in case its an numeric ID  like cosmic ids
   if (raw) return(responses)
 
   # parse the responses
+  .info(funContext, "Parsing Cellosaurus responses")
   responses_dt <- parallel::mclapply(ids, function(name) {
     resp <- responses[[name]]
     response_dt <- switch(
@@ -64,19 +74,15 @@ mapCell2Accession <- function(
       .err("Response content type is not 'text/tab-separated-values' or 'text/plain'")
     )
     response_dt
-    }) |> data.table::rbindlist(fill = TRUE)
+    }) 
+  
+
+  responses_dt <- data.table::rbindlist(responses_dt, fill = TRUE)
 
   return(responses_dt)
 
 }
 
-#' parse responses
-#' 
-#' @noRd 
-#' @keywords internal
-parse_cellosaurus_tsv <- function(resp, name){
-  .err("DEPRECATED: TSV parsing is not supported. Please use the txt parser.")
-}
 
 #' parse responses
 #' 
@@ -87,7 +93,7 @@ parse_cellosaurus_text <- function(resp, name, parsed, keep_duplicates = FALSE){
             strsplit("\n") |> 
             unlist()
   
-  x <- 
+  parsed_lines <- 
     Map(
       f = function(lines, i, j) {
           lines[i:(j - 1L)]
@@ -98,43 +104,106 @@ parse_cellosaurus_text <- function(resp, name, parsed, keep_duplicates = FALSE){
       USE.NAMES = FALSE
     )
   
-  if(length(x) == 0L){
+  if(length(parsed_lines) == 0L){
     .warn(paste0("No results found for ", name))
     result <- data.table::data.table()
     result$query <- name
     return(result)
   }
   responses_dt <- parallel::mclapply(
-      X = x,
+      X = parsed_lines,
       FUN = .processEntry
-  ) |> data.table::rbindlist(fill = TRUE)
+  ) 
+  
+  responses_dt <- data.table::rbindlist(responses_dt, fill = TRUE)
 
   responses_dt <- .formatSynonyms(responses_dt)
-  if(parsed) return(responses_dt)
+
+  if(parsed) {
+    responses_dt$query <- name
+    return(responses_dt)
+  }
+
+
+  result <- .find_cellosaurus_matches(responses_dt, name, keep_duplicates)
+  result$query <- name 
+  result <- result[, c("cellLineName", "accession", "query")]
+
+  return(result)
+  parsed_lines[[2]] -> x
+  parsed_lines[[80]] -> x
+  debug(.processEntry)
+  .processEntry(x)
+}
+
+
+#' Find Cellosaurus Matches
+#'
+#' This function searches for matches in a data table based on a given name.
+#' It first tries to find an exact match as the cellLineName to avoid cases where
+#' the first row is the wrong cell line but the query is in a synonym, and the second row
+#' is the correct cell line. If an exact match is not found, it searches for matches
+#' in the data table using the query and cleaned name. If no matches are found, it
+#' creates an empty data table with the columns "cellLineName", "accession", and "query".
+#'
+#' @param responses_dt A data table containing the responses.
+#' @param name The name to search for.
+#' @param keep_duplicates A logical value indicating whether to keep duplicate matches.
+#'
+#' @return A data table with the matched results, or an empty data table if no matches are found.
+#'
+#' @examples
+#' responses_dt <- data.table::data.table(
+#'   cellLineName = c("Cell Line 1", "Cell Line 2", "Cell Line 3"),
+#'   accession = c("Accession 1", "Accession 2", "Accession 3"),
+#'   synonyms = list(c("Synonym 1", "Synonym 2"), c("Synonym 3"), c("Synonym 4"))
+#' )
+#' 
+#' .find_cellosaurus_matches(responses_dt, "Cell Line 2")
+#'
+#' @noRd
+#' @keywords internal
+.find_cellosaurus_matches <- function(
+  responses_dt, 
+  name, 
+  keep_duplicates = FALSE
+){
+  # save original name
   query <- name
   name <- cleanCharacterStrings(name)
-  # If theres an EXACT match 
+
+  # first try for exact match as cellLineName to avoid the case where
+  # the first row is the wrong cellline but the query is in a synonym
+  # but the second row is the correct cellline
+  # TODO:: REFACTOR THIS TO NOT REPEAT THE CONDITIONAL 
   if(any(responses_dt$cellLineName == query)){
     data.table::setkeyv(responses_dt, "cellLineName")
     result <- responses_dt[query]
+  } else if(length(matchNested(query, responses_dt, keep_duplicates = keep_duplicates)) > 0){
+    matches <- matchNested(query, responses_dt, keep_duplicates = keep_duplicates)
+    result <- responses_dt[matches]
+  } else if(length(matchNested(name, responses_dt, keep_duplicates = keep_duplicates)) > 0){
+    matches <- matchNested(name, responses_dt, keep_duplicates = keep_duplicates)
+    result <- responses_dt[matches]
+  } else if(any(cleanCharacterStrings(responses_dt$cellLineName) == name)){
+    matches <- cleanCharacterStrings(responses_dt$cellLineName) == name
+    result <- responses_dt[matches][1]
+  } else if(length(matchNested(name, lapply(responses_dt$synonyms, cleanCharacterStrings)))> 0 ){
+    matches <- matchNested(name, lapply(responses_dt$synonyms, cleanCharacterStrings))
+    result <- responses_dt[matches]
   } else{
-    result <- responses_dt[matchNested(name, responses_dt, keep_duplicates = keep_duplicates)]
-  }
-
-  result$query <-query 
-  result <- result[, c("cellLineName", "accession", "query")]
-
-  if (nrow(result) == 0L) {
     .warn(paste0("No results found for ", query))
-    result <- data.table::data.table()
-    result$query <-query 
-    return(result)
-  }else{
-    return(result)
+    # create an empty data.table with the following columns:
+    # c("cellLineName", "accession", "query")
+    result <- data.table::data.table(
+      cellLineName = NA_character_,
+      accession = NA_character_,
+      query = query
+    )
   }
 
+  return(result)
 }
-
 
 #' Format the `synonyms` column
 #'
@@ -148,31 +217,43 @@ parse_cellosaurus_text <- function(resp, name, parsed, keep_duplicates = FALSE){
   )
 }
 
-#' Split a column into a character list
+
+#' Format the `comments` column
 #'
 #' @note Updated 2023-09-22.
 #' @noRd
-.splitCol <- function(object, colName, split = "; ") {
-  checkmate::assert_class(object, "data.table")
-  object[[colName]] <- strsplit(object[, get(colName)], split = split, fixed = TRUE)
-  object
+.formatComments <- function(object) {
+    # assert(
+    #     is(object, "DFrame"),
+    #     is(object[["comments"]], "CharacterList")
+    # )
+    # object[["comments"]] <- unique(object[["comments"]])
+    
+    test_ <- strSplit(object[["CC"]], ": ", n = 2)
+    test_ <- split(test_[, 2L], f = test_[, 1L])
+
+    test_ <- sapply(test_, strsplit, split = "; ")
+
+    object[["CC"]] <- test_
+    object
 }
-
-
 
 ## This function processes an entry in the cellosaurus database.
 ## It splits the input string, organizes the data into a nested list,
 ## handles optional keys, removes discontinued identifiers from the DR field,
 ## and converts the resulting list into a data table.
-.processEntry <- function(
-  x, 
-  requiredKeys = c("AC", "CA", "DT", "ID"),
-  nestedKeys = c("CC", "DI", "DR", "HI", "OI", "OX", "RX", "ST", "WW"),
+.processEntry <- function(x){
+  requiredKeys = c("AC", "CA", "DT", "ID")
+  nestedKeys = c("DI", "DR", "HI", "OI", "OX", "RX", "ST", "WW")
   optionalKeys = c("AG", "SX", "SY")
-) {
+  specialKeys = c("CC")
   x <- strSplit(x, split = "   ")
 
   x <- split(x[, 2L], f = x[, 1L])
+  
+  if("CC" %in% names(x)){
+    x <- .formatComments(x)
+  }
 
   # create a single row dt from the list
   dt <- data.table::data.table(
@@ -183,12 +264,26 @@ parse_cellosaurus_text <- function(resp, name, parsed, keep_duplicates = FALSE){
   for (name in setdiff(names(requiredKeys), c("ID", "AC"))) {
     dt[[name]] <- x[[name]]
   }
-
   for (key in optionalKeys) {
-    dt[[key]] <- ifelse(is.null(x[[key]]), NA_character_, x[[key]])
+    dt[[key]] <- ifelse(
+      is.null(x[[key]]), 
+      NA_character_, 
+      x[[key]]
+    )
   }
   for (key in nestedKeys) {
-    dt[[key]] <- ifelse(is.null(x[[key]]), NA_character_, unique(x[[key]]))
+    dt[[key]]  <- ifelse(
+      is.null(x[[key]]),
+      NA_character_,
+      list(.splitNestedCol(x, key, "; ")[[key]])
+    )
+  }
+  for (key in specialKeys) {
+    dt[[key]] <- ifelse(
+      is.null(x[[key]]),
+      NA_character_,
+      x[key]
+    )
   }
 
   ## Filter out discontinued identifiers from DR (e.g. "CVCL_0455").
@@ -204,7 +299,7 @@ parse_cellosaurus_text <- function(resp, name, parsed, keep_duplicates = FALSE){
       replacement = "\\1",
       x = discontinued
     )
-    dt[["DR"]] <- setdiff(x = x[["DR"]], y = discontinued)
+    dt[["DR"]] <- list(setdiff(x = x[["DR"]], y = discontinued))
   }
   # create data.table of lists
   responses_dt <- dt
@@ -221,4 +316,13 @@ parse_cellosaurus_text <- function(resp, name, parsed, keep_duplicates = FALSE){
   responses_dt
 }
 
+
+
+#' parse responses
+#' 
+#' @noRd 
+#' @keywords internal
+parse_cellosaurus_tsv <- function(resp, name){
+  .err("DEPRECATED: TSV parsing is not supported. Please use the txt parser.")
+}
 

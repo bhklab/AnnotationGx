@@ -142,3 +142,45 @@ strSplit <- function(x, split, fixed = TRUE, n = Inf) {
     checkmate::assertFlag(fixed)
     strsplit(x = x, split = split, fixed = fixed)
 }
+
+
+
+#' Split a column into a character list
+#'
+#' @note Updated 2023-09-22.
+#' @noRd
+.splitCol <- function(object, colName, split = "; ") {
+  checkmate::assert_class(object, "data.table")
+  object[[colName]] <- strsplit(object[[colName]], split = split, fixed = TRUE)
+  object
+}
+
+#' Split a nested column by key
+#'
+#' Don't format key names into camel case -- too CPU intensive.
+#'
+#' @note Updated 2023-09-22.
+#' @noRd
+.splitNestedCol <- function(object, colName, split) {
+    # assert(
+    #     is(object, "DFrame"),
+    #     is(object[[colName]], "CharacterList"),
+    #     isString(split)
+    # )
+    lst <- lapply(
+        X = object[[colName]],
+        split = split,
+        FUN = function(x, split) {
+            if (identical(x, character())) {
+                return(list())
+            }
+            x <- strSplit(x = x, split = split, n = 2L)
+            ## Formatting into camel case takes too long.
+            ## > x[, 1L] <- camelCase(x[, 1L])
+            x <- split(x = x[, 2L], f = x[, 1L])
+            x
+        }
+    ) |> unlist(recursive = F)
+    object[[colName]] <- lst
+    object
+}

@@ -8,6 +8,7 @@
 #'             If the length of 'from' is 1, the same field will be used for all IDs.
 #'             If the length of 'from' is equal to the length of 'ids', each ID will be paired with its corresponding field.
 #'             Otherwise, an error will be thrown.
+#' @param fuzzy A logical value indicating whether to perform a fuzzy search. Default is FALSE.
 #'
 #' @return A character vector representing the query list.
 #'
@@ -20,7 +21,12 @@
 #'
 #' @keywords internal
 #' @noRd
-.create_cellosaurus_queries <- function(ids, from) {
+.create_cellosaurus_queries <- function(ids, from, fuzzy = FALSE) {
+
+  if(fuzzy){
+    ids <- paste0(cleanCharacterStrings(ids), "~")
+  }
+
   # either from has to be one field, or the same length as ids
   if (length(from) == 1) {
     return(paste0(from, ":", ids))
@@ -45,22 +51,21 @@
 #' @param output A character string specifying the desired output format of the API response.
 #' @param sort A character string specifying the field to sort the results by.
 #' @param query_only A logical value indicating whether to return only the constructed URL without making the request.
-#' @param fuzzy A logical value indicating whether to perform a fuzzy search.
 #' @param ... Additional arguments to be passed to the function.
 #'
 #' @return A character string representing the constructed URL for the Cellosaurus API request.
 #'
 #' @examples
 #' .build_cellosaurus_request(query = c("id:HeLa"), to = c("id", "ac", "hi", "ca", "sx", "ag", "di", "derived-from-site", "misspelling"),
-#'                           numResults = 1, apiResource = "search/cell-line", output = "TSV", sort = NULL,
-#'                           query_only = FALSE, fuzzy = FALSE)
+#'                           numResults = 1, apiResource = "search/cell-line", output = "TSV", sort = "ac",
+#'                           query_only = FALSE)
 #' 
 #' @keywords internal
 #' @noRd
 .build_cellosaurus_request <- function(
     query = c("id:HeLa"), to = c("id", "ac", "hi", "ca", "sx", "ag", "di", "derived-from-site", "misspelling"),
-    numResults = 1, apiResource = "search/cell-line", output = "TSV", sort = NULL,
-    query_only = FALSE, fuzzy = FALSE, ...) {
+    numResults = 1, apiResource = "search/cell-line", output = "TSV", sort = "ac",
+    query_only = FALSE,  ...) {
   # checkmate::assert_character(c(from, query, output))
   checkmate::assert_subset(to, c(.cellosaurus_fields(), paste0("dr:", .cellosaurus_extResources())))
   checkmate::assert_choice(apiResource, c("search/cell-line", "cell-line", "release-info"))
@@ -73,9 +78,6 @@
   opts <- list()
   opts$q <- paste0(query, collapse = " ")
   opts$sort <- paste0(sort, " asc")
-
-  # if fuzzy, add a tilde to the query
-  if (fuzzy) opts$q <- paste0(opts$q, "~")
 
   opts$fields <- paste0(to, collapse = ",")
   opts$format <- tolower(output)

@@ -30,7 +30,8 @@ test_that(".build_cellosaurus_request is acting as expected", {
   request <- AnnotationGx:::.build_cellosaurus_request()
 
   expect_class(request, "httr2_request")
-  expect_equal(request$url, "https://api.cellosaurus.org/search/cell-line?q=id%3AHeLa&fields=id%2Cac%2Chi%2Cca%2Csx%2Cag%2Cdi%2Cderived-from-site%2Cmisspelling&format=tsv&rows=1")
+  expected <- "https://api.cellosaurus.org/search/cell-line?q=id%3AHeLa&sort=ac%20asc&fields=id%2Cac%2Chi%2Cca%2Csx%2Cag%2Cdi%2Cderived-from-site%2Cmisspelling&format=tsv&rows=1"
+  expect_equal(request$url, expected)
 
   response <- AnnotationGx:::.perform_request(request) |> AnnotationGx:::.parse_resp_tsv(show_col_types = FALSE, skip = 14)
   expect_class(response, "spec_tbl_df")
@@ -46,11 +47,13 @@ test_that(".build_cellosaurus_request is acting as expected", {
   )
   expect_equal(
     request2$url,
-    "https://api.cellosaurus.org/search/cell-line?q=id%3AHeLa&fields=id%2Cac%2Csy%2Cacas%2Csx%2Cag%2Cdi%2Cdio%2Cdin%2Cdr%2Ccell-type%2Cderived-from-site%2Cmisspelling%2Cdt%2Cdtc%2Cdtu%2Cdtv%2Cgenome-ancestry&format=tsv&rows=2"
+    "https://api.cellosaurus.org/search/cell-line?q=id%3AHeLa&sort=ac%20asc&fields=id%2Cac%2Csy%2Cacas%2Csx%2Cag%2Cdi%2Cdio%2Cdin%2Cdr%2Ccell-type%2Cderived-from-site%2Cmisspelling%2Cdt%2Cdtc%2Cdtu%2Cdtv%2Cgenome-ancestry&format=tsv&rows=2"
   )
   response <- AnnotationGx:::.perform_request(request2) |> AnnotationGx:::.parse_resp_tsv(show_col_types = FALSE, skip = 14)
   expect_equal(nrow(response), 2)
 })
+
+
 test_that(".common_cellosaurus_fields returns the expected fields", {
   fields <- AnnotationGx:::.common_cellosaurus_fields()
   expect_character(fields)
