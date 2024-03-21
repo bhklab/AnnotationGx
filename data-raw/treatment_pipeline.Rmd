@@ -173,3 +173,14 @@ data.table::fwrite(CTRP_result, "CTRP_result.csv")
 ```
 
 
+``` {r combine_all}
+# read in the 4 dataset new csvs
+GDSC_result <- data.table::fread("TRASH/GDSC_result.csv")
+gCSI_result <- data.table::fread("TRASH/gCSI_result.csv")
+CCLE_result <- data.table::fread("TRASH/CCLE_result.csv")
+CTRP_result <- data.table::fread("TRASH/CTRP_result.csv")
+
+
+
+
+```
