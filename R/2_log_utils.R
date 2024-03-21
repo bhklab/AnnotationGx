@@ -7,9 +7,30 @@
 #' @keywords internal
 #' @noRd
 .log_fmt <- function(level, ...) {
-  paste0(format(Sys.time(), "[%H:%M:%S]"), " [", level, "] ", ..., collapse = "\n")
+  time_str <- format(Sys.time(), "[%H:%M:%S]")
+  level_str <- paste0("[", level, "]")
+  msg <- paste0(..., sep = " ")
+  paste0(time_str, level_str, msg, sep = " ", collapse = "\n")
 }
 
+
+#' Info message function
+#' 
+#' This function is used to print messages when the verbose option is enabled.
+#' 
+#' @param ... `character` The messages to print
+#' 
+#' @keywords internal
+#' @noRd
+#' @export
+#' @examples
+#' \dontrun{
+#' .info("This is an info message")
+#' }
+.info <- function(...) {
+  msg <- .log_fmt("INFO", ...)
+  message(crayon::green(msg))
+}
 
 #' Custom message function for verbose output
 #'

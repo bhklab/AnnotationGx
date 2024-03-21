@@ -52,7 +52,7 @@ getUnichemSources <- function(all_columns = FALSE) {
         "NameLabel", "NameLong", "SourceID", "Details", "ReleaseDate",
         "ReleaseNumber", "URL", "UpdateComments")
     
-    setnames(sources_dt, old_names, new_names)
+    data.table::setnames(sources_dt, old_names, new_names)
 
     new_order <- c(
         "Name", "NameLabel", "NameLong", "SourceID", "CompoundCount", 
@@ -114,7 +114,7 @@ queryUnichemCompound <- function(
     old_names <- c("compoundId", "shortName", "longName", "id", "url")
 
     new_names <- c("compoundID", "Name", "NameLong", "sourceID", "sourceURL")
-    setnames(mapped_sources_dt, old = old_names, new = new_names)
+    data.table::setnames(mapped_sources_dt, old = old_names, new = new_names)
 
     External_Mappings <- mapped_sources_dt[, new_names, with = FALSE]
     

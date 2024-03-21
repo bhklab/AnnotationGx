@@ -34,6 +34,9 @@ library(data.table)
 ```
 
 
+``` {r setBPPARAM}
+BPPARAM = BiocParallel::MulticoreParam(progressbar=T)
+```
 ### Mapping from Cell Line name to Accession id
 The main function that is provided by the package is `mapCell2Accession`. This function
 takes in a vector of cell line identifiers and returns a `data.table`. 
@@ -61,48 +64,24 @@ will return the standard identifier `id` and the Cellosaurus accession ID `ac`. 
 function also returns two additional columns `query` and `query:<from>` which
 can be used to identify the original query and the original identifier type if needed. 
 ``` {r map heLa each}
-mapCell2Accession("hela", numResults = 1)
+(result <- mapCell2Accession("HeLa", keep_duplicates = T, raw = T))
+result$HeLa -> resp
+
+(result <- mapCell2Accession("HeLa", keep_duplicates = T, raw = F))
+
 ```
 
-### misspelled or non-standard cell line names
-
-Sometimes the cell line name might be misspelled or might not be the standard name. 
-This is the case if we query for "A549" in the same way. 
-``` {r map one name each}
-# our query:
-mapCell2Accession("A549", from = "id", numResults = 1)
-
-# if we use the actual standard name:
-mapCell2Accession("A-549", from = "id", numResults = 1)
-
-# trying to get the standard name with more results
-mapCell2Accession("A549", from = "id", numResults = 10)
-```
-
-The main identifier for the A549 cell line is "A-549" with accesion id of "CVCL_0023" 
-which does not appear in even the first 10 results (it would be the 40th result 
-if we adjust the `numResults` parameter) and while we could manually adjust every query 
-to match the standard name, this is not feasible for hundreds of cell lines. 
-
-There are a few ways to deal with this issue. 
-The first method is based on the reasoning that many of the cell lines are derived from a parent cell line.
-To deal with this issue, we can use the `prioritizeParent` argument. 
-This argument will use the parent cell line of each returned result and prioritize the
-results based on the accession id of the parent cell line. 
 
 ``` {r map A549 each}
-mapCell2Accession("A549", from = "id", numResults = 1, prioritizeParent = TRUE)
+mapCell2Accession("A549")
 ```
 
 Another example using the BT474 cell line. 
 
 ``` {r map BT474 each}
-mapCell2Accession("BT474", numResults = 1, prioritizeParent = FALSE)
+# our query:
+mapCell2Accession("BT474")
 
+mapCell2Accession(c("A549", "OOPS", "BT474"))
 
-mapCell2Accession("BT474", numResults = 1, prioritizeParent = TRUE)
 ```
-
-
-
-

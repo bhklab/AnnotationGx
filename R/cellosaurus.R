@@ -1,154 +1,325 @@
-#' Maps cell line names to accession numbers
+fields <- fields <- c("AC", "CA", "DT", "ID", "DI", "DR", "HI", "OI", "OX", "AG", "SX", "SY") |> tolower()
+
+#' Map Cell Line IDs to Accession Numbers
 #'
-#' This function takes a vector of cell line names and maps them to accession numbers
-#' using the Cellosaurus database. It performs a parallel request to retrieve the
-#' mapping information and returns a data table with the results.
+#' This function maps cell line IDs to accession numbers using the Cellosaurus database.
 #'
-#' @param ids A character vector of cell line names.
-#' @param numResults The number of results to return for each query. Default is 1.
-#' @param from The field to query from. Default is "id".
-#' @param to The field to query to. Default is both "id" and "ac".
-#' @param query_only If TRUE, returns the query URL instead of the results. Default is FALSE.
-#' @param raw If TRUE, returns the raw response instead of a data table. Default is FALSE.
-#' @param BPPARAM A BiocParallel parameter object controlling the parallelization.
-#' @param prioritizeParent If TRUE, prioritizes the parent cell line when multiple matches are found. Default is FALSE.
-#'                        When prioritizeParent is TRUE, if multiple matches are found for a cell line name, the function
-#'                        will prioritize the parent cell lines over other matches. This can be useful when dealing with
-#'                        cell line hierarchies where the parent cell line represents a broader category.
-#'                        An example of this is trying to map using id "BT474" which returns "CVCL_YX79" which corresponds
-#'                        to "BT474 A3" whereas "BT-474" exists in the database as "CVCL_0179". If prioritizeParent is TRUE,
-#'                        the function will prioritize "CVCL_0179" over "CVCL_YX79" since "BT-474" is the parent cell line of
-#'                        "BT474 A3".
-#' @param ... Additional arguments to pass to the request.
+#' @param ids A character vector of cell line IDs.
+#' @param numResults The maximum number of results to return for each query. Default is 1000.
+#' @param from The type of input IDs. Possible values are "idsy" (default), "ac", "id", "sy", and "misspelling".
+#' @param sort The sorting order of the results. Possible values are "ac" (default), "id", "sy", and "misspelling".
+#' @param keep_duplicates Logical indicating whether to keep duplicate results. Default is FALSE.
+#' @param fuzzy Logical indicating whether to perform a fuzzy search. Default is FALSE.
+#' @param query_only Logical indicating whether to return only the query URLs. Default is FALSE.
+#' @param raw Logical indicating whether to return the raw HTTP responses. Default is FALSE.
+#' @param parsed Logical indicating whether to parse the response text. Default is FALSE.
+#' @param ... Additional arguments to be passed to the underlying functions.
 #'
-#' @return Depending on parameters, either a:
-#' `data.table` with the "id", "ac", "query", and "query:id" columns.
-#' `list` of query URLs if `query_only` is TRUE.
-#' `list` of raw responses if `raw` is TRUE.
+#' @return A data.table containing the mapped cell line IDs and accession numbers.
 #'
 #' @examples
-#' mapCell2Accession(c("A549", "HeLa"))
+#' mapCell2Accession(ids = c("A549", "MCF7"))
+#'
 #' @export
 mapCell2Accession <- function(
-    ids, numResults = 1000, from = "id", to = c("id", "ac"),
-    prioritizeParent = FALSE,
-    query_only = FALSE, raw = FALSE, BPPARAM = BiocParallel::SerialParam(), ...) {
+    ids, numResults = 10000, from = "idsy", sort = "ac", keep_duplicates = FALSE, 
+    fuzzy = FALSE, query_only = FALSE, raw = FALSE, parsed = FALSE, ...) {
+
+
+  funContext <- .funContext("mapCell2Accession")
+
   # Input validation and coercion
   if (!is.character(ids)) {
     .warn("Input names are not character, coercing to character")
     ids <- as.character(ids)
   }
-
-  if (prioritizeParent) to <- c(to, "hi")
+  to = c("ac", "id", "sy", "misspelling", "dr", "cc")
 
   # create query list
-  queries <- .create_query_list(ids, from)
+  .info(funContext, "Creating Cellosaurus queries")
+
+  queries <- .create_cellosaurus_queries(ids, from, fuzzy)
   names(queries) <- ids
 
-  requests <- .bplapply(queries, function(query) {
+  .info(funContext, "Building Cellosaurus requests")
+  # build the list of requests
+  requests <- parallel::mclapply(queries, function(query) {
     .build_cellosaurus_request(
       query = query,
       to = to,
-      output = "TSV",
-      numResults = {
-        if (prioritizeParent) {
-          1000
-        } else {
-          numResults
-        }
-      },
+      numResults = numResults,
+      sort = sort,
+      output = "TXT",
+      fuzzy = fuzzy,
       ...
     )
-  }, BPPARAM = BPPARAM)
-  if (query_only) {
-    return(lapply(requests, function(req) req$url))
-  }
+  })
 
+  if (query_only) return(lapply(requests, function(req) req$url))
+  
+  # perform the requests
+  .info(funContext, "Performing Cellosaurus queries")
   responses <- .perform_request_parallel(requests)
-  if (raw) {
-    return(responses)
-  }
-
-
   names(responses) <- as.character(ids) # in case its an numeric ID  like cosmic ids
-  responses_dt <- lapply(ids, function(name) {
+  if (raw) return(responses)
+
+  # parse the responses
+  .info(funContext, "Parsing Cellosaurus responses")
+  responses_dt <- parallel::mclapply(ids, function(name) {
     resp <- responses[[name]]
-    resp <- readr::read_tsv(resp$body, skip = 14, show_col_types = FALSE)
-    # if tibble has no rows, add a row of NAs
-    if (nrow(resp) == 0) {
-      resp <- tibble::tibble(ac = NA, id = NA, query = queries[[name]])
-    } else {
-      resp$query <- queries[[name]]
-    }
-    resp[[paste0("query:", from)]] <- name
-    # add name to the response tibble
-    resp |> .asDT()
-  }) |> data.table::rbindlist(use.names = TRUE, fill = TRUE)
+    response_dt <- switch(
+      httr2::resp_content_type(resp),
+      "text/tab-separated-values" = parse_cellosaurus_tsv(resp, name),
+      "text/plain" = parse_cellosaurus_text(resp, name, parsed, keep_duplicates),
+      .err("Response content type is not 'text/tab-separated-values' or 'text/plain'")
+    )
+    response_dt
+    }) 
+  
 
-  if (!prioritizeParent) {
-    return(responses_dt)
-  }
-  if (all(is.na(responses_dt$hi))) {
-    return(responses_dt)
-  }
+  responses_dt <- data.table::rbindlist(responses_dt, fill = TRUE)
 
-  if ((prioritizeParent) && from != "id") .err("Prioritize parent is only available when querying from 'id'")
+  return(responses_dt)
 
-  return(.prioritize_parent(responses_dt, numResults))
 }
 
-#' @import data.table
-#'
+
+#' parse responses
+#' 
+#' @noRd 
 #' @keywords internal
-#' @noRd
-.prioritize_parent <- function(responses_dt, numResults) {
-  responses_dt[, c("parentAC", "parentID") := data.table::tstrsplit(responses_dt$hi, " ! ", fixed = TRUE)]
-  responses_dt <- responses_dt[, -"hi"]
+parse_cellosaurus_text <- function(resp, name, parsed, keep_duplicates = FALSE){
+  lines <- httr2::resp_body_string(resp)  |>
+            strsplit("\n") |> 
+            unlist()
+  
+  parsed_lines <- 
+    Map(
+      f = function(lines, i, j) {
+          lines[i:(j - 1L)]
+      },
+      i = grep(pattern = "^ID\\s+", x = lines, value = FALSE),
+      j = grep(pattern = "^//$", x = lines, value = FALSE),
+      MoreArgs = list("lines" = lines),
+      USE.NAMES = FALSE
+    )
+  
+  if(length(parsed_lines) == 0L){
+    .warn(paste0("No results found for ", name))
+    result <- data.table::data.table()
+    result$query <- name
+    return(result)
+  }
+  responses_dt <- parallel::mclapply(
+      X = parsed_lines,
+      FUN = .processEntry
+  ) 
+  
+  responses_dt <- data.table::rbindlist(responses_dt, fill = TRUE)
 
-  if (all(is.na(responses_dt$parentAC))) {
-    return(responses_dt[, -c("parentAC", "parentID")])
+  responses_dt <- .formatSynonyms(responses_dt)
+
+  if(parsed) {
+    responses_dt$query <- name
+    return(responses_dt)
   }
 
-  parentACs <- stats::na.omit(unique(responses_dt$parentAC))
-  columns <- names(responses_dt)
 
-  responses_dt <-
-    if (all(parentACs %in% responses_dt$ac)) {
-      # if so, move all the rows that are parents to the top
-      parentRows <- responses_dt$ac %in% parentACs
+  result <- .find_cellosaurus_matches(responses_dt, name, keep_duplicates)
+  result$query <- name 
+  result <- result[, c("cellLineName", "accession", "query")]
 
-      parentDT <- responses_dt[parentRows, ]
-      childDT <- responses_dt[!parentRows, ]
-      rbind(parentDT, childDT)
-    } else {
-      # add the parentAC and parentID pairs to the top of the table
+  return(result)
 
-      new_rows <- unique(
-        responses_dt[
-          "parentAC" %in% parentACs[!parentACs %in% responses_dt$ac],
-          list(
-            ac = responses_dt$parentAC,
-            id = responses_dt$parentID,
-            query = responses_dt$query,
-            `query:id` = responses_dt$`query:id`
-          )
-        ]
-      )
-      parent_rows <- responses_dt["parentAC" %in% parentACs, ]
-      child_rows <- responses_dt[!"parentAC" %in% parentACs, ]
-      new_dt <- data.table::rbindlist(list(parent_rows, new_rows, child_rows), use.names = TRUE, fill = TRUE)
-      new_dt[]
-    }
-  # groupby query and query:id
-  # for each group, sort by the highest number of parentAC counts
-  data.table::setorderv(responses_dt, c("query", "ac"))
-  responses_dt[, c("parentAC", "parentID") := NULL]
-
-  # only return numResults rows for each group by query
-  responses_dt <- responses_dt[, .SD[1:min(.N, numResults)], by = c("query")]
-
-  # reorder the columns
-  responses_dt <- responses_dt[, c("id", "ac", "query", "query:id")]
-
-  return(stats::na.omit(responses_dt[]))
 }
+
+
+#' Find Cellosaurus Matches
+#'
+#' This function searches for matches in a data table based on a given name.
+#' It first tries to find an exact match as the cellLineName to avoid cases where
+#' the first row is the wrong cell line but the query is in a synonym, and the second row
+#' is the correct cell line. If an exact match is not found, it searches for matches
+#' in the data table using the query and cleaned name. If no matches are found, it
+#' creates an empty data table with the columns "cellLineName", "accession", and "query".
+#'
+#' @param responses_dt A data table containing the responses.
+#' @param name The name to search for.
+#' @param keep_duplicates A logical value indicating whether to keep duplicate matches.
+#'
+#' @return A data table with the matched results, or an empty data table if no matches are found.
+#'
+#' @examples
+#' responses_dt <- data.table::data.table(
+#'   cellLineName = c("Cell Line 1", "Cell Line 2", "Cell Line 3"),
+#'   accession = c("Accession 1", "Accession 2", "Accession 3"),
+#'   synonyms = list(c("Synonym 1", "Synonym 2"), c("Synonym 3"), c("Synonym 4"))
+#' )
+#' 
+#' .find_cellosaurus_matches(responses_dt, "Cell Line 2")
+#'
+#' @noRd
+#' @keywords internal
+.find_cellosaurus_matches <- function(
+  responses_dt, 
+  name, 
+  keep_duplicates = FALSE
+){
+  # save original name
+  query <- name
+  name <- cleanCharacterStrings(name)
+
+  # first try for exact match as cellLineName to avoid the case where
+  # the first row is the wrong cellline but the query is in a synonym
+  # but the second row is the correct cellline
+  # TODO:: REFACTOR THIS TO NOT REPEAT THE CONDITIONAL 
+  if(any(responses_dt$cellLineName == query)){
+    data.table::setkeyv(responses_dt, "cellLineName")
+    result <- responses_dt[query]
+  } else if(length(matchNested(query, responses_dt, keep_duplicates = keep_duplicates)) > 0){
+    matches <- matchNested(query, responses_dt, keep_duplicates = keep_duplicates)
+    result <- responses_dt[matches]
+  } else if(length(matchNested(name, responses_dt, keep_duplicates = keep_duplicates)) > 0){
+    matches <- matchNested(name, responses_dt, keep_duplicates = keep_duplicates)
+    result <- responses_dt[matches]
+  } else if(any(cleanCharacterStrings(responses_dt$cellLineName) == name)){
+    matches <- cleanCharacterStrings(responses_dt$cellLineName) == name
+    result <- responses_dt[matches][1]
+  } else if(length(matchNested(name, lapply(responses_dt$synonyms, cleanCharacterStrings)))> 0 ){
+    matches <- matchNested(name, lapply(responses_dt$synonyms, cleanCharacterStrings))
+    result <- responses_dt[matches]
+  } else{
+    .warn(paste0("No results found for ", query))
+    # create an empty data.table with the following columns:
+    # c("cellLineName", "accession", "query")
+    result <- data.table::data.table(
+      cellLineName = NA_character_,
+      accession = NA_character_,
+      query = query
+    )
+  }
+
+  return(result)
+}
+
+#' Format the `synonyms` column
+#'
+#' @note Updated 2023-01-24.
+#' @noRd
+.formatSynonyms <- function(responses_dt) {
+  .splitCol(
+      object = responses_dt,
+      colName = "synonyms",
+      split = "; "
+  )
+}
+
+
+#' Format the `comments` column
+#'
+#' @note Updated 2023-09-22.
+#' @noRd
+.formatComments <- function(object) {
+    # assert(
+    #     is(object, "DFrame"),
+    #     is(object[["comments"]], "CharacterList")
+    # )
+    # object[["comments"]] <- unique(object[["comments"]])
+    
+    test_ <- strSplit(object[["CC"]], ": ", n = 2)
+    test_ <- split(test_[, 2L], f = test_[, 1L])
+
+    test_ <- sapply(test_, strsplit, split = "; ")
+
+    object[["CC"]] <- test_
+    object
+}
+
+## This function processes an entry in the cellosaurus database.
+## It splits the input string, organizes the data into a nested list,
+## handles optional keys, removes discontinued identifiers from the DR field,
+## and converts the resulting list into a data table.
+.processEntry <- function(x){
+  requiredKeys = c("AC", "CA", "DT", "ID")
+  nestedKeys = c("DI", "DR", "HI", "OI", "OX", "RX", "ST", "WW")
+  optionalKeys = c("AG", "SX", "SY")
+  specialKeys = c("CC")
+  x <- strSplit(x, split = "   ")
+
+  x <- split(x[, 2L], f = x[, 1L])
+  
+  if("CC" %in% names(x)){
+    x <- .formatComments(x)
+  }
+
+  # create a single row dt from the list
+  dt <- data.table::data.table(
+    ID = x[["ID"]],
+    AC = x[["AC"]]
+  )
+
+  for (name in setdiff(names(requiredKeys), c("ID", "AC"))) {
+    dt[[name]] <- x[[name]]
+  }
+  for (key in optionalKeys) {
+    dt[[key]] <- ifelse(
+      is.null(x[[key]]), 
+      NA_character_, 
+      x[[key]]
+    )
+  }
+  for (key in nestedKeys) {
+    dt[[key]]  <- ifelse(
+      is.null(x[[key]]),
+      NA_character_,
+      list(.splitNestedCol(x, key, "; ")[[key]])
+    )
+  }
+  for (key in specialKeys) {
+    dt[[key]] <- ifelse(
+      is.null(x[[key]]),
+      NA_character_,
+      x[key]
+    )
+  }
+
+  ## Filter out discontinued identifiers from DR (e.g. "CVCL_0455").
+  discontinued <- grep(
+    pattern = "Discontinued:",
+    x = x[["CC"]],
+    fixed = TRUE,
+    value = TRUE
+  )
+  if (isTRUE(length(discontinued) > 0L)) {
+    discontinued <- sub(
+      pattern = "^Discontinued: (.+);.+$",
+      replacement = "\\1",
+      x = discontinued
+    )
+    dt[["DR"]] <- list(setdiff(x = x[["DR"]], y = discontinued))
+  }
+  # create data.table of lists
+  responses_dt <- dt
+
+  old_names <- c("AC", "AG", "AS", "CA", "CC", "DI", "DR", "DT", "HI", "ID", 
+            "OI", "OX", "RX", "ST", "SX", "SY", "WW")
+
+  new_names <- c("accession", "ageAtSampling", "secondaryAccession", "category", 
+    "comments", "diseases", "crossReferences", "date", "hierarchy", "cellLineName",
+    "originateFromSameIndividual", "speciesOfOrigin", "referencesIdentifiers", 
+    "strProfileData", "sexOfCell", "synonyms", "webPages")
+      
+  data.table::setnames(responses_dt, old = old_names, new = new_names, skip_absent = TRUE)
+  responses_dt
+}
+
+
+
+#' parse responses
+#' 
+#' @noRd 
+#' @keywords internal
+parse_cellosaurus_tsv <- function(resp, name){
+  .err("DEPRECATED: TSV parsing is not supported. Please use the txt parser.")
+}
+

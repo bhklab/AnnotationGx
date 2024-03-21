@@ -42,7 +42,7 @@ getOncotreeVersions <- function() {
 #' @export
 getOncotreeMainTypes <- function() {
     res <- .getRequestOncotree(target="mainTypes") 
-    setnames(res, "mainType")
+    data.table::setnames(res, "mainType")
     return(res)
 }
 

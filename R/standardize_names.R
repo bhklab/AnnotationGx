@@ -65,6 +65,9 @@ cleanCharacterStrings <- function(name, space_action = "") {
     name <- gsub(" ", "", name)
   }
 
+  # remove the ~ character
+  name <- gsub("~", "", name)
+
   # if there is a colon like in "Cisplatin: 1 mg/mL (1.5 mM); 5 mM in DMSO"
   # remove everything after the colon
   name <- gsub(":.*", "", name)
