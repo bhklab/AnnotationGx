@@ -52,10 +52,25 @@
     <loc>https://bhklab.github.io/AnnotationGx/reference/GDSC_sampleMetadata.html</loc>
   </url>
   <url>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/annotateCellAccession.html</loc>
+  </url>
+  <url>
     <loc>https://bhklab.github.io/AnnotationGx/reference/annotatePubchemCompound.html</loc>
   </url>
   <url>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/cellosaurusAPIVersion.html</loc>
+  </url>
+  <url>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/cellosaurus_fields.html</loc>
+  </url>
+  <url>
     <loc>https://bhklab.github.io/AnnotationGx/reference/cleanCharacterStrings.html</loc>
+  </url>
+  <url>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/dot-parse_cellosaurus_lines.html</loc>
+  </url>
+  <url>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/dot-split_cellosaurus_lines.html</loc>
   </url>
   <url>
     <loc>https://bhklab.github.io/AnnotationGx/reference/gCSI_sampleMetadata.html</loc>

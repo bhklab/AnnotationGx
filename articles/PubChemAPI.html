@@ -27,7 +27,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">AnnotationGx</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9088</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9089</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -158,7 +158,7 @@ name:</p>
 be returned and a warning will be issued.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mapCompound2CID.html">mapCompound2CID</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">drugs</span>, <span class="st">"non existent compound"</span>, <span class="st">"another bad compound"</span><span class="op">)</span>, first <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">[19:59:08][WARNING][AnnotationGx::getPubchemCompound] Some queries failed. See the 'failed' object for details.  </span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">[20:21:47][WARNING][AnnotationGx::getPubchemCompound] Some queries failed. See the 'failed' object for details.  </span></span></span>
 <span><span class="co">#&gt;                     name    cids</span></span>
 <span><span class="co">#&gt;                   &lt;char&gt;   &lt;int&gt;</span></span>
 <span><span class="co">#&gt; 1:               Aspirin    2244</span></span>

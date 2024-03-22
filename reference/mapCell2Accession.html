@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">AnnotationGx</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9088</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9089</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,7 +65,7 @@
 <span>  fuzzy <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  query_only <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  raw <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  parsed <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  parsed <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -105,7 +105,7 @@
 
 
 <dt>parsed</dt>
-<dd><p>Logical indicating whether to parse the response text. Default is FALSE.</p></dd>
+<dd><p>Logical indicating whether to parse the response text. Default is TRUE.</p></dd>
 
 
 <dt>...</dt>
@@ -122,12 +122,12 @@
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">mapCell2Accession</span><span class="op">(</span>ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A549"</span>, <span class="st">"MCF7"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">[19:58:36][INFO][AnnotationGx::mapCell2Accession]Creating Cellosaurus queries  </span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">[19:58:36][INFO][AnnotationGx::mapCell2Accession]Building Cellosaurus requests  </span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">[19:58:36][INFO][AnnotationGx::mapCell2Accession]Performing Cellosaurus queries  </span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">[20:21:13][INFO][AnnotationGx::mapCell2Accession]Creating Cellosaurus queries  </span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">[20:21:13][INFO][AnnotationGx::mapCell2Accession]Building Cellosaurus requests  </span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">[20:21:13][INFO][AnnotationGx::mapCell2Accession]Performing Cellosaurus queries  </span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Iterating <span style="color: #00BB00;">■■■■■■■■■■■■■■■■                </span>  50% | ETA:  1s</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Iterating <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% | ETA:  0s</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">[19:58:38][INFO][AnnotationGx::mapCell2Accession]Parsing Cellosaurus responses  </span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">[20:21:14][INFO][AnnotationGx::mapCell2Accession]Parsing Cellosaurus responses  </span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    cellLineName accession  query</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          &lt;char&gt;    &lt;char&gt; &lt;char&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:        A-549 CVCL_0023   A549</span>
