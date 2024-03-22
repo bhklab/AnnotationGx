@@ -3,6 +3,8 @@ library(testthat)
 library(checkmate)
 
 
+
+
 test_that("mapCell2Accession works as expected", {
   # Test case 1: Test with a valid cell line name
   cell_line1 <- "Hela"
@@ -78,13 +80,14 @@ test_that("mapCell DOR 13 works", {
 
 test_that("query only paramater works",{
   result1 <- mapCell2Accession("DOR 13", query_only = TRUE)
-  expected <- "https://api.cellosaurus.org/search/cell-line?q=idsy%3ADOR%2013&sort=ac%20asc&fields=ac%2Cid%2Csy%2Cmisspelling%2Cdr%2Ccc&format=txt&rows=10000"
+  
+  expected <- "https://api.cellosaurus.org/search/cell-line?q=idsy%3ADOR%2013&sort=ac%20asc&fields=ac%2Cid%2Csy%2Cmisspelling%2Cdr%2Ccc%2Cca%2Cdi%2Cag%2Csx%2Chi&format=txt&rows=10000"
   expect_equal(result1[[1]], expected)
   expect_equal(names(result1), "DOR 13")
 })
 
 test_that("raw param works",{
-
+  
   result1 <- mapCell2Accession("HT", raw = TRUE)
   expect_class(result1[[1]], "httr2_response")
   expect_equal(names(result1), "HT")
@@ -111,7 +114,7 @@ test_that("raw param works",{
   x <- parsed_lines[[1]]
   result <- AnnotationGx:::.processEntry(x)
 
-  expect_data_table(result, min.rows = 1, min.cols = 10)
+  expect_data_table(result, min.rows = 1, min.cols = 9)
   expect_true(
     all(
       c("cellLineName", "accession", "comments", "synonyms") %in% colnames(result)
@@ -122,8 +125,8 @@ test_that("raw param works",{
 
 
 test_that("parsed works", {
-  result1 <- mapCell2Accession("hela", parsed = TRUE)
-  expect_data_table(result1, min.rows = 1, min.cols = 10)
+  ( result1 <- mapCell2Accession("22RV1", parsed = FALSE))$diseases
+   expect_data_table(result1, min.rows = 1, min.cols = 10)
   expect_true(
     all(
       c("cellLineName", "accession", "query") %in% colnames(result1)

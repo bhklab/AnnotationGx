@@ -34,10 +34,11 @@
   if (length(from) != length(ids)) {
     stop("Length of 'from' must be 1 or the same length as 'ids'")
   }
-  lapply(1:length(ids), function(i) {
+  sapply(1:length(ids), function(i) {
     paste(from[i], ids[i], sep = ":")
   })
 }
+
 
 
 #' Build a Cellosaurus API request
@@ -66,8 +67,8 @@
     query = c("id:HeLa"), to = c("id", "ac", "hi", "ca", "sx", "ag", "di", "derived-from-site", "misspelling"),
     numResults = 1, apiResource = "search/cell-line", output = "TSV", sort = "ac",
     query_only = FALSE,  ...) {
-  # checkmate::assert_character(c(from, query, output))
-  checkmate::assert_subset(to, c(.cellosaurus_fields(), paste0("dr:", .cellosaurus_extResources())))
+  
+  checkmate::assert_character(c(query, output))
   checkmate::assert_choice(apiResource, c("search/cell-line", "cell-line", "release-info"))
   checkmate::assert_choice(output, c("TSV", "TXT", "JSON", "XML"))
 
@@ -76,8 +77,17 @@
   url$path <- .buildURL(url$path, apiResource)
 
   opts <- list()
-  opts$q <- paste0(query, collapse = " ")
-  opts$sort <- paste0(sort, " asc")
+  
+  if(apiResource == "search/cell-line"){
+  "https://api.cellosaurus.org/search/cell-line?q=idsy%3ADOR%2013&sort=ac%20asc&fields=ac%2Cid%2Csy%2Cmisspelling%2Cdr%2Ccc&format=txt&rows=10000"
+    opts$q <- paste0(query, collapse = " ")
+  } else if(apiResource == "cell-line"){
+    url$path <- .buildURL(url$path, query)
+  }
+
+  if (!is.null(sort)) {
+    opts$sort <- paste0(sort, " asc")
+  }
 
   opts$fields <- paste0(to, collapse = ",")
   opts$format <- tolower(output)
@@ -93,20 +103,6 @@
 }
 
 
-#' Get the list of fields in the Cellosaurus schema
-#'
-#' This function retrieves the list of fields available in the Cellosaurus schema.
-#' It internally calls the `.get_cellosaurus_schema()` function to fetch the schema
-#' and extracts the list of fields from it.
-#'
-#' @return A character vector containing the list of fields in the Cellosaurus schema.
-#'
-#' @keywords internal
-#' @noRd
-.cellosaurus_fields <- function() {
-  schema <- .get_cellosaurus_schema()
-  schema$components$schemas$Fields$enum
-}
 
 #' Get the Cellosaurus schema
 #'
@@ -119,7 +115,7 @@
 #'
 #' @keywords internal
 #' @noRd
-.get_cellosaurus_schema <- function() {
+.cellosaurus_schema <- function() {
   url <- .buildURL("https://api.cellosaurus.org/openapi.json")
   request <- .build_request(url)
 
@@ -127,17 +123,9 @@
   .parse_resp_json(resp)
 }
 
-#' Internal function to return the list of fields available in Cellosaurus
-#'
-#' @keywords internal
-#' @noRd
-.common_cellosaurus_fields <- function() {
-  c(
-    "ID", "AC", "AS", "SY", "DR", "DI", "DIN", "DIO", "OX", "SX", "AG", "OI",
-    "HI", "CH", "CA", "CEL", "DT", "DTC", "DTU", "DTV", "DER", "FROM", "GROUP",
-    "KARY", "KO"
-  )
-}
+
+
+
 
 #' Internal function to return the list of external resources available in Cellosaurus
 #' @return A character vector of external resources available in Cellosaurus

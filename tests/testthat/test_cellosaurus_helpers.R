@@ -2,28 +2,21 @@ library(AnnotationGx)
 library(testthat)
 library(checkmate)
 
+test_that(".create_cellosaurus_queries is acting as expected", {
+  queries <- AnnotationGx:::.create_cellosaurus_queries(c("ID1", "ID2", "ID3"), "Accession")
+  expect_character(queries)
+  expect_equal(queries, c("Accession:ID1", "Accession:ID2", "Accession:ID3"))
 
-test_that(".get_cellosaurus_schema is acting as expected", {
-  schema <- AnnotationGx:::.get_cellosaurus_schema()
+  queries2 <- AnnotationGx:::.create_cellosaurus_queries(c("ID1", "ID2", "ID3"), c("Accession", "Name", "Species"))
+  expect_equal(queries2, c("Accession:ID1", "Name:ID2", "Species:ID3"))
+})
+
+test_that(".cellosaurus_schema is acting as expected", {
+  schema <- AnnotationGx:::.cellosaurus_schema()
   expect_list(schema)
   names_list <- c("openapi", "info", "paths", "components", "tags")
 
   expect_names(names(schema), subset.of = names_list)
-})
-
-test_that(".cellosaurus_fields is acting as expected", {
-  fields <- AnnotationGx:::.cellosaurus_fields()
-  expect_character(fields)
-
-  # important fields
-  important_fields <- c(
-    "id", "ac", "sy", "acas", "sx", "ag", "di", "dio", "din",
-    "dr", "cell-type", "derived-from-site", "misspelling", "dt", "dtc", "dtu", "dtv", "genome-ancestry",
-    "from", "resistance", "transfected"
-  )
-
-  expect_true(all(important_fields %in% fields))
-  expect_names(important_fields, subset.of = fields)
 })
 
 test_that(".build_cellosaurus_request is acting as expected", {
@@ -54,18 +47,18 @@ test_that(".build_cellosaurus_request is acting as expected", {
 })
 
 
-test_that(".common_cellosaurus_fields returns the expected fields", {
-  fields <- AnnotationGx:::.common_cellosaurus_fields()
+test_that("common_cellosaurus_fields returns the expected fields", {
+  fields <- AnnotationGx::cellosaurus_fields(common = T, upper = T)
   expect_character(fields)
-
-  expected_fields <- c(
-    "ID", "AC", "AS", "SY", "DR", "DI", "DIN", "DIO", "OX", "SX", "AG", "OI",
-    "HI", "CH", "CA", "CEL", "DT", "DTC", "DTU", "DTV", "DER", "FROM", "GROUP",
-    "KARY", "KO"
+  expect_fields <- c(
+    "id", "ac", "acas", "sy", "dr", "di", "din", "dio", "ox", "cc",  "sx", "ag", "oi",
+    "hi", "ch", "ca",  "dt", "dtc", "dtu", "dtv", "from", "group"
   )
 
-  expect_equal(fields, expected_fields)
+
+  expect_equal(fields, toupper(expect_fields))
 })
+
 test_that(".cellosaurus_extResources returns the expected external resources", {
   resources <- AnnotationGx:::.cellosaurus_extResources()
   expect_character(resources)

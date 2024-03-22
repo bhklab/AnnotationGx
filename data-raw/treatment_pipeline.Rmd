@@ -62,6 +62,7 @@ data.table::fwrite(GDSC_result, "GDSC_result.csv")
 
 
 
+
 ``` {r view_gCSI_sampleMetadata}
 
 head(gCSI_sampleMetadata)
@@ -147,11 +148,13 @@ CCLE_result <- data.table::rbindlist(
 CCLE_result[order(cellLineName)]
 missing <- setdiff(CCLE_sampleMetadata$CCLE_ID_parsed, CCLE_result$query)
 message("The following is still missing: ", missing)
-
+data.table::setnames(CCLE_result, "query", "CCLE.sampleid")
 data.table::fwrite(CCLE_result, "CCLE_result.csv")
 
 depmapids_mapped <- mapCell2Accession(CCLE_sampleMetadata[!is.na(depMapID), depMapID], from = "dr")
 depmapids_mapped[order(cellLineName)]
+
+data.table::setnames(depmapids_mapped, "query", "depMapID")
 data.table::fwrite(depmapids_mapped, "CCLE_depmapids_mapped.csv")
 
 ```
@@ -167,7 +170,7 @@ CTRP_failed <- mapCell2Accession(CTRP_result[is.na(accession),query], fuzzy = T,
 CTRP_failed_again_names <- CTRP_failed[is.na(accession),query]
 
 message("The following is still missing: ", paste0(CTRP_failed_again_names, collapse = ", "))
-
+data.table::setnames(CTRP_result, "query", "CTRP.sampleid")
 data.table::fwrite(CTRP_result, "CTRP_result.csv")
 
 ```
@@ -178,9 +181,42 @@ data.table::fwrite(CTRP_result, "CTRP_result.csv")
 GDSC_result <- data.table::fread("TRASH/GDSC_result.csv")
 gCSI_result <- data.table::fread("TRASH/gCSI_result.csv")
 CCLE_result <- data.table::fread("TRASH/CCLE_result.csv")
-CTRP_result <- data.table::fread("TRASH/CTRP_result.csv")
+CTRP_result <- data.table::fread("TRASH/CTRP_result.csv"****)
+data.table::setnames(CTRP_result, "query", "CTRP.sampleid")
+data.table::setnames(CCLE_result, "query", "CCLE.sampleid")
+
+# merge all the datasets together on c("cellLineName", "accession")
+
+merged <- unique(merge(CTRP_result[accession != "",], CCLE_result, c("cellLineName", "accession"), all = T))
+merged <- unique(merge(merged, gCSI_result, c("cellLineName", "accession"), all = T))
+merged <- unique(merge(merged, GDSC_result, c("cellLineName", "accession"), all = T))
+merged
 
 
-
-
+all_merged <- merged[order(cellLineName)]
+data.table::fwrite(all_merged, "TRASH/all_merged.tsv", sep = "\t")
 ```
+
+
+``` {r annotate_all}
+(all_merged <- data.table::fread("TRASH/all_merged.tsv", na.strings = ""))
+
+
+all_annotated <- all_merged[!is.na(accession), AnnotationGx::annotateCellAccession(accession)]
+
+# convert columns that are lists to strings separated by ";"
+
+dt_copy <- copy(all_annotated)
+
+for (col in c("synonyms", "diseases")) {
+  if (is.list(all_annotated[[col]])) {
+    dt_copy[[col]] <- sapply(all_annotated[[col]], paste, collapse = ";")
+  }
+}
+dt_copy[, c("hierarchy", "comments", "crossReferences", "date") := NULL]
+
+dt_copy[, unique(category)]
+
+data.table::fwrite(dt_copy, "TRASH/all_annotated.tsv", sep = "\t")
+```
+

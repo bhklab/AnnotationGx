@@ -13,7 +13,7 @@ mapCell2Accession(
   fuzzy = FALSE,
   query_only = FALSE,
   raw = FALSE,
-  parsed = FALSE,
+  parsed = TRUE,
   ...
 )
 }
@@ -34,7 +34,7 @@ mapCell2Accession(
 
 \item{raw}{Logical indicating whether to return the raw HTTP responses. Default is FALSE.}
 
-\item{parsed}{Logical indicating whether to parse the response text. Default is FALSE.}
+\item{parsed}{Logical indicating whether to parse the response text. Default is TRUE.}
 
 \item{...}{Additional arguments to be passed to the underlying functions.}
 }
