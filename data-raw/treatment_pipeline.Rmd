@@ -62,6 +62,7 @@ data.table::fwrite(GDSC_result, "GDSC_result.csv")
 
 
 
+
 ``` {r view_gCSI_sampleMetadata}
 
 head(gCSI_sampleMetadata)
@@ -180,7 +181,7 @@ data.table::fwrite(CTRP_result, "CTRP_result.csv")
 GDSC_result <- data.table::fread("TRASH/GDSC_result.csv")
 gCSI_result <- data.table::fread("TRASH/gCSI_result.csv")
 CCLE_result <- data.table::fread("TRASH/CCLE_result.csv")
-CTRP_result <- data.table::fread("TRASH/CTRP_result.csv")
+CTRP_result <- data.table::fread("TRASH/CTRP_result.csv"****)
 data.table::setnames(CTRP_result, "query", "CTRP.sampleid")
 data.table::setnames(CCLE_result, "query", "CCLE.sampleid")
 
@@ -195,3 +196,27 @@ merged
 all_merged <- merged[order(cellLineName)]
 data.table::fwrite(all_merged, "TRASH/all_merged.tsv", sep = "\t")
 ```
+
+
+``` {r annotate_all}
+(all_merged <- data.table::fread("TRASH/all_merged.tsv", na.strings = ""))
+
+
+all_annotated <- all_merged[!is.na(accession), AnnotationGx::annotateCellAccession(accession)]
+
+# convert columns that are lists to strings separated by ";"
+
+dt_copy <- copy(all_annotated)
+
+for (col in c("synonyms", "diseases")) {
+  if (is.list(all_annotated[[col]])) {
+    dt_copy[[col]] <- sapply(all_annotated[[col]], paste, collapse = ";")
+  }
+}
+dt_copy[, c("hierarchy", "comments", "crossReferences", "date") := NULL]
+
+dt_copy[, unique(category)]
+
+data.table::fwrite(dt_copy, "TRASH/all_annotated.tsv", sep = "\t")
+```
+

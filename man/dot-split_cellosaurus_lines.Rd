@@ -18,7 +18,7 @@ The lines are split based on the delimiter "   " (three spaces).
 }
 \examples{
 lines <- c("ID1   Line 1", "ID1   Line 2", "ID2   Line 1", "ID2   Line 2")
-.split_cellosaurus_lines(lines)
+AnnotationGx:::.split_cellosaurus_lines(lines)
 # Output:
 # $ID1
 # [1] "Line 1" "Line 2"
