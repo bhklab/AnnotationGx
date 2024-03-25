@@ -42,3 +42,6 @@
 #' 
 "gCSI_sampleMetadata"
 
+#' gCSI_treatmentMetadata is some preprocessed treatment metadata from the NCI60 dataset
+#' 
+"gCSI_treatmentMetadata"

@@ -2,6 +2,6 @@ filePath <- system.file("extdata", "GDSC2_8.4_treatmentMetadata.csv", package = 
 rawdata <- data.table::fread(filePath) 
 
 GDSC_treatmentMetadata <- 
-    rawdata[, .(GDSC.sampleid = `DRUG_NAME`, GDSC.synonyms = `SYNONYMS`, GDSC.drug_id = `DRUG_ID`)]
+    rawdata[, .(GDSC.treatmentid = `DRUG_NAME`, GDSC.synonyms = `SYNONYMS`, GDSC.drug_id = `DRUG_ID`)]
 
 usethis::use_data(GDSC_treatmentMetadata, overwrite = TRUE)
