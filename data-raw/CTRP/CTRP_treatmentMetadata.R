@@ -3,13 +3,13 @@
 
 # Load the treatment metadata file
 filePath <- system.file("extdata", "v20.meta.per_compound.txt", package = "AnnotationGx")
-ctrp_treatmentIDs <- data.table::fread(filePath)[, .(cpd_name, broad_cpd_id)]
+CTRP_treatmentMetadata <- data.table::fread(filePath)[, .(cpd_name, broad_cpd_id)]
 
 # Rename the columns
 data.table::setnames(
-  ctrp_treatmentIDs,
+  CTRP_treatmentMetadata,
   c("cpd_name", "broad_cpd_id"), c("CTRP.treatmentid", "CTRP.broad_cpd_id")
 )
 
 # Save the treatment metadata as a data object
-usethis::use_data(ctrp_treatmentIDs, overwrite = TRUE)
+usethis::use_data(CTRP_treatmentMetadata, overwrite = TRUE)
