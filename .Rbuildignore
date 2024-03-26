@@ -18,3 +18,4 @@ trash
 ^\.github$
 ^doc$
 ^Meta$
+^vignettes/articles$
