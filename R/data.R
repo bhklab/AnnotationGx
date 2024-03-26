@@ -17,15 +17,31 @@
 #' @source https://www.cancerrxgene.org/
 "GDSC_sampleMetadata"
 
+#' GDSC_treatmentMetadata is some preprocessed treatment metadata from the GDSC dataset
+#' 
+"GDSC_treatmentMetadata"
+
 
 #' CCLE_sampleMetadata is some preprocessed sample metadata from the CCLE dataset
 #' 
 "CCLE_sampleMetadata"
 
+#' CCLE_treatmentMetadata is some preprocessed treatment metadata from the CCLE dataset
+#' 
+"CCLE_treatmentMetadata"
+
 #' CTRP_sampleMetadata is some preprocessed sample metadata from the CTRP dataset
 #' 
 "CTRP_sampleMetadata"
 
+#' CTRP_treatmentMetadata is some preprocessed treatment metadata from the CTRP dataset
+#' 
+"CTRP_treatmentMetadata"
+
 #' gCSI_sampleMetadata is some preprocessed sample metadata from the NCI60 dataset
 #' 
 "gCSI_sampleMetadata"
+
+#' gCSI_treatmentMetadata is some preprocessed treatment metadata from the NCI60 dataset
+#' 
+"gCSI_treatmentMetadata"
