@@ -68,6 +68,7 @@ old_names <- c("cids", "MolecularFormula", "MolecularWeight", "InChIKey", "Title
 
 data.table::setnames(CCLE_treatmentMetadata_annotated, old_names, paste0("PubChem.", old_names))
 
+CCLE_treatmentMetadata_annotated
 ```
 
 ``` {r mapGCSI}
@@ -110,7 +111,7 @@ old_names <- c("cids", "MolecularFormula", "MolecularWeight", "InChIKey", "Title
 
 data.table::setnames(gCSI_treatmentMetadata_annotated, old_names, paste0("PubChem.", old_names))
 
-
+gCSI_treatmentMetadata_annotated
 ```
 
 
@@ -127,4 +128,12 @@ failed <-
   attributes(compounds_to_cids)$failed |> 
     names()
 failed
+```
+
+
+``` {r mapGDSC}
+
+
+
+
 ```

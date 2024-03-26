@@ -2,21 +2,27 @@ url: https://bhklab.github.io/AnnotationGx/
 template:
   bootstrap: 5
 
+development:
+  mode: auto
+
+
 articles:
-- title: Articles
-  navbar: ~
+- title: Introduction
+  navbar: Introduction
   contents:
   - Introduction
+
+- title: Articles
+  navbar: Articles
+  contents:
   - Cellosaurus
   - ChEMBL
   - OncoTree
   - PubChemAPI
   - Unichem
+
 - title: Pipelines
-  navbar: ~
+  navbar: Pipeline Tutorials
   contents:
   - articles/CTRP-Treatment-Annotation
-  - articles/sample_pipeline
-  - articles/treatment_pipeline
 
-# Path: _pkgdown.yml
