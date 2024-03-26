@@ -107,7 +107,7 @@ annotatePubchemCompound <- function(
   })
 
   # apply the parse function to each response depending on heading
-  parsed_responses <- .bplapply(responses, function(response) {
+  parsed_responses <- parallel::mclapply(responses, function(response) {
     switch(heading,
       "ChEMBL ID" = .parseCHEMBLresponse(response),
       "CAS" = .parseCASresponse(response),
@@ -128,7 +128,10 @@ annotatePubchemCompound <- function(
         }
       )
     )
-  })
+  },
+  mc.cores = 1
+)
+  
 
   sapply(parsed_responses, .replace_null)
 

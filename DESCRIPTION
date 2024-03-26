@@ -23,7 +23,6 @@ Imports:
     httr2,
     data.table,
     options,
-    BiocParallel,
     readr,
     xml2
 Suggests: 
