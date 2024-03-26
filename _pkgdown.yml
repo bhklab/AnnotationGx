@@ -5,6 +5,89 @@ template:
 development:
   mode: auto
 
+reference:
+- title: Dataset Metadata
+  subtitle: CCLE
+  contents:
+  - CCLE_sampleMetadata
+  - CCLE_treatmentMetadata
+
+- subtitle: GDSC
+  contents:
+  - GDSC_sampleMetadata
+  - GDSC_treatmentMetadata
+
+- subtitle: CTRP
+  contents:
+  - CTRP_sampleMetadata
+  - CTRP_treatmentMetadata
+
+- subtitle: gCSI
+  contents:
+  - gCSI_sampleMetadata
+  - gCSI_treatmentMetadata
+
+- title: ID Cleaning
+  subtitle: ID Cleaning
+  contents:
+  - cleanCharacterStrings
+  - standardize_names
+
+- title: Cellosaurus
+  subtitle: API query
+  contents:
+  - cellosaurusAPIVersion
+  - cellosaurus_fields
+  - mapCell2Accession
+  - annotateCellAccession
+
+- title: PubChem
+  subtitle: REST API query
+  contents:
+  - getPubchemCompound
+  - mapCompound2CID
+  - mapCID2Properties
+  - getPubchemProperties
+  - getPubchemStatus
+
+- subtitle: VIEW API query
+  contents:
+  - getPubchemAnnotationHeadings
+  - annotatePubchemCompound
+
+- title: UniChem
+  subtitle: REST API query
+  contents:
+  - getUnichemSources
+  - queryUnichemCompound
+
+- title: ChEMBL
+  subtitle: REST API query
+  contents:
+  - queryChemblAPI
+  - getChemblMechanism
+  - getChemblResourceFields
+  - getChemblResources
+  - getChemblFilterTypes
+
+- title: OncoTree
+  subtitle: API query
+  contents:
+  - getOncotreeVersions
+  - getOncotreeMainTypes
+  - getOncotreeTumorTypes
+
+- title: CancerTargetDiscoveryDevelopment (CTD2)
+  subtitle: API query
+  contents:
+  - mapCompound2CTD
+
+- title: Utility Functions
+  contents:
+  - strSplit
+  - unlistNested
+  - matchNested
+  - options
 
 articles:
 - title: Introduction
