@@ -9,7 +9,7 @@
 .log_fmt <- function(level, ...) {
   time_str <- format(Sys.time(), "[%H:%M:%S]")
   level_str <- paste0("[", level, "]")
-  msg <- paste0(..., sep = " ")
+  msg <- paste(..., sep = " ")
   paste0(time_str, level_str, msg, sep = " ", collapse = "\n")
 }
 
