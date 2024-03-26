@@ -1,0 +1,87 @@
+---
+title: "Querying Cellosaurus"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Querying Cellosaurus}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Introduction
+Cellosaurus is a comprehensive knowledge resource dedicated to cell lines,
+providing a wealth of information about various types of cells used in
+biomedical research. It serves as a centralized repository that offers
+detailed data on cell lines, including their origins, characteristics,
+authentication methods, references, and more. Please view the Cellosaurus
+website at https://web.expasy.org/cellosaurus/ for more information and
+a detailed description can be found at https://www.cellosaurus.org/description.html.
+
+The `AnnotationGx` package provides a wrapper around the Cellosaurus API to 
+map cell line identifiers to the Cellosaurus database fields. 
+
+### Setup
+
+```{r setup}
+library(AnnotationGx)
+library(data.table)
+```
+
+
+``` {r setBPPARAM}
+BPPARAM = BiocParallel::MulticoreParam(progressbar=T)
+```
+### Mapping from Cell Line name to Accession id
+The main function that is provided by the package is `mapCell2Accession`. This function
+takes in a vector of cell line identifiers and returns a `data.table`. 
+
+```
+Usage and default values:
+     mapCell2Accession(
+       ids,
+       numResults = 1000,
+       from = "id",
+       to = c("id", "ac"),
+       prioritizeParent = FALSE,
+       orderby = "ac",
+       query_only = FALSE,
+       raw = FALSE,
+       BPPARAM = BiocParallel::SerialParam(),
+       ...
+     )
+```
+
+Let's see how we can use this function to map the "HeLa" and "A549" cell line names
+to the Cellosaurus database. 
+By default, the function will try to map using the common identifier (`from ="id"`) name and 
+will return the standard identifier `id` and the Cellosaurus accession ID `ac`. The 
+function also returns two additional columns `query` and `query:<from>` which
+can be used to identify the original query and the original identifier type if needed. 
+``` {r map heLa each}
+(result <- mapCell2Accession("HeLa", keep_duplicates = T, raw = T))
+result$HeLa -> resp
+
+(result <- mapCell2Accession("HeLa", keep_duplicates = T, raw = F))
+
+```
+
+
+``` {r map A549 each}
+mapCell2Accession("A549")
+```
+
+Another example using the BT474 cell line. 
+
+``` {r map BT474 each}
+# our query:
+mapCell2Accession("BT474")
+
+mapCell2Accession(c("A549", "OOPS", "BT474"))
+
+```

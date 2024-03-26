@@ -31,7 +31,6 @@ Suggests:
     readxl,
     knitr,
     rmarkdown,
-    BiocStyle,
     RefManageR,
     sessioninfo
 Config/testthat/edition: 3
