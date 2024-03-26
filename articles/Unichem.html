@@ -27,7 +27,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">AnnotationGx</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9089</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9090</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,12 +42,18 @@
 <li class="active nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <h6 class="dropdown-header" data-toc-skip>Introduction</h6>
     <a class="dropdown-item" href="../articles/Introduction.html">Introduction to AnnotationGx</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Databases</h6>
     <a class="dropdown-item" href="../articles/Cellosaurus.html">Querying Cellosaurus</a>
     <a class="dropdown-item" href="../articles/ChEMBL.html">Querying ChEMBL Database</a>
     <a class="dropdown-item" href="../articles/OncoTree.html">Querying OncoTree</a>
     <a class="dropdown-item" href="../articles/PubChemAPI.html">Querying PubChem</a>
     <a class="dropdown-item" href="../articles/Unichem.html">Querying Unichem Database</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Pipeline Tutorials</h6>
+    <a class="dropdown-item" href="../articles/CTRP-Treatment-Annotation.html">Annotating CTRP Treatments</a>
   </div>
 </li>
 <li class="nav-item">
@@ -74,7 +80,7 @@
                         <h4 data-toc-skip class="author">Jermiah Joseph,
 Shahzada Muhammad Shameel Farooq, and Christopher Eeles</h4>
                         
-            <h4 data-toc-skip class="date">22 March 2024</h4>
+            <h4 data-toc-skip class="date">26 March 2024</h4>
       
       
       <div class="d-none name"><code>Unichem.Rmd</code></div>
@@ -246,27 +252,27 @@ for the compound.</p>
 <span><span class="co">#&gt; 25:                        22360        bindingdb</span></span>
 <span><span class="co">#&gt; 26:                DTXSID5020108          comptox</span></span>
 <span><span class="co">#&gt; 27:                           74      drugcentral</span></span>
-<span><span class="co">#&gt; 28:                         4779           brenda</span></span>
+<span><span class="co">#&gt; 28:                       159662           brenda</span></span>
 <span><span class="co">#&gt; 29:                         3100           brenda</span></span>
-<span><span class="co">#&gt; 30:                       159662           brenda</span></span>
-<span><span class="co">#&gt; 31:                         2261           brenda</span></span>
-<span><span class="co">#&gt; 32:                         6476           brenda</span></span>
-<span><span class="co">#&gt; 33:                        32748           brenda</span></span>
+<span><span class="co">#&gt; 30:                         4779           brenda</span></span>
+<span><span class="co">#&gt; 31:                         6476           brenda</span></span>
+<span><span class="co">#&gt; 32:                        32748           brenda</span></span>
+<span><span class="co">#&gt; 33:                         2261           brenda</span></span>
 <span><span class="co">#&gt; 34:                    CB4421683     chemicalbook</span></span>
 <span><span class="co">#&gt; 35:                    CB5114818     chemicalbook</span></span>
 <span><span class="co">#&gt; 36:                      ASPIRIN         dailymed</span></span>
 <span><span class="co">#&gt; 37:         ACETYLSALICYLIC ACID   clinicaltrials</span></span>
-<span><span class="co">#&gt; 38:                      DURLAZA   clinicaltrials</span></span>
-<span><span class="co">#&gt; 39:                      ASPIRIN   clinicaltrials</span></span>
-<span><span class="co">#&gt; 40:            ASPIRIN DL-LYSINE   clinicaltrials</span></span>
-<span><span class="co">#&gt; 41:                    VENOPIRIN   clinicaltrials</span></span>
-<span><span class="co">#&gt; 42:                     MEASURIN   clinicaltrials</span></span>
-<span><span class="co">#&gt; 43:                   BAY1019036   clinicaltrials</span></span>
-<span><span class="co">#&gt; 44:      LYSINE ACETYLSALICYLATE   clinicaltrials</span></span>
-<span><span class="co">#&gt; 45:                      ECOTRIN           rxnorm</span></span>
-<span><span class="co">#&gt; 46:                      ASPIRIN           rxnorm</span></span>
+<span><span class="co">#&gt; 38:                   BAY1019036   clinicaltrials</span></span>
+<span><span class="co">#&gt; 39:      LYSINE ACETYLSALICYLATE   clinicaltrials</span></span>
+<span><span class="co">#&gt; 40:                      DURLAZA   clinicaltrials</span></span>
+<span><span class="co">#&gt; 41:                      ASPIRIN   clinicaltrials</span></span>
+<span><span class="co">#&gt; 42:            ASPIRIN DL-LYSINE   clinicaltrials</span></span>
+<span><span class="co">#&gt; 43:                    VENOPIRIN   clinicaltrials</span></span>
+<span><span class="co">#&gt; 44:                     MEASURIN   clinicaltrials</span></span>
+<span><span class="co">#&gt; 45:                      ASPIRIN           rxnorm</span></span>
+<span><span class="co">#&gt; 46:                      DURLAZA           rxnorm</span></span>
 <span><span class="co">#&gt; 47:            ACETYL SALICYLATE           rxnorm</span></span>
-<span><span class="co">#&gt; 48:                      DURLAZA           rxnorm</span></span>
+<span><span class="co">#&gt; 48:                      ECOTRIN           rxnorm</span></span>
 <span><span class="co">#&gt; 49:                     HY-14654   MedChemExpress</span></span>
 <span><span class="co">#&gt; 50:                     PD002467 probes_and_drugs</span></span>
 <span><span class="co">#&gt;                       compoundID             Name</span></span>
@@ -352,27 +358,27 @@ for the compound.</p>
 <span><span class="co">#&gt; 25:                                            http://www.bindingdb.org/bind/chemsearch/marvin/MolStructure.jsp?monomerid=22360</span></span>
 <span><span class="co">#&gt; 26:                                                                             https://comptox.epa.gov/dashboard/DTXSID5020108</span></span>
 <span><span class="co">#&gt; 27:                                                                                          http://drugcentral.org/drugcard/74</span></span>
-<span><span class="co">#&gt; 28:                                                             https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=4779</span></span>
+<span><span class="co">#&gt; 28:                                                           https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=159662</span></span>
 <span><span class="co">#&gt; 29:                                                             https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=3100</span></span>
-<span><span class="co">#&gt; 30:                                                           https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=159662</span></span>
-<span><span class="co">#&gt; 31:                                                             https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=2261</span></span>
-<span><span class="co">#&gt; 32:                                                             https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=6476</span></span>
-<span><span class="co">#&gt; 33:                                                            https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=32748</span></span>
+<span><span class="co">#&gt; 30:                                                             https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=4779</span></span>
+<span><span class="co">#&gt; 31:                                                             https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=6476</span></span>
+<span><span class="co">#&gt; 32:                                                            https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=32748</span></span>
+<span><span class="co">#&gt; 33:                                                             https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=2261</span></span>
 <span><span class="co">#&gt; 34:                                                           https://www.chemicalbook.com/ChemicalProductProperty_EN_CB4421683</span></span>
 <span><span class="co">#&gt; 35:                                                           https://www.chemicalbook.com/ChemicalProductProperty_EN_CB5114818</span></span>
 <span><span class="co">#&gt; 36: https://dailymed.nlm.nih.gov/dailymed/search.cfm?adv=1&amp;labeltype=human&amp;query=ACTIVEMOIETY:(ASPIRIN)+OR+INGREDIENT:(ASPIRIN)</span></span>
 <span><span class="co">#&gt; 37:                                                  https://www.clinicaltrials.gov/ct2/results?cond=&amp;term=ACETYLSALICYLIC ACID</span></span>
-<span><span class="co">#&gt; 38:                                                               https://www.clinicaltrials.gov/ct2/results?cond=&amp;term=DURLAZA</span></span>
-<span><span class="co">#&gt; 39:                                                               https://www.clinicaltrials.gov/ct2/results?cond=&amp;term=ASPIRIN</span></span>
-<span><span class="co">#&gt; 40:                                                     https://www.clinicaltrials.gov/ct2/results?cond=&amp;term=ASPIRIN DL-LYSINE</span></span>
-<span><span class="co">#&gt; 41:                                                             https://www.clinicaltrials.gov/ct2/results?cond=&amp;term=VENOPIRIN</span></span>
-<span><span class="co">#&gt; 42:                                                              https://www.clinicaltrials.gov/ct2/results?cond=&amp;term=MEASURIN</span></span>
-<span><span class="co">#&gt; 43:                                                            https://www.clinicaltrials.gov/ct2/results?cond=&amp;term=BAY1019036</span></span>
-<span><span class="co">#&gt; 44:                                               https://www.clinicaltrials.gov/ct2/results?cond=&amp;term=LYSINE ACETYLSALICYLATE</span></span>
-<span><span class="co">#&gt; 45:                                                       https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&amp;searchTerm=202554</span></span>
-<span><span class="co">#&gt; 46:                                                         https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&amp;searchTerm=1191</span></span>
+<span><span class="co">#&gt; 38:                                                            https://www.clinicaltrials.gov/ct2/results?cond=&amp;term=BAY1019036</span></span>
+<span><span class="co">#&gt; 39:                                               https://www.clinicaltrials.gov/ct2/results?cond=&amp;term=LYSINE ACETYLSALICYLATE</span></span>
+<span><span class="co">#&gt; 40:                                                               https://www.clinicaltrials.gov/ct2/results?cond=&amp;term=DURLAZA</span></span>
+<span><span class="co">#&gt; 41:                                                               https://www.clinicaltrials.gov/ct2/results?cond=&amp;term=ASPIRIN</span></span>
+<span><span class="co">#&gt; 42:                                                     https://www.clinicaltrials.gov/ct2/results?cond=&amp;term=ASPIRIN DL-LYSINE</span></span>
+<span><span class="co">#&gt; 43:                                                             https://www.clinicaltrials.gov/ct2/results?cond=&amp;term=VENOPIRIN</span></span>
+<span><span class="co">#&gt; 44:                                                              https://www.clinicaltrials.gov/ct2/results?cond=&amp;term=MEASURIN</span></span>
+<span><span class="co">#&gt; 45:                                                         https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&amp;searchTerm=1191</span></span>
+<span><span class="co">#&gt; 46:                                                      https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&amp;searchTerm=1665357</span></span>
 <span><span class="co">#&gt; 47:                                                        https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&amp;searchTerm=91101</span></span>
-<span><span class="co">#&gt; 48:                                                      https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&amp;searchTerm=1665357</span></span>
+<span><span class="co">#&gt; 48:                                                       https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&amp;searchTerm=202554</span></span>
 <span><span class="co">#&gt; 49:                                                                                     https://www.medchemexpress.com/HY-14654</span></span>
 <span><span class="co">#&gt; 50:                                                                              https://www.probes-drugs.org/compound/PD002467</span></span>
 <span><span class="co">#&gt;                                                                                                                       sourceURL</span></span>

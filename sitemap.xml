@@ -10,6 +10,9 @@
     <loc>https://bhklab.github.io/AnnotationGx/LICENSE.html</loc>
   </url>
   <url>
+    <loc>https://bhklab.github.io/AnnotationGx/articles/CTRP-Treatment-Annotation.html</loc>
+  </url>
+  <url>
     <loc>https://bhklab.github.io/AnnotationGx/articles/Cellosaurus.html</loc>
   </url>
   <url>
@@ -46,10 +49,19 @@
     <loc>https://bhklab.github.io/AnnotationGx/reference/CCLE_sampleMetadata.html</loc>
   </url>
   <url>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/CCLE_treatmentMetadata.html</loc>
+  </url>
+  <url>
     <loc>https://bhklab.github.io/AnnotationGx/reference/CTRP_sampleMetadata.html</loc>
   </url>
   <url>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/CTRP_treatmentMetadata.html</loc>
+  </url>
+  <url>
     <loc>https://bhklab.github.io/AnnotationGx/reference/GDSC_sampleMetadata.html</loc>
+  </url>
+  <url>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/GDSC_treatmentMetadata.html</loc>
   </url>
   <url>
     <loc>https://bhklab.github.io/AnnotationGx/reference/annotateCellAccession.html</loc>
@@ -74,6 +86,9 @@
   </url>
   <url>
     <loc>https://bhklab.github.io/AnnotationGx/reference/gCSI_sampleMetadata.html</loc>
+  </url>
+  <url>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/gCSI_treatmentMetadata.html</loc>
   </url>
   <url>
     <loc>https://bhklab.github.io/AnnotationGx/reference/getChemblFilterTypes.html</loc>
@@ -122,6 +137,9 @@
   </url>
   <url>
     <loc>https://bhklab.github.io/AnnotationGx/reference/mapCompound2CID.html</loc>
+  </url>
+  <url>
+    <loc>https://bhklab.github.io/AnnotationGx/reference/mapCompound2CTD.html</loc>
   </url>
   <url>
     <loc>https://bhklab.github.io/AnnotationGx/reference/matchNested.html</loc>

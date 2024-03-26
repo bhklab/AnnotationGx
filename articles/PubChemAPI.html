@@ -27,7 +27,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">AnnotationGx</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9089</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9090</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,12 +42,18 @@
 <li class="active nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <h6 class="dropdown-header" data-toc-skip>Introduction</h6>
     <a class="dropdown-item" href="../articles/Introduction.html">Introduction to AnnotationGx</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Databases</h6>
     <a class="dropdown-item" href="../articles/Cellosaurus.html">Querying Cellosaurus</a>
     <a class="dropdown-item" href="../articles/ChEMBL.html">Querying ChEMBL Database</a>
     <a class="dropdown-item" href="../articles/OncoTree.html">Querying OncoTree</a>
     <a class="dropdown-item" href="../articles/PubChemAPI.html">Querying PubChem</a>
     <a class="dropdown-item" href="../articles/Unichem.html">Querying Unichem Database</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Pipeline Tutorials</h6>
+    <a class="dropdown-item" href="../articles/CTRP-Treatment-Annotation.html">Annotating CTRP Treatments</a>
   </div>
 </li>
 <li class="nav-item">
@@ -158,7 +164,7 @@ name:</p>
 be returned and a warning will be issued.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mapCompound2CID.html">mapCompound2CID</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">drugs</span>, <span class="st">"non existent compound"</span>, <span class="st">"another bad compound"</span><span class="op">)</span>, first <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">[20:21:47][WARNING][AnnotationGx::getPubchemCompound] Some queries failed. See the 'failed' object for details.  </span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">[21:03:46][WARNING][AnnotationGx::getPubchemCompound]  Some queries failed. See the 'failed' object for details. </span></span></span>
 <span><span class="co">#&gt;                     name    cids</span></span>
 <span><span class="co">#&gt;                   &lt;char&gt;   &lt;int&gt;</span></span>
 <span><span class="co">#&gt; 1:               Aspirin    2244</span></span>
@@ -291,11 +297,11 @@ get the available annotation headings and types.</p>
 <span><span class="co">#&gt;   4:  17O NMR Spectra Compound</span></span>
 <span><span class="co">#&gt;   5:  19F NMR Spectra Compound</span></span>
 <span><span class="co">#&gt;  ---                          </span></span>
-<span><span class="co">#&gt; 636: Wiley References Compound</span></span>
-<span><span class="co">#&gt; 637:      WormBase ID     Gene</span></span>
-<span><span class="co">#&gt; 638:      WormBase ID  Protein</span></span>
-<span><span class="co">#&gt; 639:  Xenbase Gene ID     Gene</span></span>
-<span><span class="co">#&gt; 640:          ZFIN ID     Gene</span></span></code></pre></div>
+<span><span class="co">#&gt; 637: Wiley References Compound</span></span>
+<span><span class="co">#&gt; 638:      WormBase ID     Gene</span></span>
+<span><span class="co">#&gt; 639:      WormBase ID  Protein</span></span>
+<span><span class="co">#&gt; 640:  Xenbase Gene ID     Gene</span></span>
+<span><span class="co">#&gt; 641:          ZFIN ID     Gene</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="get-annotation-headings-for-a-specific-type">Get annotation headings for a specific type:<a class="anchor" aria-label="anchor" href="#get-annotation-headings-for-a-specific-type"></a>
@@ -310,11 +316,11 @@ get the available annotation headings and types.</p>
 <span><span class="co">#&gt;   4:                           17O NMR Spectra Compound</span></span>
 <span><span class="co">#&gt;   5:                           19F NMR Spectra Compound</span></span>
 <span><span class="co">#&gt;  ---                                                   </span></span>
-<span><span class="co">#&gt; 475: Volatilization from Water/Soil (Complete) Compound</span></span>
-<span><span class="co">#&gt; 476:                   WHO Essential Medicines Compound</span></span>
-<span><span class="co">#&gt; 477:                                  Wikidata Compound</span></span>
-<span><span class="co">#&gt; 478:                                 Wikipedia Compound</span></span>
-<span><span class="co">#&gt; 479:                          Wiley References Compound</span></span></code></pre></div>
+<span><span class="co">#&gt; 476: Volatilization from Water/Soil (Complete) Compound</span></span>
+<span><span class="co">#&gt; 477:                   WHO Essential Medicines Compound</span></span>
+<span><span class="co">#&gt; 478:                                  Wikidata Compound</span></span>
+<span><span class="co">#&gt; 479:                                 Wikipedia Compound</span></span>
+<span><span class="co">#&gt; 480:                          Wiley References Compound</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="get-annotation-headings-for-a-specific-heading">Get annotation headings for a specific heading:<a class="anchor" aria-label="anchor" href="#get-annotation-headings-for-a-specific-heading"></a>
@@ -345,16 +351,16 @@ CID.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">cids</span><span class="op">)</span>, <span class="va">CAS</span> <span class="op">:=</span> <span class="fu"><a href="../reference/annotatePubchemCompound.html">annotatePubchemCompound</a></span><span class="op">(</span><span class="va">cids</span>, <span class="st">"CAS"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="va">result</span></span>
-<span><span class="co">#&gt;                     name    cids         CAS</span></span>
-<span><span class="co">#&gt;                   &lt;char&gt;   &lt;int&gt;      &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1:               Aspirin    2244     50-78-2</span></span>
-<span><span class="co">#&gt; 2:             Erlotinib  176870 183321-74-6</span></span>
-<span><span class="co">#&gt; 3:             Acadesine   17513   2627-69-2</span></span>
-<span><span class="co">#&gt; 4:          Camptothecin   24360   7689-03-4</span></span>
-<span><span class="co">#&gt; 5:    Vincaleukoblastine   13342    865-21-4</span></span>
-<span><span class="co">#&gt; 6:             Cisplatin 5702198        &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 7: non existent compound      NA        &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 8:  another bad compound      NA        &lt;NA&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt;                     name    cids                                CAS</span></span>
+<span><span class="co">#&gt;                   &lt;char&gt;   &lt;int&gt;                             &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1:               Aspirin    2244                            50-78-2</span></span>
+<span><span class="co">#&gt; 2:             Erlotinib  176870                        183321-74-6</span></span>
+<span><span class="co">#&gt; 3:             Acadesine   17513                          2627-69-2</span></span>
+<span><span class="co">#&gt; 4:          Camptothecin   24360                          7689-03-4</span></span>
+<span><span class="co">#&gt; 5:    Vincaleukoblastine   13342                           865-21-4</span></span>
+<span><span class="co">#&gt; 6:             Cisplatin 5702198 15663-27-1; 26035-31-4; 14913-33-8</span></span>
+<span><span class="co">#&gt; 7: non existent compound      NA                               &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 8:  another bad compound      NA                               &lt;NA&gt;</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">

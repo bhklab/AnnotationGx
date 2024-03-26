@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">AnnotationGx</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9089</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9090</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,12 +24,18 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <h6 class="dropdown-header" data-toc-skip>Introduction</h6>
     <a class="dropdown-item" href="../articles/Introduction.html">Introduction to AnnotationGx</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Databases</h6>
     <a class="dropdown-item" href="../articles/Cellosaurus.html">Querying Cellosaurus</a>
     <a class="dropdown-item" href="../articles/ChEMBL.html">Querying ChEMBL Database</a>
     <a class="dropdown-item" href="../articles/OncoTree.html">Querying OncoTree</a>
     <a class="dropdown-item" href="../articles/PubChemAPI.html">Querying PubChem</a>
     <a class="dropdown-item" href="../articles/Unichem.html">Querying Unichem Database</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Pipeline Tutorials</h6>
+    <a class="dropdown-item" href="../articles/CTRP-Treatment-Annotation.html">Annotating CTRP Treatments</a>
   </div>
 </li>
 <li class="nav-item">
@@ -88,11 +94,11 @@ Options include "Compound", "Gene", "Taxonomy", "Element", "Assay", "Protein", "
 <span class="r-out co"><span class="r-pr">#&gt;</span>   4:  17O NMR Spectra Compound</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   5:  19F NMR Spectra Compound</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ---                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 636: Wiley References Compound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 637:      WormBase ID     Gene</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 638:      WormBase ID  Protein</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 639:  Xenbase Gene ID     Gene</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 640:          ZFIN ID     Gene</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 637: Wiley References Compound</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 638:      WormBase ID     Gene</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 639:      WormBase ID  Protein</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 640:  Xenbase Gene ID     Gene</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 641:          ZFIN ID     Gene</span>
 <span class="r-in"><span><span class="fu">getPubchemAnnotationHeadings</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"Compound"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                        Heading     Type</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                         &lt;char&gt;   &lt;char&gt;</span>
@@ -102,11 +108,11 @@ Options include "Compound", "Gene", "Taxonomy", "Element", "Assay", "Protein", "
 <span class="r-out co"><span class="r-pr">#&gt;</span>   4:                           17O NMR Spectra Compound</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   5:                           19F NMR Spectra Compound</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                                   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 475: Volatilization from Water/Soil (Complete) Compound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 476:                   WHO Essential Medicines Compound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 477:                                  Wikidata Compound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 478:                                 Wikipedia Compound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 479:                          Wiley References Compound</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 476: Volatilization from Water/Soil (Complete) Compound</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 477:                   WHO Essential Medicines Compound</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 478:                                  Wikidata Compound</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 479:                                 Wikipedia Compound</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 480:                          Wiley References Compound</span>
 <span class="r-in"><span><span class="fu">getPubchemAnnotationHeadings</span><span class="op">(</span>heading <span class="op">=</span> <span class="st">"ChEMBL*"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                Heading     Type</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 &lt;char&gt;   &lt;char&gt;</span>
