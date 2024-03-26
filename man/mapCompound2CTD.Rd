@@ -5,19 +5,22 @@
 \title{Map Compound to CTD}
 \usage{
 mapCompound2CTD(
-  drug,
+  compounds,
   base_url = "https://ctd2-dashboard.nci.nih.gov/dashboard/get",
   endpoint = "compound",
+  nParallel = parallel::detectCores() - 1,
   raw = FALSE,
   query_only = FALSE
 )
 }
 \arguments{
-\item{drug}{The name of the drug compound to be mapped.}
+\item{compounds}{A character vector of drug compounds to map to the CTD database.}
 
 \item{base_url}{The base URL of the CTD API. Default is "https://ctd2-dashboard.nci.nih.gov/dashboard/get".}
 
 \item{endpoint}{The API endpoint for the compound mapping. Default is "compound".}
+
+\item{nParallel}{The number of parallel processes to use. Default is one less than the number of available cores.}
 
 \item{raw}{Logical indicating whether to return the raw response from the API. Default is FALSE.}
 
