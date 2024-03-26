@@ -13,7 +13,7 @@ articles:
   - Introduction
 
 - title: Articles
-  navbar: Articles
+  navbar: Databases
   contents:
   - Cellosaurus
   - ChEMBL

@@ -116,7 +116,7 @@ gCSI_treatmentMetadata_annotated
 
 
 ``` {r mapCTRP}
-(compounds_to_cids <- 
+(CTRP_compounds_to_cids <- 
   CTRP_treatmentMetadata[, 
     AnnotationGx::mapCompound2CID(
         names =  CTRP.treatmentid,
@@ -125,15 +125,106 @@ gCSI_treatmentMetadata_annotated
       ]
 )
 failed <- 
-  attributes(compounds_to_cids)$failed |> 
+  attributes(CTRP_compounds_to_cids)$failed |> 
     names()
 failed
+
+properties <- c("Title", "MolecularFormula", "InChIKey", "MolecularWeight")
+
+cids_to_properties <- CTRP_compounds_to_cids[
+  !is.na(cids), 
+  {
+    AnnotationGx::mapCID2Properties(
+      ids = cids,
+      properties = properties
+      )
+  }
+]
+
+CTRP_treatmentMetadata_annotated <- merge(
+  CTRP_compounds_to_cids,
+  cids_to_properties,
+  by.x = "cids",
+  by.y = "CID",
+  all.x = TRUE
+)
+
+old_names <- c("cids", "MolecularFormula", "MolecularWeight", "InChIKey", "Title")
+
+
 ```
 
 
+# GDSC
 ``` {r mapGDSC}
 
+(compounds_to_cids <- 
+  GDSC_treatmentMetadata[, 
+    AnnotationGx::mapCompound2CID(
+        names =  GDSC.treatmentid,
+        first = TRUE
+        )
+      ]
+)
+failed <- 
+  attributes(compounds_to_cids)$failed |> 
+    names()
+failed
+
+properties <- c("Title", "MolecularFormula", "InChIKey", "MolecularWeight")
+
+cids_to_properties <- compounds_to_cids[
+  !is.na(cids), 
+  {
+    AnnotationGx::mapCID2Properties(
+      ids = cids,
+      properties = properties
+      )
+  }
+]
+
+GDSC_treatmentMetadata_annotated <- merge(
+  compounds_to_cids,
+  cids_to_properties,
+  by.x = "cids",
+  by.y = "CID",
+  all.x = TRUE
+)
+
+old_names <- c("cids", "MolecularFormula", "MolecularWeight", "InChIKey", "Title")
+
+data.table::setnames(GDSC_treatmentMetadata_annotated, old_names, paste0("PubChem.", old_names))
+
+GDSC_treatmentMetadata_annotated
+```
 
 
+``` {r using cancerxgene API}
+url <- "https://www.cancerrxgene.org/api/compounds?list=all&export=tsv"
+
+responses <- AnnotationGx:::.build_request(url) |> 
+  AnnotationGx:::.perform_request() 
+
+GDSC_API_treatmentMetadata <- AnnotationGx:::.parse_resp_tsv(responses) |> data.table::as.data.table()
+
+GDSC_API_treatmentMetadata[, unique(PubCHEM), by = "Name"][!is.na(V1) & !V1 %in% c("none","None"),]
+
+```
+
+
+``` {r compare the two}
+
+gdsc_merged <- merge(
+  GDSC_API_treatmentMetadata[, unique(PubCHEM), by = "Name"][!is.na(V1) & !V1 %in% c("none","None"),],
+  compounds_to_cids[!is.na(cids)][order(name)],
+  by.x = "Name", 
+  by.y = "name",
+  all = T)
+
+
+non_na_gdsc_merged <- gdsc_merged[!is.na(V1) & !is.na(cids),]
+
+# subset where the V1 value is not the same as the cids value
+non_na_gdsc_merged[V1 != cids,]
 
 ```
