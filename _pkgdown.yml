@@ -12,3 +12,11 @@ articles:
   - OncoTree
   - PubChemAPI
   - Unichem
+
+pipelines:
+- title: Pipelines
+  navbar: ~
+  contents:
+  - CTRP-Treatment-Annotation
+  - sample_pipeline
+  - treatment_pipeline
