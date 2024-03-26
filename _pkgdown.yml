@@ -20,3 +20,5 @@ pipelines:
   - CTRP-Treatment-Annotation
   - sample_pipeline
   - treatment_pipeline
+
+# Path: _pkgdown.yml

@@ -2,8 +2,6 @@ library(AnnotationGx)
 library(testthat)
 library(checkmate)
 
-
-
 test_that("mapCompound2CTD returns expected results", {
   # Test case 1: Single compound mapping
   compounds <- c("Bax channel blocker")
