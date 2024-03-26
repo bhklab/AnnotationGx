@@ -17,7 +17,7 @@
 #' If \code{raw} is set to TRUE, the raw response from the API will be returned.
 #'
 #' @examples
-#' mapCompound2CTD("Bax channel blocker")
+#' mapCompound2CTD("Bax channel blocker", nParallel = 1)
 #'
 #' @export
 mapCompound2CTD <- function(
@@ -66,10 +66,9 @@ mapCompound2CTD <- function(
             resp <- .parse_resp_json(resp)
             if(raw) return(resp)
 
-            # Your original data.table
-            original_dt <- .asDT(resp$xrefs)[, .(databaseId, databaseName)]
-            original_dt[, displayName := resp$displayName]
-            # Reshape the data
+            original_dt <- .asDT(resp$xrefs)[, c("databaseId", "databaseName")]
+            original_dt[, "displayName" := resp$displayName]
+
             dt <- data.table::dcast(
                     original_dt, 
                     formula = displayName ~ databaseName, 
@@ -79,6 +78,10 @@ mapCompound2CTD <- function(
         }, 
         mc.cores = nParallel    
     )
+    if(raw) {
+        names(results) <- compounds
+        return(results)
+    }
 
     return(data.table::rbindlist(results, fill = TRUE))
 }
