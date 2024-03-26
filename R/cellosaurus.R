@@ -144,6 +144,9 @@ mapCell2Accession <- function(
 #'
 #' @param resp The response object containing the cellosaurus data
 #' @return A list of parsed lines from the cellosaurus data
+#' 
+#' @keywords internal
+#' @noRd
 .parse_cellosaurus_lines <- function(resp){
   lines <- httr2::resp_body_string(resp)  |>
             strsplit("\n") |> 
@@ -207,6 +210,7 @@ parse_cellosaurus_text <- function(resp, name, parsed = FALSE, keep_duplicates =
 #' # $ID2
 #' # [1] "Line 1" "Line 2"
 #'
+#' @noRd
 .split_cellosaurus_lines <- function(lines){
   x <- strSplit(lines, split = "   ")
   x <- split(x[, 2L], f = x[, 1L])
