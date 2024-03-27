@@ -79,12 +79,6 @@
     <loc>https://bhklab.github.io/AnnotationGx/reference/cleanCharacterStrings.html</loc>
   </url>
   <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/dot-parse_cellosaurus_lines.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/dot-split_cellosaurus_lines.html</loc>
-  </url>
-  <url>
     <loc>https://bhklab.github.io/AnnotationGx/reference/gCSI_sampleMetadata.html</loc>
   </url>
   <url>
@@ -143,9 +137,6 @@
   </url>
   <url>
     <loc>https://bhklab.github.io/AnnotationGx/reference/matchNested.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/options.html</loc>
   </url>
   <url>
     <loc>https://bhklab.github.io/AnnotationGx/reference/queryChemblAPI.html</loc>

@@ -27,7 +27,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">AnnotationGx</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9090</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9095</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,12 +45,14 @@
     <h6 class="dropdown-header" data-toc-skip>Introduction</h6>
     <a class="dropdown-item" href="../articles/Introduction.html">Introduction to AnnotationGx</a>
     <div class="dropdown-divider"></div>
-    <h6 class="dropdown-header" data-toc-skip>Databases</h6>
+    <h6 class="dropdown-header" data-toc-skip>Annotating Samples</h6>
     <a class="dropdown-item" href="../articles/Cellosaurus.html">Querying Cellosaurus</a>
-    <a class="dropdown-item" href="../articles/ChEMBL.html">Querying ChEMBL Database</a>
-    <a class="dropdown-item" href="../articles/OncoTree.html">Querying OncoTree</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Annotating Compounds</h6>
     <a class="dropdown-item" href="../articles/PubChemAPI.html">Querying PubChem</a>
     <a class="dropdown-item" href="../articles/Unichem.html">Querying Unichem Database</a>
+    <a class="dropdown-item" href="../articles/ChEMBL.html">Querying ChEMBL Database</a>
+    <a class="dropdown-item" href="../articles/OncoTree.html">Querying OncoTree</a>
     <div class="dropdown-divider"></div>
     <h6 class="dropdown-header" data-toc-skip>Pipeline Tutorials</h6>
     <a class="dropdown-item" href="../articles/CTRP-Treatment-Annotation.html">Annotating CTRP Treatments</a>
@@ -98,96 +100,194 @@ and a detailed description can be found at <a href="https://www.cellosaurus.org/
 <p>The <code>AnnotationGx</code> package provides a wrapper around the
 Cellosaurus API to map cell line identifiers to the Cellosaurus database
 fields.</p>
-<div class="section level3">
-<h3 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
-</h3>
+</div>
+<div class="section level2">
+<h2 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
+</h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bhklab.github.io/AnnotationGx/">AnnotationGx</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">BPPARAM</span> <span class="op">=</span> <span class="fu">BiocParallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocParallel/man/MulticoreParam-class.html" class="external-link">MulticoreParam</a></span><span class="op">(</span>progressbar<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># set options to warn to quiet info logs</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span><span class="st">"log_level"</span> <span class="op">=</span> <span class="st">"WARN"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="mapping-from-cell-line-name-to-accession-id">Mapping from Cell Line name to Accession id<a class="anchor" aria-label="anchor" href="#mapping-from-cell-line-name-to-accession-id"></a>
-</h3>
+<div class="section level2">
+<h2 id="mapping-from-cell-line-name-to-accession-id">Mapping from Cell Line name to Accession id<a class="anchor" aria-label="anchor" href="#mapping-from-cell-line-name-to-accession-id"></a>
+</h2>
 <p>The main function that is provided by the package is
 <code>mapCell2Accession</code>. This function takes in a vector of cell
 line identifiers and returns a <code>data.table</code>.</p>
-<pre><code>Usage and default values:
-     mapCell2Accession(
-       ids,
-       numResults = 1000,
-       from = "id",
-       to = c("id", "ac"),
-       prioritizeParent = FALSE,
-       orderby = "ac",
-       query_only = FALSE,
-       raw = FALSE,
-       BPPARAM = BiocParallel::SerialParam(),
-       ...
-     )</code></pre>
+<p>By default, the function will try to map using the common identifiers
+and synonyms (<code>from = "idsy"</code>) and will return the the
+Standardized Identifier as <code>cellLineName</code> and the Cellosaurus
+Accession ID <code>accession</code>. The function also returns an
+additional column <code>query</code> which can be used to identify the
+original query if needed.</p>
 <p>Let’s see how we can use this function to map the “HeLa” and “A549”
-cell line names to the Cellosaurus database. By default, the function
-will try to map using the common identifier (<code>from ="id"</code>)
-name and will return the standard identifier <code>id</code> and the
-Cellosaurus accession ID <code>ac</code>. The function also returns two
-additional columns <code>query</code> and
-<code>query:&lt;from&gt;</code> which can be used to identify the
-original query and the original identifier type if needed.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="op">(</span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mapCell2Accession.html">mapCell2Accession</a></span><span class="op">(</span><span class="st">"HeLa"</span>, keep_duplicates <span class="op">=</span> <span class="cn">T</span>, raw <span class="op">=</span> <span class="cn">T</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">[21:03:18][INFO][AnnotationGx::mapCell2Accession] Creating Cellosaurus queries </span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">[21:03:18][INFO][AnnotationGx::mapCell2Accession] Building Cellosaurus requests </span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">[21:03:18][INFO][AnnotationGx::mapCell2Accession] Performing Cellosaurus queries </span></span></span>
-<span><span class="co">#&gt; $HeLa</span></span>
-<span><span class="co">#&gt; <span style="color: #0000BB;">&lt;httr2_response&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="font-weight: bold;">GET</span></span></span>
-<span><span class="co">#&gt; https://api.cellosaurus.org/search/cell-line?q=idsy%3AHeLa&amp;sort=ac%20asc&amp;fields=ac%2Cid%2Csy%2Cmisspelling%2Cdr%2Ccc%2Cca%2Cdi%2Cag%2Csx%2Chi&amp;format=txt&amp;rows=10000</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">Status</span>: 200 OK</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">Content-Type</span>: text/plain</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">Body</span>: In memory (768864 bytes)</span></span>
-<span><span class="va">result</span><span class="op">$</span><span class="va">HeLa</span> <span class="op">-&gt;</span> <span class="va">resp</span></span>
-<span></span>
-<span><span class="op">(</span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mapCell2Accession.html">mapCell2Accession</a></span><span class="op">(</span><span class="st">"HeLa"</span>, keep_duplicates <span class="op">=</span> <span class="cn">T</span>, raw <span class="op">=</span> <span class="cn">F</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">[21:03:20][INFO][AnnotationGx::mapCell2Accession] Creating Cellosaurus queries </span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">[21:03:20][INFO][AnnotationGx::mapCell2Accession] Building Cellosaurus requests </span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">[21:03:20][INFO][AnnotationGx::mapCell2Accession] Performing Cellosaurus queries </span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">[21:03:20][INFO][AnnotationGx::mapCell2Accession] Parsing Cellosaurus responses </span></span></span>
+cell line names to the Cellosaurus database.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/mapCell2Accession.html">mapCell2Accession</a></span><span class="op">(</span><span class="st">"hela"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">[21:19:59][INFO][AnnotationGx::mapCell2Accession] Creating Cellosaurus queries </span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">[21:19:59][INFO][AnnotationGx::mapCell2Accession] Building Cellosaurus requests </span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">[21:19:59][INFO][AnnotationGx::mapCell2Accession] Performing Cellosaurus queries </span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">[21:20:00][INFO][AnnotationGx::mapCell2Accession] Parsing Cellosaurus responses </span></span></span>
 <span><span class="co">#&gt;    cellLineName accession  query</span></span>
 <span><span class="co">#&gt;          &lt;char&gt;    &lt;char&gt; &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1:         HeLa CVCL_0030   HeLa</span></span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<span><span class="co">#&gt; 1:         HeLa CVCL_0030   hela</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/mapCell2Accession.html">mapCell2Accession</a></span><span class="op">(</span><span class="st">"A549"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">[21:03:23][INFO][AnnotationGx::mapCell2Accession] Creating Cellosaurus queries </span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">[21:03:23][INFO][AnnotationGx::mapCell2Accession] Building Cellosaurus requests </span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">[21:03:23][INFO][AnnotationGx::mapCell2Accession] Performing Cellosaurus queries </span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">[21:03:24][INFO][AnnotationGx::mapCell2Accession] Parsing Cellosaurus responses </span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">[21:20:02][INFO][AnnotationGx::mapCell2Accession] Creating Cellosaurus queries </span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">[21:20:02][INFO][AnnotationGx::mapCell2Accession] Building Cellosaurus requests </span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">[21:20:02][INFO][AnnotationGx::mapCell2Accession] Performing Cellosaurus queries </span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">[21:20:03][INFO][AnnotationGx::mapCell2Accession] Parsing Cellosaurus responses </span></span></span>
 <span><span class="co">#&gt;    cellLineName accession  query</span></span>
 <span><span class="co">#&gt;          &lt;char&gt;    &lt;char&gt; &lt;char&gt;</span></span>
 <span><span class="co">#&gt; 1:        A-549 CVCL_0023   A549</span></span></code></pre></div>
-<p>Another example using the BT474 cell line.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># our query:</span></span>
-<span><span class="fu"><a href="../reference/mapCell2Accession.html">mapCell2Accession</a></span><span class="op">(</span><span class="st">"BT474"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">[21:03:27][INFO][AnnotationGx::mapCell2Accession] Creating Cellosaurus queries </span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">[21:03:27][INFO][AnnotationGx::mapCell2Accession] Building Cellosaurus requests </span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">[21:03:27][INFO][AnnotationGx::mapCell2Accession] Performing Cellosaurus queries </span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">[21:03:27][INFO][AnnotationGx::mapCell2Accession] Parsing Cellosaurus responses </span></span></span>
-<span><span class="co">#&gt;    cellLineName accession  query</span></span>
-<span><span class="co">#&gt;          &lt;char&gt;    &lt;char&gt; &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1:       BT-474 CVCL_0179  BT474</span></span>
-<span></span>
-<span><span class="fu"><a href="../reference/mapCell2Accession.html">mapCell2Accession</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A549"</span>, <span class="st">"OOPS"</span>, <span class="st">"BT474"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">[21:03:27][INFO][AnnotationGx::mapCell2Accession] Creating Cellosaurus queries </span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">[21:03:27][INFO][AnnotationGx::mapCell2Accession] Building Cellosaurus requests </span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">[21:03:27][INFO][AnnotationGx::mapCell2Accession] Performing Cellosaurus queries </span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">[21:03:28][INFO][AnnotationGx::mapCell2Accession] Parsing Cellosaurus responses </span></span></span>
+<p>Functionality for mapping multiple cell lines is also supported.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/mapCell2Accession.html">mapCell2Accession</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A549"</span>, <span class="st">"THIS SHOULD FAIL"</span>, <span class="st">"BT474"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">[21:20:06][INFO][AnnotationGx::mapCell2Accession] Creating Cellosaurus queries </span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">[21:20:06][INFO][AnnotationGx::mapCell2Accession] Building Cellosaurus requests </span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">[21:20:06][INFO][AnnotationGx::mapCell2Accession] Performing Cellosaurus queries </span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">[21:20:06][INFO][AnnotationGx::mapCell2Accession] Parsing Cellosaurus responses </span></span></span>
+<span><span class="co">#&gt;    cellLineName accession            query</span></span>
+<span><span class="co">#&gt;          &lt;char&gt;    &lt;char&gt;           &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1:        A-549 CVCL_0023             A549</span></span>
+<span><span class="co">#&gt; 2:         &lt;NA&gt;      &lt;NA&gt; THIS SHOULD FAIL</span></span>
+<span><span class="co">#&gt; 3:       BT-474 CVCL_0179            BT474</span></span></code></pre></div>
+<p>By default, the function will parse the API responses to return the
+most common mapping. To return all possible mappings, set
+<code>parsed = FALSE</code>.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># parsed</span></span>
+<span><span class="fu"><a href="../reference/mapCell2Accession.html">mapCell2Accession</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A549"</span>, <span class="st">"hela"</span>, <span class="st">"BT474"</span><span class="op">)</span>, parsed <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">[21:20:09][INFO][AnnotationGx::mapCell2Accession] Creating Cellosaurus queries </span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">[21:20:09][INFO][AnnotationGx::mapCell2Accession] Building Cellosaurus requests </span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">[21:20:09][INFO][AnnotationGx::mapCell2Accession] Performing Cellosaurus queries </span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">[21:20:10][INFO][AnnotationGx::mapCell2Accession] Parsing Cellosaurus responses </span></span></span>
 <span><span class="co">#&gt;    cellLineName accession  query</span></span>
 <span><span class="co">#&gt;          &lt;char&gt;    &lt;char&gt; &lt;char&gt;</span></span>
 <span><span class="co">#&gt; 1:        A-549 CVCL_0023   A549</span></span>
-<span><span class="co">#&gt; 2:         &lt;NA&gt;      &lt;NA&gt;   OOPS</span></span>
-<span><span class="co">#&gt; 3:       BT-474 CVCL_0179  BT474</span></span></code></pre></div>
+<span><span class="co">#&gt; 2:         HeLa CVCL_0030   hela</span></span>
+<span><span class="co">#&gt; 3:       BT-474 CVCL_0179  BT474</span></span>
+<span></span>
+<span><span class="co"># no parsing</span></span>
+<span><span class="fu"><a href="../reference/mapCell2Accession.html">mapCell2Accession</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A549"</span>, <span class="st">"hela"</span>, <span class="st">"BT474"</span><span class="op">)</span>, parsed <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">[21:20:13][INFO][AnnotationGx::mapCell2Accession] Creating Cellosaurus queries </span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">[21:20:13][INFO][AnnotationGx::mapCell2Accession] Building Cellosaurus requests </span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">[21:20:13][INFO][AnnotationGx::mapCell2Accession] Performing Cellosaurus queries </span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">[21:20:13][INFO][AnnotationGx::mapCell2Accession] Parsing Cellosaurus responses </span></span></span>
+<span><span class="co">#&gt;       cellLineName accession  query</span></span>
+<span><span class="co">#&gt;             &lt;char&gt;    &lt;char&gt; &lt;char&gt;</span></span>
+<span><span class="co">#&gt;    1:        A-549 CVCL_0023   A549</span></span>
+<span><span class="co">#&gt;    2:   A549(VM)28 CVCL_4V06   A549</span></span>
+<span><span class="co">#&gt;    3:   A549(VP)28 CVCL_4V07   A549</span></span>
+<span><span class="co">#&gt;    4:  A549.EpoB40 CVCL_4Z15   A549</span></span>
+<span><span class="co">#&gt;    5:    A549-Dual CVCL_5I73   A549</span></span>
+<span><span class="co">#&gt;   ---                              </span></span>
+<span><span class="co">#&gt; 2587:  BT474-LAPRa CVCL_EI02  BT474</span></span>
+<span><span class="co">#&gt; 2588:  BT474-LAPRb CVCL_EI03  BT474</span></span>
+<span><span class="co">#&gt; 2589:     BT474-LR CVCL_VL01  BT474</span></span>
+<span><span class="co">#&gt; 2590:     BT474 A3 CVCL_YX79  BT474</span></span>
+<span><span class="co">#&gt; 2591:     BT474-J4 CVCL_ZL46  BT474</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="misspellings-and-synonyms">Misspellings and synonyms<a class="anchor" aria-label="anchor" href="#misspellings-and-synonyms"></a>
+</h3>
+<p>The backend of the function also tries to map any misspellings or
+synonyms of the cell line names.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="va">samples</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SK23"</span>, <span class="st">"SJCRH30"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/mapCell2Accession.html">mapCell2Accession</a></span><span class="op">(</span><span class="va">samples</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">[21:20:16][INFO][AnnotationGx::mapCell2Accession] Creating Cellosaurus queries </span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">[21:20:16][INFO][AnnotationGx::mapCell2Accession] Building Cellosaurus requests </span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">[21:20:16][INFO][AnnotationGx::mapCell2Accession] Performing Cellosaurus queries </span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">[21:20:16][INFO][AnnotationGx::mapCell2Accession] Parsing Cellosaurus responses </span></span></span>
+<span><span class="co">#&gt;    cellLineName accession   query</span></span>
+<span><span class="co">#&gt;          &lt;char&gt;    &lt;char&gt;  &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1:    SK-MEL-23 CVCL_6027    SK23</span></span>
+<span><span class="co">#&gt; 2:         Rh30 CVCL_0041 SJCRH30</span></span></code></pre></div>
+<p>If some cell lines still cannot be found, there is an additional
+parameter for fuzzy searching</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co"># No fuzzy </span></span>
+<span><span class="fu"><a href="../reference/mapCell2Accession.html">mapCell2Accession</a></span><span class="op">(</span><span class="st">"DOR 13"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">[21:20:17][INFO][AnnotationGx::mapCell2Accession] Creating Cellosaurus queries </span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">[21:20:17][INFO][AnnotationGx::mapCell2Accession] Building Cellosaurus requests </span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">[21:20:17][INFO][AnnotationGx::mapCell2Accession] Performing Cellosaurus queries </span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">[21:20:17][INFO][AnnotationGx::mapCell2Accession] Parsing Cellosaurus responses </span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">[21:20:17][WARNING]No results found for DOR 13 </span></span></span>
+<span><span class="co">#&gt;     query</span></span>
+<span><span class="co">#&gt;    &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1: DOR 13</span></span>
+<span></span>
+<span><span class="co"># Fuzzy</span></span>
+<span><span class="fu"><a href="../reference/mapCell2Accession.html">mapCell2Accession</a></span><span class="op">(</span><span class="st">"DOR 13"</span>, fuzzy <span class="op">=</span><span class="cn">T</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">[21:20:17][INFO][AnnotationGx::mapCell2Accession] Creating Cellosaurus queries </span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">[21:20:17][INFO][AnnotationGx::mapCell2Accession] Building Cellosaurus requests </span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">[21:20:17][INFO][AnnotationGx::mapCell2Accession] Performing Cellosaurus queries </span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">[21:20:17][INFO][AnnotationGx::mapCell2Accession] Parsing Cellosaurus responses </span></span></span>
+<span><span class="co">#&gt;    cellLineName accession  query</span></span>
+<span><span class="co">#&gt;          &lt;char&gt;    &lt;char&gt; &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1:        DOV13 CVCL_6774 DOR 13</span></span></code></pre></div>
 </div>
+</div>
+<div class="section level2">
+<h2 id="annotating-cellosaurus-accessions">Annotating Cellosaurus Accessions<a class="anchor" aria-label="anchor" href="#annotating-cellosaurus-accessions"></a>
+</h2>
+<p>Once accession IDs are obtained and the mappings are satisfactory,
+they can then be mapped to other fields in the Cellosaurus database. A
+list of available fields can be found using
+<code><a href="../reference/cellosaurus_fields.html">cellosaurus_fields()</a></code></p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/cellosaurus_fields.html">cellosaurus_fields</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [1] "id"                 "sy"                 "idsy"              </span></span>
+<span><span class="co">#&gt;  [4] "ac"                 "acas"               "dr"                </span></span>
+<span><span class="co">#&gt;  [7] "ref"                "rx"                 "ra"                </span></span>
+<span><span class="co">#&gt; [10] "rt"                 "rl"                 "ww"                </span></span>
+<span><span class="co">#&gt; [13] "genome-ancestry"    "hla"                "registration"      </span></span>
+<span><span class="co">#&gt; [16] "sequence-variation" "anecdotal"          "biotechnology"     </span></span>
+<span><span class="co">#&gt; [19] "breed"              "caution"            "cell-type"         </span></span>
+<span><span class="co">#&gt; [22] "characteristics"    "donor-info"         "derived-from-site" </span></span>
+<span><span class="co">#&gt; [25] "discontinued"       "doubling-time"      "from"              </span></span>
+<span><span class="co">#&gt; [28] "group"              "karyotype"          "knockout"          </span></span>
+<span><span class="co">#&gt; [31] "msi"                "miscellaneous"      "misspelling"       </span></span>
+<span><span class="co">#&gt; [34] "mab-isotype"        "mab-target"         "omics"             </span></span>
+<span><span class="co">#&gt; [37] "part-of"            "population"         "problematic"       </span></span>
+<span><span class="co">#&gt; [40] "resistance"         "senescence"         "transfected"       </span></span>
+<span><span class="co">#&gt; [43] "transformant"       "virology"           "cc"                </span></span>
+<span><span class="co">#&gt; [46] "str"                "di"                 "din"               </span></span>
+<span><span class="co">#&gt; [49] "dio"                "ox"                 "sx"                </span></span>
+<span><span class="co">#&gt; [52] "ag"                 "oi"                 "hi"                </span></span>
+<span><span class="co">#&gt; [55] "ch"                 "ca"                 "dt"                </span></span>
+<span><span class="co">#&gt; [58] "dtc"                "dtu"                "dtv"</span></span></code></pre></div>
+<p>The <code><a href="../reference/annotateCellAccession.html">annotateCellAccession()</a></code> function can be used to map
+the accession IDs to the desired fields. By default the function will
+try to map to
+<code>"id", "ac", "hi", "sy", "ca", "sx", "ag", "di", "derived-from-site", "misspelling", "dt"</code></p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co"># Annotate the A549 cell line</span></span>
+<span><span class="va">mappedAccessions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mapCell2Accession.html">mapCell2Accession</a></span><span class="op">(</span><span class="st">"A549"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">[21:20:18][INFO][AnnotationGx::mapCell2Accession] Creating Cellosaurus queries </span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">[21:20:18][INFO][AnnotationGx::mapCell2Accession] Building Cellosaurus requests </span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">[21:20:18][INFO][AnnotationGx::mapCell2Accession] Performing Cellosaurus queries </span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">[21:20:19][INFO][AnnotationGx::mapCell2Accession] Parsing Cellosaurus responses </span></span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/annotateCellAccession.html">annotateCellAccession</a></span><span class="op">(</span>accessions <span class="op">=</span> <span class="va">mappedAccessions</span><span class="op">$</span><span class="va">accession</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    cellLineName accession         category</span></span>
+<span><span class="co">#&gt;          &lt;char&gt;    &lt;char&gt;           &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1:        A-549 CVCL_0023 Cancer cell line</span></span>
+<span><span class="co">#&gt;                                                      date ageAtSampling</span></span>
+<span><span class="co">#&gt;                                                    &lt;char&gt;        &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1: Created: 04-04-12; Last updated: 30-01-24; Version: 47           58Y</span></span>
+<span><span class="co">#&gt;    sexOfCell                                             synonyms  diseases</span></span>
+<span><span class="co">#&gt;       &lt;char&gt;                                               &lt;list&gt;    &lt;list&gt;</span></span>
+<span><span class="co">#&gt; 1:      Male A 549,A549,NCI-A549,A549/ATCC,A549 ATCC,A549ATCC,... &lt;list[1]&gt;</span></span>
+<span><span class="co">#&gt;    crossReferences hierarchy  comments</span></span>
+<span><span class="co">#&gt;             &lt;char&gt;    &lt;char&gt;    &lt;list&gt;</span></span>
+<span><span class="co">#&gt; 1:            &lt;NA&gt;      &lt;NA&gt; &lt;list[2]&gt;</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>

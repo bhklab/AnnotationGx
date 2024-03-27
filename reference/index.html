@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">AnnotationGx</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9090</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9095</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,12 +27,14 @@
     <h6 class="dropdown-header" data-toc-skip>Introduction</h6>
     <a class="dropdown-item" href="../articles/Introduction.html">Introduction to AnnotationGx</a>
     <div class="dropdown-divider"></div>
-    <h6 class="dropdown-header" data-toc-skip>Databases</h6>
+    <h6 class="dropdown-header" data-toc-skip>Annotating Samples</h6>
     <a class="dropdown-item" href="../articles/Cellosaurus.html">Querying Cellosaurus</a>
-    <a class="dropdown-item" href="../articles/ChEMBL.html">Querying ChEMBL Database</a>
-    <a class="dropdown-item" href="../articles/OncoTree.html">Querying OncoTree</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Annotating Compounds</h6>
     <a class="dropdown-item" href="../articles/PubChemAPI.html">Querying PubChem</a>
     <a class="dropdown-item" href="../articles/Unichem.html">Querying Unichem Database</a>
+    <a class="dropdown-item" href="../articles/ChEMBL.html">Querying ChEMBL Database</a>
+    <a class="dropdown-item" href="../articles/OncoTree.html">Querying OncoTree</a>
     <div class="dropdown-divider"></div>
     <h6 class="dropdown-header" data-toc-skip>Pipeline Tutorials</h6>
     <a class="dropdown-item" href="../articles/CTRP-Treatment-Annotation.html">Annotating CTRP Treatments</a>
@@ -55,8 +57,14 @@
     </div>
 
     <div class="section level2">
-      <h2 id="all-functions">All functions<a class="anchor" aria-label="anchor" href="#all-functions"></a></h2>
+      <h2 id="dataset-metadata">Dataset Metadata<a class="anchor" aria-label="anchor" href="#dataset-metadata"></a></h2>
       
+      
+
+      
+    </div><div class="section level2">
+      
+      <h3 id="ccle">CCLE<a class="anchor" aria-label="anchor" href="#ccle"></a></h3>
       
 
       
@@ -75,17 +83,18 @@
           <code><a href="CCLE_treatmentMetadata.html">CCLE_treatmentMetadata</a></code> 
         </dt>
         <dd>CCLE_treatmentMetadata is some preprocessed treatment metadata from the CCLE dataset</dd>
-      </dl><dl><dt>
-          
-          <code><a href="CTRP_sampleMetadata.html">CTRP_sampleMetadata</a></code> 
-        </dt>
-        <dd>CTRP_sampleMetadata is some preprocessed sample metadata from the CTRP dataset</dd>
-      </dl><dl><dt>
-          
-          <code><a href="CTRP_treatmentMetadata.html">CTRP_treatmentMetadata</a></code> 
-        </dt>
-        <dd>CTRP_treatmentMetadata is some preprocessed treatment metadata from the CTRP dataset</dd>
-      </dl><dl><dt>
+      </dl></div><div class="section level2">
+      
+      <h3 id="gdsc">GDSC<a class="anchor" aria-label="anchor" href="#gdsc"></a></h3>
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
           
           <code><a href="GDSC_sampleMetadata.html">GDSC_sampleMetadata</a></code> 
         </dt>
@@ -95,17 +104,93 @@
           <code><a href="GDSC_treatmentMetadata.html">GDSC_treatmentMetadata</a></code> 
         </dt>
         <dd>GDSC_treatmentMetadata is some preprocessed treatment metadata from the GDSC dataset</dd>
+      </dl></div><div class="section level2">
+      
+      <h3 id="ctrp">CTRP<a class="anchor" aria-label="anchor" href="#ctrp"></a></h3>
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="CTRP_sampleMetadata.html">CTRP_sampleMetadata</a></code> 
+        </dt>
+        <dd>CTRP_sampleMetadata is some preprocessed sample metadata from the CTRP dataset</dd>
       </dl><dl><dt>
           
-          <code><a href="annotateCellAccession.html">annotateCellAccession()</a></code> 
+          <code><a href="CTRP_treatmentMetadata.html">CTRP_treatmentMetadata</a></code> 
         </dt>
-        <dd>Annotate Cell Accession</dd>
+        <dd>CTRP_treatmentMetadata is some preprocessed treatment metadata from the CTRP dataset</dd>
+      </dl></div><div class="section level2">
+      
+      <h3 id="gcsi">gCSI<a class="anchor" aria-label="anchor" href="#gcsi"></a></h3>
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="gCSI_sampleMetadata.html">gCSI_sampleMetadata</a></code> 
+        </dt>
+        <dd>gCSI_sampleMetadata is some preprocessed sample metadata from the gCSI dataset</dd>
       </dl><dl><dt>
           
-          <code><a href="annotatePubchemCompound.html">annotatePubchemCompound()</a></code> 
+          <code><a href="gCSI_treatmentMetadata.html">gCSI_treatmentMetadata</a></code> 
         </dt>
-        <dd>Annotate PubChem Compound</dd>
+        <dd>gCSI_treatmentMetadata is some preprocessed treatment metadata from the gCSI dataset</dd>
+      </dl></div><div class="section level2">
+      <h2 id="id-cleaning">ID Cleaning<a class="anchor" aria-label="anchor" href="#id-cleaning"></a></h2>
+      
+      
+
+      
+    </div><div class="section level2">
+      
+      <h3 id="id-cleaning-1">ID Cleaning<a class="anchor" aria-label="anchor" href="#id-cleaning-1"></a></h3>
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="cleanCharacterStrings.html">cleanCharacterStrings()</a></code> 
+        </dt>
+        <dd>Clean character strings by removing special characters and formatting.</dd>
       </dl><dl><dt>
+          
+          <code><a href="standardize_names.html">standardize_names()</a></code> 
+        </dt>
+        <dd>Standardize Names</dd>
+      </dl></div><div class="section level2">
+      <h2 id="cellosaurus">Cellosaurus<a class="anchor" aria-label="anchor" href="#cellosaurus"></a></h2>
+      
+      
+
+      
+    </div><div class="section level2">
+      
+      <h3 id="api-query">API query<a class="anchor" aria-label="anchor" href="#api-query"></a></h3>
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
           
           <code><a href="cellosaurusAPIVersion.html">cellosaurusAPIVersion()</a></code> 
         </dt>
@@ -117,34 +202,126 @@
         <dd>Get the list of fields in the Cellosaurus schema</dd>
       </dl><dl><dt>
           
-          <code><a href="cleanCharacterStrings.html">cleanCharacterStrings()</a></code> 
+          <code><a href="mapCell2Accession.html">mapCell2Accession()</a></code> 
         </dt>
-        <dd>Clean character strings by removing special characters and formatting.</dd>
+        <dd>Map Cell Line IDs to Accession Numbers</dd>
       </dl><dl><dt>
           
-          <code><a href="dot-parse_cellosaurus_lines.html">.parse_cellosaurus_lines()</a></code> 
+          <code><a href="annotateCellAccession.html">annotateCellAccession()</a></code> 
         </dt>
-        <dd>Parses the lines of a cellosaurus response</dd>
+        <dd>Annotate Cell Accession</dd>
+      </dl></div><div class="section level2">
+      <h2 id="pubchem">PubChem<a class="anchor" aria-label="anchor" href="#pubchem"></a></h2>
+      
+      
+
+      
+    </div><div class="section level2">
+      
+      <h3 id="rest-api-query">REST API query<a class="anchor" aria-label="anchor" href="#rest-api-query"></a></h3>
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="getPubchemCompound.html">getPubchemCompound()</a></code> 
+        </dt>
+        <dd>Retrieve PubChem compound information</dd>
       </dl><dl><dt>
           
-          <code><a href="dot-split_cellosaurus_lines.html">.split_cellosaurus_lines()</a></code> 
+          <code><a href="mapCompound2CID.html">mapCompound2CID()</a></code> 
         </dt>
-        <dd>Splits cellosaurus lines into a named list</dd>
+        <dd>Map compound names to PubChem CIDs</dd>
       </dl><dl><dt>
           
-          <code><a href="gCSI_sampleMetadata.html">gCSI_sampleMetadata</a></code> 
+          <code><a href="mapCID2Properties.html">mapCID2Properties()</a></code> 
         </dt>
-        <dd>gCSI_sampleMetadata is some preprocessed sample metadata from the NCI60 dataset</dd>
+        <dd>Map PubChem Compound IDs to Properties</dd>
       </dl><dl><dt>
           
-          <code><a href="gCSI_treatmentMetadata.html">gCSI_treatmentMetadata</a></code> 
+          <code><a href="getPubchemProperties.html">getPubchemProperties()</a></code> 
         </dt>
-        <dd>gCSI_treatmentMetadata is some preprocessed treatment metadata from the NCI60 dataset</dd>
+        <dd>Retrieves the PubChem XML schema and extracts property information.</dd>
       </dl><dl><dt>
           
-          <code><a href="getChemblFilterTypes.html">getChemblFilterTypes()</a></code> 
+          <code><a href="getPubchemStatus.html">getPubchemStatus()</a></code> 
         </dt>
-        <dd>Get the Chembl filter types</dd>
+        <dd>Retrieves the status of a PubChem request</dd>
+      </dl></div><div class="section level2">
+      
+      <h3 id="view-api-query">VIEW API query<a class="anchor" aria-label="anchor" href="#view-api-query"></a></h3>
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="getPubchemAnnotationHeadings.html">getPubchemAnnotationHeadings()</a></code> 
+        </dt>
+        <dd>Get annotation headings (name only) based on type and heading criteria.</dd>
+      </dl><dl><dt>
+          
+          <code><a href="annotatePubchemCompound.html">annotatePubchemCompound()</a></code> 
+        </dt>
+        <dd>Annotate PubChem Compound</dd>
+      </dl></div><div class="section level2">
+      <h2 id="unichem">UniChem<a class="anchor" aria-label="anchor" href="#unichem"></a></h2>
+      
+      
+
+      
+    </div><div class="section level2">
+      
+      <h3 id="rest-api-query-1">REST API query<a class="anchor" aria-label="anchor" href="#rest-api-query-1"></a></h3>
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="getUnichemSources.html">getUnichemSources()</a></code> 
+        </dt>
+        <dd>Get the list of sources in UniChem.</dd>
+      </dl><dl><dt>
+          
+          <code><a href="queryUnichemCompound.html">queryUnichemCompound()</a></code> 
+        </dt>
+        <dd>Query UniChem for a compound.</dd>
+      </dl></div><div class="section level2">
+      <h2 id="chembl">ChEMBL<a class="anchor" aria-label="anchor" href="#chembl"></a></h2>
+      
+      
+
+      
+    </div><div class="section level2">
+      
+      <h3 id="rest-api-query-2">REST API query<a class="anchor" aria-label="anchor" href="#rest-api-query-2"></a></h3>
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="queryChemblAPI.html">queryChemblAPI()</a></code> 
+        </dt>
+        <dd>Query the ChEMBL API</dd>
       </dl><dl><dt>
           
           <code><a href="getChemblMechanism.html">getChemblMechanism()</a></code> 
@@ -162,6 +339,33 @@
         <dd>getChemblResources function</dd>
       </dl><dl><dt>
           
+          <code><a href="getChemblFilterTypes.html">getChemblFilterTypes()</a></code> 
+        </dt>
+        <dd>Get the Chembl filter types</dd>
+      </dl></div><div class="section level2">
+      <h2 id="oncotree">OncoTree<a class="anchor" aria-label="anchor" href="#oncotree"></a></h2>
+      
+      
+
+      
+    </div><div class="section level2">
+      
+      <h3 id="api-query-1">API query<a class="anchor" aria-label="anchor" href="#api-query-1"></a></h3>
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="getOncotreeVersions.html">getOncotreeVersions()</a></code> 
+        </dt>
+        <dd>Get available Oncotree versions</dd>
+      </dl><dl><dt>
+          
           <code><a href="getOncotreeMainTypes.html">getOncotreeMainTypes()</a></code> 
         </dt>
         <dd>Get the main types from the Oncotree database.</dd>
@@ -170,82 +374,40 @@
           <code><a href="getOncotreeTumorTypes.html">getOncotreeTumorTypes()</a></code> 
         </dt>
         <dd>Get the tumor types from the Oncotree database.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="getOncotreeVersions.html">getOncotreeVersions()</a></code> 
-        </dt>
-        <dd>Get available Oncotree versions</dd>
-      </dl><dl><dt>
-          
-          <code><a href="getPubchemAnnotationHeadings.html">getPubchemAnnotationHeadings()</a></code> 
-        </dt>
-        <dd>Get annotation headings (name only) based on type and heading criteria.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="getPubchemCompound.html">getPubchemCompound()</a></code> 
-        </dt>
-        <dd>Retrieve PubChem compound information</dd>
-      </dl><dl><dt>
-          
-          <code><a href="getPubchemProperties.html">getPubchemProperties()</a></code> 
-        </dt>
-        <dd>Retrieves the PubChem XML schema and extracts property information.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="getPubchemStatus.html">getPubchemStatus()</a></code> 
-        </dt>
-        <dd>Retrieves the status of a PubChem request</dd>
-      </dl><dl><dt>
-          
-          <code><a href="getUnichemSources.html">getUnichemSources()</a></code> 
-        </dt>
-        <dd>Get the list of sources in UniChem.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="mapCID2Properties.html">mapCID2Properties()</a></code> 
-        </dt>
-        <dd>Map PubChem Compound IDs to Properties</dd>
-      </dl><dl><dt>
-          
-          <code><a href="mapCell2Accession.html">mapCell2Accession()</a></code> 
-        </dt>
-        <dd>Map Cell Line IDs to Accession Numbers</dd>
-      </dl><dl><dt>
-          
-          <code><a href="mapCompound2CID.html">mapCompound2CID()</a></code> 
-        </dt>
-        <dd>Map compound names to PubChem CIDs</dd>
-      </dl><dl><dt>
+      </dl></div><div class="section level2">
+      <h2 id="cancertargetdiscoverydevelopment-ctd-">CancerTargetDiscoveryDevelopment (CTD2)<a class="anchor" aria-label="anchor" href="#cancertargetdiscoverydevelopment-ctd-"></a></h2>
+      
+      
+
+      
+    </div><div class="section level2">
+      
+      <h3 id="api-query-2">API query<a class="anchor" aria-label="anchor" href="#api-query-2"></a></h3>
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
           
           <code><a href="mapCompound2CTD.html">mapCompound2CTD()</a></code> 
         </dt>
         <dd>Map Compound to CTD</dd>
-      </dl><dl><dt>
-          
-          <code><a href="matchNested.html">matchNested()</a></code> 
-        </dt>
-        <dd>Match inside nested elements</dd>
-      </dl><dl><dt>
-          
-          <code><a href="options.html">options</a></code> 
-        </dt>
-        <dd>AnnotationGx Options</dd>
-      </dl><dl><dt>
-          
-          <code><a href="queryChemblAPI.html">queryChemblAPI()</a></code> 
-        </dt>
-        <dd>Query the ChEMBL API</dd>
-      </dl><dl><dt>
-          
-          <code><a href="queryUnichemCompound.html">queryUnichemCompound()</a></code> 
-        </dt>
-        <dd>Query UniChem for a compound.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="standardize_names.html">standardize_names()</a></code> 
-        </dt>
-        <dd>Standardize Names</dd>
-      </dl><dl><dt>
+      </dl></div><div class="section level2">
+      <h2 id="utility-functions">Utility Functions<a class="anchor" aria-label="anchor" href="#utility-functions"></a></h2>
+      
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
           
           <code><a href="strSplit.html">strSplit()</a></code> 
         </dt>
@@ -255,8 +417,14 @@
           <code><a href="unlistNested.html">unlistNested()</a></code> 
         </dt>
         <dd>Unlists a nested list and removes NA values and duplicates.</dd>
+      </dl><dl><dt>
+          
+          <code><a href="matchNested.html">matchNested()</a></code> 
+        </dt>
+        <dd>Match inside nested elements</dd>
       </dl></div>
-  </main></div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">

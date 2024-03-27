@@ -27,7 +27,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">AnnotationGx</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9090</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9095</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,12 +45,14 @@
     <h6 class="dropdown-header" data-toc-skip>Introduction</h6>
     <a class="dropdown-item" href="../articles/Introduction.html">Introduction to AnnotationGx</a>
     <div class="dropdown-divider"></div>
-    <h6 class="dropdown-header" data-toc-skip>Databases</h6>
+    <h6 class="dropdown-header" data-toc-skip>Annotating Samples</h6>
     <a class="dropdown-item" href="../articles/Cellosaurus.html">Querying Cellosaurus</a>
-    <a class="dropdown-item" href="../articles/ChEMBL.html">Querying ChEMBL Database</a>
-    <a class="dropdown-item" href="../articles/OncoTree.html">Querying OncoTree</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Annotating Compounds</h6>
     <a class="dropdown-item" href="../articles/PubChemAPI.html">Querying PubChem</a>
     <a class="dropdown-item" href="../articles/Unichem.html">Querying Unichem Database</a>
+    <a class="dropdown-item" href="../articles/ChEMBL.html">Querying ChEMBL Database</a>
+    <a class="dropdown-item" href="../articles/OncoTree.html">Querying OncoTree</a>
     <div class="dropdown-divider"></div>
     <h6 class="dropdown-header" data-toc-skip>Pipeline Tutorials</h6>
     <a class="dropdown-item" href="../articles/CTRP-Treatment-Annotation.html">Annotating CTRP Treatments</a>
@@ -122,8 +124,6 @@ compounds</p>
 <span></span>
 <span><span class="co"># map the treatment to a CID using the CTD database</span></span>
 <span><span class="fu"><a href="../reference/mapCompound2CTD.html">mapCompound2CTD</a></span><span class="op">(</span><span class="va">treatment</span><span class="op">)</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">displayName</span>, <span class="va">PUBCHEM</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">[21:03:55][INFO][AnnotationGx::mapCompound2CTD] Creating requests for 1 compounds </span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">[21:03:55][INFO][AnnotationGx::mapCompound2CTD] Performing requests w/ 3 parallel processes.. </span></span></span>
 <span><span class="co">#&gt;    displayName PUBCHEM</span></span>
 <span><span class="co">#&gt;         &lt;char&gt;  &lt;char&gt;</span></span>
 <span><span class="co">#&gt; 1:       CIL55 6623618</span></span>
@@ -140,12 +140,8 @@ compounds</p>
 </h2>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="va">CTRP_treatmentMetadata</span><span class="op">[</span>, <span class="fu"><a href="../reference/mapCompound2CTD.html">mapCompound2CTD</a></span><span class="op">(</span><span class="va">CTRP.treatmentid</span>, query_only <span class="op">=</span> <span class="cn">F</span>, raw <span class="op">=</span> <span class="cn">F</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">[21:03:56][INFO][AnnotationGx::mapCompound2CTD] Creating requests for 545 compounds </span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">[21:03:56][INFO][AnnotationGx::mapCompound2CTD] Performing requests w/ 3 parallel processes.. </span></span></span>
-<span><span class="co">#&gt; Iterating <span style="color: #00BB00;">■                               </span>   0% | ETA:  5m</span></span>
-<span><span class="co">#&gt; Iterating <span style="color: #00BB00;">■■                              </span>   4% | ETA: 29s</span></span>
-<span><span class="co">#&gt; Iterating <span style="color: #00BB00;">■■■■■■■■■■■■■■■■                </span>  51% | ETA:  4s</span></span>
-<span><span class="co">#&gt; Iterating <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span>  99% | ETA:  0s</span></span>
+<span><span class="co">#&gt; Iterating <span style="color: #00BB00;">■■                              </span>   3% | ETA: 32s</span></span>
+<span><span class="co">#&gt; Iterating <span style="color: #00BB00;">■■■■■■■■■■■                     </span>  34% | ETA:  4s</span></span>
 <span><span class="co">#&gt; Iterating <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% | ETA:  0s</span></span>
 <span></span>
 <span><span class="fu">show</span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span>

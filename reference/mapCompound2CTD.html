@@ -12,7 +12,7 @@ It retrieves information about the compound from the CTD database and returns th
     
     <a class="navbar-brand me-2" href="../index.html">AnnotationGx</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9090</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9095</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,12 +29,14 @@ It retrieves information about the compound from the CTD database and returns th
     <h6 class="dropdown-header" data-toc-skip>Introduction</h6>
     <a class="dropdown-item" href="../articles/Introduction.html">Introduction to AnnotationGx</a>
     <div class="dropdown-divider"></div>
-    <h6 class="dropdown-header" data-toc-skip>Databases</h6>
+    <h6 class="dropdown-header" data-toc-skip>Annotating Samples</h6>
     <a class="dropdown-item" href="../articles/Cellosaurus.html">Querying Cellosaurus</a>
-    <a class="dropdown-item" href="../articles/ChEMBL.html">Querying ChEMBL Database</a>
-    <a class="dropdown-item" href="../articles/OncoTree.html">Querying OncoTree</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Annotating Compounds</h6>
     <a class="dropdown-item" href="../articles/PubChemAPI.html">Querying PubChem</a>
     <a class="dropdown-item" href="../articles/Unichem.html">Querying Unichem Database</a>
+    <a class="dropdown-item" href="../articles/ChEMBL.html">Querying ChEMBL Database</a>
+    <a class="dropdown-item" href="../articles/OncoTree.html">Querying OncoTree</a>
     <div class="dropdown-divider"></div>
     <h6 class="dropdown-header" data-toc-skip>Pipeline Tutorials</h6>
     <a class="dropdown-item" href="../articles/CTRP-Treatment-Annotation.html">Annotating CTRP Treatments</a>
@@ -113,8 +115,6 @@ If <code>raw</code> is set to TRUE, the raw response from the API will be return
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">mapCompound2CTD</span><span class="op">(</span><span class="st">"Bax channel blocker"</span>, nParallel <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">[21:03:14][INFO][AnnotationGx::mapCompound2CTD] Creating requests for 1 compounds </span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">[21:03:14][INFO][AnnotationGx::mapCompound2CTD] Performing requests w/ 1 parallel processes.. </span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            displayName BROAD_COMPOUND CTRP ID           CTRP NAME</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 &lt;char&gt;         &lt;char&gt;  &lt;char&gt;              &lt;char&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1: Bax channel blocker          18311   18311 Bax channel blocker</span>
