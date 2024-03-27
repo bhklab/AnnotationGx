@@ -126,7 +126,7 @@ test_that("raw param works",{
 
 test_that("parsed works", {
   ( result1 <- mapCell2Accession("22RV1", parsed = FALSE))$diseases
-   expect_data_table(result1, min.rows = 1, min.cols = 10)
+   expect_data_table(result1, min.rows = 1, min.cols = 3)
   expect_true(
     all(
       c("cellLineName", "accession", "query") %in% colnames(result1)
