@@ -116,7 +116,7 @@ test_that("AnnotationGx::getPubchemCompound errors if cid and not integer", {
 
 
 # Basic Tests
-options::opt_set("log_level", "DEBUG")
+options("log_level" = "DEBUG")
 test_that("AnnotationGx:::.build_pubchem_rest_query", {
   res <- AnnotationGx:::.build_pubchem_rest_query("erlotinib")
   expect_class(res, "httr2_request")
@@ -136,7 +136,7 @@ test_that("AnnotationGx:::.build_pubchem_rest_query", {
   expect_class(res4, "character")
 })
 
-options::opt_set("log_level", "WARNING")
+options("log_level" = "WARN")
 
 test_that("AnnotationGx:::.build_pubchem_rest_query Failure", {
   expect_error(AnnotationGx:::.build_pubchem_rest_query(NA))

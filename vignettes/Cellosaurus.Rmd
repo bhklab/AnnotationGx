@@ -26,42 +26,92 @@ a detailed description can be found at https://www.cellosaurus.org/description.h
 The `AnnotationGx` package provides a wrapper around the Cellosaurus API to 
 map cell line identifiers to the Cellosaurus database fields. 
 
-### Setup
+## Setup
 
 ```{r setup}
 library(AnnotationGx)
 library(data.table)
+
 ```
 
 
-### Mapping from Cell Line name to Accession id
+## Mapping from Cell Line name to Accession id
 The main function that is provided by the package is `mapCell2Accession`. This function
 takes in a vector of cell line identifiers and returns a `data.table`. 
 
+By default, the function will try to map using the common identifiers and synonyms (`from = "idsy"`) and 
+will return the the Standardized Identifier as `cellLineName` and the Cellosaurus Accession ID `accession`. 
+The function also returns an additional column `query` which can be used to identify the original query if needed. 
 
 Let's see how we can use this function to map the "HeLa" and "A549" cell line names
 to the Cellosaurus database. 
-By default, the function will try to map using the common identifier (`from ="id"`) name and 
-will return the standard identifier `id` and the Cellosaurus accession ID `ac`. The 
-function also returns an additional columns `query` which
-can be used to identify the original query if needed. 
-``` {r map heLa each}
-(result <- mapCell2Accession("HeLa", keep_duplicates = T, raw = F))
-
-
+```{r map heLa each}
+mapCell2Accession("hela")
 ```
 
-
-``` {r map A549 each}
+```{r map A549 each}
 mapCell2Accession("A549")
 ```
 
-Another example using the BT474 cell line. 
-
+Functionality for mapping multiple cell lines is also supported.
 ``` {r map BT474 each}
-# our query:
-mapCell2Accession("BT474")
+mapCell2Accession(c("A549", "THIS SHOULD FAIL", "BT474"))
+```
 
-mapCell2Accession(c("A549", "SHOULDFAIL", "BT474"))
+
+By default, the function will parse the API responses to return the most common mapping. 
+To return all possible mappings, set `parsed = FALSE`.
+
+```{R parsed}
+# parsed
+mapCell2Accession(c("A549", "hela", "BT474"), parsed = TRUE)
+
+# no parsing
+mapCell2Accession(c("A549", "hela", "BT474"), parsed = FALSE)
+```
+
+
+### Misspellings and synonyms
+The backend of the function also tries to map any misspellings or synonyms of the cell line names.
+```{R mispellings}
+
+samples <- c("SK23", "SJCRH30")
+mapCell2Accession(samples)
+
+```
+
+
+If some cell lines still cannot be found, there is an additional parameter for fuzzy searching 
+```{R fuzzy}
+
+# No fuzzy 
+mapCell2Accession("DOR 13")
+
+# Fuzzy
+mapCell2Accession("DOR 13", fuzzy =T)
+
+```
+
+
+
+## Annotating Cellosaurus Accessions
+
+Once accession IDs are obtained and the mappings are satisfactory, they can then be mapped to other fields in the Cellosaurus database.
+A list of available fields can be found using `cellosaurus_fields()`
+
+```{R fields}
+cellosaurus_fields()
+```
+
+
+The `annotateCellAccession()` function can be used to map the accession IDs to the desired fields.
+By default the function will try to map to `"id", "ac", "hi", "sy", "ca", "sx", "ag", "di", "derived-from-site", "misspelling", "dt"`
+
+```{R annotate}
+
+# Annotate the A549 cell line
+mappedAccessions <- mapCell2Accession("A549")
+
+annotateCellAccession(accessions = mappedAccessions$accession)
 
 ```

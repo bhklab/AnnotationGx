@@ -3,7 +3,7 @@
 \docType{data}
 \name{gCSI_sampleMetadata}
 \alias{gCSI_sampleMetadata}
-\title{gCSI_sampleMetadata is some preprocessed sample metadata from the NCI60 dataset}
+\title{gCSI_sampleMetadata is some preprocessed sample metadata from the gCSI dataset}
 \format{
 An object of class \code{data.table} (inherits from \code{data.frame}) with 1350 rows and 2 columns.
 }
@@ -11,6 +11,6 @@ An object of class \code{data.table} (inherits from \code{data.frame}) with 1350
 gCSI_sampleMetadata
 }
 \description{
-gCSI_sampleMetadata is some preprocessed sample metadata from the NCI60 dataset
+gCSI_sampleMetadata is some preprocessed sample metadata from the gCSI dataset
 }
 \keyword{datasets}

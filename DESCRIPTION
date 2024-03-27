@@ -22,7 +22,6 @@ Imports:
     crayon,
     httr2,
     data.table,
-    options,
     readr,
     xml2
 Suggests: 

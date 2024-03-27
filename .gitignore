@@ -14,3 +14,7 @@ docs
 .lintr
 covr
 TRASH
+Treatment-Annotation*.Rmd
+
+./*.csv
+CCLE_treatmentMetadata.csv

@@ -18,10 +18,9 @@ https://www.cancerrxgene.org/
 data(GDSC_sampleMetadata)
 }
 \description{
-A preprocessed version of the sample metadata from the GDSC dataset. This dataset
-contains the following columns: GDSC.Sample_Name, GDSC.BROAD_ID, GDSC.RRID, GDSC.COSMIC_ID, and CCLE.sampleid.
-This dataset is used in the AnnotationGx package to map cell line names from various sources to the
-Cellosaurus database.
+A preprocessed version of the sample metadata from the GDSC dataset.
+This dataset is provided in the package to test the functionality of the package.
+The original dataset can be downloaded from the CancerRxGene website.
 }
 \examples{
 data(GDSC_sampleMetadata)
