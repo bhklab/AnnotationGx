@@ -96,6 +96,7 @@ annotatePubchemCompound <- function(
 
   responses <- lapply(seq_along(resp_raw), function(i){
     resp <- resp_raw[[i]]
+    if(is.null(resp)) return(NA_character_)
     tryCatch(
       {
         .parse_resp_json(resp)
@@ -136,7 +137,7 @@ annotatePubchemCompound <- function(
       )
     )
   },
-  mc.cores = 1
+  mc.cores = nParallel 
 )
   
 

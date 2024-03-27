@@ -95,7 +95,7 @@
 
   url |>
     httr2::url_build() |>
-    .build_pubchem_request()
+    .build_request()
 }
 
 #' Generic function to parse one of the annotation helpers

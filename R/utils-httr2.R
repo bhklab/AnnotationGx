@@ -16,7 +16,7 @@
 #' @keywords internal
 .build_request <- function(url) {
   httr2::request(url) |>
-    httr2::req_retry(max_tries = 3) |>
+    httr2::req_retry(max_tries = 5, backoff = ~ 10) |>
     httr2::req_error(is_error = \(resp) FALSE)
 }
 
