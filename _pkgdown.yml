@@ -5,6 +5,10 @@ template:
 development:
   mode: auto
 
+
+#####################################################################
+# References for functions
+#####################################################################
 reference:
 - title: Dataset Metadata
   subtitle: CCLE
@@ -87,22 +91,29 @@ reference:
   - strSplit
   - unlistNested
   - matchNested
-  - options
 
+
+#####################################################################
+# Articles
+#####################################################################
 articles:
 - title: Introduction
   navbar: Introduction
   contents:
   - Introduction
 
-- title: Articles
-  navbar: Databases
+- title: Samples
+  navbar: Annotating Samples
   contents:
   - Cellosaurus
-  - ChEMBL
-  - OncoTree
+
+- title: Compounds
+  navbar: Annotating Compounds
+  contents:
   - PubChemAPI
   - Unichem
+  - ChEMBL
+  - OncoTree
 
 - title: Pipelines
   navbar: Pipeline Tutorials

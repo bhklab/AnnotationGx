@@ -4,13 +4,15 @@
 #'
 #' @keywords internal
 #' @noRd
-.get_all_heading_types <- function() {
+.get_all_heading_types_base <- function() {
   url <- "https://pubchem.ncbi.nlm.nih.gov/rest/pug/annotations/headings/JSON"
   req <- .build_pubchem_request(url)
   response <- httr2::req_perform(req) |> .parse_resp_json()
   .asDT(response[[1]][[1]])
 }
 
+#' @keywords internal
+.get_all_heading_types <- memoise::memoise(.get_all_heading_types_base)
 
 #' Build a PubChem REST query URL
 #'
@@ -41,7 +43,10 @@
 #' @keywords internal
 #' @noRd
 .build_pubchem_view_query <- function(
-    id, annotation = "data", record = "compound", page = NULL, version = NULL, heading = NULL, source = NULL, output = "JSON", ...) {
+    id, annotation = "data", record = "compound", 
+    page = NULL, version = NULL, heading = NULL, source = NULL,
+    output = "JSON", ...
+) {
   funContext <- .funContext(".build_pubchem_view_query")
 
 
@@ -60,16 +65,7 @@
                  has no substance headings"
       )
     } else {
-      check <- checkmate::check_character(
-        unique(getPubchemAnnotationHeadings(record, heading)$Heading),
-        min.chars = 1, min.len = 1
-      )
-      if (!isTRUE(check)) {
-        .err(
-          funContext, "Invalid heading: ", heading,
-          ". Use getPubchemAnnotationHeadings() to get valid headings."
-        )
-      }
+      checkmate::assert(heading %in% .get_all_heading_types()$Heading)
     }
     opts_ <- c(opts_, list(heading = heading))
   }
@@ -99,7 +95,7 @@
 
   url |>
     httr2::url_build() |>
-    .build_pubchem_request()
+    .build_request()
 }
 
 #' Generic function to parse one of the annotation helpers

@@ -125,9 +125,9 @@ mapCell2Accession <- function(
       result$query <- name
       return(result)
     }
-    response_dt <- parse_cellosaurus_text(resp, name, parsed, keep_duplicates)
+    response_dt <- .parse_cellosaurus_text(resp, name, parsed, keep_duplicates)
     response_dt
-    }) 
+  }) 
   
 
   responses_dt <- data.table::rbindlist(responses_dt, fill = TRUE)
@@ -168,20 +168,23 @@ mapCell2Accession <- function(
 #' 
 #' @noRd 
 #' @keywords internal
-parse_cellosaurus_text <- function(resp, name, parsed = FALSE, keep_duplicates = FALSE){
+.parse_cellosaurus_text <- function(resp, name, parsed = FALSE, keep_duplicates = FALSE){
 
   responses_dt <- lapply(
       X = resp,
       FUN = .processEntry
   ) 
-  
-  responses_dt <- data.table::rbindlist(responses_dt, fill = TRUE)
+  tryCatch({
+    responses_dt <- data.table::rbindlist(responses_dt, fill = TRUE)
+  }, error = function(e) {
+    .err(paste0("Error parsing response for ", name, ": ", e$message))
+  }) 
 
   responses_dt <- .formatSynonyms(responses_dt)
 
   if(!parsed) {
     responses_dt$query <- name
-    return(responses_dt)
+    return(responses_dt[, c("cellLineName", "accession", "query")])
   }
 
 

@@ -16,8 +16,8 @@
 getPubchemAnnotationHeadings <- function(
     type = "all", heading = NULL) {
   funContext <- .funContext("getPubchemAnnotationHeadings")
-  .debug(funContext, " type: ", type, " heading: ", heading)
 
+  .debug(funContext, " type: ", type, " heading: ", heading)
   # TODO:: messy...
   checkmate::assert(
     checkmate::test_choice(
@@ -56,6 +56,7 @@ getPubchemAnnotationHeadings <- function(
 #' @param parse_function A custom parsing function to process the response. Default is the identity function.
 #' @param query_only Logical indicating whether to return the query URL only. Default is FALSE.
 #' @param raw Logical indicating whether to return the raw response. Default is FALSE.
+#' @param nParallel The number of parallel processes to use. Default is 1.
 #'
 #' @return The annotated information about the PubChem compound.
 #'
@@ -66,29 +67,36 @@ getPubchemAnnotationHeadings <- function(
 #' @export
 annotatePubchemCompound <- function(
     cids, heading = "ChEMBL ID", source = NULL, parse_function = identity,
-    query_only = FALSE, raw = FALSE) {
+    query_only = FALSE, raw = FALSE, nParallel = 1
+  ) {
   funContext <- .funContext("annotatePubchemCompound")
 
+  .info(funContext, sprintf("Building requests for %s CIDs", length(cids)))
   requests <- lapply(cids, function(cid) {
     .build_pubchem_view_query(
       id = cid, record = "compound", heading = heading,
       output = "JSON", source = source
-    )
+      )
+   }
+  )
+
+  .debug(funContext, paste0("query: ", sapply(requests, `[[`, i = "url")))
+  if (query_only) return(requests)
+
+  tryCatch({
+    resp_raw <- httr2::req_perform_sequential(
+      reqs = requests, 
+      on_error = "continue",
+      progress = "Performing API requests..."
+  )}, error = function(e) {
+    .err(funContext, "An error occurred while performing requests:\n", e)
   })
 
-  .debug(funContext, paste0("query:", sapply(requests, `[[`, i = "url")))
-
-  if (query_only) {
-    return(requests)
-  }
-
-  resp_raw <- httr2::req_perform_sequential(requests, on_error = "continue")
-  if (raw) {
-    return(resp_raw)
-  }
+  if (raw) return(resp_raw)
 
   responses <- lapply(seq_along(resp_raw), function(i){
     resp <- resp_raw[[i]]
+    if(is.null(resp)) return(NA_character_)
     tryCatch(
       {
         .parse_resp_json(resp)
@@ -107,7 +115,7 @@ annotatePubchemCompound <- function(
   })
 
   # apply the parse function to each response depending on heading
-  parsed_responses <- .bplapply(responses, function(response) {
+  parsed_responses <- parallel::mclapply(responses, function(response) {
     switch(heading,
       "ChEMBL ID" = .parseCHEMBLresponse(response),
       "CAS" = .parseCASresponse(response),
@@ -128,7 +136,10 @@ annotatePubchemCompound <- function(
         }
       )
     )
-  })
+  },
+  mc.cores = nParallel 
+)
+  
 
   sapply(parsed_responses, .replace_null)
 

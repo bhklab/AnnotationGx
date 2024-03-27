@@ -29,7 +29,10 @@
 #' }
 .info <- function(...) {
   msg <- .log_fmt("INFO", ...)
-  message(crayon::green(msg))
+  optionIsTRUE <- options("log_level") == "INFO" || (options("log_level") %in% c("WARN", "DEBUG", "ERROR"))
+  if(optionIsTRUE) {
+    message(crayon::green(msg))
+  }
 }
 
 #' Custom message function for verbose output
@@ -49,7 +52,7 @@
 #' @noRd
 .debug <- function(...) {
   msg <- .log_fmt("DEBUG", ...)
-  optionIsTRUE <- options::opt("log_level") == "DEBUG"
+  optionIsTRUE <- options("log_level") == "DEBUG"
   if (optionIsTRUE) {
     message(crayon::blue(msg))
   }
@@ -59,7 +62,7 @@
 #' @noRd
 .warn <- function(...) {
   msg <- .log_fmt("WARNING", ...)
-  optionIsTRUE <- options::opt("log_level") != "ERROR"
+  optionIsTRUE <- options("log_level") != "ERROR"
   message(crayon::yellow(msg))
 }
 
@@ -67,7 +70,7 @@
 #' @noRd
 .err <- function(...) {
   msg <- .log_fmt("ERROR", ...)
-  optionIsTRUE <- options::opt("log_level") != NULL
+  optionIsTRUE <- options("log_level") != NULL
   stop("\r", crayon::red(msg), call. = FALSE)
 }
 
