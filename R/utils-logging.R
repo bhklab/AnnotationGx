@@ -29,7 +29,7 @@
 #' }
 .info <- function(...) {
   msg <- .log_fmt("INFO", ...)
-  optionIsTRUE <- options("log_level") == "INFO" || !(options("log_level") %in% c("WARN", "DEBUG", "ERROR"))
+  optionIsTRUE <- options("log_level") == "INFO" || (options("log_level") %in% c("WARN", "DEBUG", "ERROR"))
   if(optionIsTRUE) {
     message(crayon::green(msg))
   }
