@@ -4,15 +4,7 @@ author:
   - name: Jermiah Joseph
     affiliation:
     - BHKLab 
-output: 
-  BiocStyle::html_document:
-    self_contained: yes
-    toc: true
-    toc_float: true
-    toc_depth: 2
-    code_folding: show
-date: "`r doc_date()`"
-package: "`r pkg_ver('AnnotationGx')`"
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{1. Introduction to AnnotationGx}
   %\VignetteEngine{knitr::rmarkdown}

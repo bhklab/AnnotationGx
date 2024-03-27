@@ -45,7 +45,7 @@ cell_lines_all <- data.table::fread("/home/bioinf/bhklab/jermiah/Bioconductor/An
 
 ```
 
-``` {r view_GDSC_sampleMetadata}
+```{r view_GDSC_sampleMetadata}
 
 head(GDSC_sampleMetadata)
 name <- GDSC_sampleMetadata$GDSC.Sample_Name
@@ -63,7 +63,7 @@ data.table::fwrite(GDSC_result, "GDSC_result.csv")
 
 
 
-``` {r view_gCSI_sampleMetadata}
+```{r view_gCSI_sampleMetadata}
 
 head(gCSI_sampleMetadata)
 
@@ -91,7 +91,7 @@ data.table::fwrite(gCSI_result, "gCSI_result.csv")
 ```
 
 
-``` {r combine_gdsc_gcsi}
+```{r combine_gdsc_gcsi}
 
 
 merged <- unique(merge(gCSI_result, GDSC_result, c("cellLineName", "accession"), all = T))

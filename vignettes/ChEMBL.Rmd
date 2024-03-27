@@ -2,21 +2,12 @@
 title: "Querying ChEMBL Database"
 author: 
   - name: Jermiah Joseph, Shahzada Muhammad Shameel Farooq, and Christopher Eeles
-output: 
-  BiocStyle::html_document:
-    self_contained: yes
-    toc: true
-    toc_float: true
-    toc_depth: 2
-    code_folding: show
-date: "`r doc_date()`"
-package: "`r pkg_ver('AnnotationGx')`"
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Querying ChEMBL Database}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}  
 ---
-
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
