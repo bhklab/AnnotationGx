@@ -44,22 +44,14 @@ bib <- c(
 
 ## Install `AnnotationGx`
 
-`R` is an open-source statistical environment which can be easily modified to enhance its functionality via packages. `r Biocpkg("AnnotationGx")` is a `R` package available via the [Bioconductor](http://bioconductor.org) repository for packages. `R` can be installed on any operating system from [CRAN](https://cran.r-project.org/) after which you can install `r Biocpkg("AnnotationGx")` by using the following commands in your `R` session:
+`R` is an open-source statistical environment which can be easily modified to enhance its functionality via packages. 
+`AnnotationGx` is a `R` package 
 
-```{r "install", eval = FALSE}
-if (!requireNamespace("BiocManager", quietly = TRUE)) {
-      install.packages("BiocManager")
-  }
-
-BiocManager::install("AnnotationGx")
-
-## Check that you have a valid Bioconductor installation
-BiocManager::valid()
-```
+TODO::after submitting to cran update this 
 
 ## Citing `AnnotationGx`
 
-We hope that `r Biocpkg("AnnotationGx")` will be useful for your research. Please use the following information to cite the package and the overall approach. Thank you!
+We hope that `AnnotationGx` will be useful for your research. Please use the following information to cite the package and the overall approach. Thank you!
 
 ```{r "citation"}
 ## Citation info
@@ -73,25 +65,6 @@ library("AnnotationGx")
 ```
 
 
-Here is an example of you can cite your package inside the vignette:
-
-* `r Biocpkg("AnnotationGx")` `r Citep(bib[["AnnotationGx"]])`
-
-# Reproducibility
-
-The `r Biocpkg("AnnotationGx")` package `r Citep(bib[["AnnotationGx"]])` was made possible thanks to:
-
-* R `r Citep(bib[["R"]])`
-* `r Biocpkg("BiocStyle")` `r Citep(bib[["BiocStyle"]])`
-* `r CRANpkg("knitr")` `r Citep(bib[["knitr"]])`
-* `r CRANpkg("RefManageR")` `r Citep(bib[["RefManageR"]])`
-* `r CRANpkg("rmarkdown")` `r Citep(bib[["rmarkdown"]])`
-* `r CRANpkg("sessioninfo")` `r Citep(bib[["sessioninfo"]])`
-* `r CRANpkg("testthat")` `r Citep(bib[["testthat"]])`
-
-This package was developed using `r BiocStyle::Biocpkg("biocthis")`.
-
-
 ```{r reproduce3, echo=FALSE}
 ## Session info
 library("sessioninfo")
@@ -99,16 +72,3 @@ options(width = 120)
 session_info()
 ```
 
-
-
-# Bibliography
-
-This vignette was generated using `r Biocpkg("BiocStyle")` `r Citep(bib[["BiocStyle"]])`
-with `r CRANpkg("knitr")` `r Citep(bib[["knitr"]])` and `r CRANpkg("rmarkdown")` `r Citep(bib[["rmarkdown"]])` running behind the scenes.
-
-Citations made with `r CRANpkg("RefManageR")` `r Citep(bib[["RefManageR"]])`.
-
-```{r vignetteBiblio, results = "asis", echo = FALSE, warning = FALSE, message = FALSE}
-## Print bibliography
-PrintBibliography(bib, .opts = list(hyperlink = "to.doc", style = "html"))
-```
