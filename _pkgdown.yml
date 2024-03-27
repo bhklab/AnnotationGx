@@ -87,7 +87,6 @@ reference:
   - strSplit
   - unlistNested
   - matchNested
-  - options
 
 articles:
 - title: Introduction
