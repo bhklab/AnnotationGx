@@ -125,7 +125,7 @@ mapCell2Accession <- function(
       result$query <- name
       return(result)
     }
-    response_dt <- parse_cellosaurus_text(resp, name, parsed, keep_duplicates)
+    response_dt <- .parse_cellosaurus_text(resp, name, parsed, keep_duplicates)
     response_dt
     }) 
   
@@ -168,7 +168,7 @@ mapCell2Accession <- function(
 #' 
 #' @noRd 
 #' @keywords internal
-parse_cellosaurus_text <- function(resp, name, parsed = FALSE, keep_duplicates = FALSE){
+.parse_cellosaurus_text <- function(resp, name, parsed = FALSE, keep_duplicates = FALSE){
 
   responses_dt <- lapply(
       X = resp,

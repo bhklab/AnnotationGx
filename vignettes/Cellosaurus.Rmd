@@ -34,40 +34,20 @@ library(data.table)
 ```
 
 
-``` {r setBPPARAM}
-BPPARAM = BiocParallel::MulticoreParam(progressbar=T)
-```
 ### Mapping from Cell Line name to Accession id
 The main function that is provided by the package is `mapCell2Accession`. This function
 takes in a vector of cell line identifiers and returns a `data.table`. 
 
-```
-Usage and default values:
-     mapCell2Accession(
-       ids,
-       numResults = 1000,
-       from = "id",
-       to = c("id", "ac"),
-       prioritizeParent = FALSE,
-       orderby = "ac",
-       query_only = FALSE,
-       raw = FALSE,
-       BPPARAM = BiocParallel::SerialParam(),
-       ...
-     )
-```
 
 Let's see how we can use this function to map the "HeLa" and "A549" cell line names
 to the Cellosaurus database. 
 By default, the function will try to map using the common identifier (`from ="id"`) name and 
 will return the standard identifier `id` and the Cellosaurus accession ID `ac`. The 
-function also returns two additional columns `query` and `query:<from>` which
-can be used to identify the original query and the original identifier type if needed. 
+function also returns an additional columns `query` which
+can be used to identify the original query if needed. 
 ``` {r map heLa each}
-(result <- mapCell2Accession("HeLa", keep_duplicates = T, raw = T))
-result$HeLa -> resp
-
 (result <- mapCell2Accession("HeLa", keep_duplicates = T, raw = F))
+
 
 ```
 
@@ -82,6 +62,6 @@ Another example using the BT474 cell line.
 # our query:
 mapCell2Accession("BT474")
 
-mapCell2Accession(c("A549", "OOPS", "BT474"))
+mapCell2Accession(c("A549", "SHOULDFAIL", "BT474"))
 
 ```

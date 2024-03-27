@@ -10,7 +10,6 @@ COPY . /app
 WORKDIR /app
 
 # RUN R -e 'install.packages(c("BiocManager", "devtools", "jsonlite", "qpdf"), repos=c("https://cloud.r-project.org/", "https://cran.rstudio.com/"))'
-# RUN R -e 'BiocManager::install("BiocParallel")'
 RUN R -e 'install.packages("pak", repos = sprintf("https://r-lib.github.io/p/pak/stable/%s/%s/%s", .Platform$pkgType, R.Version()$os, R.Version()$arch))'
 RUN R -e 'pak::pkg_install(".", dependencies=TRUE, upgrade=TRUE, ask = FALSE)'
 RUN R -e 'pak::cache_clean(); pak::meta_clean(force = TRUE)'

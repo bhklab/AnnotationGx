@@ -3,8 +3,6 @@ title: "Querying Unichem Database"
 author: 
   - name: Jermiah Joseph, Shahzada Muhammad Shameel Farooq, and Christopher Eeles
 output: rmarkdown::html_vignette 
-date: "`r doc_date()`"
-package: "`r pkg_ver('AnnotationGx')`"
 vignette: >
   %\VignetteIndexEntry{Querying Unichem Database}
   %\VignetteEngine{knitr::rmarkdown}
