@@ -67,12 +67,11 @@ mapCompound2CID(drugs)
 It is possible for names to multimap to CIDs. This is the case for
 '*Vincaleukoblastine*' in the above query. In cases of multimapping, usually
 the first entry has the highest similarity to the requested drug. To subset
-to only the first occurrence of each of drug name:
+to only the first occurrence of each of drug name use the `first = TRUE` argument:
 
 ``` {r map multiple compounds to cid and subset to first}
 mapCompound2CID(drugs, first = TRUE)
 ```
-
 
 In the case of a compound that can't be mapped, `NA` will be returned and a warning will be issued.
 
