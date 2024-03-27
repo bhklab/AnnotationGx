@@ -1,9 +1,8 @@
 #' gdsc_sampleMetadata is some preprocessed sample metadata from the GDSC dataset
 #'
-#' A preprocessed version of the sample metadata from the GDSC dataset. This dataset
-#' contains the following columns: GDSC.Sample_Name, GDSC.BROAD_ID, GDSC.RRID, GDSC.COSMIC_ID, and CCLE.sampleid.
-#' This dataset is used in the AnnotationGx package to map cell line names from various sources to the
-#' Cellosaurus database.
+#' A preprocessed version of the sample metadata from the GDSC dataset. 
+#' This dataset is provided in the package to test the functionality of the package.
+#' The original dataset can be downloaded from the CancerRxGene website.
 #'
 #' @format A data table with 5 columns and 1001 rows.
 #' \describe{
@@ -38,10 +37,10 @@
 #' 
 "CTRP_treatmentMetadata"
 
-#' gCSI_sampleMetadata is some preprocessed sample metadata from the NCI60 dataset
+#' gCSI_sampleMetadata is some preprocessed sample metadata from the gCSI dataset
 #' 
 "gCSI_sampleMetadata"
 
-#' gCSI_treatmentMetadata is some preprocessed treatment metadata from the NCI60 dataset
+#' gCSI_treatmentMetadata is some preprocessed treatment metadata from the gCSI dataset
 #' 
 "gCSI_treatmentMetadata"

@@ -1,4 +1,4 @@
-filePath <- system.file("extdata", "GDSC2_8.4_treatmentMetadata.csv", package = "AnnotationGx")
+filePath <- system.file("extdata/GDSC", "GDSC2_8.4_treatmentMetadata.csv", package = "AnnotationGx")
 rawdata <- data.table::fread(filePath) 
 
 GDSC_treatmentMetadata <- 

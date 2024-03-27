@@ -1,4 +1,4 @@
-filePath <- system.file("extdata", "CTRPv2_meta_per_cell_line.txt", package = "AnnotationGx")
+filePath <- system.file("extdata/CTRP", "CTRPv2_meta_per_cell_line.txt", package = "AnnotationGx")
 
 rawdata <- data.table::fread(filePath, check.names = T)
 

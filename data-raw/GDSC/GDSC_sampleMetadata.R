@@ -1,5 +1,5 @@
 ## code to prepare `gdsc_sampleMetadata` dataset goes here
-filePath <- system.file("extdata", "Cell_Lines_Details.xlsx", package = "AnnotationGx")
+filePath <- system.file("extdata/GDSC", "Cell_Lines_Details.xlsx", package = "AnnotationGx")
 rawdata <- readxl::read_excel(filePath, sheet = 1, col_names = TRUE, na = "NA") |> data.table::as.data.table()
 
 GDSC_sampleMetadata <-

@@ -2,7 +2,7 @@
 ## obtained from "https://ctd2-data.nci.nih.gov/Public/Broad/CTRPv2.0_2015_ctd2_ExpandedDataset/CTRPv2.0_2015_ctd2_ExpandedDataset.zip"
 
 # Load the treatment metadata file
-filePath <- system.file("extdata", "v20.meta.per_compound.txt", package = "AnnotationGx")
+filePath <- system.file("extdata/CTRP", "v20.meta.per_compound.txt", package = "AnnotationGx")
 CTRP_treatmentMetadata <- data.table::fread(filePath)[, .(cpd_name, broad_cpd_id)]
 
 # Rename the columns
