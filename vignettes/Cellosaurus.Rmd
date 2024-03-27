@@ -32,6 +32,8 @@ map cell line identifiers to the Cellosaurus database fields.
 library(AnnotationGx)
 library(data.table)
 
+# set options to warn to quiet info logs
+options("log_level" = "WARN")
 ```
 
 
