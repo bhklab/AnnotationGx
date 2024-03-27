@@ -11,7 +11,7 @@ annotatePubchemCompound(
   parse_function = identity,
   query_only = FALSE,
   raw = FALSE,
-  nParallel = parallel::detectCores() - 1
+  nParallel = 1
 )
 }
 \arguments{
@@ -27,7 +27,7 @@ annotatePubchemCompound(
 
 \item{raw}{Logical indicating whether to return the raw response. Default is FALSE.}
 
-\item{nParallel}{The number of parallel processes to use. Default is one less than the number of cores.}
+\item{nParallel}{The number of parallel processes to use. Default is 1.}
 }
 \value{
 The annotated information about the PubChem compound.

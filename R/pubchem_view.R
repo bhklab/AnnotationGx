@@ -56,7 +56,7 @@ getPubchemAnnotationHeadings <- function(
 #' @param parse_function A custom parsing function to process the response. Default is the identity function.
 #' @param query_only Logical indicating whether to return the query URL only. Default is FALSE.
 #' @param raw Logical indicating whether to return the raw response. Default is FALSE.
-#' @param nParallel The number of parallel processes to use. Default is one less than the number of cores.
+#' @param nParallel The number of parallel processes to use. Default is 1.
 #'
 #' @return The annotated information about the PubChem compound.
 #'
@@ -67,7 +67,7 @@ getPubchemAnnotationHeadings <- function(
 #' @export
 annotatePubchemCompound <- function(
     cids, heading = "ChEMBL ID", source = NULL, parse_function = identity,
-    query_only = FALSE, raw = FALSE, nParallel = parallel::detectCores() - 1
+    query_only = FALSE, raw = FALSE, nParallel = 1
   ) {
   funContext <- .funContext("annotatePubchemCompound")
 
