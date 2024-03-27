@@ -21,10 +21,20 @@ getPubchemStatus <- function(
   funContext <- .funContext("getPubchemStatus")
 
   request <- .buildURL(url) |> .build_pubchem_request()
-  response <- httr2::req_perform(request)
 
-  status_code <- httr2::resp_status(response)
-  message <- response$headers[["X-Throttling-Control"]]
+  # need to do NULL while loop bc sometimes X-Throttling-Control is not in the response
+  message <- NULL
+
+  while(is.null(message)) {
+    response <- httr2::req_perform(request)
+
+    if (httr2::resp_status(response) == 200) {
+      message <- response$headers[["X-Throttling-Control"]]
+    } else {
+      .warn("Request failed. Retrying...")
+      Sys.sleep(1)
+    }
+  }
   parsed_info <- .checkThrottlingStatus2(message, printMessage)
   if (returnMessage) {
     return(parsed_info)
