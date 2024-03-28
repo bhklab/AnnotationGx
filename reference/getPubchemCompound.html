@@ -31,12 +31,12 @@ Used by other functions to retrieve compound information."><!-- mathjax --><scri
     <div class="dropdown-divider"></div>
     <h6 class="dropdown-header" data-toc-skip>Annotating Samples</h6>
     <a class="dropdown-item" href="../articles/Cellosaurus.html">Querying Cellosaurus</a>
+    <a class="dropdown-item" href="../articles/OncoTree.html">Querying OncoTree</a>
     <div class="dropdown-divider"></div>
     <h6 class="dropdown-header" data-toc-skip>Annotating Compounds</h6>
     <a class="dropdown-item" href="../articles/PubChemAPI.html">Querying PubChem</a>
     <a class="dropdown-item" href="../articles/Unichem.html">Querying Unichem Database</a>
     <a class="dropdown-item" href="../articles/ChEMBL.html">Querying ChEMBL Database</a>
-    <a class="dropdown-item" href="../articles/OncoTree.html">Querying OncoTree</a>
     <div class="dropdown-divider"></div>
     <h6 class="dropdown-header" data-toc-skip>Pipeline Tutorials</h6>
     <a class="dropdown-item" href="../articles/CTRP-Treatment-Annotation.html">Annotating CTRP Treatments</a>
@@ -124,11 +124,6 @@ Used by other functions to retrieve compound information.</p>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">properties</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Title"</span>, <span class="st">"MolecularFormula"</span>, <span class="st">"InChIKey"</span>, <span class="st">"CanonicalSMILES"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">getPubchemCompound</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3672</span>, <span class="fl">176870</span><span class="op">)</span>, from <span class="op">=</span> <span class="st">"cid"</span>, to <span class="op">=</span> <span class="st">"property"</span>, properties <span class="op">=</span> <span class="va">properties</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Waiting 10s for retry backoff <span style="color: #00BB00;">■■■■                            </span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Waiting 10s for retry backoff <span style="color: #00BB00;">■■■■■■■■                        </span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Waiting 10s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■               </span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Waiting 10s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■      </span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Waiting 10s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       CID MolecularFormula                                      CanonicalSMILES</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;int&gt;           &lt;char&gt;                                               &lt;char&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:   3672         C13H18O2                        CC(C)CC1=CC=C(C=C1)C(C)C(=O)O</span>

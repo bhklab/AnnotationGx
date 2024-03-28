@@ -29,12 +29,12 @@
     <div class="dropdown-divider"></div>
     <h6 class="dropdown-header" data-toc-skip>Annotating Samples</h6>
     <a class="dropdown-item" href="../articles/Cellosaurus.html">Querying Cellosaurus</a>
+    <a class="dropdown-item" href="../articles/OncoTree.html">Querying OncoTree</a>
     <div class="dropdown-divider"></div>
     <h6 class="dropdown-header" data-toc-skip>Annotating Compounds</h6>
     <a class="dropdown-item" href="../articles/PubChemAPI.html">Querying PubChem</a>
     <a class="dropdown-item" href="../articles/Unichem.html">Querying Unichem Database</a>
     <a class="dropdown-item" href="../articles/ChEMBL.html">Querying ChEMBL Database</a>
-    <a class="dropdown-item" href="../articles/OncoTree.html">Querying OncoTree</a>
     <div class="dropdown-divider"></div>
     <h6 class="dropdown-header" data-toc-skip>Pipeline Tutorials</h6>
     <a class="dropdown-item" href="../articles/CTRP-Treatment-Annotation.html">Annotating CTRP Treatments</a>
@@ -67,7 +67,9 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">annotateCellAccession</span><span class="op">(</span></span>
 <span>  <span class="va">accessions</span>,</span>
 <span>  to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"ac"</span>, <span class="st">"hi"</span>, <span class="st">"sy"</span>, <span class="st">"ca"</span>, <span class="st">"sx"</span>, <span class="st">"ag"</span>, <span class="st">"di"</span>, <span class="st">"derived-from-site"</span>,</span>
-<span>    <span class="st">"misspelling"</span>, <span class="st">"dt"</span><span class="op">)</span></span>
+<span>    <span class="st">"misspelling"</span>, <span class="st">"dt"</span><span class="op">)</span>,</span>
+<span>  query_only <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  raw <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -79,6 +81,14 @@
 
 <dt>to</dt>
 <dd><p>A character vector specifying the types of annotations to retrieve. Possible values include "id", "ac", "hi", "sy", "ca", "sx", "ag", "di", "derived-from-site", "misspelling", and "dt".</p></dd>
+
+
+<dt>query_only</dt>
+<dd><p>A logical value indicating whether to only return the query string.</p></dd>
+
+
+<dt>raw</dt>
+<dd><p>A logical value indicating whether to return the raw response.</p></dd>
 
 </dl></div>
     <div class="section level2">
