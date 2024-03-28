@@ -21,10 +21,10 @@
 #' @export
 getPubchemCompound <- function(
     ids, from = "cid", to = "property", properties = c("Title", "InChIKey"),
-    raw = FALSE, query_only = FALSE, output = "JSON", ...) {
+    raw = FALSE, query_only = FALSE, output = "JSON", ...
+) {
+
   funContext <- .funContext("getPubchemCompound")
-
-
   to_ <- if (to == "property") {
     checkmate::assert_atomic(properties, all.missing = FALSE)
     checkmate::assert_character(properties)
@@ -33,33 +33,37 @@ getPubchemCompound <- function(
     to
   }
 
+  .info(funContext, "Building PubChem REST queries...")
   requests <- lapply(ids, function(x) {
     .build_pubchem_rest_query(
       id = x, domain = "compound", namespace = from, operation = to_, output = output,
       raw = raw, query_only = query_only, ...
     )
   })
-  if (query_only) {
-    return(requests)
-  }
+  if (query_only) return(requests)
 
   tryCatch({
-    resps_raw <- httr2::req_perform_sequential(requests, on_error = "continue")
+    .info(funContext, "Retrieving compound information...")
+    resps_raw <- httr2::req_perform_sequential(
+      requests, 
+      on_error = "continue", 
+      progress = "Querying PubCHEM REST API...."
+    )
+    names(resps_raw) <- ids
   }, error = function(e) {
     .err(funContext, " An error occurred while retrieving the compound information:\n", e)
   })
   
   .debug(funContext, " Number of responses: ", length(resps_raw))
-  names(resps_raw) <- ids
-  if (raw) {
-    return(resps_raw)
-  }
-
+  if (raw) return(resps_raw)
 
   # Parse the responses
+  .info(funContext, "Parsing PubChem REST responses...")
   resps <- .parse_pubchem_rest_responses(resps_raw)
-  failed <- sapply(resps_raw, httr2::resp_is_error, USE.NAMES = T)
 
+  # filter failed 
+  # if any query failed, return the failed queries as attributes
+  failed <- sapply(resps_raw, httr2::resp_is_error, USE.NAMES = T)
   if (any(failed)) {
     .warn(funContext, " Some queries failed. See the 'failed' object for details.")
     failures <- lapply(resps_raw[failed], function(resp) {
@@ -69,7 +73,9 @@ getPubchemCompound <- function(
     failures <- NULL
   }
 
-  if (from != "name") {
+  # Combine the responses
+  # might be able to just do the else part...
+  if (from != "name") { 
     responses <- data.table::rbindlist(resps, fill = TRUE)
   } else {
     responses <- data.table::rbindlist(resps, idcol = from, fill = TRUE)
@@ -78,7 +84,7 @@ getPubchemCompound <- function(
 
   attributes(responses)$failed <- failures
 
-  responses
+  return(responses)
 }
 
 

@@ -7,13 +7,19 @@
 annotateCellAccession(
   accessions,
   to = c("id", "ac", "hi", "sy", "ca", "sx", "ag", "di", "derived-from-site",
-    "misspelling", "dt")
+    "misspelling", "dt"),
+  query_only = FALSE,
+  raw = FALSE
 )
 }
 \arguments{
 \item{accessions}{The Cellosaurus accession to annotate.}
 
 \item{to}{A character vector specifying the types of annotations to retrieve. Possible values include "id", "ac", "hi", "sy", "ca", "sx", "ag", "di", "derived-from-site", "misspelling", and "dt".}
+
+\item{query_only}{A logical value indicating whether to only return the query string.}
+
+\item{raw}{A logical value indicating whether to return the raw response.}
 }
 \value{
 A data frame containing the annotations for the cell line.

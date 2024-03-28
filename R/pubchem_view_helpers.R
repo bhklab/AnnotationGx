@@ -49,13 +49,14 @@
 ) {
   funContext <- .funContext(".build_pubchem_view_query")
 
-
+  # Check the inputs
   checkmate::assert_choice(
     annotation,
     c("data", "index", "annotations", "categories", "neighbors", "literature", "structure", "image", "qr", "linkout")
   )
   checkmate::assert_choice(record, c("compound", "substance", "assay", "cell", "gene", "protein"))
 
+  # Configure the options for the query
   opts_ <- list()
   if (!is.null(heading)) {
     if (record == "substance") {
@@ -95,7 +96,11 @@
 
   url |>
     httr2::url_build() |>
-    .build_request()
+    httr2::request()
+  
+  # url |>
+    # httr2::url_build() |>
+    # .build_request()
 }
 
 #' Generic function to parse one of the annotation helpers
