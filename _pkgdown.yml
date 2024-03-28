@@ -106,6 +106,7 @@ articles:
   navbar: Annotating Samples
   contents:
   - Cellosaurus
+  - OncoTree
 
 - title: Compounds
   navbar: Annotating Compounds
@@ -113,7 +114,6 @@ articles:
   - PubChemAPI
   - Unichem
   - ChEMBL
-  - OncoTree
 
 - title: Pipelines
   navbar: Pipeline Tutorials
