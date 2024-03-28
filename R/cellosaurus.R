@@ -107,9 +107,9 @@ mapCell2Accession <- function(
 
   if (query_only) return(lapply(requests, function(req) req$url))
   
-  # perform the requests
+  # Submit requests using parallel httr2 since cellosaurus doesnt throttle
   .info(funContext, "Performing Cellosaurus queries")
-  responses <- .perform_request_parallel(requests)
+  responses <- .perform_request_parallel(requests, progress = "Querying Cellosaurus...")
   names(responses) <- as.character(ids) # in case its an numeric ID  like cosmic ids
   if (raw) return(responses)
 
