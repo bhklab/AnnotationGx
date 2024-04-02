@@ -118,5 +118,6 @@ articles:
 - title: Pipelines
   navbar: Pipeline Tutorials
   contents:
+  - articles/AnnotationStandards
   - articles/CTRP-Treatment-Annotation
 
