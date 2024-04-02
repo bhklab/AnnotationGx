@@ -27,7 +27,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">AnnotationGx</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9095</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9096</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -55,6 +55,7 @@
     <a class="dropdown-item" href="../articles/ChEMBL.html">Querying ChEMBL Database</a>
     <div class="dropdown-divider"></div>
     <h6 class="dropdown-header" data-toc-skip>Pipeline Tutorials</h6>
+    <a class="dropdown-item" href="../articles/AnnotationStandards.html">A Standard for Annotations</a>
     <a class="dropdown-item" href="../articles/CTRP-Treatment-Annotation.html">Annotating CTRP Treatments</a>
   </div>
 </li>
@@ -140,8 +141,10 @@ compounds</p>
 </h2>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="va">CTRP_treatmentMetadata</span><span class="op">[</span>, <span class="fu"><a href="../reference/mapCompound2CTD.html">mapCompound2CTD</a></span><span class="op">(</span><span class="va">CTRP.treatmentid</span>, query_only <span class="op">=</span> <span class="cn">F</span>, raw <span class="op">=</span> <span class="cn">F</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="co">#&gt; Iterating <span style="color: #00BB00;">■■                              </span>   3% | ETA: 39s</span></span>
-<span><span class="co">#&gt; Iterating <span style="color: #00BB00;">■■■■■■■■■                       </span>  27% | ETA:  5s</span></span>
+<span><span class="co">#&gt; Iterating <span style="color: #00BB00;">■                               </span>   0% | ETA:  5m</span></span>
+<span><span class="co">#&gt; Iterating <span style="color: #00BB00;">■■                              </span>   3% | ETA: 38s</span></span>
+<span><span class="co">#&gt; Iterating <span style="color: #00BB00;">■■■■■■■■■■■■■■                  </span>  44% | ETA:  5s</span></span>
+<span><span class="co">#&gt; Iterating <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■     </span>  88% | ETA:  1s</span></span>
 <span><span class="co">#&gt; Iterating <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% | ETA:  0s</span></span>
 <span></span>
 <span><span class="fu">show</span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span>

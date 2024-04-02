@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">AnnotationGx</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9095</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9096</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,6 +37,7 @@
     <a class="dropdown-item" href="../articles/ChEMBL.html">Querying ChEMBL Database</a>
     <div class="dropdown-divider"></div>
     <h6 class="dropdown-header" data-toc-skip>Pipeline Tutorials</h6>
+    <a class="dropdown-item" href="../articles/AnnotationStandards.html">A Standard for Annotations</a>
     <a class="dropdown-item" href="../articles/CTRP-Treatment-Annotation.html">Annotating CTRP Treatments</a>
   </div>
 </li>
@@ -130,6 +131,8 @@
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">mapCell2Accession</span><span class="op">(</span>ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A549"</span>, <span class="st">"MCF7"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Querying Cellosaurus... <span style="color: #00BB00;">■■■■■■■■■■■■■■■■                </span>  50% | ETA:  1s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Querying Cellosaurus... <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% | ETA:  0s</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    cellLineName accession  query</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          &lt;char&gt;    &lt;char&gt; &lt;char&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:        A-549 CVCL_0023   A549</span>
