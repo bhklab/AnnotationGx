@@ -41,7 +41,6 @@ options(width = 120)
 
 </details>
 
-- [ ] `BiocManager::valid()` is `TRUE`
 
 **Note**. To avoid potential issues with version mixing and reproducibility, do
 not install packages from `GitHub`.
@@ -56,3 +55,33 @@ Provide some additional context for the bug report. You may include web links
 * code inside a commit
 * code from an R package
 
+---
+name: Feature Request
+about: Suggest an idea for this project
+title: "[FEATURE] Brief description of the feature"
+labels: 'enhancement'
+assignees: ''
+
+---
+
+## Feature Description
+
+Please provide a clear and concise description of the feature you're proposing.
+
+## Problem it Solves
+
+Explain the problem that this feature addresses. Why is this feature necessary? How will it improve the project?
+
+## Alternatives Considered
+
+Describe any alternative solutions or features you've considered. Why were they not chosen?
+
+## Additional Context
+
+Provide any additional context about the feature request here. You may include:
+
+* Links to similar features in other projects
+* Screenshots/mockups, if applicable
+* Any other context or screenshots about the feature request
+
+**Note**: Please ensure your feature request is not already reported in the issues list before creating a new one.
