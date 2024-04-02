@@ -1,0 +1,138 @@
+---
+title: "A Standard for Annotations"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{A Standard for Annotations}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{css, echo=FALSE}
+.main-point strong {
+  color: #4CAF50; /* Green color for the title */
+  font-size: 120%;  /*font-size: 120%;*/
+  font-weight: bold;  /*bold:*/
+}
+.main-point {
+  background-color: #f0f0f0;
+  border-left: 6px solid #4CAF50; /* Green border */
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+{css, echo=FALSE}
+.emphasis { /* Red color for emphasis */
+  font-weight: bold; 
+  color: #f44336;
+}
+```
+
+```{r setup}
+library(AnnotationGx)
+```
+
+
+# Introduction
+The goal of AnnotationGx is to provide the tools that may help annotate chemi- and bio-informatic data.
+While the package is still in its early stages, it already provides a number of functions that may be useful for the annotation of data.
+In the interest of standardizing the annotation process, we propose a standard for annotations that may be used in the future.
+
+
+# Starting Point
+
+The starting point of any annotation process might be a table with a number of columns or a list of identifiers that need to be annotated.
+
+For example, we might have a data frame with a column of cell line names that we would like to annotate with information about the cell lines or
+a list of drugs that we would like to annotate with information about the drugs.
+
+
+```{r}
+# "sample" refers to the cell line names
+data(CCLE_sampleMetadata)
+head(CCLE_sampleMetadata)
+
+
+# "treatment" refers to the drug names
+data(CCLE_treatmentMetadata)
+head(CCLE_treatmentMetadata)
+```
+
+## Generic names for classes of data
+
+The first standard is to use generic names for different classes so that the annotation process can be generalized.
+When referring to cell lines, patients, or other biological entities that are being studied, we should use the name "sample".
+When referring to drugs, chemicals, or other treatments that are being applied to the samples, we should use the name "treatment".
+
+<div class="main-point">
+  <strong>Standard 1</strong>
+  <p>
+    Use the name "sample" for biological entities and "treatment" for treatments.
+
+    Use the name "treatment" for drugs, chemicals, radiological treatments, etc that are being applied to the samples.
+  </p>
+</div>
+
+In the CCLE example data provided, the name of the data frames are `CCLE_sampleMetadata` and `CCLE_treatmentMetadata`, already following this standard.
+
+However, within the dataframes, the names of the columns are not standardized. `CCLE_treatmentMetadata` correctly identifies the column with the treatment 
+names as "treatmentid", but `CCLE_sampleMetadata` uses the varying names. 
+
+Before we rename the columns, we introduce the second standard for column names.
+
+## Standardized column names
+
+Throughout the annotation process, many sources might be used for generating metadata. 
+
+For example, in annotating treatments, one might use the DrugBank database, the PubChem database, and the ChEMBL database.
+
+For transparency and reproducibility, we should use standardized column names for the metadata that we collect from these sources.
+
+
+<div class="main-point">
+  <strong>Standard 2</strong>
+  <p>
+    Use the format <span class="emphasis">{SOURCE}.{COLUMN_NAME}</span> for column names in the metadata.
+  </p>
+</div>
+
+
+For example, if we are using the Pubchem and DrugBank database, we might have columns like "pubchem.CID", "pubchem.SMILES", "drugbank.ID", "drugbank.SMILES", etc.
+
+
+This also applies to the data we start with. Take for example the GDSC example data provided:
+
+```{R}
+head(GDSC_sampleMetadata)
+```
+
+The column names above follow both Standard 1 and Standard 2. It tells us that the data for the two columns comes from the GDSC database. 
+
+This is especially useful when we are combining data from multiple sources and they might have columns with the same name.
+Additionally, it provides a level of confidence for users trying to compare data from different sources. 
+
+## Example Annotated Data
+
+In the example below, we have a data frame annotating the treatments for the 4 datasets CCLE, GDSC, CTRP, and gCSI.
+
+
+
+```{R}
+treatmentMetadata <- data.table::fread(system.file("extdata", "treatmentMetadata_annotated_pubchem_unichem_chembl.tsv", package = "AnnotationGx"))
+
+# two drugs: Erlotinib and Tanespimycin
+str(treatmentMetadata[pubchem.CID %in% c("6505803", "176870"),])
+
+```
+
+We can see above how the dataset sources are named in the column names ('CCLE.treatmentid', 'GDSC.treatmentid', 'CTRP.treatmentid', 'gCSI.treatmentid').
+
+If a user wanted to get the InChiKey, they would use the "pubchem.InChiKey" column, and understand that these inchikeys are from the PubChem database.
+
+Similarly, they have access to mechanism_of_action data in the "chembl.mechanism_of_action" column, and understand that these mechanisms are from the ChEMBL database.
