@@ -106,7 +106,12 @@ queryUnichemCompound <- function(
     if(raw) return(response)
 
     if(response$response != "Success"){
-        .err("Unichem API request failed.")
+        msg <- paste(
+            "Unichem API request failed for compound", compound, "
+            with type", type, 
+            " . Error:", response$error
+        )
+        .err(.funContext("AnnotationGx::queryUnichemCompound"), msg)
     }
 
     # Mapping names to be consistent with other API calls
