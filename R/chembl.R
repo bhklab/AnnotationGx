@@ -135,9 +135,13 @@ queryChemblAPI <- function(resource, field, filter_type, value, format = "json")
 getChemblMechanism <- function(
     chembl.ID, resources = "mechanism", field = "molecule_chembl_id", filter_type = "in",
     returnURL = FALSE, raw = FALSE) {
+
+  funContext <- .funContext("getChemblMechanism")
   # constructChemblQuery(resource = "mechanism", field = "molecule_chembl_id", filter_type = "in", value = "CHEMBL1413")
   # urls <- constructChemblQuery(resource = resources, field = field, filter_type = filter_type, value = chembl.ID)
   # urls <- URLencode(urls)
+
+  .info(funContext, "Retrieving ChEMBL Mechanism information for ", length(chembl.ID), " ChEMBL IDs.")
   response_dts <- lapply(chembl.ID, function(chembl.ID) {
     request <- .build_chembl_request(resource = resources, field = field, filter_type = filter_type, value = chembl.ID)
 
@@ -165,8 +169,8 @@ getChemblMechanism <- function(
     }
     x
   })
-
-  data.table::rbindlist(response_dts)
+  
+  data.table::rbindlist(response_dts, fill = TRUE)
 }
 
 
