@@ -174,7 +174,7 @@ getChemblMechanism <- function(
 }
 
 
-#' Get the fields of a Chembl resource
+#' Get the fields of a Chembl resource function
 #'
 #' This function retrieves the fields of a Chembl resource.
 #'
