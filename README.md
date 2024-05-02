@@ -25,6 +25,18 @@ remotes::install_github(
 )
 ```
 
+If you are having trouble installing the package, you can try to install without building the manual and vignettes:
+
+``` r
+remotes::install_github(
+    "bhklab/AnnotationGx", 
+    build_manual=FALSE, 
+    build_vignettes=FALSE
+)
+```
+
+
+
 ## Example
 
 First load the package:
