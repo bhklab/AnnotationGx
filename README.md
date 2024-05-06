@@ -10,7 +10,6 @@
 [![codecov](https://codecov.io/github/bhklab/AnnotationGx/graph/badge.svg?token=Nb1x0FcJoi)](https://codecov.io/github/bhklab/AnnotationGx)
 [![Docker Pulls](https://img.shields.io/docker/pulls/bhklab/annotationgx-r)](https://hub.docker.com/r/bhklab/annotationgx-r)
 
-
 <!-- badges: end -->
 
 ## Installation
@@ -34,8 +33,6 @@ remotes::install_github(
     build_vignettes=FALSE
 )
 ```
-
-
 
 ## Example
 
