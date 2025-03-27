@@ -35,7 +35,3 @@ If \code{raw} is set to TRUE, the raw response from the API will be returned.
 This function maps a drug compound to the Cancer Target Discovery (CTD) database.
 It retrieves information about the compound from the CTD database and returns the results as a data table.
 }
-\examples{
-mapCompound2CTD("Bax channel blocker", nParallel = 1)
-
-}
