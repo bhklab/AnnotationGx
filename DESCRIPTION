@@ -24,7 +24,8 @@ Imports:
     data.table,
     readr,
     xml2,
-    methods
+    methods,
+    memoise
 Suggests: 
     testthat (>= 3.0.0),
     covr,
