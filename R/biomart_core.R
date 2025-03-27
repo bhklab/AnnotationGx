@@ -330,7 +330,7 @@ BioMartClient <- R6::R6Class("BioMartClient",
     #'
     #' @return List of MartInfo objects
     get_marts = function() {
-      step <- cli::cli_progress_step("📡 Fetching available marts")
+      step <- cli::cli_progress_step("[Fetch] Fetching available marts")
       on.exit(cli::cli_progress_done(step), add = TRUE)
 
       res <- private$.request("marts.json") |>
@@ -349,7 +349,7 @@ BioMartClient <- R6::R6Class("BioMartClient",
     #' @return List of DatasetInfo objects
     get_datasets = function(mart) {
       stopifnot(inherits(mart, "MartInfo"))
-      step <- cli::cli_progress_step("📦 Fetching datasets for {.val {mart$config}}")
+      step <- cli::cli_progress_step("[Dataset] Fetching datasets for {.val {mart$config}}")
       on.exit(cli::cli_progress_done(step), add = TRUE)
 
       res <- private$.request("datasets.json") |>
@@ -374,7 +374,7 @@ BioMartClient <- R6::R6Class("BioMartClient",
     #' @return List of attribute information
     get_attributes = function(dataset) {
       stopifnot(inherits(dataset, "DatasetInfo"))
-      step <- cli::cli_progress_step("🔎 Fetching attributes for {.val {dataset$name}} ({.val {dataset$mart$config}})")
+      step <- cli::cli_progress_step("[Attributes] Fetching attributes for {.val {dataset$name}} ({.val {dataset$mart$config}})")
       on.exit(cli::cli_progress_done(step), add = TRUE)
 
       res <- private$.request("attributes.json") |>
@@ -402,7 +402,7 @@ BioMartClient <- R6::R6Class("BioMartClient",
     #' @return List of filter information
     get_filters = function(dataset) {
       stopifnot(inherits(dataset, "DatasetInfo"))
-      step <- cli::cli_progress_step("🧰 Fetching filters for {.val {dataset$name}} ({.val {dataset$mart$config}})")
+      step <- cli::cli_progress_step("[Filters] Fetching filters for {.val {dataset$name}} ({.val {dataset$mart$config}})")
       on.exit(cli::cli_progress_done(step), add = TRUE)
 
       res <- private$.request("filters.json") |>
@@ -487,7 +487,7 @@ bm_query_builder <- function(dataset,
         collapse = ""
       )
     } else {
-      # Otherwise assume a named list: name → value
+      # Otherwise assume a named list: name -> value
       filter_xml <- paste(
         vapply(names(filters), function(name) {
           val <- paste(filters[[name]], collapse = ",")
