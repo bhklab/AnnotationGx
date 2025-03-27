@@ -16,9 +16,6 @@
 #' If the API request fails, a data table with the drug compound name will be returned.
 #' If \code{raw} is set to TRUE, the raw response from the API will be returned.
 #'
-#' @examples
-#' mapCompound2CTD("Bax channel blocker", nParallel = 1)
-#'
 #' @export
 mapCompound2CTD <- function(
     compounds,
