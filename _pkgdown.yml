@@ -86,6 +86,11 @@ reference:
   contents:
   - mapCompound2CTD
 
+- title: HGNC Gene Symbols
+  subtitle: API query
+  contents:
+  - query_hgnc_by_genes
+
 - title: Utility Functions
   contents:
   - strSplit

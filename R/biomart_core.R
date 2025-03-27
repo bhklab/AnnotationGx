@@ -6,6 +6,8 @@
 #' @details
 #' This class encapsulates metadata about a BioMart database, including
 #' its name, display name, description, configuration, and other properties.
+#' 
+#' @keywords internal
 MartInfo <- R6::R6Class("MartInfo",
   public = list(
     #' @field name The internal name of the mart
@@ -74,6 +76,8 @@ MartInfo <- R6::R6Class("MartInfo",
 #'  BioMart database,
 #' including its name, description, display name, and a reference
 #'  to the parent mart.
+#' 
+#' @keywords internal
 DatasetInfo <- R6::R6Class("DatasetInfo",
   public = list(
     #' @field name The internal name of the dataset
@@ -123,6 +127,8 @@ DatasetInfo <- R6::R6Class("DatasetInfo",
 #' @details
 #' This class encapsulates information about a filter available in a BioMart dataset.
 #' Filters are used to specify conditions for querying and subsetting data from BioMart.
+#' 
+#' @keywords internal
 FilterInfo <- R6::R6Class("FilterInfo",
   public = list(
     #' @field name The internal name of the filter used in BioMart queries
@@ -182,6 +188,8 @@ FilterInfo <- R6::R6Class("FilterInfo",
 #' @details
 #' This class encapsulates information about an attribute available in a BioMart dataset.
 #' Attributes are data fields that can be selected for retrieval in BioMart query results.
+#' 
+#' @keywords internal
 AttributeInfo <- R6::R6Class("AttributeInfo",
   public = list(
     #' @field name The internal name of the attribute used in BioMart queries
@@ -307,6 +315,8 @@ AttributeSet <- R6::R6Class("AttributeSet",
 #' }
 #'
 #' @export
+#' 
+#' @keywords internal
 BioMartClient <- R6::R6Class("BioMartClient",
   public = list(
     #' @field base_url Base URL of the BioMart service
@@ -443,6 +453,8 @@ BioMartClient <- R6::R6Class("BioMartClient",
 #' @param limit Integer, maximum number of rows to return, -1 for unlimited (default: -1)
 #'
 #' @return Character string containing the formatted XML BioMart query
+#' 
+#' @keywords internal
 bm_query_builder <- function(dataset,
                              filters = list(),
                              attributes = character(),
