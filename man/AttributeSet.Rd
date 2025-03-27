@@ -6,6 +6,7 @@
 \description{
 Represents a set of attributes from a BioMart dataset.
 }
+\keyword{internal}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{

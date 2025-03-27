@@ -239,6 +239,8 @@ AttributeInfo <- R6::R6Class("AttributeInfo",
 #'
 #' @description
 #' Represents a set of attributes from a BioMart dataset.
+#' 
+#' @keywords internal
 AttributeSet <- R6::R6Class("AttributeSet",
   public = list(
     #' @field attributes List of AttributeInfo objects
