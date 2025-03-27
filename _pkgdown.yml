@@ -81,10 +81,10 @@ reference:
   - getOncotreeMainTypes
   - getOncotreeTumorTypes
 
-- title: CancerTargetDiscoveryDevelopment (CTD2)
-  subtitle: API query
-  contents:
-  - mapCompound2CTD
+# - title: CancerTargetDiscoveryDevelopment (CTD2)
+#   subtitle: API query
+#   contents:
+#   - mapCompound2CTD
 
 - title: HGNC Gene Symbols
   subtitle: API query
