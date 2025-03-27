@@ -6,20 +6,21 @@ title: "Annotating CTRP Treatments"
 
 This vignette compares annotating CTRP-provided treatment ids to PubChem CIDs and CTD information.
 
-Whereas the PubChem CID is a unique identifier for a compound, the PubChem API does not easily map 
-treatment names to CIDs, atleast not in a way that easy for commonly misnamed treatments. 
-Specifically, for the **CTRP** treatment names (n=545), the PubChem API does not correctly map 
+Whereas the PubChem CID is a unique identifier for a compound, the PubChem API does not easily map
+treatment names to CIDs, atleast not in a way that easy for commonly misnamed treatments.
+Specifically, for the **CTRP** treatment names (n=545), the PubChem API does not correctly map
 all of them to PubChem CIDs.
-
-The [CTD2](https://ctd2-dashboard.nci.nih.gov/dashboard) database is the central database where **CTRP** 
-data is hosted. They happen to expose (an API)[https://ctd2-dashboard.nci.nih.gov/dashboard/#api-documentation] 
-for their database. 
+<!-- 
+NOTE: As of March 27, 2025, the CTD2 database is not available. The API is not available.
+The [CTD2](https://ctd2-dashboard.nci.nih.gov/dashboard) database is the central database where **CTRP**
+data is hosted. They happen to expose [an API](https://ctd2-dashboard.nci.nih.gov/dashboard/#api-documentation)
+for their database.
 
 Developer Note: The API calls they describe on their API documentation is useful, but they have an endpoint:
 `GET /compound/{compoundId}` that is not documented. This endpoint is useful for mapping compound names in the way
 their data (i.e CTRP) names them to PubChem CIDs.
 
-The functionality for this is implemented in the `mapCompound2CTD` function.
+The functionality for this is implemented in the `mapCompound2CTD` function. -->
 
 It is an investigation to see which of the methods might map more compounds
 
@@ -30,14 +31,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-
 ```{r setup}
 library(AnnotationGx)
 
 data(CTRP_treatmentMetadata)
 ```
-
-
 
 ``` {r test_both}
 
@@ -46,18 +44,12 @@ data(CTRP_treatmentMetadata)
 treatment <- CTRP_treatmentMetadata[1, CTRP.treatmentid]
 sprintf("CTRP treatment id : %s", treatment)
 
-# map the treatment to a CID using the CTD database
-mapCompound2CTD(treatment)[, .(displayName, PUBCHEM)]
-
-
 # map the treatment to a CID using PubChem
 mapCompound2CID(treatment)
 
 ```
-
-
+<!-- 
 # Annotating using the CTD database
-
 
 ```{r run_CTD}
 result <- CTRP_treatmentMetadata[, mapCompound2CTD(CTRP.treatmentid, query_only = F, raw = F)]
@@ -66,10 +58,10 @@ show(result)
 message("Failed results: ", result[is.na(result$PUBCHEM), .N])
 
 failed_names <- result[is.na(result$PUBCHEM),displayName]
-```
-
+``` -->
 
 # Annotating using PubChem
+
 ``` {r run_CTRP_Pubchem, eval = FALSE}
 (compounds_to_cids <- 
   CTRP_treatmentMetadata[, 
@@ -83,8 +75,6 @@ failed <-
   attributes(compounds_to_cids)$failed |> 
     names()
 ```
-
-
 
 ``` {r Pubchem Failed, eval = FALSE}
 failed <- unique(CTRP_treatmentMetadata[CTRP.treatmentid %in% failed, ])
