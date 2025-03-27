@@ -22,8 +22,7 @@
 #' @keywords internal
 #' @noRd
 .create_cellosaurus_queries <- function(ids, from, fuzzy = FALSE) {
-
-  if(fuzzy){
+  if (fuzzy) {
     ids <- paste0(cleanCharacterStrings(ids), "~")
   }
 
@@ -57,17 +56,18 @@
 #' @return A character string representing the constructed URL for the Cellosaurus API request.
 #'
 #' @examples
-#' .build_cellosaurus_request(query = c("id:HeLa"), to = c("id", "ac", "hi", "ca", "sx", "ag", "di", "derived-from-site", "misspelling"),
-#'                           numResults = 1, apiResource = "search/cell-line", output = "TSV", sort = "ac",
-#'                           query_only = FALSE)
-#' 
+#' .build_cellosaurus_request(
+#'   query = c("id:HeLa"), to = c("id", "ac", "hi", "ca", "sx", "ag", "di", "derived-from-site", "misspelling"),
+#'   numResults = 1, apiResource = "search/cell-line", output = "TSV", sort = "ac",
+#'   query_only = FALSE
+#' )
+#'
 #' @keywords internal
 #' @noRd
 .build_cellosaurus_request <- function(
     query = c("id:HeLa"), to = c("id", "ac", "hi", "ca", "sx", "ag", "di", "derived-from-site", "misspelling"),
     numResults = 1, apiResource = "search/cell-line", output = "TSV", sort = "ac",
-    query_only = FALSE,  ...) {
-  
+    query_only = FALSE, ...) {
   checkmate::assert_character(c(query, output))
   checkmate::assert_choice(apiResource, c("search/cell-line", "cell-line", "release-info"))
   checkmate::assert_choice(output, c("TSV", "TXT", "JSON", "XML"))
@@ -77,11 +77,16 @@
   url$path <- .buildURL(url$path, apiResource)
 
   opts <- list()
-  
-  if(apiResource == "search/cell-line"){
+
+  if (apiResource == "search/cell-line") {
     opts$q <- paste0(query, collapse = " ")
-  } else if(apiResource == "cell-line"){
+  } else if (apiResource == "cell-line") {
     url$path <- .buildURL(url$path, query)
+  }
+
+  # if the url$path has 2 // in the beginning, remove one
+  if (startsWith(url$path, "//")) {
+    url$path <- substr(url$path, 2, nchar(url$path))
   }
 
   if (!is.null(sort)) {
@@ -155,4 +160,3 @@
     "WiCell", "Wikidata", "Ximbio"
   )
 }
-
