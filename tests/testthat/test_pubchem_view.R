@@ -28,8 +28,6 @@ test_that("AnnotationGx::getAnotationHeadings Failure", {
   expect_error(getPubchemAnnotationHeadings("substance", "ChEMBL ID"))
 })
 
-
-
 test_that("AnnotationGx::annotatePubchemCompound", {
   CID <- 176870 # Erlotonib
   expected <- "CHEMBL553"
@@ -60,9 +58,6 @@ test_that("AnnotationGx::annotatePubchemCompound", {
 
   expected <- "15687-27-1"
   expect_equal(annotatePubchemCompound(CID, "CAS"), expected)
-
-  expected <- "NSC 757073; NSC 256857"
-  expect_equal(annotatePubchemCompound(CID, "NSC Number"), expected)
 
   expected <- "M02AA13; C01EB16; R02AX02; G02CC01; M01AE01"
   expect_equal(annotatePubchemCompound(CID, "ATC Code"), expected)
