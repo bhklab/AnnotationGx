@@ -28,7 +28,7 @@ test_that(".build_cellosaurus_request is acting as expected", {
 
   response <- AnnotationGx:::.perform_request(request) |> AnnotationGx:::.parse_resp_tsv(show_col_types = FALSE, skip = 14)
   expect_class(response, "spec_tbl_df")
-  expect_equal(nrow(response), 1)
+  expect_equal(nrow(response), 2)
 
   request2 <- AnnotationGx:::.build_cellosaurus_request(
     query = "id:HeLa",
@@ -43,7 +43,7 @@ test_that(".build_cellosaurus_request is acting as expected", {
     "https://api.cellosaurus.org/search/cell-line?q=id%3AHeLa&sort=ac%20asc&fields=id%2Cac%2Csy%2Cacas%2Csx%2Cag%2Cdi%2Cdio%2Cdin%2Cdr%2Ccell-type%2Cderived-from-site%2Cmisspelling%2Cdt%2Cdtc%2Cdtu%2Cdtv%2Cgenome-ancestry&format=tsv&rows=2"
   )
   response <- AnnotationGx:::.perform_request(request2) |> AnnotationGx:::.parse_resp_tsv(show_col_types = FALSE, skip = 14)
-  expect_equal(nrow(response), 2)
+  expect_equal(nrow(response), 3)
 })
 
 
@@ -51,8 +51,8 @@ test_that("common_cellosaurus_fields returns the expected fields", {
   fields <- AnnotationGx::cellosaurus_fields(common = T, upper = T)
   expect_character(fields)
   expect_fields <- c(
-    "id", "ac", "acas", "sy", "dr", "di", "din", "dio", "ox", "cc",  "sx", "ag", "oi",
-    "hi", "ch", "ca",  "dt", "dtc", "dtu", "dtv", "from", "group"
+    "id", "ac", "acas", "sy", "dr", "di", "din", "dio", "ox", "cc", "sx", "ag", "oi",
+    "hi", "ch", "ca", "dt", "dtc", "dtu", "dtv", "from", "group"
   )
 
 
