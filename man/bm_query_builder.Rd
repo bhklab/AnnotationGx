@@ -40,3 +40,4 @@ Character string containing the formatted XML BioMart query
 \description{
 Build BioMart Query XML
 }
+\keyword{internal}

@@ -10,6 +10,7 @@ Class that stores information about a BioMart database.
 This class encapsulates metadata about a BioMart database, including
 its name, display name, description, configuration, and other properties.
 }
+\keyword{internal}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{

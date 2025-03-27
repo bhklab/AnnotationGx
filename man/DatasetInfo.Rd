@@ -12,6 +12,7 @@ BioMart database,
 including its name, description, display name, and a reference
 to the parent mart.
 }
+\keyword{internal}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{

@@ -10,6 +10,7 @@ Represents a filter from a BioMart dataset.
 This class encapsulates information about a filter available in a BioMart dataset.
 Filters are used to specify conditions for querying and subsetting data from BioMart.
 }
+\keyword{internal}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{

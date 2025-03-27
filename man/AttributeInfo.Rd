@@ -10,6 +10,7 @@ Represents an attribute from a BioMart dataset.
 This class encapsulates information about an attribute available in a BioMart dataset.
 Attributes are data fields that can be selected for retrieval in BioMart query results.
 }
+\keyword{internal}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
