@@ -28,6 +28,14 @@ mapCompound2CTD <- function(
     raw = FALSE,
     query_only = FALSE
 ) {
+    # March 06 2025:
+    # this function is deprecated until
+    # the Cancer Target Discovery and Development (CTD2) works again
+    # as of today, the https://ctd2-dashboard.nci.nih.gov/ doesnt work at all
+    # we will raise an error for now
+    errmsg <- "The CTD2 API is currently not working. Please check the status of the API at https://ctd2-dashboard.nci.nih.gov/"
+    stop(errmsg)
+
     funContext <- .funContext("mapCompound2CTD")
     
     # Check input types
