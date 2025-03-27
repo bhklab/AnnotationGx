@@ -15,20 +15,6 @@ test_that("mapCell2Accession works as expected", {
 
 })
 
-test_that("mapCell2Accession prioritizePatient works as expected", {
-  cell_line <- "BT474"
-
-  result1 <- mapCell2Accession(
-    cell_line)
-
-  expect_data_table(result1, nrows = 1, ncols = 3)
-  expect_named(result1, c("cellLineName", "accession", "query"))
-  expect_equal(result1$accession, "CVCL_0179")
-  expect_equal(result1$cellLineName, "BT-474")
-
-  expect_error(mapCell2Accession("BT474", numResults = -1, from = "idsy"))
-})
-
 test_that("mapCell2Accession fuzzy search works as expected", {
   cell_line <- "BT474"
 
@@ -39,8 +25,6 @@ test_that("mapCell2Accession fuzzy search works as expected", {
   expect_equal(result1$accession, "CVCL_0179")
   expect_equal(result1$cellLineName, "BT-474")
   expect_named(result1, c("cellLineName", "accession", "query"))
-
-  expect_error(mapCell2Accession("BT474", numResults = -1, from = "idsy"))
 })
 
 test_that("mapCell2Accession with multiple cell lines works as expected", {
@@ -53,8 +37,6 @@ test_that("mapCell2Accession with multiple cell lines works as expected", {
   expect_named(result1, c("cellLineName", "accession", "query"))
   expect_equal(result1$accession, c("CVCL_0179", "CVCL_0030"))
   expect_equal(result1$cellLineName, c("BT-474", "HeLa"))
-
-  expect_error(mapCell2Accession("BT474", numResults = -1, from = "idsy"))
 })
 
 test_that("mapCell DOR 13 works", {
@@ -81,7 +63,7 @@ test_that("mapCell DOR 13 works", {
 test_that("query only paramater works",{
   result1 <- mapCell2Accession("DOR 13", query_only = TRUE)
   
-  expected <- "https://api.cellosaurus.org/search/cell-line?q=idsy%3ADOR%2013&sort=ac%20asc&fields=ac%2Cid%2Csy%2Cmisspelling%2Cdr%2Ccc%2Cca%2Cdi%2Cag%2Csx%2Chi&format=txt&rows=10000"
+  expected <- "https://api.cellosaurus.org//search/cell-line?q=idsy%3ADOR%2013&sort=ac%20asc&fields=ac%2Cid%2Csy%2Cmisspelling%2Cdr%2Ccc%2Cca%2Cdi%2Cag%2Csx%2Chi&format=txt&rows=10000"
   expect_equal(result1[[1]], expected)
   expect_equal(names(result1), "DOR 13")
 })

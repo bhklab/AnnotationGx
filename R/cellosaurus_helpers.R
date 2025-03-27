@@ -79,7 +79,6 @@
   opts <- list()
   
   if(apiResource == "search/cell-line"){
-  "https://api.cellosaurus.org/search/cell-line?q=idsy%3ADOR%2013&sort=ac%20asc&fields=ac%2Cid%2Csy%2Cmisspelling%2Cdr%2Ccc&format=txt&rows=10000"
     opts$q <- paste0(query, collapse = " ")
   } else if(apiResource == "cell-line"){
     url$path <- .buildURL(url$path, query)
