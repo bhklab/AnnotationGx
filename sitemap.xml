@@ -1,159 +1,62 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/404.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/articles/AnnotationStandards.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/articles/CTRP-Treatment-Annotation.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/articles/Cellosaurus.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/articles/ChEMBL.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/articles/Introduction.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/articles/OncoTree.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/articles/PubChemAPI.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/articles/Unichem.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/index.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/AnnotationGx-package.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/CCLE_sampleMetadata.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/CCLE_treatmentMetadata.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/CTRP_sampleMetadata.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/CTRP_treatmentMetadata.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/GDSC_sampleMetadata.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/GDSC_treatmentMetadata.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/annotateCellAccession.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/annotatePubchemCompound.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/cellosaurusAPIVersion.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/cellosaurus_fields.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/cleanCharacterStrings.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/gCSI_sampleMetadata.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/gCSI_treatmentMetadata.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/getChemblFilterTypes.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/getChemblMechanism.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/getChemblResourceFields.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/getChemblResources.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/getOncotreeMainTypes.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/getOncotreeTumorTypes.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/getOncotreeVersions.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/getPubchemAnnotationHeadings.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/getPubchemCompound.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/getPubchemProperties.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/getPubchemStatus.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/getUnichemSources.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/mapCID2Properties.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/mapCell2Accession.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/mapCompound2CID.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/mapCompound2CTD.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/matchNested.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/queryChemblAPI.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/queryUnichemCompound.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/standardize_names.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/strSplit.html</loc>
-  </url>
-  <url>
-    <loc>https://bhklab.github.io/AnnotationGx/reference/unlistNested.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://bhklab.github.io/AnnotationGx/404.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/LICENSE-text.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/LICENSE.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/articles/AnnotationStandards.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/articles/CTRP-Treatment-Annotation.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/articles/Cellosaurus.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/articles/ChEMBL.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/articles/Introduction.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/articles/OncoTree.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/articles/PubChemAPI.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/articles/Unichem.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/articles/index.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/authors.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/index.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/news/index.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/AnnotationGx-package.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/AttributeInfo.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/AttributeSet.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/BioMartClient.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/CCLE_sampleMetadata.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/CCLE_treatmentMetadata.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/CTRP_sampleMetadata.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/CTRP_treatmentMetadata.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/DatasetInfo.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/FilterInfo.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/GDSC_sampleMetadata.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/GDSC_treatmentMetadata.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/MartInfo.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/annotateCellAccession.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/annotatePubchemCompound.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/bm_query_builder.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/cellosaurusAPIVersion.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/cellosaurus_fields.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/cleanCharacterStrings.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/gCSI_sampleMetadata.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/gCSI_treatmentMetadata.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/getChemblFilterTypes.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/getChemblMechanism.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/getChemblResourceFields.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/getChemblResources.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/getOncotreeMainTypes.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/getOncotreeTumorTypes.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/getOncotreeVersions.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/getPubchemAnnotationHeadings.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/getPubchemCompound.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/getPubchemProperties.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/getPubchemStatus.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/getUnichemSources.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/index.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/mapCID2Properties.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/mapCell2Accession.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/mapCompound2CID.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/matchNested.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/queryChemblAPI.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/queryUnichemCompound.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/query_hgnc_by_genes.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/standardize_names.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/strSplit.html</loc></url>
+<url><loc>https://bhklab.github.io/AnnotationGx/reference/unlistNested.html</loc></url>
 </urlset>
+
