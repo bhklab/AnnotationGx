@@ -48,23 +48,12 @@ sprintf("CTRP treatment id : %s", treatment)
 mapCompound2CID(treatment)
 
 ```
-<!-- 
-# Annotating using the CTD database
 
-```{r run_CTD}
-result <- CTRP_treatmentMetadata[, mapCompound2CTD(CTRP.treatmentid, query_only = F, raw = F)]
-
-show(result)
-message("Failed results: ", result[is.na(result$PUBCHEM), .N])
-
-failed_names <- result[is.na(result$PUBCHEM),displayName]
-``` -->
-
-# Annotating using PubChem
+## Annotating using PubChem
 
 ``` {r run_CTRP_Pubchem, eval = FALSE}
 (compounds_to_cids <- 
-  CTRP_treatmentMetadata[, 
+  CTRP_treatmentMetadata[1:10, 
     AnnotationGx::mapCompound2CID(
         names =  CTRP.treatmentid,
         first = TRUE
