@@ -39,7 +39,6 @@
 }
 
 
-
 #' Build a Cellosaurus API request
 #'
 #' This function builds a Cellosaurus API request based on the provided parameters.
@@ -65,11 +64,30 @@
 #' @keywords internal
 #' @noRd
 .build_cellosaurus_request <- function(
-    query = c("id:HeLa"), to = c("id", "ac", "hi", "ca", "sx", "ag", "di", "derived-from-site", "misspelling"),
-    numResults = 1, apiResource = "search/cell-line", output = "TSV", sort = "ac",
-    query_only = FALSE, ...) {
+  query = c("id:HeLa"),
+  to = c(
+    "id",
+    "ac",
+    "hi",
+    "ca",
+    "sx",
+    "ag",
+    "di",
+    "derived-from-site",
+    "misspelling"
+  ),
+  numResults = 1,
+  apiResource = "search/cell-line",
+  output = "TSV",
+  sort = "ac",
+  query_only = FALSE,
+  ...
+) {
   checkmate::assert_character(c(query, output))
-  checkmate::assert_choice(apiResource, c("search/cell-line", "cell-line", "release-info"))
+  checkmate::assert_choice(
+    apiResource,
+    c("search/cell-line", "cell-line", "release-info")
+  )
   checkmate::assert_choice(output, c("TSV", "TXT", "JSON", "XML"))
 
   base_url <- "https://api.cellosaurus.org"
@@ -97,7 +115,6 @@
   opts$format <- tolower(output)
   opts$rows <- numResults
 
-
   url$query <- opts
   url <- url |> httr2::url_build()
   if (query_only) {
@@ -105,7 +122,6 @@
   }
   url |> .build_request()
 }
-
 
 
 #' Get the Cellosaurus schema
@@ -128,9 +144,6 @@
 }
 
 
-
-
-
 #' Internal function to return the list of external resources available in Cellosaurus
 #' @return A character vector of external resources available in Cellosaurus
 #'
@@ -138,25 +151,113 @@
 #' @noRd
 .cellosaurus_extResources <- function() {
   c(
-    "4DN", "Abcam", "ABCD", "ABM", "AddexBio", "ArrayExpress",
-    "ATCC", "BCGO", "BCRC", "BCRJ", "BEI_Resources",
-    "BioGRID_ORCS_Cell_line", "BTO", "BioSample", "BioSamples",
-    "cancercelllines", "CancerTools", "CBA", "CCLV", "CCRID",
-    "CCTCC", "Cell_Biolabs", "Cell_Model_Passport", "CGH-DB",
-    "ChEMBL-Cells", "ChEMBL-Targets", "CLDB", "CLO", "CLS",
-    "ColonAtlas", "Coriell", "Cosmic", "Cosmic-CLP", "dbGAP",
-    "dbMHC", "DepMap", "DGRC", "DiscoverX", "DSHB", "DSMZ",
-    "DSMZCellDive", "EBiSC", "ECACC", "EFO", "EGA", "ENCODE",
-    "ESTDAB", "FCDI", "FCS-free", "FlyBase_Cell_line", "GDSC",
-    "GeneCopoeia", "GEO", "HipSci", "HIVReagentProgram", "Horizon_Discovery",
-    "hPSCreg", "IARC_TP53", "IBRC", "ICLC", "ICLDB", "IGRhCellID",
-    "IGSR", "IHW", "Imanis", "Innoprot", "IPD-IMGT/HLA", "ISCR",
-    "IZSLER", "JCRB", "KCB", "KCLB", "Kerafast", "KYinno", "LiGeA",
-    "LIMORE", "LINCS_HMS", "LINCS_LDP", "Lonza", "MCCL", "MeSH",
-    "MetaboLights", "Millipore", "MMRRC", "NCBI_Iran", "NCI-DTP", "NHCDR",
-    "NIHhESC", "NISES", "NRFC", "PerkinElmer", "PharmacoDB", "PRIDE",
-    "Progenetix", "PubChem_Cell_line", "RCB", "Rockland", "RSCB", "SKIP",
-    "SKY/M-FISH/CGH", "SLKBase", "TKG", "TNGB", "TOKU-E", "Ubigene",
-    "WiCell", "Wikidata", "Ximbio"
+    "4DN",
+    "Abcam",
+    "ABCD",
+    "ABM",
+    "AddexBio",
+    "ArrayExpress",
+    "ATCC",
+    "BCGO",
+    "BCRC",
+    "BCRJ",
+    "BEI_Resources",
+    "BioGRID_ORCS_Cell_line",
+    "BTO",
+    "BioSample",
+    "BioSamples",
+    "cancercelllines",
+    "CancerTools",
+    "CBA",
+    "CCLV",
+    "CCRID",
+    "CCTCC",
+    "Cell_Biolabs",
+    "Cell_Model_Passport",
+    "CGH-DB",
+    "ChEMBL-Cells",
+    "ChEMBL-Targets",
+    "CLDB",
+    "CLO",
+    "CLS",
+    "ColonAtlas",
+    "Coriell",
+    "Cosmic",
+    "Cosmic-CLP",
+    "dbGAP",
+    "dbMHC",
+    "DepMap",
+    "DGRC",
+    "DiscoverX",
+    "DSHB",
+    "DSMZ",
+    "DSMZCellDive",
+    "EBiSC",
+    "ECACC",
+    "EFO",
+    "EGA",
+    "ENCODE",
+    "ESTDAB",
+    "FCDI",
+    "FCS-free",
+    "FlyBase_Cell_line",
+    "GDSC",
+    "GeneCopoeia",
+    "GEO",
+    "HipSci",
+    "HIVReagentProgram",
+    "Horizon_Discovery",
+    "hPSCreg",
+    "IARC_TP53",
+    "IBRC",
+    "ICLC",
+    "ICLDB",
+    "IGRhCellID",
+    "IGSR",
+    "IHW",
+    "Imanis",
+    "Innoprot",
+    "IPD-IMGT/HLA",
+    "ISCR",
+    "IZSLER",
+    "JCRB",
+    "KCB",
+    "KCLB",
+    "Kerafast",
+    "KYinno",
+    "LiGeA",
+    "LIMORE",
+    "LINCS_HMS",
+    "LINCS_LDP",
+    "Lonza",
+    "MCCL",
+    "MeSH",
+    "MetaboLights",
+    "Millipore",
+    "MMRRC",
+    "NCBI_Iran",
+    "NCI-DTP",
+    "NHCDR",
+    "NIHhESC",
+    "NISES",
+    "NRFC",
+    "PerkinElmer",
+    "PharmacoDB",
+    "PRIDE",
+    "Progenetix",
+    "PubChem_Cell_line",
+    "RCB",
+    "Rockland",
+    "RSCB",
+    "SKIP",
+    "SKY/M-FISH/CGH",
+    "SLKBase",
+    "TKG",
+    "TNGB",
+    "TOKU-E",
+    "Ubigene",
+    "WiCell",
+    "Wikidata",
+    "Ximbio"
   )
 }
