@@ -18,6 +18,9 @@ test_that(".create_cellosaurus_queries is acting as expected", {
 })
 
 test_that(".cellosaurus_schema is acting as expected", {
+  skip_if_offline()
+  skip_on_cran()
+
   schema <- AnnotationGx:::.cellosaurus_schema()
   expect_list(schema)
   names_list <- c("openapi", "info", "paths", "components", "tags")
@@ -26,6 +29,9 @@ test_that(".cellosaurus_schema is acting as expected", {
 })
 
 test_that(".build_cellosaurus_request is acting as expected", {
+  skip_if_offline()
+  skip_on_cran()
+
   request <- AnnotationGx:::.build_cellosaurus_request()
 
   expect_class(request, "httr2_request")
