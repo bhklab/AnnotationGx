@@ -61,5 +61,10 @@
 #' @noRd
 #' @keywords internal
 .parse_resp_tsv <- function(resp, show_col_types = FALSE, skip = 0) {
-  readr::read_tsv(resp$body, skip = skip, show_col_types = show_col_types)
+  readr::read_tsv(
+    resp$body,
+    skip = skip,
+    show_col_types = show_col_types,
+    comment = "#"
+  )
 }
