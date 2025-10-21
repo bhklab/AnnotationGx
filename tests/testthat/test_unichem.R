@@ -29,8 +29,10 @@ test_that("getUnichemSources returns a data.table with the correct columns", {
     col.names = 'named',
     info = "The data.table should have the correct columns. 
         The min number of rows and columns may change over time and is set on
-        from UniChem as of March 2024.",
+        from UniChem as of March 2024."
   )
+
+  expect_setequal(names(sources), expected_columns)
 })
 
 
