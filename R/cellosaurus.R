@@ -335,25 +335,25 @@ mapCell2Accession <- function(
     dt[[name]] <- x[[name]]
   }
   for (key in optionalKeys) {
-    dt[[key]] <- ifelse(
-      is.null(x[[key]]),
-      NA_character_,
-      x[[key]]
-    )
+    if (is.null(x[[key]])) {
+      dt[[key]] <- NA_character_
+    } else {
+      dt[[key]] <- x[[key]]
+    }
   }
   for (key in nestedKeys) {
-    dt[[key]] <- ifelse(
-      is.null(x[[key]]),
-      NA_character_,
-      list(.splitNestedCol(x, key, "; ")[[key]])
-    )
+    if (is.null(x[[key]])) {
+      dt[[key]] <- NA_character_
+    } else {
+      dt[[key]] <- list(.splitNestedCol(x, key, "; ")[[key]])
+    }
   }
   for (key in specialKeys) {
-    dt[[key]] <- ifelse(
-      is.null(x[[key]]),
-      NA_character_,
-      x[key]
-    )
+    if (is.null(x[[key]])) {
+      dt[[key]] <- NA_character_
+    } else {
+      dt[[key]] <- x[key]
+    }
   }
 
   ## Filter out discontinued identifiers from DR (e.g. "CVCL_0455").
