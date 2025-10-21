@@ -84,7 +84,6 @@
 ) {
   allowed_resources <- c("search/cell-line", "cell-line", "release-info")
   allowed_outputs <- c("TSV", "TXT", "JSON", "XML")
-  allowed_sort <- c("ac", "id", "sy", "misspelling")
 
   checkmate::assert_character(
     query,
@@ -109,8 +108,9 @@
   )
   checkmate::assert_choice(output, allowed_outputs)
 
+  available_fields <- cellosaurus_fields()
   to <- tolower(to)
-  invalid_fields <- setdiff(to, cellosaurus_fields())
+  invalid_fields <- setdiff(to, available_fields)
   if (length(invalid_fields) > 0L) {
     stop(
       "Invalid Cellosaurus field(s): ",
@@ -123,6 +123,7 @@
     stop("`numResults` must be a single positive integer")
   }
 
+  allowed_sort <- unique(c(available_fields, "miss"))
   if (!is.null(sort)) {
     sort <- tolower(sort)
     checkmate::assert_choice(sort, allowed_sort)

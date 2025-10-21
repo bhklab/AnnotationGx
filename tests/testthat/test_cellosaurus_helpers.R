@@ -78,6 +78,16 @@ test_that(".build_cellosaurus_request is acting as expected", {
   expect_equal(nrow(response), 3)
 })
 
+test_that(".build_cellosaurus_request accepts documented sort fields", {
+  skip_if_offline()
+  skip_on_cran()
+
+  expect_silent(AnnotationGx:::.build_cellosaurus_request(sort = "ID"))
+  expect_silent(AnnotationGx:::.build_cellosaurus_request(sort = "idsy"))
+  expect_silent(AnnotationGx:::.build_cellosaurus_request(sort = "miss"))
+  expect_silent(AnnotationGx:::.build_cellosaurus_request(sort = "ox"))
+})
+
 
 test_that("common_cellosaurus_fields returns the expected fields", {
   fields <- AnnotationGx::cellosaurus_fields(common = T, upper = T)
