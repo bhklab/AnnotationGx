@@ -268,7 +268,17 @@ queryUnichemCompound <- function(
     }
 
     results <- Map(
-      parse_response,
+      function(parsed, cmp_label) {
+        tryCatch(
+          parse_response(parsed, cmp_label),
+          error = function(e) {
+            structure(
+              list(error = conditionMessage(e)),
+              class = c("unichem_error", "list")
+            )
+          }
+        )
+      },
       parsed_responses,
       names(responses)
     )
