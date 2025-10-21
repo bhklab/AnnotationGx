@@ -50,7 +50,7 @@
 #' @param output A character string specifying the desired output format of the API response.
 #' @param sort A character string specifying the field to sort the results by.
 #' @param query_only A logical value indicating whether to return only the constructed URL without making the request.
-#' @param ... Additional arguments to be passed to the function.
+#'
 #'
 #' @return A character string representing the constructed URL for the Cellosaurus API request.
 #'
@@ -80,15 +80,53 @@
   apiResource = "search/cell-line",
   output = "TSV",
   sort = "ac",
-  query_only = FALSE,
-  ...
+  query_only = FALSE
 ) {
-  checkmate::assert_character(c(query, output))
+  allowed_resources <- c("search/cell-line", "cell-line", "release-info")
+  allowed_outputs <- c("TSV", "TXT", "JSON", "XML")
+  allowed_sort <- c("ac", "id", "sy", "misspelling")
+
+  checkmate::assert_character(
+    query,
+    any.missing = FALSE,
+    min.len = 1,
+    min.chars = 1
+  )
+  checkmate::assert_character(
+    to,
+    any.missing = FALSE,
+    min.len = 1,
+    min.chars = 1
+  )
+  checkmate::assert_character(apiResource, len = 1, min.chars = 1)
+  checkmate::assert_character(output, len = 1, min.chars = 1)
+  checkmate::assert_character(sort, len = 1, null.ok = TRUE, min.chars = 1)
+  checkmate::assert_logical(query_only, len = 1)
+
   checkmate::assert_choice(
     apiResource,
-    c("search/cell-line", "cell-line", "release-info")
+    allowed_resources
   )
-  checkmate::assert_choice(output, c("TSV", "TXT", "JSON", "XML"))
+  checkmate::assert_choice(output, allowed_outputs)
+
+  to <- tolower(to)
+  invalid_fields <- setdiff(to, cellosaurus_fields())
+  if (length(invalid_fields) > 0L) {
+    stop(
+      "Invalid Cellosaurus field(s): ",
+      paste(invalid_fields, collapse = ", ")
+    )
+  }
+
+  numResults <- as.integer(numResults)
+  if (is.na(numResults) || length(numResults) != 1L || numResults < 1L) {
+    stop("`numResults` must be a single positive integer")
+  }
+
+  if (!is.null(sort)) {
+    sort <- tolower(sort)
+    checkmate::assert_choice(sort, allowed_sort)
+  }
 
   base_url <- "https://api.cellosaurus.org"
   url <- httr2::url_parse(base_url)
