@@ -425,6 +425,77 @@ mapCell2Accession <- function(
 }
 
 
+.match_cellosaurus_candidates <- function(
+  responses_dt,
+  query,
+  name,
+  keep_duplicates
+) {
+  strategies <- list(
+    function() {
+      if (any(responses_dt$cellLineName == query)) {
+        data.table::setkeyv(responses_dt, "cellLineName")
+        responses_dt[query]
+      } else {
+        NULL
+      }
+    },
+    function() {
+      matches <- matchNested(
+        query,
+        responses_dt,
+        keep_duplicates = keep_duplicates
+      )
+      if (length(matches) > 0L) {
+        responses_dt[matches]
+      } else {
+        NULL
+      }
+    },
+    function() {
+      matches <- matchNested(
+        name,
+        responses_dt,
+        keep_duplicates = keep_duplicates
+      )
+      if (length(matches) > 0L) {
+        responses_dt[matches]
+      } else {
+        NULL
+      }
+    },
+    function() {
+      matches <- cleanCharacterStrings(responses_dt$cellLineName) == name
+      if (any(matches)) {
+        responses_dt[matches][1]
+      } else {
+        NULL
+      }
+    },
+    function() {
+      matches <- matchNested(
+        name,
+        lapply(responses_dt$synonyms, cleanCharacterStrings)
+      )
+      if (length(matches) > 0L) {
+        responses_dt[matches]
+      } else {
+        NULL
+      }
+    }
+  )
+
+  for (strategy in strategies) {
+    candidate <- strategy()
+    if (!is.null(candidate) && nrow(candidate) > 0L) {
+      return(candidate)
+    }
+  }
+
+  NULL
+}
+
+
 #' Find Cellosaurus Matches
 #'
 #' This function searches for matches in a data table based on a given name.
@@ -464,49 +535,14 @@ mapCell2Accession <- function(
   # the first row is the wrong cellline but the query is in a synonym
   # but the second row is the correct cellline
   # TODO:: REFACTOR THIS TO NOT REPEAT THE CONDITIONAL
-  if (any(responses_dt$cellLineName == query)) {
-    data.table::setkeyv(responses_dt, "cellLineName")
-    result <- responses_dt[query]
-  } else if (
-    length(matchNested(
-      query,
-      responses_dt,
-      keep_duplicates = keep_duplicates
-    )) >
-      0
-  ) {
-    matches <- matchNested(
-      query,
-      responses_dt,
-      keep_duplicates = keep_duplicates
-    )
-    result <- responses_dt[matches]
-  } else if (
-    length(matchNested(name, responses_dt, keep_duplicates = keep_duplicates)) >
-      0
-  ) {
-    matches <- matchNested(
-      name,
-      responses_dt,
-      keep_duplicates = keep_duplicates
-    )
-    result <- responses_dt[matches]
-  } else if (any(cleanCharacterStrings(responses_dt$cellLineName) == name)) {
-    matches <- cleanCharacterStrings(responses_dt$cellLineName) == name
-    result <- responses_dt[matches][1]
-  } else if (
-    length(matchNested(
-      name,
-      lapply(responses_dt$synonyms, cleanCharacterStrings)
-    )) >
-      0
-  ) {
-    matches <- matchNested(
-      name,
-      lapply(responses_dt$synonyms, cleanCharacterStrings)
-    )
-    result <- responses_dt[matches]
-  } else {
+  result <- .match_cellosaurus_candidates(
+    responses_dt = responses_dt,
+    query = query,
+    name = name,
+    keep_duplicates = keep_duplicates
+  )
+
+  if (is.null(result)) {
     .warn(paste0("No results found for ", query))
     # create an empty data.table with the following columns:
     # c("cellLineName", "accession", "query")
