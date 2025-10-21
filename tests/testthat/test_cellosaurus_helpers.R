@@ -39,9 +39,9 @@ test_that(".build_cellosaurus_request is acting as expected", {
   expect_equal(request$url, expected)
 
   response <- AnnotationGx:::.perform_request(request) |>
-    AnnotationGx:::.parse_resp_tsv(show_col_types = FALSE, skip = 14)
+    AnnotationGx:::.parse_resp_tsv(show_col_types = FALSE)
   expect_class(response, "spec_tbl_df")
-  expect_gte(nrow(response), 1)
+  expect_equal(nrow(response), 1)
 
   request2 <- AnnotationGx:::.build_cellosaurus_request(
     query = "id:HeLa",
@@ -74,8 +74,8 @@ test_that(".build_cellosaurus_request is acting as expected", {
     "https://api.cellosaurus.org/search/cell-line?q=id%3AHeLa&sort=ac%20asc&fields=id%2Cac%2Csy%2Cacas%2Csx%2Cag%2Cdi%2Cdio%2Cdin%2Cdr%2Ccell-type%2Cderived-from-site%2Cmisspelling%2Cdt%2Cdtc%2Cdtu%2Cdtv%2Cgenome-ancestry&format=tsv&rows=2"
   )
   response <- AnnotationGx:::.perform_request(request2) |>
-    AnnotationGx:::.parse_resp_tsv(show_col_types = FALSE, skip = 14)
-  expect_gte(nrow(response), 1)
+    AnnotationGx:::.parse_resp_tsv(show_col_types = FALSE)
+  expect_equal(nrow(response), 2)
 })
 
 test_that(".build_cellosaurus_request accepts documented sort fields", {
