@@ -206,13 +206,16 @@ mapCell2Accession <- function(
   core_cols <- c("cellLineName", "accession")
   existing_core <- core_cols[core_cols %in% names(responses_dt)]
   if (length(existing_core) > 0L) {
-    other_cols <- setdiff(names(responses_dt), existing_core)
-    if (include_query) {
-      query_cols <- grep("^query", other_cols, value = TRUE)
-      non_query_cols <- setdiff(other_cols, query_cols)
-      other_cols <- c(non_query_cols, query_cols)
+    query_cols <- if (include_query) {
+      grep("^query", names(responses_dt), value = TRUE)
+    } else {
+      character(0)
     }
-    data.table::setcolorder(responses_dt, c(existing_core, other_cols))
+    extra_cols <- setdiff(names(responses_dt), c(existing_core, query_cols))
+    data.table::setcolorder(
+      responses_dt,
+      c(existing_core, extra_cols, query_cols)
+    )
   }
 
   return(responses_dt)
