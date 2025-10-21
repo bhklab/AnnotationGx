@@ -162,7 +162,6 @@ queryUnichemCompound <- function(
     }
 
     checkmate::assert_integerish(src_ids, any.missing = FALSE)
-    total_sources <- max(getUnichemSources()$SourceID)
 
     if (length(src_ids) == 1L) {
       src_ids <- rep(src_ids, length(compounds))
@@ -172,7 +171,18 @@ queryUnichemCompound <- function(
         "when type = 'sourceID'"
       )
     }
-    checkmate::assert_integerish(src_ids, lower = 1, upper = total_sources)
+    checkmate::assert_integerish(src_ids, any.missing = FALSE)
+
+    valid_ids <- getUnichemSources()$SourceID
+    invalid_ids <- setdiff(unique(src_ids), valid_ids)
+    if (length(invalid_ids) > 0L) {
+      stop(
+        "`sourceID` contains value(s) not available in UniChem: ",
+        paste(invalid_ids, collapse = ", "),
+        "\nValid source IDs: ",
+        paste(valid_ids, collapse = ", ")
+      )
+    }
     src_ids
   }
 
