@@ -108,7 +108,74 @@
   )
   checkmate::assert_choice(output, allowed_outputs)
 
-  available_fields <- cellosaurus_fields()
+  fallback_fields <- tolower(c(
+    "id",
+    "sy",
+    "idsy",
+    "ac",
+    "acas",
+    "dr",
+    "ref",
+    "rx",
+    "ra",
+    "rt",
+    "rl",
+    "ww",
+    "genome-ancestry",
+    "hla",
+    "registration",
+    "sequence-variation",
+    "anecdotal",
+    "biotechnology",
+    "breed",
+    "caution",
+    "cell-type",
+    "characteristics",
+    "donor-info",
+    "derived-from-site",
+    "discontinued",
+    "doubling-time",
+    "from",
+    "group",
+    "karyotype",
+    "knockout",
+    "msi",
+    "miscellaneous",
+    "misspelling",
+    "mab-isotype",
+    "mab-target",
+    "omics",
+    "part-of",
+    "population",
+    "problematic",
+    "resistance",
+    "senescence",
+    "integrated",
+    "transformant",
+    "virology",
+    "cc",
+    "str",
+    "di",
+    "din",
+    "dio",
+    "ox",
+    "sx",
+    "ag",
+    "oi",
+    "hi",
+    "ch",
+    "ca",
+    "dt",
+    "dtc",
+    "dtu",
+    "dtv"
+  ))
+  available_fields <- tryCatch(
+    tolower(cellosaurus_fields()),
+    error = function(e) fallback_fields
+  )
+  available_fields <- unique(c(available_fields, fallback_fields))
+
   to <- tolower(to)
   invalid_fields <- setdiff(to, available_fields)
   if (length(invalid_fields) > 0L) {
