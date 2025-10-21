@@ -222,7 +222,7 @@ test_that(".cellosaurus_extResources returns the expected external resources", {
     "PubChem_Cell_line",
     "RCB",
     "Rockland",
-    "RSCB",
+    "RCSB",
     "SKIP",
     "SKY/M-FISH/CGH",
     "SLKBase",

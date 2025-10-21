@@ -287,7 +287,7 @@
     "PubChem_Cell_line",
     "RCB",
     "Rockland",
-    "RSCB",
+    "RCSB",
     "SKIP",
     "SKY/M-FISH/CGH",
     "SLKBase",
