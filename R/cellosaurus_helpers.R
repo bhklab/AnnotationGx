@@ -33,9 +33,7 @@
   if (length(from) != length(ids)) {
     stop("Length of 'from' must be 1 or the same length as 'ids'")
   }
-  sapply(1:length(ids), function(i) {
-    paste(from[i], ids[i], sep = ":")
-  })
+  paste(from, ids, sep = ":")
 }
 
 
