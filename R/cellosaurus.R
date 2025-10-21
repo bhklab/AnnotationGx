@@ -86,7 +86,7 @@ cellosaurusAPIVersion <- function() {
 #' @param parsed Logical indicating whether to parse the response text. Default is TRUE.
 #' @param include_query Logical indicating whether to include the `query*` columns
 #'   (e.g. `query`, `query:ac`) in the returned result. Default is TRUE.
-#' @param ... Additional arguments to be passed to the underlying functions.
+#' @param ... Currently unused. Reserved for future extensions.
 #'
 #' @return A data.table containing the mapped cell line IDs and accession numbers.
 #'   When `parsed = FALSE`, the returned table also includes Cellosaurus metadata

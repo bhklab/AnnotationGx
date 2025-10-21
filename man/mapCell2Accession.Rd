@@ -40,7 +40,7 @@ mapCell2Accession(
 \item{include_query}{Logical indicating whether to include the \verb{query*} columns
 (e.g. \code{query}, \code{query:ac}) in the returned result. Default is TRUE.}
 
-\item{...}{Additional arguments to be passed to the underlying functions.}
+\item{...}{Currently unused. Reserved for future extensions.}
 }
 \value{
 A data.table containing the mapped cell line IDs and accession numbers.
