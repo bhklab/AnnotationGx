@@ -14,6 +14,7 @@ mapCell2Accession(
   query_only = FALSE,
   raw = FALSE,
   parsed = TRUE,
+  include_query = TRUE,
   ...
 )
 }
@@ -36,10 +37,16 @@ mapCell2Accession(
 
 \item{parsed}{Logical indicating whether to parse the response text. Default is TRUE.}
 
+\item{include_query}{Logical indicating whether to include the \verb{query*} columns
+(e.g. \code{query}, \code{query:ac}) in the returned result. Default is TRUE.}
+
 \item{...}{Additional arguments to be passed to the underlying functions.}
 }
 \value{
 A data.table containing the mapped cell line IDs and accession numbers.
+When \code{parsed = FALSE}, the returned table also includes Cellosaurus metadata
+columns that have been renamed to user-friendly titles (for example, \code{sy}
+becomes \code{synonyms}).
 }
 \description{
 This function maps cell line IDs to accession numbers using the Cellosaurus database.
