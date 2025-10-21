@@ -150,7 +150,8 @@ mapCell2Accession <- function(
         sort = sort,
         output = "TXT"
       )
-    }
+    },
+    mc.cores = getOption("annotationgx.mc.cores", getOption("mc.cores", 1L))
   )
 
   if (query_only) {
@@ -170,24 +171,28 @@ mapCell2Accession <- function(
 
   # parse the responses
   .info(funContext, "Parsing Cellosaurus responses")
-  responses_dt <- parallel::mclapply(ids, function(name) {
-    resp <- responses[[name]]
+  responses_dt <- parallel::mclapply(
+    ids,
+    function(name) {
+      resp <- responses[[name]]
 
-    resp <- .parse_cellosaurus_lines(resp)
-    if (length(resp) == 0L) {
-      .warn(paste0("No results found for ", name))
-      result <- data.table::data.table()
-      result$query <- name
-      return(result)
-    }
-    response_dt <- .parse_cellosaurus_text(
-      resp,
-      name,
-      parsed = parsed,
-      keep_duplicates = keep_duplicates
-    )
-    response_dt
-  })
+      resp <- .parse_cellosaurus_lines(resp)
+      if (length(resp) == 0L) {
+        .warn(paste0("No results found for ", name))
+        result <- data.table::data.table()
+        result$query <- name
+        return(result)
+      }
+      response_dt <- .parse_cellosaurus_text(
+        resp,
+        name,
+        parsed = parsed,
+        keep_duplicates = keep_duplicates
+      )
+      response_dt
+    },
+    mc.cores = getOption("annotationgx.mc.cores", getOption("mc.cores", 1L))
+  )
 
   responses_dt <- data.table::rbindlist(responses_dt, fill = TRUE)
 
