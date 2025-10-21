@@ -62,9 +62,14 @@ cellosaurusAPIVersion <- function() {
 #' @param query_only Logical indicating whether to return only the query URLs. Default is FALSE.
 #' @param raw Logical indicating whether to return the raw HTTP responses. Default is FALSE.
 #' @param parsed Logical indicating whether to parse the response text. Default is TRUE.
+#' @param include_query Logical indicating whether to include the `query*` columns
+#'   (e.g. `query`, `query:ac`) in the returned result. Default is TRUE.
 #' @param ... Additional arguments to be passed to the underlying functions.
 #'
 #' @return A data.table containing the mapped cell line IDs and accession numbers.
+#'   When `parsed = FALSE`, the returned table also includes Cellosaurus metadata
+#'   columns that have been renamed to user-friendly titles (for example, `sy`
+#'   becomes `synonyms`).
 #'
 #' @examples
 #' mapCell2Accession(ids = c("A549", "MCF7"))
@@ -72,7 +77,8 @@ cellosaurusAPIVersion <- function() {
 #' @export
 mapCell2Accession <- function(
     ids, numResults = 10000, from = "idsy", sort = "ac", keep_duplicates = FALSE, 
-    fuzzy = FALSE, query_only = FALSE, raw = FALSE, parsed = TRUE, ...
+    fuzzy = FALSE, query_only = FALSE, raw = FALSE, parsed = TRUE,
+    include_query = TRUE, ...
 ) {
 
   funContext <- .funContext("mapCell2Accession")
@@ -125,12 +131,39 @@ mapCell2Accession <- function(
       result$query <- name
       return(result)
     }
-    response_dt <- .parse_cellosaurus_text(resp, name, parsed, keep_duplicates)
+    response_dt <- .parse_cellosaurus_text(
+      resp,
+      name,
+      parsed = parsed,
+      keep_duplicates = keep_duplicates
+    )
     response_dt
   }) 
   
 
   responses_dt <- data.table::rbindlist(responses_dt, fill = TRUE)
+
+  if (!include_query) {
+    query_cols <- grep(pattern = "^query", x = names(responses_dt), value = TRUE)
+    if (length(query_cols) > 0L) {
+      responses_dt[, (query_cols) := NULL]
+    }
+  }
+
+  core_cols <- c("cellLineName", "accession")
+  existing_core <- core_cols[core_cols %in% names(responses_dt)]
+  if (length(existing_core) > 0L) {
+    extra_cols <- setdiff(names(responses_dt), existing_core)
+    if (include_query && "query" %in% extra_cols) {
+      extra_cols <- setdiff(extra_cols, "query")
+      data.table::setcolorder(
+        responses_dt,
+        c(existing_core, extra_cols, "query")
+      )
+    } else {
+      data.table::setcolorder(responses_dt, c(existing_core, extra_cols))
+    }
+  }
 
   return(responses_dt)
 
@@ -184,13 +217,13 @@ mapCell2Accession <- function(
 
   if(!parsed) {
     responses_dt$query <- name
-    return(responses_dt[, c("cellLineName", "accession", "query")])
+    return(responses_dt)
   }
 
 
   result <- .find_cellosaurus_matches(responses_dt, name, keep_duplicates)
   result$query <- name 
-  result <- result[, c("cellLineName", "accession", "query")]
+  result <- result[, c("cellLineName", "accession", "query"), with = FALSE]
 
   return(result)
 

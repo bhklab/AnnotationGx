@@ -115,3 +115,17 @@ test_that("parsed works", {
     )
   )
 })
+
+test_that("parsed = FALSE returns user friendly column names", {
+  result <- mapCell2Accession("Hela", parsed = FALSE)
+  expect_data_table(result, min.rows = 1)
+  expect_true(all(c("synonyms", "diseases") %in% colnames(result)))
+})
+
+test_that("include_query = FALSE removes query columns", {
+  result1 <- mapCell2Accession("Hela", include_query = FALSE)
+  result2 <- mapCell2Accession("Hela", parsed = FALSE, include_query = FALSE)
+
+  expect_false(any(grepl("^query", colnames(result1))))
+  expect_false(any(grepl("^query", colnames(result2))))
+})
