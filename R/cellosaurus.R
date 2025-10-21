@@ -16,7 +16,7 @@
 #'
 #' @export
 cellosaurus_fields <- function(common = FALSE, upper = FALSE) {
-  if (common == TRUE) {
+  if (isTRUE(common)) {
     fields <- c(
       "id",
       "ac",
@@ -46,7 +46,7 @@ cellosaurus_fields <- function(common = FALSE, upper = FALSE) {
     fields <- schema$components$schemas$Fields$enum
   }
 
-  if (upper == TRUE) {
+  if (isTRUE(upper)) {
     fields <- toupper(fields)
   } else {
     fields <- tolower(fields)
@@ -364,7 +364,7 @@ mapCell2Accession <- function(
     fixed = TRUE,
     value = TRUE
   )
-  if (isTRUE(length(discontinued) > 0L)) {
+  if (length(discontinued) > 0L) {
     discontinued <- sub(
       pattern = "^Discontinued: (.+);.+$",
       replacement = "\\1",
