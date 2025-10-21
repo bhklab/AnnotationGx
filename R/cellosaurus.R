@@ -140,17 +140,18 @@ mapCell2Accession <- function(
 
   .info(funContext, "Building Cellosaurus requests")
   # build the list of requests
-  requests <- parallel::mclapply(queries, function(query) {
-    .build_cellosaurus_request(
-      query = query,
-      to = to,
-      numResults = numResults,
-      sort = sort,
-      output = "TXT",
-      fuzzy = fuzzy,
-      ...
-    )
-  })
+  requests <- parallel::mclapply(
+    queries,
+    function(query) {
+      .build_cellosaurus_request(
+        query = query,
+        to = to,
+        numResults = numResults,
+        sort = sort,
+        output = "TXT"
+      )
+    }
+  )
 
   if (query_only) {
     return(lapply(requests, function(req) req$url))
