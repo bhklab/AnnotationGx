@@ -1,5 +1,5 @@
 pandoc: 3.1.11
-pkgdown: 2.1.1
+pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
   articles/AnnotationStandards: AnnotationStandards.html
@@ -10,7 +10,7 @@ articles:
   OncoTree: OncoTree.html
   PubChemAPI: PubChemAPI.html
   Unichem: Unichem.html
-last_built: 2025-03-27T15:31Z
+last_built: 2025-10-21T19:18Z
 urls:
   reference: https://bhklab.github.io/AnnotationGx/reference
   article: https://bhklab.github.io/AnnotationGx/articles

@@ -137,9 +137,8 @@ them at once.</p>
 <span><span class="co">#&gt; 3:          Acadesine   17513</span></span>
 <span><span class="co">#&gt; 4:       Camptothecin   24360</span></span>
 <span><span class="co">#&gt; 5: Vincaleukoblastine   13342</span></span>
-<span><span class="co">#&gt; 6: Vincaleukoblastine  241903</span></span>
-<span><span class="co">#&gt; 7: Vincaleukoblastine 3823887</span></span>
-<span><span class="co">#&gt; 8:          Cisplatin 5702198</span></span></code></pre></div>
+<span><span class="co">#&gt; 6:          Cisplatin 5460033</span></span>
+<span><span class="co">#&gt; 7:          Cisplatin 5702198</span></span></code></pre></div>
 <p>It is possible for names to multimap to CIDs. This is the case for
 ‘<em>Vincaleukoblastine</em>’ in the above query. In cases of
 multimapping, usually the first entry has the highest similarity to the
@@ -147,6 +146,18 @@ requested drug. To subset to only the first occurrence of each of drug
 name use the <code>first = TRUE</code> argument:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/mapCompound2CID.html">mapCompound2CID</a></span><span class="op">(</span><span class="va">drugs</span>, first <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■                              </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■                              </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■                           </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■                        </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■                     </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■                  </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■               </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■            </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■         </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■      </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span></span></span>
 <span><span class="co">#&gt;                  name    cids</span></span>
 <span><span class="co">#&gt;                &lt;char&gt;   &lt;int&gt;</span></span>
 <span><span class="co">#&gt; 1:            Aspirin    2244</span></span>
@@ -154,12 +165,23 @@ name use the <code>first = TRUE</code> argument:</p>
 <span><span class="co">#&gt; 3:          Acadesine   17513</span></span>
 <span><span class="co">#&gt; 4:       Camptothecin   24360</span></span>
 <span><span class="co">#&gt; 5: Vincaleukoblastine   13342</span></span>
-<span><span class="co">#&gt; 6:          Cisplatin 5702198</span></span></code></pre></div>
+<span><span class="co">#&gt; 6:          Cisplatin 5460033</span></span></code></pre></div>
 <p>In the case of a compound that can’t be mapped, <code>NA</code> will
 be returned and a warning will be issued.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mapCompound2CID.html">mapCompound2CID</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">drugs</span>, <span class="st">"non existent compound"</span>, <span class="st">"another bad compound"</span><span class="op">)</span>, first <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">[15:33:11][WARNING][AnnotationGx::getPubchemCompound]  Some queries failed. See the 'failed' object for details. </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■                              </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■                           </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■                        </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■                     </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■                  </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■               </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■             </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■         </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■      </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">[19:21:16][WARNING][AnnotationGx::getPubchemCompound]  Some queries failed. See the 'failed' object for details. </span></span></span>
 <span><span class="co">#&gt;                     name    cids</span></span>
 <span><span class="co">#&gt;                   &lt;char&gt;   &lt;int&gt;</span></span>
 <span><span class="co">#&gt; 1:               Aspirin    2244</span></span>
@@ -167,7 +189,7 @@ be returned and a warning will be issued.</p>
 <span><span class="co">#&gt; 3:             Acadesine   17513</span></span>
 <span><span class="co">#&gt; 4:          Camptothecin   24360</span></span>
 <span><span class="co">#&gt; 5:    Vincaleukoblastine   13342</span></span>
-<span><span class="co">#&gt; 6:             Cisplatin 5702198</span></span>
+<span><span class="co">#&gt; 6:             Cisplatin 5460033</span></span>
 <span><span class="co">#&gt; 7: non existent compound      NA</span></span>
 <span><span class="co">#&gt; 8:  another bad compound      NA</span></span>
 <span></span>
@@ -245,6 +267,8 @@ the compound. To view the available properties from Pubchem, use the
 <span><span class="co">#&gt; 44:              PatentCount          int</span></span>
 <span><span class="co">#&gt; 45:        PatentFamilyCount          int</span></span>
 <span><span class="co">#&gt; 46:          LiteratureCount          int</span></span>
+<span><span class="co">#&gt; 47:          AnnotationTypes       string</span></span>
+<span><span class="co">#&gt; 48:      AnnotationTypeCount          int</span></span>
 <span><span class="co">#&gt;                         name         type</span></span></code></pre></div>
 <p>After deciding which properties to query, you can use the
 <code>mapCID2Properties</code> function to get the properties for a
@@ -254,6 +278,8 @@ specific CID.</p>
 <span></span>
 <span><span class="co"># Need to remove NA values from the query as they will cause an error</span></span>
 <span><span class="va">result</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">cids</span><span class="op">)</span>, <span class="fu"><a href="../reference/mapCID2Properties.html">mapCID2Properties</a></span><span class="op">(</span>ids <span class="op">=</span> <span class="va">cids</span>, properties <span class="op">=</span> <span class="va">properties</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt; Querying PubCHEM REST API.... <span style="color: #00BB00;">■■■■■■■■■■■■■■■■                </span>  50% | ETA:  1s</span></span>
+<span><span class="co">#&gt; Querying PubCHEM REST API.... <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% | ETA:  0s</span></span>
 <span><span class="co">#&gt;        CID MolecularFormula MolecularWeight                    InChIKey</span></span>
 <span><span class="co">#&gt;      &lt;int&gt;           &lt;char&gt;          &lt;char&gt;                      &lt;char&gt;</span></span>
 <span><span class="co">#&gt; 1:    2244           C9H8O4          180.16 BSYNRYMUTXBXSQ-UHFFFAOYSA-N</span></span>
@@ -261,15 +287,15 @@ specific CID.</p>
 <span><span class="co">#&gt; 3:   17513        C9H14N4O5          258.23 RTRQQBHATOEIAF-UUOKFMHZSA-N</span></span>
 <span><span class="co">#&gt; 4:   24360       C20H16N2O4           348.4 VSJKWCGYPAHWDS-FQEVSTJZSA-N</span></span>
 <span><span class="co">#&gt; 5:   13342       C46H58N4O9           811.0 JXLYSJRDGCGARV-CFWMRBGOSA-N</span></span>
-<span><span class="co">#&gt; 6: 5702198        Cl2H6N2Pt          300.05 LXZZYRPGZAFOLE-UHFFFAOYSA-L</span></span>
-<span><span class="co">#&gt;                     Title</span></span>
-<span><span class="co">#&gt;                    &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1:                Aspirin</span></span>
-<span><span class="co">#&gt; 2:              Erlotinib</span></span>
-<span><span class="co">#&gt; 3:              Acadesine</span></span>
-<span><span class="co">#&gt; 4:           Camptothecin</span></span>
-<span><span class="co">#&gt; 5:            Vinblastine</span></span>
-<span><span class="co">#&gt; 6: azane;dichloroplatinum</span></span></code></pre></div>
+<span><span class="co">#&gt; 6: 5460033        Cl2H6N2Pt          300.05 LXZZYRPGZAFOLE-UHFFFAOYSA-L</span></span>
+<span><span class="co">#&gt;           Title</span></span>
+<span><span class="co">#&gt;          &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1:      Aspirin</span></span>
+<span><span class="co">#&gt; 2:    Erlotinib</span></span>
+<span><span class="co">#&gt; 3:    Acadesine</span></span>
+<span><span class="co">#&gt; 4: Camptothecin</span></span>
+<span><span class="co">#&gt; 5:  Vinblastine</span></span>
+<span><span class="co">#&gt; 6:    Cisplatin</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="mapping-from-pubchem-cid-to-annotations">Mapping from PubChem CID to Annotations<a class="anchor" aria-label="anchor" href="#mapping-from-pubchem-cid-to-annotations"></a>
@@ -293,11 +319,11 @@ get the available annotation headings and types.</p>
 <span><span class="co">#&gt;   4:  17O NMR Spectra Compound</span></span>
 <span><span class="co">#&gt;   5:  19F NMR Spectra Compound</span></span>
 <span><span class="co">#&gt;  ---                          </span></span>
-<span><span class="co">#&gt; 661: Wiley References Compound</span></span>
-<span><span class="co">#&gt; 662:      WormBase ID     Gene</span></span>
-<span><span class="co">#&gt; 663:      WormBase ID  Protein</span></span>
-<span><span class="co">#&gt; 664:  Xenbase Gene ID     Gene</span></span>
-<span><span class="co">#&gt; 665:          ZFIN ID     Gene</span></span></code></pre></div>
+<span><span class="co">#&gt; 681: Wiley References Compound</span></span>
+<span><span class="co">#&gt; 682:      WormBase ID     Gene</span></span>
+<span><span class="co">#&gt; 683:      WormBase ID  Protein</span></span>
+<span><span class="co">#&gt; 684:  Xenbase Gene ID     Gene</span></span>
+<span><span class="co">#&gt; 685:          ZFIN ID     Gene</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="get-annotation-headings-for-a-specific-type">Get annotation headings for a specific type:<a class="anchor" aria-label="anchor" href="#get-annotation-headings-for-a-specific-type"></a>
@@ -312,11 +338,11 @@ get the available annotation headings and types.</p>
 <span><span class="co">#&gt;   4:                           17O NMR Spectra Compound</span></span>
 <span><span class="co">#&gt;   5:                           19F NMR Spectra Compound</span></span>
 <span><span class="co">#&gt;  ---                                                   </span></span>
-<span><span class="co">#&gt; 491: Volatilization from Water/Soil (Complete) Compound</span></span>
-<span><span class="co">#&gt; 492:                   WHO Essential Medicines Compound</span></span>
-<span><span class="co">#&gt; 493:                                  Wikidata Compound</span></span>
-<span><span class="co">#&gt; 494:                                 Wikipedia Compound</span></span>
-<span><span class="co">#&gt; 495:                          Wiley References Compound</span></span></code></pre></div>
+<span><span class="co">#&gt; 511: Volatilization from Water/Soil (Complete) Compound</span></span>
+<span><span class="co">#&gt; 512:                   WHO Essential Medicines Compound</span></span>
+<span><span class="co">#&gt; 513:                                  Wikidata Compound</span></span>
+<span><span class="co">#&gt; 514:                                 Wikipedia Compound</span></span>
+<span><span class="co">#&gt; 515:                          Wiley References Compound</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="get-annotation-headings-for-a-specific-heading">Get annotation headings for a specific heading:<a class="anchor" aria-label="anchor" href="#get-annotation-headings-for-a-specific-heading"></a>
@@ -354,7 +380,7 @@ CID.</p>
 <span><span class="co">#&gt; 3:             Acadesine   17513                          2627-69-2</span></span>
 <span><span class="co">#&gt; 4:          Camptothecin   24360                          7689-03-4</span></span>
 <span><span class="co">#&gt; 5:    Vincaleukoblastine   13342                           865-21-4</span></span>
-<span><span class="co">#&gt; 6:             Cisplatin 5702198 15663-27-1; 26035-31-4; 14913-33-8</span></span>
+<span><span class="co">#&gt; 6:             Cisplatin 5460033 15663-27-1; 26035-31-4; 14913-33-8</span></span>
 <span><span class="co">#&gt; 7: non existent compound      NA                               &lt;NA&gt;</span></span>
 <span><span class="co">#&gt; 8:  another bad compound      NA                               &lt;NA&gt;</span></span></code></pre></div>
 </div>
@@ -384,7 +410,7 @@ PubChem. J Cheminform. 2019 Aug 9; 11:56. <a href="doi:10.1186/s13321-019-0375-2
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer>

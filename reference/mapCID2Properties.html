@@ -87,7 +87,7 @@ See <code>getPubchemProperties</code> for a list of available properties.</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">mapCID2Properties</span><span class="op">(</span>ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">123</span>, <span class="fl">456</span><span class="op">)</span>, properties <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"MolecularWeight"</span>, <span class="st">"CanonicalSMILES"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      CID MolecularWeight      CanonicalSMILES</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      CID MolecularWeight   ConnectivitySMILES</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    &lt;int&gt;          &lt;char&gt;               &lt;char&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:   123          144.18   C(CC(=O)N)CN=C(N)N</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2:   456          132.08 C(=O)(C(=O)O)NC(=O)N</span>
@@ -103,7 +103,7 @@ See <code>getPubchemProperties</code> for a list of available properties.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer></div>
