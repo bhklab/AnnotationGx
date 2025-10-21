@@ -10,24 +10,36 @@ queryUnichemCompound(
   sourceID = NA_integer_,
   request_only = FALSE,
   raw = FALSE,
+  progress = "Querying UniChem...",
   ...
 )
 }
 \arguments{
-\item{compound}{\code{character} or \code{integer} The compound identifier to search for.}
+\item{compound}{\code{character}, \code{integer}, or a list of such values. When a vector
+or list is supplied, each element is queried and the results are returned as
+a named list.}
 
 \item{type}{\code{character} The type of compound identifier to search for. Valid types are "uci", "inchi", "inchikey", and "sourceID".}
 
-\item{sourceID}{\code{integer} The source ID to search for if the type is "sourceID". Defaults to NULL.}
+\item{sourceID}{\code{integer} The source ID to search for if the type is "sourceID".
+When querying multiple compounds, this can be a vector the same length as
+\code{compound} or a single value recycled to all queries. Defaults to \code{NA}.}
 
 \item{request_only}{\code{boolean} Whether to return the request only. Defaults to FALSE.}
 
 \item{raw}{\code{boolean} Whether to return the raw response. Defaults to FALSE.}
 
+\item{progress}{\code{logical} or \code{character}. Passed through to
+\code{.perform_request_parallel()} when multiple compounds are supplied. Use a
+character string to customise the progress label. Defaults to
+\code{"Querying UniChem..."}.}
+
 \item{...}{Additional arguments.}
 }
 \value{
-A list with the external mappings and the UniChem mappings.
+For a single query, a list with the external mappings and the UniChem
+mappings. For multiple queries, a named list of such results (one per
+compound). If \code{raw = TRUE}, raw responses are returned instead.
 }
 \description{
 This function queries the UniChem API for a compound based on the provided parameters.
