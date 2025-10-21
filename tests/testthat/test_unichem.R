@@ -4,13 +4,23 @@ library(checkmate)
 
 test_that("getUnichemSources returns a data.table with the correct columns", {
   sources <- getUnichemSources(all_columns = TRUE)
-  
+
   expected_columns <- c(
-    "Name", "NameLabel", "NameLong", "SourceID", "CompoundCount", 
-    "BaseURL", "URL", "Details", "Description", "ReleaseNumber", 
-    "ReleaseDate", "LastUpdated", "UpdateComments"
+    "Name",
+    "NameLabel",
+    "NameLong",
+    "SourceID",
+    "CompoundCount",
+    "BaseURL",
+    "URL",
+    "Details",
+    "Description",
+    "ReleaseNumber",
+    "ReleaseDate",
+    "LastUpdated",
+    "UpdateComments"
   )
-  
+
   expect_data_table(
     sources,
     all.missing = FALSE,
@@ -20,39 +30,81 @@ test_that("getUnichemSources returns a data.table with the correct columns", {
     info = "The data.table should have the correct columns. 
         The min number of rows and columns may change over time and is set on
         from UniChem as of March 2024.",
-    )
+  )
 })
 
 
 test_that("queryUnichemCompound returns the expected results", {
   # Test case 1
-  result1 <- queryUnichemCompound(type = "sourceID", compound = "444795", sourceID = 22)
+  result1 <- queryUnichemCompound(
+    type = "sourceID",
+    compound = "444795",
+    sourceID = 22
+  )
   expect_true(is.list(result1))
   expect_true("External_Mappings" %in% names(result1))
   expect_true("UniChem_Mappings" %in% names(result1))
-  
-  # Test case 2
-  expect_error(queryUnichemCompound(type = "inchikey", compound = "InchiKey123"))
 
+  # Test case 2
+  expect_error(queryUnichemCompound(
+    type = "inchikey",
+    compound = "InchiKey123"
+  ))
 })
 
+test_that("queryUnichemCompound handles vector inputs", {
+  fallback <- c(
+    "444795",
+    "444796"
+  )
+
+  results <- queryUnichemCompound(
+    type = "sourceID",
+    compound = fallback,
+    sourceID = 22,
+    progress = FALSE
+  )
+
+  expect_length(results, length(fallback))
+  expect_named(results, fallback)
+  expect_true(all(vapply(results, is.list, logical(1))))
+})
+
+test_that("queryUnichemCompound handles non source id lists", {
+  compounds <- c("538323", "538324")
+  results <- queryUnichemCompound(
+    compound = compounds,
+    type = "uci",
+    progress = FALSE
+  )
+
+  expect_named(results, compounds)
+})
 test_that("queryUnichemCompound returns the expected results 2", {
   # Test case 1
-  result1 <- queryUnichemCompound(type = "inchikey", compound = "BSYNRYMUTXBXSQ-UHFFFAOYSA-N", raw = T)
+  result1 <- queryUnichemCompound(
+    type = "inchikey",
+    compound = "BSYNRYMUTXBXSQ-UHFFFAOYSA-N",
+    raw = T
+  )
 
   expect_true(is.list(result1))
 
-
   checkmate::expect_names(
-    names(result1), 
-    subset.of=c("compounds", "notFound", "response", "totalCompounds"))
+    names(result1),
+    subset.of = c("compounds", "notFound", "response", "totalCompounds")
+  )
 
   checkmate::expect_names(
     names(result1$compounds),
-    subset.of=c("inchi", "sources", "standardInchiKey", "uci")
+    subset.of = c("inchi", "sources", "standardInchiKey", "uci")
   )
 
-  result2 <- queryUnichemCompound(type = "inchikey", compound = "BSYNRYMUTXBXSQ-UHFFFAOYSA-N", raw = F)
+  result2 <- queryUnichemCompound(
+    type = "inchikey",
+    compound = "BSYNRYMUTXBXSQ-UHFFFAOYSA-N",
+    raw = F
+  )
 
   expect_true(is.list(result2))
 
@@ -64,10 +116,12 @@ test_that("queryUnichemCompound returns the expected results 2", {
   checkmate::expect_names(
     names(result2$UniChem_Mappings),
     subset.of = c(
-      "UniChem.UCI", "UniChem.InchiKey", 'UniChem.Inchi',
-      'UniChem.formula','UniChem.connections','UniChem.hAtoms'
+      "UniChem.UCI",
+      "UniChem.InchiKey",
+      'UniChem.Inchi',
+      'UniChem.formula',
+      'UniChem.connections',
+      'UniChem.hAtoms'
     )
   )
-
-
 })
