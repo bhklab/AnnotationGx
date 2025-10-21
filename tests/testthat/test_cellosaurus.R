@@ -3,8 +3,6 @@ library(testthat)
 library(checkmate)
 
 
-
-
 test_that("mapCell2Accession works as expected", {
   # Test case 1: Test with a valid cell line name
   cell_line1 <- "Hela"
@@ -52,7 +50,6 @@ test_that("mapCell DOR 13 works", {
   expect_data_table(result2, nrows = 1, ncols = 3) # works
   expect_data_table(result3, nrows = 2, ncols = 3) # works
 
-
   expect_equal(result2$accession, "CVCL_6774")
   expect_equal(result2$cellLineName, "DOV13")
 
@@ -83,7 +80,6 @@ test_that("raw param works", {
   checkmate::expect_character(lines)
   expect_true(length(lines) > 2000 & 10000 > length(lines))
 
-
   parsed_lines <-
     Map(
       f = function(lines, i, j) {
@@ -100,7 +96,8 @@ test_that("raw param works", {
   expect_data_table(result, min.rows = 1, min.cols = 9)
   expect_true(
     all(
-      c("cellLineName", "accession", "comments", "synonyms") %in% colnames(result)
+      c("cellLineName", "accession", "comments", "synonyms") %in%
+        colnames(result)
     )
   )
 })
@@ -114,4 +111,18 @@ test_that("parsed works", {
       c("cellLineName", "accession", "query") %in% colnames(result1)
     )
   )
+})
+
+test_that("parsed = FALSE returns user friendly column names", {
+  result <- mapCell2Accession("Hela", parsed = FALSE)
+  expect_data_table(result, min.rows = 1)
+  expect_true(all(c("synonyms", "diseases") %in% colnames(result)))
+})
+
+test_that("include_query = FALSE removes query columns", {
+  result1 <- mapCell2Accession("Hela", include_query = FALSE)
+  result2 <- mapCell2Accession("Hela", parsed = FALSE, include_query = FALSE)
+
+  expect_false(any(grepl("^query", colnames(result1))))
+  expect_false(any(grepl("^query", colnames(result2))))
 })

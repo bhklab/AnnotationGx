@@ -16,17 +16,39 @@
 #'
 #' @export
 cellosaurus_fields <- function(common = FALSE, upper = FALSE) {
-  if(common == TRUE) {
-    fields <- c("id", "ac", "acas", "sy", "dr", "di", "din", "dio", "ox", "cc",
-    "sx", "ag", "oi", "hi", "ch", "ca",  "dt", "dtc", "dtu", "dtv", "from", "group")
-  } else{
+  if (isTRUE(common)) {
+    fields <- c(
+      "id",
+      "ac",
+      "acas",
+      "sy",
+      "dr",
+      "di",
+      "din",
+      "dio",
+      "ox",
+      "cc",
+      "sx",
+      "ag",
+      "oi",
+      "hi",
+      "ch",
+      "ca",
+      "dt",
+      "dtc",
+      "dtu",
+      "dtv",
+      "from",
+      "group"
+    )
+  } else {
     schema <- .cellosaurus_schema()
     fields <- schema$components$schemas$Fields$enum
   }
 
-  if(upper == TRUE) {
+  if (isTRUE(upper)) {
     fields <- toupper(fields)
-  }else{
+  } else {
     fields <- tolower(fields)
   }
 
@@ -62,19 +84,32 @@ cellosaurusAPIVersion <- function() {
 #' @param query_only Logical indicating whether to return only the query URLs. Default is FALSE.
 #' @param raw Logical indicating whether to return the raw HTTP responses. Default is FALSE.
 #' @param parsed Logical indicating whether to parse the response text. Default is TRUE.
-#' @param ... Additional arguments to be passed to the underlying functions.
+#' @param include_query Logical indicating whether to include the `query*` columns
+#'   (e.g. `query`, `query:ac`) in the returned result. Default is TRUE.
+#' @param ... Currently unused. Reserved for future extensions.
 #'
 #' @return A data.table containing the mapped cell line IDs and accession numbers.
+#'   When `parsed = FALSE`, the returned table also includes Cellosaurus metadata
+#'   columns that have been renamed to user-friendly titles (for example, `sy`
+#'   becomes `synonyms`).
 #'
 #' @examples
 #' mapCell2Accession(ids = c("A549", "MCF7"))
 #'
 #' @export
 mapCell2Accession <- function(
-    ids, numResults = 10000, from = "idsy", sort = "ac", keep_duplicates = FALSE, 
-    fuzzy = FALSE, query_only = FALSE, raw = FALSE, parsed = TRUE, ...
+  ids,
+  numResults = 10000,
+  from = "idsy",
+  sort = "ac",
+  keep_duplicates = FALSE,
+  fuzzy = FALSE,
+  query_only = FALSE,
+  raw = FALSE,
+  parsed = TRUE,
+  include_query = TRUE,
+  ...
 ) {
-
   funContext <- .funContext("mapCell2Accession")
 
   # Input validation and coercion
@@ -83,7 +118,19 @@ mapCell2Accession <- function(
     ids <- as.character(ids)
   }
 
-  to = c("ac", "id", "sy", "misspelling", "dr", "cc", "ca", "di", "ag", "sx", "hi")
+  to = c(
+    "ac",
+    "id",
+    "sy",
+    "misspelling",
+    "dr",
+    "cc",
+    "ca",
+    "di",
+    "ag",
+    "sx",
+    "hi"
+  )
 
   # create query list
   .info(funContext, "Creating Cellosaurus queries")
@@ -93,47 +140,85 @@ mapCell2Accession <- function(
 
   .info(funContext, "Building Cellosaurus requests")
   # build the list of requests
-  requests <- parallel::mclapply(queries, function(query) {
-    .build_cellosaurus_request(
-      query = query,
-      to = to,
-      numResults = numResults,
-      sort = sort,
-      output = "TXT",
-      fuzzy = fuzzy,
-      ...
-    )
-  })
+  requests <- parallel::mclapply(
+    queries,
+    function(query) {
+      .build_cellosaurus_request(
+        query = query,
+        to = to,
+        numResults = numResults,
+        sort = sort,
+        output = "TXT"
+      )
+    },
+    mc.cores = getOption("annotationgx.mc.cores", getOption("mc.cores", 1L))
+  )
 
-  if (query_only) return(lapply(requests, function(req) req$url))
-  
+  if (query_only) {
+    return(lapply(requests, function(req) req$url))
+  }
+
   # Submit requests using parallel httr2 since cellosaurus doesnt throttle
   .info(funContext, "Performing Cellosaurus queries")
-  responses <- .perform_request_parallel(requests, progress = "Querying Cellosaurus...")
+  responses <- .perform_request_parallel(
+    requests,
+    progress = "Querying Cellosaurus..."
+  )
   names(responses) <- as.character(ids) # in case its an numeric ID  like cosmic ids
-  if (raw) return(responses)
+  if (raw) {
+    return(responses)
+  }
 
   # parse the responses
   .info(funContext, "Parsing Cellosaurus responses")
-  responses_dt <- parallel::mclapply(ids, function(name) {
-    resp <- responses[[name]]
+  responses_dt <- parallel::mclapply(
+    ids,
+    function(name) {
+      resp <- responses[[name]]
 
-    resp <- .parse_cellosaurus_lines(resp)
-    if(length(resp) == 0L){
-      .warn(paste0("No results found for ", name))
-      result <- data.table::data.table()
-      result$query <- name
-      return(result)
-    }
-    response_dt <- .parse_cellosaurus_text(resp, name, parsed, keep_duplicates)
-    response_dt
-  }) 
-  
+      resp <- .parse_cellosaurus_lines(resp)
+      if (length(resp) == 0L) {
+        .warn(paste0("No results found for ", name))
+        result <- data.table::data.table()
+        result$query <- name
+        return(result)
+      }
+      response_dt <- .parse_cellosaurus_text(
+        resp,
+        name,
+        parsed = parsed,
+        keep_duplicates = keep_duplicates
+      )
+      response_dt
+    },
+    mc.cores = getOption("annotationgx.mc.cores", getOption("mc.cores", 1L))
+  )
 
   responses_dt <- data.table::rbindlist(responses_dt, fill = TRUE)
 
-  return(responses_dt)
+  if (!include_query) {
+    query_cols <- grep("^query", names(responses_dt), value = TRUE)
+    if (length(query_cols) > 0L) {
+      responses_dt[, (query_cols) := NULL]
+    }
+  }
 
+  core_cols <- c("cellLineName", "accession")
+  existing_core <- core_cols[core_cols %in% names(responses_dt)]
+  if (length(existing_core) > 0L) {
+    query_cols <- if (include_query) {
+      grep("^query", names(responses_dt), value = TRUE)
+    } else {
+      character(0)
+    }
+    extra_cols <- setdiff(names(responses_dt), c(existing_core, query_cols))
+    data.table::setcolorder(
+      responses_dt,
+      c(existing_core, extra_cols, query_cols)
+    )
+  }
+
+  return(responses_dt)
 }
 
 
@@ -144,56 +229,60 @@ mapCell2Accession <- function(
 #'
 #' @param resp The response object containing the cellosaurus data
 #' @return A list of parsed lines from the cellosaurus data
-#' 
+#'
 #' @keywords internal
 #' @noRd
-.parse_cellosaurus_lines <- function(resp){
-  lines <- httr2::resp_body_string(resp)  |>
-            strsplit("\n") |> 
-            unlist()
-  
+.parse_cellosaurus_lines <- function(resp) {
+  lines <- httr2::resp_body_string(resp) |>
+    strsplit("\n") |>
+    unlist()
+
   Map(
     f = function(lines, i, j) {
-        lines[i:(j - 1L)]
+      lines[i:(j - 1L)]
     },
     i = grep(pattern = "^ID\\s+", x = lines, value = FALSE),
     j = grep(pattern = "^//$", x = lines, value = FALSE),
     MoreArgs = list("lines" = lines),
     USE.NAMES = FALSE
   )
-  
 }
 
 #' parse responses
-#' 
-#' @noRd 
+#'
+#' @noRd
 #' @keywords internal
-.parse_cellosaurus_text <- function(resp, name, parsed = FALSE, keep_duplicates = FALSE){
-
+.parse_cellosaurus_text <- function(
+  resp,
+  name,
+  parsed = FALSE,
+  keep_duplicates = FALSE
+) {
   responses_dt <- lapply(
-      X = resp,
-      FUN = .processEntry
-  ) 
-  tryCatch({
-    responses_dt <- data.table::rbindlist(responses_dt, fill = TRUE)
-  }, error = function(e) {
-    .err(paste0("Error parsing response for ", name, ": ", e$message))
-  }) 
+    X = resp,
+    FUN = .processEntry
+  )
+  tryCatch(
+    {
+      responses_dt <- data.table::rbindlist(responses_dt, fill = TRUE)
+    },
+    error = function(e) {
+      .err(paste0("Error parsing response for ", name, ": ", e$message))
+    }
+  )
 
   responses_dt <- .formatSynonyms(responses_dt)
 
-  if(!parsed) {
+  if (!parsed) {
     responses_dt$query <- name
-    return(responses_dt[, c("cellLineName", "accession", "query")])
+    return(responses_dt)
   }
 
-
   result <- .find_cellosaurus_matches(responses_dt, name, keep_duplicates)
-  result$query <- name 
-  result <- result[, c("cellLineName", "accession", "query")]
+  result$query <- name
+  result <- result[, c("cellLineName", "accession", "query"), with = FALSE]
 
   return(result)
-
 }
 
 #' Splits cellosaurus lines into a named list
@@ -214,7 +303,7 @@ mapCell2Accession <- function(
 #' # [1] "Line 1" "Line 2"
 #'
 #' @noRd
-.split_cellosaurus_lines <- function(lines){
+.split_cellosaurus_lines <- function(lines) {
   x <- strSplit(lines, split = "   ")
   x <- split(x[, 2L], f = x[, 1L])
   x
@@ -225,15 +314,15 @@ mapCell2Accession <- function(
 ## It splits the input string, organizes the data into a nested list,
 ## handles optional keys, removes discontinued identifiers from the DR field,
 ## and converts the resulting list into a data table.
-.processEntry <- function(x){
+.processEntry <- function(x) {
   requiredKeys = c("AC", "CA", "DT", "ID")
   nestedKeys = c("DI", "DR", "HI")
   optionalKeys = c("AG", "SX", "SY")
   specialKeys = c("CC")
 
   x <- .split_cellosaurus_lines(x)
-  
-  if("CC" %in% names(x)){
+
+  if ("CC" %in% names(x)) {
     x <- .formatComments(x)
   }
 
@@ -247,25 +336,25 @@ mapCell2Accession <- function(
     dt[[name]] <- x[[name]]
   }
   for (key in optionalKeys) {
-    dt[[key]] <- ifelse(
-      is.null(x[[key]]), 
-      NA_character_, 
-      x[[key]]
-    )
+    if (is.null(x[[key]])) {
+      dt[[key]] <- NA_character_
+    } else {
+      dt[[key]] <- x[[key]]
+    }
   }
   for (key in nestedKeys) {
-    dt[[key]]  <- ifelse(
-      is.null(x[[key]]),
-      NA_character_,
-      list(.splitNestedCol(x, key, "; ")[[key]])
-    )
+    if (is.null(x[[key]])) {
+      dt[[key]] <- NA_character_
+    } else {
+      dt[[key]] <- list(.splitNestedCol(x, key, "; ")[[key]])
+    }
   }
   for (key in specialKeys) {
-    dt[[key]] <- ifelse(
-      is.null(x[[key]]),
-      NA_character_,
-      x[key]
-    )
+    if (is.null(x[[key]])) {
+      dt[[key]] <- NA_character_
+    } else {
+      dt[[key]] <- x[key]
+    }
   }
 
   ## Filter out discontinued identifiers from DR (e.g. "CVCL_0455").
@@ -275,7 +364,7 @@ mapCell2Accession <- function(
     fixed = TRUE,
     value = TRUE
   )
-  if (isTRUE(length(discontinued) > 0L)) {
+  if (length(discontinued) > 0L) {
     discontinued <- sub(
       pattern = "^Discontinued: (.+);.+$",
       replacement = "\\1",
@@ -286,18 +375,125 @@ mapCell2Accession <- function(
   # create data.table of lists
   responses_dt <- dt
 
-  old_names <- c("AC", "AG", "AS", "CA", "CC", "DI", "DR", "DT", "HI", "ID", 
-            "OI", "OX", "RX", "ST", "SX", "SY", "WW")
+  old_names <- c(
+    "AC",
+    "AG",
+    "AS",
+    "CA",
+    "CC",
+    "DI",
+    "DR",
+    "DT",
+    "HI",
+    "ID",
+    "OI",
+    "OX",
+    "RX",
+    "ST",
+    "SX",
+    "SY",
+    "WW"
+  )
 
-  new_names <- c("accession", "ageAtSampling", "secondaryAccession", "category", 
-    "comments", "diseases", "crossReferences", "date", "hierarchy", "cellLineName",
-    "originateFromSameIndividual", "speciesOfOrigin", "referencesIdentifiers", 
-    "strProfileData", "sexOfCell", "synonyms", "webPages")
-      
-  data.table::setnames(responses_dt, old = old_names, new = new_names, skip_absent = TRUE)
+  new_names <- c(
+    "accession",
+    "ageAtSampling",
+    "secondaryAccession",
+    "category",
+    "comments",
+    "diseases",
+    "crossReferences",
+    "date",
+    "hierarchy",
+    "cellLineName",
+    "originateFromSameIndividual",
+    "speciesOfOrigin",
+    "referencesIdentifiers",
+    "strProfileData",
+    "sexOfCell",
+    "synonyms",
+    "webPages"
+  )
+
+  data.table::setnames(
+    responses_dt,
+    old = old_names,
+    new = new_names,
+    skip_absent = TRUE
+  )
   responses_dt
 }
 
+
+.match_cellosaurus_candidates <- function(
+  responses_dt,
+  query,
+  name,
+  keep_duplicates
+) {
+  strategies <- list(
+    function() {
+      if (any(responses_dt$cellLineName == query)) {
+        data.table::setkeyv(responses_dt, "cellLineName")
+        responses_dt[query]
+      } else {
+        NULL
+      }
+    },
+    function() {
+      matches <- matchNested(
+        query,
+        responses_dt,
+        keep_duplicates = keep_duplicates
+      )
+      if (length(matches) > 0L) {
+        responses_dt[matches]
+      } else {
+        NULL
+      }
+    },
+    function() {
+      matches <- matchNested(
+        name,
+        responses_dt,
+        keep_duplicates = keep_duplicates
+      )
+      if (length(matches) > 0L) {
+        responses_dt[matches]
+      } else {
+        NULL
+      }
+    },
+    function() {
+      matches <- cleanCharacterStrings(responses_dt$cellLineName) == name
+      if (any(matches)) {
+        responses_dt[matches][1]
+      } else {
+        NULL
+      }
+    },
+    function() {
+      matches <- matchNested(
+        name,
+        lapply(responses_dt$synonyms, cleanCharacterStrings)
+      )
+      if (length(matches) > 0L) {
+        responses_dt[matches]
+      } else {
+        NULL
+      }
+    }
+  )
+
+  for (strategy in strategies) {
+    candidate <- strategy()
+    if (!is.null(candidate) && nrow(candidate) > 0L) {
+      return(candidate)
+    }
+  }
+
+  NULL
+}
 
 
 #' Find Cellosaurus Matches
@@ -321,16 +517,16 @@ mapCell2Accession <- function(
 #'   accession = c("Accession 1", "Accession 2", "Accession 3"),
 #'   synonyms = list(c("Synonym 1", "Synonym 2"), c("Synonym 3"), c("Synonym 4"))
 #' )
-#' 
+#'
 #' .find_cellosaurus_matches(responses_dt, "Cell Line 2")
 #'
 #' @noRd
 #' @keywords internal
 .find_cellosaurus_matches <- function(
-  responses_dt, 
-  name, 
+  responses_dt,
+  name,
   keep_duplicates = FALSE
-){
+) {
   # save original name
   query <- name
   name <- cleanCharacterStrings(name)
@@ -338,23 +534,14 @@ mapCell2Accession <- function(
   # first try for exact match as cellLineName to avoid the case where
   # the first row is the wrong cellline but the query is in a synonym
   # but the second row is the correct cellline
-  # TODO:: REFACTOR THIS TO NOT REPEAT THE CONDITIONAL 
-  if(any(responses_dt$cellLineName == query)){
-    data.table::setkeyv(responses_dt, "cellLineName")
-    result <- responses_dt[query]
-  } else if(length(matchNested(query, responses_dt, keep_duplicates = keep_duplicates)) > 0){
-    matches <- matchNested(query, responses_dt, keep_duplicates = keep_duplicates)
-    result <- responses_dt[matches]
-  } else if(length(matchNested(name, responses_dt, keep_duplicates = keep_duplicates)) > 0){
-    matches <- matchNested(name, responses_dt, keep_duplicates = keep_duplicates)
-    result <- responses_dt[matches]
-  } else if(any(cleanCharacterStrings(responses_dt$cellLineName) == name)){
-    matches <- cleanCharacterStrings(responses_dt$cellLineName) == name
-    result <- responses_dt[matches][1]
-  } else if(length(matchNested(name, lapply(responses_dt$synonyms, cleanCharacterStrings)))> 0 ){
-    matches <- matchNested(name, lapply(responses_dt$synonyms, cleanCharacterStrings))
-    result <- responses_dt[matches]
-  } else{
+  result <- .match_cellosaurus_candidates(
+    responses_dt = responses_dt,
+    query = query,
+    name = name,
+    keep_duplicates = keep_duplicates
+  )
+
+  if (is.null(result)) {
     .warn(paste0("No results found for ", query))
     # create an empty data.table with the following columns:
     # c("cellLineName", "accession", "query")
@@ -368,16 +555,15 @@ mapCell2Accession <- function(
 }
 
 
-
 #' Format the `synonyms` column
 #'
 #' @note Updated 2023-01-24.
 #' @noRd
 .formatSynonyms <- function(responses_dt) {
   .splitCol(
-      object = responses_dt,
-      colName = "synonyms",
-      split = "; "
+    object = responses_dt,
+    colName = "synonyms",
+    split = "; "
   )
 }
 
@@ -387,11 +573,11 @@ mapCell2Accession <- function(
 #' @note Updated 2023-09-22.
 #' @noRd
 .formatComments <- function(object) {
-    test_ <- strSplit(object[["CC"]], ": ", n = 2)
-    test_ <- split(test_[, 2L], f = test_[, 1L])
+  test_ <- strSplit(object[["CC"]], ": ", n = 2)
+  test_ <- split(test_[, 2L], f = test_[, 1L])
 
-    test_ <- sapply(test_, strsplit, split = "; ")
+  test_ <- sapply(test_, strsplit, split = "; ")
 
-    object[["CC"]] <- test_
-    object
+  object[["CC"]] <- test_
+  object
 }

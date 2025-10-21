@@ -33,11 +33,8 @@
   if (length(from) != length(ids)) {
     stop("Length of 'from' must be 1 or the same length as 'ids'")
   }
-  sapply(1:length(ids), function(i) {
-    paste(from[i], ids[i], sep = ":")
-  })
+  paste(from, ids, sep = ":")
 }
-
 
 
 #' Build a Cellosaurus API request
@@ -51,7 +48,7 @@
 #' @param output A character string specifying the desired output format of the API response.
 #' @param sort A character string specifying the field to sort the results by.
 #' @param query_only A logical value indicating whether to return only the constructed URL without making the request.
-#' @param ... Additional arguments to be passed to the function.
+#'
 #'
 #' @return A character string representing the constructed URL for the Cellosaurus API request.
 #'
@@ -65,12 +62,137 @@
 #' @keywords internal
 #' @noRd
 .build_cellosaurus_request <- function(
-    query = c("id:HeLa"), to = c("id", "ac", "hi", "ca", "sx", "ag", "di", "derived-from-site", "misspelling"),
-    numResults = 1, apiResource = "search/cell-line", output = "TSV", sort = "ac",
-    query_only = FALSE, ...) {
-  checkmate::assert_character(c(query, output))
-  checkmate::assert_choice(apiResource, c("search/cell-line", "cell-line", "release-info"))
-  checkmate::assert_choice(output, c("TSV", "TXT", "JSON", "XML"))
+  query = c("id:HeLa"),
+  to = c(
+    "id",
+    "ac",
+    "hi",
+    "ca",
+    "sx",
+    "ag",
+    "di",
+    "derived-from-site",
+    "misspelling"
+  ),
+  numResults = 1,
+  apiResource = "search/cell-line",
+  output = "TSV",
+  sort = "ac",
+  query_only = FALSE
+) {
+  allowed_resources <- c("search/cell-line", "cell-line", "release-info")
+  allowed_outputs <- c("TSV", "TXT", "JSON", "XML")
+
+  checkmate::assert_character(
+    query,
+    any.missing = FALSE,
+    min.len = 1,
+    min.chars = 1
+  )
+  checkmate::assert_character(
+    to,
+    any.missing = FALSE,
+    min.len = 1,
+    min.chars = 1
+  )
+  checkmate::assert_character(apiResource, len = 1, min.chars = 1)
+  checkmate::assert_character(output, len = 1, min.chars = 1)
+  checkmate::assert_character(sort, len = 1, null.ok = TRUE, min.chars = 1)
+  checkmate::assert_logical(query_only, len = 1)
+
+  checkmate::assert_choice(
+    apiResource,
+    allowed_resources
+  )
+  checkmate::assert_choice(output, allowed_outputs)
+
+  fallback_fields <- tolower(c(
+    "id",
+    "sy",
+    "idsy",
+    "ac",
+    "acas",
+    "dr",
+    "ref",
+    "rx",
+    "ra",
+    "rt",
+    "rl",
+    "ww",
+    "genome-ancestry",
+    "hla",
+    "registration",
+    "sequence-variation",
+    "anecdotal",
+    "biotechnology",
+    "breed",
+    "caution",
+    "cell-type",
+    "characteristics",
+    "donor-info",
+    "derived-from-site",
+    "discontinued",
+    "doubling-time",
+    "from",
+    "group",
+    "karyotype",
+    "knockout",
+    "msi",
+    "miscellaneous",
+    "misspelling",
+    "mab-isotype",
+    "mab-target",
+    "omics",
+    "part-of",
+    "population",
+    "problematic",
+    "resistance",
+    "senescence",
+    "integrated",
+    "transformant",
+    "virology",
+    "cc",
+    "str",
+    "di",
+    "din",
+    "dio",
+    "ox",
+    "sx",
+    "ag",
+    "oi",
+    "hi",
+    "ch",
+    "ca",
+    "dt",
+    "dtc",
+    "dtu",
+    "dtv"
+  ))
+  available_fields <- tryCatch(
+    tolower(cellosaurus_fields()),
+    error = function(e) fallback_fields
+  )
+  available_fields <- unique(c(available_fields, fallback_fields))
+
+  to <- tolower(to)
+  invalid_fields <- setdiff(to, available_fields)
+  if (length(invalid_fields) > 0L) {
+    stop(
+      "Invalid Cellosaurus field(s): ",
+      paste(invalid_fields, collapse = ", ")
+    )
+  }
+
+  numResults <- as.integer(numResults)
+  if (is.na(numResults) || length(numResults) != 1L || numResults < 1L) {
+    stop("`numResults` must be a single positive integer")
+  }
+
+  allowed_sort <- unique(c(available_fields, "miss"))
+  if (!is.null(sort)) {
+    sort <- tolower(sort)
+    checkmate::assert_choice(sort, allowed_sort)
+  }
 
   base_url <- "https://api.cellosaurus.org"
   url <- httr2::url_parse(base_url)
@@ -97,7 +219,6 @@
   opts$format <- tolower(output)
   opts$rows <- numResults
 
-
   url$query <- opts
   url <- url |> httr2::url_build()
   if (query_only) {
@@ -105,7 +226,6 @@
   }
   url |> .build_request()
 }
-
 
 
 #' Get the Cellosaurus schema
@@ -128,9 +248,6 @@
 }
 
 
-
-
-
 #' Internal function to return the list of external resources available in Cellosaurus
 #' @return A character vector of external resources available in Cellosaurus
 #'
@@ -138,25 +255,113 @@
 #' @noRd
 .cellosaurus_extResources <- function() {
   c(
-    "4DN", "Abcam", "ABCD", "ABM", "AddexBio", "ArrayExpress",
-    "ATCC", "BCGO", "BCRC", "BCRJ", "BEI_Resources",
-    "BioGRID_ORCS_Cell_line", "BTO", "BioSample", "BioSamples",
-    "cancercelllines", "CancerTools", "CBA", "CCLV", "CCRID",
-    "CCTCC", "Cell_Biolabs", "Cell_Model_Passport", "CGH-DB",
-    "ChEMBL-Cells", "ChEMBL-Targets", "CLDB", "CLO", "CLS",
-    "ColonAtlas", "Coriell", "Cosmic", "Cosmic-CLP", "dbGAP",
-    "dbMHC", "DepMap", "DGRC", "DiscoverX", "DSHB", "DSMZ",
-    "DSMZCellDive", "EBiSC", "ECACC", "EFO", "EGA", "ENCODE",
-    "ESTDAB", "FCDI", "FCS-free", "FlyBase_Cell_line", "GDSC",
-    "GeneCopoeia", "GEO", "HipSci", "HIVReagentProgram", "Horizon_Discovery",
-    "hPSCreg", "IARC_TP53", "IBRC", "ICLC", "ICLDB", "IGRhCellID",
-    "IGSR", "IHW", "Imanis", "Innoprot", "IPD-IMGT/HLA", "ISCR",
-    "IZSLER", "JCRB", "KCB", "KCLB", "Kerafast", "KYinno", "LiGeA",
-    "LIMORE", "LINCS_HMS", "LINCS_LDP", "Lonza", "MCCL", "MeSH",
-    "MetaboLights", "Millipore", "MMRRC", "NCBI_Iran", "NCI-DTP", "NHCDR",
-    "NIHhESC", "NISES", "NRFC", "PerkinElmer", "PharmacoDB", "PRIDE",
-    "Progenetix", "PubChem_Cell_line", "RCB", "Rockland", "RSCB", "SKIP",
-    "SKY/M-FISH/CGH", "SLKBase", "TKG", "TNGB", "TOKU-E", "Ubigene",
-    "WiCell", "Wikidata", "Ximbio"
+    "4DN",
+    "Abcam",
+    "ABCD",
+    "ABM",
+    "AddexBio",
+    "ArrayExpress",
+    "ATCC",
+    "BCGO",
+    "BCRC",
+    "BCRJ",
+    "BEI_Resources",
+    "BioGRID_ORCS_Cell_line",
+    "BTO",
+    "BioSample",
+    "BioSamples",
+    "cancercelllines",
+    "CancerTools",
+    "CBA",
+    "CCLV",
+    "CCRID",
+    "CCTCC",
+    "Cell_Biolabs",
+    "Cell_Model_Passport",
+    "CGH-DB",
+    "ChEMBL-Cells",
+    "ChEMBL-Targets",
+    "CLDB",
+    "CLO",
+    "CLS",
+    "ColonAtlas",
+    "Coriell",
+    "Cosmic",
+    "Cosmic-CLP",
+    "dbGAP",
+    "dbMHC",
+    "DepMap",
+    "DGRC",
+    "DiscoverX",
+    "DSHB",
+    "DSMZ",
+    "DSMZCellDive",
+    "EBiSC",
+    "ECACC",
+    "EFO",
+    "EGA",
+    "ENCODE",
+    "ESTDAB",
+    "FCDI",
+    "FCS-free",
+    "FlyBase_Cell_line",
+    "GDSC",
+    "GeneCopoeia",
+    "GEO",
+    "HipSci",
+    "HIVReagentProgram",
+    "Horizon_Discovery",
+    "hPSCreg",
+    "IARC_TP53",
+    "IBRC",
+    "ICLC",
+    "ICLDB",
+    "IGRhCellID",
+    "IGSR",
+    "IHW",
+    "Imanis",
+    "Innoprot",
+    "IPD-IMGT/HLA",
+    "ISCR",
+    "IZSLER",
+    "JCRB",
+    "KCB",
+    "KCLB",
+    "Kerafast",
+    "KYinno",
+    "LiGeA",
+    "LIMORE",
+    "LINCS_HMS",
+    "LINCS_LDP",
+    "Lonza",
+    "MCCL",
+    "MeSH",
+    "MetaboLights",
+    "Millipore",
+    "MMRRC",
+    "NCBI_Iran",
+    "NCI-DTP",
+    "NHCDR",
+    "NIHhESC",
+    "NISES",
+    "NRFC",
+    "PerkinElmer",
+    "PharmacoDB",
+    "PRIDE",
+    "Progenetix",
+    "PubChem_Cell_line",
+    "RCB",
+    "Rockland",
+    "RCSB",
+    "SKIP",
+    "SKY/M-FISH/CGH",
+    "SLKBase",
+    "TKG",
+    "TNGB",
+    "TOKU-E",
+    "Ubigene",
+    "WiCell",
+    "Wikidata",
+    "Ximbio"
   )
 }
