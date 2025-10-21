@@ -197,11 +197,7 @@ mapCell2Accession <- function(
   responses_dt <- data.table::rbindlist(responses_dt, fill = TRUE)
 
   if (!include_query) {
-    query_cols <- grep(
-      pattern = "^query",
-      x = names(responses_dt),
-      value = TRUE
-    )
+    query_cols <- grep("^query", names(responses_dt), value = TRUE)
     if (length(query_cols) > 0L) {
       responses_dt[, (query_cols) := NULL]
     }
@@ -210,16 +206,16 @@ mapCell2Accession <- function(
   core_cols <- c("cellLineName", "accession")
   existing_core <- core_cols[core_cols %in% names(responses_dt)]
   if (length(existing_core) > 0L) {
-    extra_cols <- setdiff(names(responses_dt), existing_core)
-    if (include_query && "query" %in% extra_cols) {
-      extra_cols <- setdiff(extra_cols, "query")
-      data.table::setcolorder(
-        responses_dt,
-        c(existing_core, extra_cols, "query")
-      )
+    query_cols <- if (include_query) {
+      grep("^query", names(responses_dt), value = TRUE)
     } else {
-      data.table::setcolorder(responses_dt, c(existing_core, extra_cols))
+      character(0)
     }
+    extra_cols <- setdiff(names(responses_dt), c(existing_core, query_cols))
+    data.table::setcolorder(
+      responses_dt,
+      c(existing_core, extra_cols, query_cols)
+    )
   }
 
   return(responses_dt)
