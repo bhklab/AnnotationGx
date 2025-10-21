@@ -534,7 +534,6 @@ mapCell2Accession <- function(
   # first try for exact match as cellLineName to avoid the case where
   # the first row is the wrong cellline but the query is in a synonym
   # but the second row is the correct cellline
-  # TODO:: REFACTOR THIS TO NOT REPEAT THE CONDITIONAL
   result <- .match_cellosaurus_candidates(
     responses_dt = responses_dt,
     query = query,
