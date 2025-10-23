@@ -158,7 +158,20 @@ name use the <code>first = TRUE</code> argument:</p>
 be returned and a warning will be issued.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mapCompound2CID.html">mapCompound2CID</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">drugs</span>, <span class="st">"non existent compound"</span>, <span class="st">"another bad compound"</span><span class="op">)</span>, first <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">[21:42:55][WARNING][AnnotationGx::getPubchemCompound]  Some queries failed. See the 'failed' object for details. </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■                              </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■                           </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■                        </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■                     </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■                  </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■               </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■            </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■         </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■      </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span></span></span>
+<span><span class="co">#&gt; Querying PubCHEM REST API.... <span style="color: #00BB00;">■■■■■■■■■■■■■■■■                </span>  50% | ETA: 31s</span></span>
+<span><span class="co">#&gt; Querying PubCHEM REST API.... <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% | ETA:  0s</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">[16:33:35][WARNING][AnnotationGx::getPubchemCompound]  Some queries failed. See the 'failed' object for details. </span></span></span>
 <span><span class="co">#&gt;                     name    cids</span></span>
 <span><span class="co">#&gt;                   &lt;char&gt;   &lt;int&gt;</span></span>
 <span><span class="co">#&gt; 1:               Aspirin    2244</span></span>

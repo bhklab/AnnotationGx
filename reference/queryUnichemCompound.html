@@ -63,6 +63,7 @@
 <span>  sourceID <span class="op">=</span> <span class="cn">NA_integer_</span>,</span>
 <span>  request_only <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  raw <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  progress <span class="op">=</span> <span class="st">"Querying UniChem..."</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -72,7 +73,9 @@
 
 
 <dl><dt id="arg-compound">compound<a class="anchor" aria-label="anchor" href="#arg-compound"></a></dt>
-<dd><p><code>character</code> or <code>integer</code> The compound identifier to search for.</p></dd>
+<dd><p><code>character</code>, <code>integer</code>, or a list of such values. When a vector
+or list is supplied, each element is queried and the results are returned as
+a named list.</p></dd>
 
 
 <dt id="arg-type">type<a class="anchor" aria-label="anchor" href="#arg-type"></a></dt>
@@ -80,7 +83,9 @@
 
 
 <dt id="arg-sourceid">sourceID<a class="anchor" aria-label="anchor" href="#arg-sourceid"></a></dt>
-<dd><p><code>integer</code> The source ID to search for if the type is "sourceID". Defaults to NULL.</p></dd>
+<dd><p><code>integer</code> The source ID to search for if the type is "sourceID".
+When querying multiple compounds, this can be a vector the same length as
+<code>compound</code> or a single value recycled to all queries. Defaults to <code>NA</code>.</p></dd>
 
 
 <dt id="arg-request-only">request_only<a class="anchor" aria-label="anchor" href="#arg-request-only"></a></dt>
@@ -91,13 +96,22 @@
 <dd><p><code>boolean</code> Whether to return the raw response. Defaults to FALSE.</p></dd>
 
 
+<dt id="arg-progress">progress<a class="anchor" aria-label="anchor" href="#arg-progress"></a></dt>
+<dd><p><code>logical</code> or <code>character</code>. Passed through to
+<code>.perform_request_parallel()</code> when multiple compounds are supplied. Use a
+character string to customise the progress label. Defaults to
+<code>"Querying UniChem..."</code>.</p></dd>
+
+
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Additional arguments.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A list with the external mappings and the UniChem mappings.</p>
+    <p>For a single query, a list with the external mappings and the UniChem
+mappings. For multiple queries, a named list of such results (one per
+compound). If <code>raw = TRUE</code>, raw responses are returned instead.</p>
     </div>
 
     <div class="section level2">
