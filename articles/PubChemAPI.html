@@ -158,20 +158,7 @@ name use the <code>first = TRUE</code> argument:</p>
 be returned and a warning will be issued.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mapCompound2CID.html">mapCompound2CID</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">drugs</span>, <span class="st">"non existent compound"</span>, <span class="st">"another bad compound"</span><span class="op">)</span>, first <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■                              </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■                           </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■                        </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■                     </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■                  </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■               </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■            </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■         </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■      </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span></span></span>
-<span><span class="co">#&gt; Querying PubCHEM REST API.... <span style="color: #00BB00;">■■■■■■■■■■■■■■■■                </span>  50% | ETA: 31s</span></span>
-<span><span class="co">#&gt; Querying PubCHEM REST API.... <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% | ETA:  0s</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">[16:33:35][WARNING][AnnotationGx::getPubchemCompound]  Some queries failed. See the 'failed' object for details. </span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">[15:06:54][WARNING][AnnotationGx::getPubchemCompound]  Some queries failed. See the 'failed' object for details. </span></span></span>
 <span><span class="co">#&gt;                     name    cids</span></span>
 <span><span class="co">#&gt;                   &lt;char&gt;   &lt;int&gt;</span></span>
 <span><span class="co">#&gt; 1:               Aspirin    2244</span></span>
@@ -259,7 +246,8 @@ the compound. To view the available properties from Pubchem, use the
 <span><span class="co">#&gt; 46:          LiteratureCount          int</span></span>
 <span><span class="co">#&gt; 47:          AnnotationTypes       string</span></span>
 <span><span class="co">#&gt; 48:      AnnotationTypeCount          int</span></span>
-<span><span class="co">#&gt;                         name         type</span></span></code></pre></div>
+<span><span class="co">#&gt;                         name         type</span></span>
+<span><span class="co">#&gt;                       &lt;char&gt;       &lt;char&gt;</span></span></code></pre></div>
 <p>After deciding which properties to query, you can use the
 <code>mapCID2Properties</code> function to get the properties for a
 specific CID.</p>
@@ -307,11 +295,11 @@ get the available annotation headings and types.</p>
 <span><span class="co">#&gt;   4:  17O NMR Spectra Compound</span></span>
 <span><span class="co">#&gt;   5:  19F NMR Spectra Compound</span></span>
 <span><span class="co">#&gt;  ---                          </span></span>
-<span><span class="co">#&gt; 681: Wiley References Compound</span></span>
-<span><span class="co">#&gt; 682:      WormBase ID     Gene</span></span>
-<span><span class="co">#&gt; 683:      WormBase ID  Protein</span></span>
-<span><span class="co">#&gt; 684:  Xenbase Gene ID     Gene</span></span>
-<span><span class="co">#&gt; 685:          ZFIN ID     Gene</span></span></code></pre></div>
+<span><span class="co">#&gt; 679: Wiley References Compound</span></span>
+<span><span class="co">#&gt; 680:      WormBase ID     Gene</span></span>
+<span><span class="co">#&gt; 681:      WormBase ID  Protein</span></span>
+<span><span class="co">#&gt; 682:  Xenbase Gene ID     Gene</span></span>
+<span><span class="co">#&gt; 683:          ZFIN ID     Gene</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="get-annotation-headings-for-a-specific-type">Get annotation headings for a specific type:<a class="anchor" aria-label="anchor" href="#get-annotation-headings-for-a-specific-type"></a>
@@ -326,11 +314,11 @@ get the available annotation headings and types.</p>
 <span><span class="co">#&gt;   4:                           17O NMR Spectra Compound</span></span>
 <span><span class="co">#&gt;   5:                           19F NMR Spectra Compound</span></span>
 <span><span class="co">#&gt;  ---                                                   </span></span>
-<span><span class="co">#&gt; 511: Volatilization from Water/Soil (Complete) Compound</span></span>
-<span><span class="co">#&gt; 512:                   WHO Essential Medicines Compound</span></span>
-<span><span class="co">#&gt; 513:                                  Wikidata Compound</span></span>
-<span><span class="co">#&gt; 514:                                 Wikipedia Compound</span></span>
-<span><span class="co">#&gt; 515:                          Wiley References Compound</span></span></code></pre></div>
+<span><span class="co">#&gt; 513: Volatilization from Water/Soil (Complete) Compound</span></span>
+<span><span class="co">#&gt; 514:                   WHO Essential Medicines Compound</span></span>
+<span><span class="co">#&gt; 515:                                  Wikidata Compound</span></span>
+<span><span class="co">#&gt; 516:                                 Wikipedia Compound</span></span>
+<span><span class="co">#&gt; 517:                          Wiley References Compound</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="get-annotation-headings-for-a-specific-heading">Get annotation headings for a specific heading:<a class="anchor" aria-label="anchor" href="#get-annotation-headings-for-a-specific-heading"></a>
@@ -394,11 +382,11 @@ PubChem. J Cheminform. 2019 Aug 9; 11:56. <a href="doi:10.1186/s13321-019-0375-2
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Jermiah Joseph, Christopher Eeles, Benjamin Haibe-Kains.</p>
+  <p>Developed by Michael Tran, Jermiah Joseph, Christopher Eeles, Benjamin Haibe-Kains.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

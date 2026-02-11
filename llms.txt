@@ -1,0 +1,217 @@
+# AnnotationGx
+
+## Installation
+
+You can install from github using:
+
+``` r
+remotes::install_github(
+    "bhklab/AnnotationGx", 
+    build_manual=TRUE, 
+    build_vignettes=TRUE
+)
+```
+
+## Example
+
+First load the package:
+
+``` r
+library(AnnotationGx)
+help(package="AnnotationGx")
+```
+
+Annotate cell line using cellosaurus:
+
+``` r
+name <- "A549"
+
+mapCell2Accession(name)
+```
+
+Annotate drugs using PubChem:
+
+``` r
+drugs <- c(
+  "Aspirin", "Erlotinib", "Acadesine", 
+  "Camptothecin", "Vincaleukoblastine", "Cisplatin"
+)
+
+(compound_2_cids <- mapCompound2CID(drugs, first = TRUE))
+mapCID2Properties(
+    ids = compound_2_cids$cids,
+    properties = c("Title", "MolecularFormula", "InChIKey", "MolecularWeight")
+)
+
+annotatePubchemCompound(
+    cids = compound_2_cids$cids,, 
+    heading = "CAS"
+)
+```
+
+# Package index
+
+## Dataset Metadata
+
+### CCLE
+
+- [`CCLE_sampleMetadata`](https://bhklab.github.io/AnnotationGx/reference/CCLE_sampleMetadata.md)
+  : CCLE_sampleMetadata is some preprocessed sample metadata from the
+  CCLE dataset
+- [`CCLE_treatmentMetadata`](https://bhklab.github.io/AnnotationGx/reference/CCLE_treatmentMetadata.md)
+  : CCLE_treatmentMetadata is some preprocessed treatment metadata from
+  the CCLE dataset
+
+### GDSC
+
+- [`GDSC_sampleMetadata`](https://bhklab.github.io/AnnotationGx/reference/GDSC_sampleMetadata.md)
+  : gdsc_sampleMetadata is some preprocessed sample metadata from the
+  GDSC dataset
+- [`GDSC_treatmentMetadata`](https://bhklab.github.io/AnnotationGx/reference/GDSC_treatmentMetadata.md)
+  : GDSC_treatmentMetadata is some preprocessed treatment metadata from
+  the GDSC dataset
+
+### CTRP
+
+- [`CTRP_sampleMetadata`](https://bhklab.github.io/AnnotationGx/reference/CTRP_sampleMetadata.md)
+  : CTRP_sampleMetadata is some preprocessed sample metadata from the
+  CTRP dataset
+- [`CTRP_treatmentMetadata`](https://bhklab.github.io/AnnotationGx/reference/CTRP_treatmentMetadata.md)
+  : CTRP_treatmentMetadata is some preprocessed treatment metadata from
+  the CTRP dataset
+
+### gCSI
+
+- [`gCSI_sampleMetadata`](https://bhklab.github.io/AnnotationGx/reference/gCSI_sampleMetadata.md)
+  : gCSI_sampleMetadata is some preprocessed sample metadata from the
+  gCSI dataset
+- [`gCSI_treatmentMetadata`](https://bhklab.github.io/AnnotationGx/reference/gCSI_treatmentMetadata.md)
+  : gCSI_treatmentMetadata is some preprocessed treatment metadata from
+  the gCSI dataset
+
+## ID Cleaning
+
+### ID Cleaning
+
+- [`cleanCharacterStrings()`](https://bhklab.github.io/AnnotationGx/reference/cleanCharacterStrings.md)
+  : Clean character strings by removing special characters and
+  formatting.
+- [`standardize_names()`](https://bhklab.github.io/AnnotationGx/reference/standardize_names.md)
+  : Standardize Names
+
+## Cellosaurus
+
+### API query
+
+- [`cellosaurusAPIVersion()`](https://bhklab.github.io/AnnotationGx/reference/cellosaurusAPIVersion.md)
+  : Get the Cellosaurus API version
+- [`cellosaurus_fields()`](https://bhklab.github.io/AnnotationGx/reference/cellosaurus_fields.md)
+  : Get the list of fields in the Cellosaurus schema
+- [`mapCell2Accession()`](https://bhklab.github.io/AnnotationGx/reference/mapCell2Accession.md)
+  : Map Cell Line IDs to Accession Numbers
+- [`annotateCellAccession()`](https://bhklab.github.io/AnnotationGx/reference/annotateCellAccession.md)
+  : Annotate Cell Accession
+
+## PubChem
+
+### REST API query
+
+- [`getPubchemCompound()`](https://bhklab.github.io/AnnotationGx/reference/getPubchemCompound.md)
+  : Retrieve PubChem compound information
+- [`mapCompound2CID()`](https://bhklab.github.io/AnnotationGx/reference/mapCompound2CID.md)
+  : Map compound names to PubChem CIDs
+- [`mapCID2Properties()`](https://bhklab.github.io/AnnotationGx/reference/mapCID2Properties.md)
+  : Map PubChem Compound IDs to Properties
+- [`getPubchemProperties()`](https://bhklab.github.io/AnnotationGx/reference/getPubchemProperties.md)
+  : Retrieves the PubChem XML schema and extracts property information.
+- [`getPubchemStatus()`](https://bhklab.github.io/AnnotationGx/reference/getPubchemStatus.md)
+  : Retrieves the status of a PubChem request
+
+### VIEW API query
+
+- [`getPubchemAnnotationHeadings()`](https://bhklab.github.io/AnnotationGx/reference/getPubchemAnnotationHeadings.md)
+  : Get annotation headings (name only) based on type and heading
+  criteria.
+- [`annotatePubchemCompound()`](https://bhklab.github.io/AnnotationGx/reference/annotatePubchemCompound.md)
+  : Annotate PubChem Compound
+
+## UniChem
+
+### REST API query
+
+- [`getUnichemSources()`](https://bhklab.github.io/AnnotationGx/reference/getUnichemSources.md)
+  : Get the list of sources in UniChem.
+- [`queryUnichemCompound()`](https://bhklab.github.io/AnnotationGx/reference/queryUnichemCompound.md)
+  : Query UniChem for a compound.
+
+## ChEMBL
+
+### REST API query
+
+- [`queryChemblAPI()`](https://bhklab.github.io/AnnotationGx/reference/queryChemblAPI.md)
+  : Query the ChEMBL API
+- [`getChemblMechanism()`](https://bhklab.github.io/AnnotationGx/reference/getChemblMechanism.md)
+  : Get ChEMBL Mechanism
+- [`getChemblResourceFields()`](https://bhklab.github.io/AnnotationGx/reference/getChemblResourceFields.md)
+  : Get the fields of a Chembl resource
+- [`getChemblResources()`](https://bhklab.github.io/AnnotationGx/reference/getChemblResources.md)
+  : getChemblResources function
+- [`getChemblFilterTypes()`](https://bhklab.github.io/AnnotationGx/reference/getChemblFilterTypes.md)
+  : Get the Chembl filter types
+
+## OncoTree
+
+### API query
+
+- [`getOncotreeVersions()`](https://bhklab.github.io/AnnotationGx/reference/getOncotreeVersions.md)
+  : Get available Oncotree versions
+- [`getOncotreeMainTypes()`](https://bhklab.github.io/AnnotationGx/reference/getOncotreeMainTypes.md)
+  : Get the main types from the Oncotree database.
+- [`getOncotreeTumorTypes()`](https://bhklab.github.io/AnnotationGx/reference/getOncotreeTumorTypes.md)
+  : Get the tumor types from the Oncotree database.
+
+## HGNC Gene Symbols
+
+### API query
+
+- [`query_hgnc_by_genes()`](https://bhklab.github.io/AnnotationGx/reference/query_hgnc_by_genes.md)
+  : Query HGNC BioMart by Gene Symbols
+
+## Utility Functions
+
+- [`strSplit()`](https://bhklab.github.io/AnnotationGx/reference/strSplit.md)
+  : Split a character vector into a matrix based on a delimiter
+- [`unlistNested()`](https://bhklab.github.io/AnnotationGx/reference/unlistNested.md)
+  : Unlists a nested list and removes NA values and duplicates.
+- [`matchNested()`](https://bhklab.github.io/AnnotationGx/reference/matchNested.md)
+  : Match inside nested elements
+
+# Articles
+
+### Introduction
+
+- [Introduction to
+  AnnotationGx](https://bhklab.github.io/AnnotationGx/articles/Introduction.md):
+
+### Samples
+
+- [Querying
+  Cellosaurus](https://bhklab.github.io/AnnotationGx/articles/Cellosaurus.md):
+- [Querying
+  OncoTree](https://bhklab.github.io/AnnotationGx/articles/OncoTree.md):
+
+### Compounds
+
+- [Querying
+  PubChem](https://bhklab.github.io/AnnotationGx/articles/PubChemAPI.md):
+- [Querying Unichem
+  Database](https://bhklab.github.io/AnnotationGx/articles/Unichem.md):
+- [Querying ChEMBL
+  Database](https://bhklab.github.io/AnnotationGx/articles/ChEMBL.md):
+
+### Pipelines
+
+- [A Standard for
+  Annotations](https://bhklab.github.io/AnnotationGx/articles/AnnotationStandards.md):
+- [Annotating CTRP
+  Treatments](https://bhklab.github.io/AnnotationGx/articles/CTRP-Treatment-Annotation.md):

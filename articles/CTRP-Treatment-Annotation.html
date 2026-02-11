@@ -156,7 +156,7 @@ compounds</p>
 <span></span>
 <span><span class="va">successful_dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">CTRP_treatmentMetadata</span>, <span class="va">compounds_to_cids</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">cids</span><span class="op">)</span>,<span class="op">]</span>,by.x <span class="op">=</span> <span class="st">"CTRP.treatmentid"</span>, by.y <span class="op">=</span> <span class="st">"name"</span>,  all.x <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">mapped_PubChem</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/rbindlist.html" class="external-link">rbindlist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">successful_dt</span>, <span class="va">failed_dt</span><span class="op">)</span>, use.names <span class="op">=</span> <span class="cn">T</span>, fill <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">mapped_PubChem</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/data.table/man/rbindlist.html" class="external-link">rbindlist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">successful_dt</span>, <span class="va">failed_dt</span><span class="op">)</span>, use.names <span class="op">=</span> <span class="cn">T</span>, fill <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -166,11 +166,11 @@ compounds</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Jermiah Joseph, Christopher Eeles, Benjamin Haibe-Kains.</p>
+  <p>Developed by Michael Tran, Jermiah Joseph, Christopher Eeles, Benjamin Haibe-Kains.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>
