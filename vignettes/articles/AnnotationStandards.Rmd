@@ -7,7 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+```{r setup-options, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -40,6 +40,7 @@ library(AnnotationGx)
 
 
 # Introduction
+
 The goal of AnnotationGx is to provide the tools that may help annotate chemi- and bio-informatic data.
 While the package is still in its early stages, it already provides a number of functions that may be useful for the annotation of data.
 In the interest of standardizing the annotation process, we propose a standard for annotations that may be used in the future.
@@ -53,7 +54,7 @@ For example, we might have a data frame with a column of cell line names that we
 a list of drugs that we would like to annotate with information about the drugs.
 
 
-```{r}
+```{r ccle-examples}
 # "sample" refers to the cell line names
 data(CCLE_sampleMetadata)
 head(CCLE_sampleMetadata)
@@ -108,7 +109,7 @@ For example, if we are using the Pubchem and DrugBank database, we might have co
 
 This also applies to the data we start with. Take for example the GDSC example data provided:
 
-```{R}
+```{r gdsc-example}
 head(GDSC_sampleMetadata)
 ```
 
@@ -123,7 +124,7 @@ In the example below, we have a data frame annotating the treatments for the 4 d
 
 
 
-```{R}
+```{r annotated-treatment}
 treatmentMetadata <- data.table::fread(system.file("extdata", "treatmentMetadata_annotated_pubchem_unichem_chembl.tsv", package = "AnnotationGx"))
 
 # two drugs: Erlotinib and Tanespimycin

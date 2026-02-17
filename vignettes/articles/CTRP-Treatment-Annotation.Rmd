@@ -24,7 +24,7 @@ The functionality for this is implemented in the `mapCompound2CTD` function. -->
 
 It is an investigation to see which of the methods might map more compounds
 
-```{r, include = FALSE}
+```{r setup-options, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -37,7 +37,7 @@ library(AnnotationGx)
 data(CTRP_treatmentMetadata)
 ```
 
-``` {r test_both}
+```{r compare-mappers}
 
 # get a random row from the CTRP_treatmentMetadata
 
@@ -51,7 +51,7 @@ mapCompound2CID(treatment)
 
 ## Annotating using PubChem
 
-``` {r run_CTRP_Pubchem, eval = FALSE}
+```{r ctrp-pubchem, eval = FALSE}
 (compounds_to_cids <- 
   CTRP_treatmentMetadata[1:10, 
     AnnotationGx::mapCompound2CID(
@@ -65,7 +65,7 @@ failed <-
     names()
 ```
 
-``` {r Pubchem Failed, eval = FALSE}
+```{r pubchem-failed, eval = FALSE}
 failed <- unique(CTRP_treatmentMetadata[CTRP.treatmentid %in% failed, ])
 
 failed[, CTRP.treatmentid_CLEANED := cleanCharacterStrings(CTRP.treatmentid)]
@@ -84,7 +84,7 @@ failed_again <-
 
 ```
 
-``` {r pubchemfailed again, eval = FALSE}
+```{r pubchem-failed-cleaned, eval = FALSE}
 failed_dt <- merge(failed_to_cids[!is.na(cids),], failed, by.x = "name", by.y = "CTRP.treatmentid_CLEANED", all.x = F)
 failed_dt$name <- NULL
 

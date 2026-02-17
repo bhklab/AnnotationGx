@@ -11,7 +11,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}  
 ---
 
-```{r setup, include = FALSE}
+```{r setup-options, include = FALSE}
 knitr::opts_chunk$set(
     collapse = TRUE,
     comment = "#>",
@@ -23,31 +23,30 @@ knitr::opts_chunk$set(
 
 ## Install `AnnotationGx`
 
-`R` is an open-source statistical environment which can be easily modified to enhance its functionality via packages. 
-`AnnotationGx` is a `R` package 
+`R` is an open-source statistical environment which can be easily modified to 
+enhance its functionality via packages. `AnnotationGx` is a `R` package hosted
+on Bioconductor and can be installed using `BiocManager`:
 
-TODO::after submitting to cran update this 
+```{r install}
+BiocManager::install("AnnotationGx")
+```
 
 ## Citing `AnnotationGx`
 
-We hope that `AnnotationGx` will be useful for your research. Please use the following information to cite the package and the overall approach. Thank you!
+We hope that `AnnotationGx` will be useful for your research. Please use the 
+following information to cite the package and the overall approach. Thank you!
 
-```{r "citation"}
+```{r citation}
 ## Citation info
 citation("AnnotationGx")
 ```
 
 # Quick start to using `AnnotationGx`
 
-```{r "start", message=FALSE}
+```{r load-package, message=FALSE}
 library("AnnotationGx")
 ```
 
-
-```{r reproduce3, echo=FALSE}
-## Session info
-library("sessioninfo")
-options(width = 120)
-session_info()
+```{r session-info}
+sessionInfo()
 ```
-
