@@ -51,20 +51,19 @@ test_that("Valid sourceID compound request is built correctly", {
   expect_equal(actual_request$body$data, expected_body)
 
 
-  response <- actual_request |> 
-    .perform_request() |>  
-    .parse_resp_json()  
+  response <- actual_request |>
+    .perform_request() |>
+    .parse_resp_json()
 
   checkmate::expect_names(
-    names(response), 
-    subset.of=c("compounds", "notFound", "response", "totalCompounds"))
+    names(response),
+    subset.of = c("compounds", "notFound", "response", "totalCompounds")
+  )
 
   checkmate::expect_names(
     names(response$compounds),
-    subset.of=c("inchi", "sources", "standardInchiKey", "uci")
+    subset.of = c("inchi", "sources", "standardInchiKey", "uci")
   )
-  
-
 })
 
 test_that("Invalid type throws an error", {

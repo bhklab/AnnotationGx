@@ -6,4 +6,3 @@ CTRP_sampleMetadata <- rawdata[, c("master_ccl_id", "ccl_name")]
 
 
 usethis::use_data(CTRP_sampleMetadata, overwrite = TRUE)
-

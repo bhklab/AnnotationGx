@@ -14,7 +14,7 @@ test_that("build_chembl_request constructs the correct URL", {
   url <- AnnotationGx:::.build_chembl_request(resource, field, filter_type, value, format)
 
   # Check the constructed URL
-  expected_url <-"https://www.ebi.ac.uk/chembl/api/data/target?target_chembl_id__exact=CHEMBL2144069&format=json"
+  expected_url <- "https://www.ebi.ac.uk/chembl/api/data/target?target_chembl_id__exact=CHEMBL2144069&format=json"
   expect_equal(url$url, expected_url)
 })
 

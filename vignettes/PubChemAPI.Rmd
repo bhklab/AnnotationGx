@@ -133,10 +133,10 @@ annotation headings and types.
 
 ```{r annotation-headings}
 getPubchemAnnotationHeadings()
-``
-`
+```
   
 ### Get annotation headings for a specific type:
+
 ```{r headings-by-type}
 getPubchemAnnotationHeadings(type = "Compound")
 ```
@@ -153,7 +153,6 @@ getPubchemAnnotationHeadings(heading = "ChEMBL ID")
 getPubchemAnnotationHeadings(type = "Compound", heading = "CAS")
 ```
 
-
 ### Query annotations for a specific CID and heading
 
 We can then use the heading to query the annotations for a specific CID.
@@ -162,7 +161,7 @@ We can then use the heading to query the annotations for a specific CID.
 result[!is.na(cids), CAS := annotatePubchemCompound(cids, "CAS")]
 result
 ```
-  
+
 # References
 
 1. PUG REST. PubChem Docs [website]. Retrieved from https://pubchemdocs.ncbi.nlm.nih.gov/pug-rest.

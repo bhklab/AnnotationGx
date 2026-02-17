@@ -36,10 +36,10 @@ test_that("AnnotationGx::annotatePubchemCompound", {
   expected <- "183321-74-6"
   expect_equal(annotatePubchemCompound(CID, "CAS"), expected)
 
-  query <- annotatePubchemCompound(CID, "ChEMBL ID", query_only=T)
+  query <- annotatePubchemCompound(CID, "ChEMBL ID", query_only = T)
   expect_class(query[[1]], "httr2_request")
 
-  response <- annotatePubchemCompound(CID, "ChEMBL ID", raw=T)
+  response <- annotatePubchemCompound(CID, "ChEMBL ID", raw = T)
   expect_class(response[[1]], "httr2_response")
 
   expected <- NA_character_
@@ -68,7 +68,7 @@ test_that("AnnotationGx::annotatePubchemCompound", {
   expect_error(annotatePubchemCompound(CID, heading = "fake_placeholder"))
 
   expect_error(annotatePubchemCompound(CID, heading = "fake_placeholder", parse_function = fake_parser))
-  
+
   fake_parser <- function(x) {
     return(data.table::data.table(Heading = "CAS", Value = "fake_value"))
   }

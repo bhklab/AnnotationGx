@@ -3,7 +3,7 @@ library(testthat)
 library(checkmate)
 
 
-test_that("mapcompound",{
+test_that("mapcompound", {
   result <- mapCompound2CID(c("aspirin", "caffeine"))
 
   expect_data_table(
@@ -15,7 +15,7 @@ test_that("mapcompound",{
   )
 })
 
-test_that("mapproperties",{
+test_that("mapproperties", {
   props <- mapCID2Properties(ids = c(123, 456), properties = c("MolecularWeight", "CanonicalSMILES"))
 
   expect_data_table(

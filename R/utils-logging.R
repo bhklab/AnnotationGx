@@ -15,11 +15,11 @@
 
 
 #' Info message function
-#' 
+#'
 #' This function is used to print messages when the verbose option is enabled.
-#' 
+#'
 #' @param ... `character` The messages to print
-#' 
+#'
 #' @keywords internal
 #' @noRd
 #' @export
@@ -30,7 +30,7 @@
 .info <- function(...) {
   msg <- .log_fmt("INFO", ...)
   optionIsTRUE <- options("log_level") == "INFO" || (options("log_level") %in% c("WARN", "DEBUG", "ERROR"))
-  if(optionIsTRUE) {
+  if (optionIsTRUE) {
     message(crayon::green(msg))
   }
 }

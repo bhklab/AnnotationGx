@@ -8,6 +8,6 @@ library(checkmate)
 #     result <- annotatePubchemCompound(cid, "CAS")
 
 #     # Fixed Issue31
-#     # For now, the fix is to return NA and a warning 
+#     # For now, the fix is to return NA and a warning
 #     expect_equal(result, NA_character_)
 # })

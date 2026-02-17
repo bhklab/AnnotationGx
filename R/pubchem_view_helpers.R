@@ -43,9 +43,9 @@
 #' @keywords internal
 #' @noRd
 .build_pubchem_view_query <- function(
-    id, annotation = "data", record = "compound", 
-    page = NULL, version = NULL, heading = NULL, source = NULL,
-    output = "JSON", ...
+  id, annotation = "data", record = "compound",
+  page = NULL, version = NULL, heading = NULL, source = NULL,
+  output = "JSON", ...
 ) {
   funContext <- .funContext(".build_pubchem_view_query")
 
@@ -97,10 +97,10 @@
   url |>
     httr2::url_build() |>
     httr2::request()
-  
+
   # url |>
-    # httr2::url_build() |>
-    # .build_request()
+  # httr2::url_build() |>
+  # .build_request()
 }
 
 #' Generic function to parse one of the annotation helpers

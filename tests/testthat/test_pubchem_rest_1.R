@@ -112,4 +112,3 @@ test_that("AnnotationGx::getPubchemCompound errors if cid and not integer", {
     )
   )
 })
-

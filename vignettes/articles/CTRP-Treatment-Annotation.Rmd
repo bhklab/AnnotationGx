@@ -38,7 +38,6 @@ data(CTRP_treatmentMetadata)
 ```
 
 ```{r compare-mappers}
-
 # get a random row from the CTRP_treatmentMetadata
 
 treatment <- CTRP_treatmentMetadata[1, CTRP.treatmentid]
@@ -46,23 +45,23 @@ sprintf("CTRP treatment id : %s", treatment)
 
 # map the treatment to a CID using PubChem
 mapCompound2CID(treatment)
-
 ```
 
 ## Annotating using PubChem
 
 ```{r ctrp-pubchem, eval = FALSE}
-(compounds_to_cids <- 
-  CTRP_treatmentMetadata[1:10, 
+(compounds_to_cids <-
+  CTRP_treatmentMetadata[
+    1:10,
     AnnotationGx::mapCompound2CID(
-        names =  CTRP.treatmentid,
-        first = TRUE
-        )
-      ]
+      names = CTRP.treatmentid,
+      first = TRUE
+    )
+  ]
 )
-failed <- 
-  attributes(compounds_to_cids)$failed |> 
-    names()
+failed <-
+  attributes(compounds_to_cids)$failed |>
+  names()
 ```
 
 ```{r pubchem-failed, eval = FALSE}
@@ -71,7 +70,8 @@ failed <- unique(CTRP_treatmentMetadata[CTRP.treatmentid %in% failed, ])
 failed[, CTRP.treatmentid_CLEANED := cleanCharacterStrings(CTRP.treatmentid)]
 
 (failed_to_cids <-
-  failed[, 
+  failed[
+    ,
     AnnotationGx::mapCompound2CID(
       names = CTRP.treatmentid_CLEANED,
       first = TRUE
@@ -79,17 +79,15 @@ failed[, CTRP.treatmentid_CLEANED := cleanCharacterStrings(CTRP.treatmentid)]
   ]
 )
 failed_again <-
-  attributes(failed_to_cids)$failed |> 
-    names()
-
+  attributes(failed_to_cids)$failed |>
+  names()
 ```
 
 ```{r pubchem-failed-cleaned, eval = FALSE}
-failed_dt <- merge(failed_to_cids[!is.na(cids),], failed, by.x = "name", by.y = "CTRP.treatmentid_CLEANED", all.x = F)
+failed_dt <- merge(failed_to_cids[!is.na(cids), ], failed, by.x = "name", by.y = "CTRP.treatmentid_CLEANED", all.x = F)
 failed_dt$name <- NULL
 
-successful_dt <- merge(CTRP_treatmentMetadata, compounds_to_cids[!is.na(cids),],by.x = "CTRP.treatmentid", by.y = "name",  all.x = F)
+successful_dt <- merge(CTRP_treatmentMetadata, compounds_to_cids[!is.na(cids), ], by.x = "CTRP.treatmentid", by.y = "name", all.x = F)
 
 mapped_PubChem <- data.table::rbindlist(list(successful_dt, failed_dt), use.names = T, fill = T)
-
 ```

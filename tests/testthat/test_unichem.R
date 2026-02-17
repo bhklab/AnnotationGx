@@ -26,8 +26,8 @@ test_that("getUnichemSources returns a data.table with the correct columns", {
     all.missing = FALSE,
     min.rows = 40, # As of March 2024
     min.cols = 13, # As of March 2024
-    col.names = 'named',
-    info = "The data.table should have the correct columns. 
+    col.names = "named",
+    info = "The data.table should have the correct columns.
         The min number of rows and columns may change over time and is set on
         from UniChem as of March 2024."
   )
@@ -120,10 +120,10 @@ test_that("queryUnichemCompound returns the expected results 2", {
     subset.of = c(
       "UniChem.UCI",
       "UniChem.InchiKey",
-      'UniChem.Inchi',
-      'UniChem.formula',
-      'UniChem.connections',
-      'UniChem.hAtoms'
+      "UniChem.Inchi",
+      "UniChem.formula",
+      "UniChem.connections",
+      "UniChem.hAtoms"
     )
   )
 })

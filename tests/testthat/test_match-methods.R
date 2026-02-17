@@ -131,7 +131,7 @@ test_that("matchNested,data.table returns the correct index for a character valu
   x <- "banana"
   expected_result <- c(2, 3)
   expect_equal(matchNested(x, table, keep_duplicates = TRUE), expected_result)
-  
+
   expected_result <- 2
   expect_equal(matchNested(x, table, keep_duplicates = FALSE), expected_result)
   expect_equal(matchNested(x, table), expected_result)
@@ -139,7 +139,7 @@ test_that("matchNested,data.table returns the correct index for a character valu
   idx <- matchNested(x, table, keep_duplicates = FALSE)
 
   data.table::setkeyv(table, "col1")
-  matched <- table[idx]  
+  matched <- table[idx]
 
   # make sure that x is in one of the columns
   expect_true(any(matched$col1 == x | matched$col2 == x))
@@ -148,9 +148,10 @@ test_that("matchNested,data.table returns the correct index for a character valu
 test_that("matchNested,data.table returns the correct index for a character value with duplicate values", {
   table <- data.table(
     col1 = list(
-      list("apple", "banana"), 
-      list("mango", "orange"), 
-      list("banana", "orange")), 
+      list("apple", "banana"),
+      list("mango", "orange"),
+      list("banana", "orange")
+    ),
     col2 = c(1, "banana", 3)
   )
   x <- "banana"
@@ -166,7 +167,6 @@ test_that("matchNested,data.table returns the correct index for a character valu
 
   expected_result <- 2
   expect_equal(matchNested(x, table, keep_duplicates = FALSE), expected_result)
-
 })
 
 # Test case 4: Matching a character value in an empty data.table
@@ -187,16 +187,16 @@ test_that("matchNested returns the correct matches for character and data.frame 
   # Test case 2: Matching multiple characters with data.frame
   x2 <- c("apple", "banana")
   table2 <- data.frame(fruit = c("apple", "banana", "orange"), color = c("red", "yellow", "orange"))
-  expect_warning(result2 <-matchNested(x2, table2))
+  expect_warning(result2 <- matchNested(x2, table2))
 
-  expect_equal(result2,  1)
+  expect_equal(result2, 1)
 
 
   x3 <- c("apple", "orange")
   expect_warning(result3 <- matchNested(x3, table2))
-  expect_equal(result3,  1)
+  expect_equal(result3, 1)
 
   x4 <- c("red", "yellow")
   expect_warning(result4 <- matchNested(x4, table2))
-  expect_equal(result4,  2)
+  expect_equal(result4, 2)
 })

@@ -10,27 +10,29 @@
 #' @examples
 #' .build_unichem_query("sources")
 #' .build_unichem_query("connectivity", query_only = TRUE)
-#' 
+#'
 #' @noRd
 #' @keywords internal
 .build_unichem_query <- function(
-    endpoint, query_only = FALSE
+  endpoint, query_only = FALSE
 ) {
-    funContext <- .funContext("AnnotationGx:::.build_unichem_query")
+  funContext <- .funContext("AnnotationGx:::.build_unichem_query")
 
-    valid_endpoints <- c("compounds", "connectivity", "images", "sources")
-    checkmate::assert_subset(endpoint, valid_endpoints)
+  valid_endpoints <- c("compounds", "connectivity", "images", "sources")
+  checkmate::assert_subset(endpoint, valid_endpoints)
 
-    unichem_api <- "https://www.ebi.ac.uk/unichem/api/v1"
-    url <- httr2::url_parse(unichem_api)
-    url$path <- .buildURL(url$path, endpoint)
+  unichem_api <- "https://www.ebi.ac.uk/unichem/api/v1"
+  url <- httr2::url_parse(unichem_api)
+  url$path <- .buildURL(url$path, endpoint)
 
-    output <- httr2::url_build(url)
+  output <- httr2::url_build(url)
 
-    .debug(funContext, "URL: ", output )
+  .debug(funContext, "URL: ", output)
 
-    if (query_only) return(url)
-    httr2::url_build(url) 
+  if (query_only) {
+    return(url)
+  }
+  httr2::url_build(url)
 }
 
 
@@ -48,41 +50,43 @@
 #' @examples
 #' .build_unichem_compound_req(type = "uci", compound = "538323")
 #' .build_unichem_compound_req(type = "sourceID", sourceID = 22, compound = "2244")
-#' 
+#'
 #' @noRd
 #' @keywords internal
 .build_unichem_compound_req <- function(
-    type, compound, sourceID = NULL, ...
-){
-    funContext <- .funContext("AnnotationGx:::.build_unichem_compound_req")
+  type, compound, sourceID = NULL, ...
+) {
+  funContext <- .funContext("AnnotationGx:::.build_unichem_compound_req")
 
-    valid_types <- c("uci", "inchi", "inchikey", "sourceID")
-    checkmate::assert_subset(type, valid_types)
+  valid_types <- c("uci", "inchi", "inchikey", "sourceID")
+  checkmate::assert_subset(type, valid_types)
 
-    base_url <- .build_unichem_query("compounds")
+  base_url <- .build_unichem_query("compounds")
 
-    .debug(funContext, "Base URL: ", base_url)
+  .debug(funContext, "Base URL: ", base_url)
 
-    body <- list(
-        type = type,
-        compound = compound
+  body <- list(
+    type = type,
+    compound = compound
+  )
+
+  body$sourceID <- if (type == "sourceID") {
+    checkmate::assert_integerish(
+      x = sourceID,
+      lower = 1,
+      upper = max(getUnichemSources()$SourceID),
+      len = 1
     )
-
-    body$sourceID <- if (type == "sourceID") {
-        checkmate::assert_integerish(
-            x = sourceID,
-            lower = 1,
-            upper = max(getUnichemSources()$SourceID),
-            len = 1
-            )
-        sourceID
-    } else NULL
+    sourceID
+  } else {
+    NULL
+  }
 
 
-    request <- base_url |> 
-        .build_request() |>
-        httr2::req_body_json(body) 
+  request <- base_url |>
+    .build_request() |>
+    httr2::req_body_json(body)
 
-    .debug(funContext, "Request: ", request)
-    return(request)
+  .debug(funContext, "Request: ", request)
+  return(request)
 }

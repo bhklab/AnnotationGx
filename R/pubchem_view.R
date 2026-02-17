@@ -14,7 +14,8 @@
 #'
 #' @export
 getPubchemAnnotationHeadings <- function(
-    type = "all", heading = NULL) {
+  type = "all", heading = NULL
+) {
   funContext <- .funContext("getPubchemAnnotationHeadings")
 
   .debug(funContext, " type: ", type, " heading: ", heading)
@@ -66,9 +67,9 @@ getPubchemAnnotationHeadings <- function(
 #'
 #' @export
 annotatePubchemCompound <- function(
-    cids, heading = "ChEMBL ID", source = NULL, parse_function = identity,
-    query_only = FALSE, raw = FALSE, nParallel = 1
-  ) {
+  cids, heading = "ChEMBL ID", source = NULL, parse_function = identity,
+  query_only = FALSE, raw = FALSE, nParallel = 1
+) {
   funContext <- .funContext("annotatePubchemCompound")
 
   .info(funContext, sprintf("Building requests for %s CIDs", length(cids)))
@@ -76,27 +77,36 @@ annotatePubchemCompound <- function(
     .build_pubchem_view_query(
       id = cid, record = "compound", heading = heading,
       output = "JSON", source = source
-      )
-   }
-  )
-
-  .debug(funContext, paste0("query: ", sapply(requests, `[[`, i = "url")))
-  if (query_only) return(requests)
-
-  tryCatch({
-    resp_raw <- httr2::req_perform_sequential(
-      reqs = requests, 
-      on_error = "continue",
-      progress = "Performing API requests..."
-  )}, error = function(e) {
-    .err(funContext, "An error occurred while performing requests:\n", e)
+    )
   })
 
-  if (raw) return(resp_raw)
+  .debug(funContext, paste0("query: ", sapply(requests, `[[`, i = "url")))
+  if (query_only) {
+    return(requests)
+  }
 
-  responses <- lapply(seq_along(resp_raw), function(i){
+  tryCatch(
+    {
+      resp_raw <- httr2::req_perform_sequential(
+        reqs = requests,
+        on_error = "continue",
+        progress = "Performing API requests..."
+      )
+    },
+    error = function(e) {
+      .err(funContext, "An error occurred while performing requests:\n", e)
+    }
+  )
+
+  if (raw) {
+    return(resp_raw)
+  }
+
+  responses <- lapply(seq_along(resp_raw), function(i) {
     resp <- resp_raw[[i]]
-    if(is.null(resp)) return(NA_character_)
+    if (is.null(resp)) {
+      return(NA_character_)
+    }
     tryCatch(
       {
         .parse_resp_json(resp)
@@ -137,12 +147,11 @@ annotatePubchemCompound <- function(
       )
     )
   },
-  mc.cores = nParallel 
-)
-  
+  mc.cores = nParallel
+  )
+
 
   sapply(parsed_responses, .replace_null)
-
 }
 
 # helper function to replace NULL with NA

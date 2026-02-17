@@ -16,8 +16,9 @@
 #'
 #' @export
 getPubchemStatus <- function(
-    returnMessage = FALSE, printMessage = TRUE,
-    url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/Aspirin/cids/JSON") {
+  returnMessage = FALSE, printMessage = TRUE,
+  url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/Aspirin/cids/JSON"
+) {
   funContext <- .funContext("getPubchemStatus")
 
   request <- .buildURL(url) |> .build_pubchem_request()
@@ -25,7 +26,7 @@ getPubchemStatus <- function(
   # need to do NULL while loop bc sometimes X-Throttling-Control is not in the response
   message <- NULL
 
-  while(is.null(message)) {
+  while (is.null(message)) {
     response <- httr2::req_perform(request)
 
     if (httr2::resp_status(response) == 200) {
@@ -40,7 +41,6 @@ getPubchemStatus <- function(
     return(parsed_info)
   }
 }
-
 
 
 #' names are: request_count, request_time and service

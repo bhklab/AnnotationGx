@@ -128,8 +128,7 @@ In the example below, we have a data frame annotating the treatments for the 4 d
 treatmentMetadata <- data.table::fread(system.file("extdata", "treatmentMetadata_annotated_pubchem_unichem_chembl.tsv", package = "AnnotationGx"))
 
 # two drugs: Erlotinib and Tanespimycin
-str(treatmentMetadata[pubchem.CID %in% c("6505803", "176870"),])
-
+str(treatmentMetadata[pubchem.CID %in% c("6505803", "176870"), ])
 ```
 
 We can see above how the dataset sources are named in the column names ('CCLE.treatmentid', 'GDSC.treatmentid', 'CTRP.treatmentid', 'gCSI.treatmentid').

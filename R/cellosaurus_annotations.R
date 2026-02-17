@@ -15,59 +15,59 @@
 #'
 #' @export
 annotateCellAccession <- function(
-    accessions,
-    to = c(
-        "id",
-        "ac",
-        "hi",
-        "sy",
-        "ca",
-        "sx",
-        "ag",
-        "di",
-        "derived-from-site",
-        "misspelling",
-        "dt"
-    ),
-    query_only = FALSE,
-    raw = FALSE
+  accessions,
+  to = c(
+    "id",
+    "ac",
+    "hi",
+    "sy",
+    "ca",
+    "sx",
+    "ag",
+    "di",
+    "derived-from-site",
+    "misspelling",
+    "dt"
+  ),
+  query_only = FALSE,
+  raw = FALSE
 ) {
-    funContext <- .funContext("annotateCellAccession")
+  funContext <- .funContext("annotateCellAccession")
 
-    .info(funContext, "Building Cellosaurus requests...")
-    requests <- parallel::mclapply(accessions, function(accession) {
-        .build_cellosaurus_request(
-            query = accession,
-            to = to,
-            numResults = 1,
-            apiResource = "search/cell-line",
-            output = "TXT",
-            sort = NULL,
-            query_only = FALSE
-        )
-    })
-
-    .info(funContext, "Performing Requests...")
-    responses <- .perform_request_parallel(
-        requests,
-        progress = "Querying Cellosaurus..."
+  .info(funContext, "Building Cellosaurus requests...")
+  requests <- parallel::mclapply(accessions, function(accession) {
+    .build_cellosaurus_request(
+      query = accession,
+      to = to,
+      numResults = 1,
+      apiResource = "search/cell-line",
+      output = "TXT",
+      sort = NULL,
+      query_only = FALSE
     )
-    names(responses) <- accessions
-    if (raw) {
-        return(responses)
-    }
+  })
 
-    .info(funContext, "Parsing Responses...")
-    responses_dt <- parallel::mclapply(accessions, function(name) {
-        resp <- responses[[name]]
-        .parse_cellosaurus_lines(resp) |>
-            unlist(recursive = FALSE) |>
-            .processEntry() |>
-            .formatSynonyms()
-    })
-    names(responses_dt) <- accessions
+  .info(funContext, "Performing Requests...")
+  responses <- .perform_request_parallel(
+    requests,
+    progress = "Querying Cellosaurus..."
+  )
+  names(responses) <- accessions
+  if (raw) {
+    return(responses)
+  }
 
-    responses_dt <- data.table::rbindlist(responses_dt, fill = TRUE)
+  .info(funContext, "Parsing Responses...")
+  responses_dt <- parallel::mclapply(accessions, function(name) {
+    resp <- responses[[name]]
+    .parse_cellosaurus_lines(resp) |>
+      unlist(recursive = FALSE) |>
+      .processEntry() |>
+      .formatSynonyms()
+  })
+  names(responses_dt) <- accessions
 
-    return(responses_dt)
+  responses_dt <- data.table::rbindlist(responses_dt, fill = TRUE)
+
+  return(responses_dt)
 }

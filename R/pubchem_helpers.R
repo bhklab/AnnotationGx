@@ -32,7 +32,6 @@
 }
 
 
-
 #' Build a query for the PubChem REST API
 #'
 #' This function builds a query for the PubChem REST API based on the provided parameters.
