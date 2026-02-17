@@ -275,9 +275,10 @@ AttributeSet <- R6::R6Class(
     #' @return List of matching AttributeInfo objects
     get_by_display_name = function(display_names) {
       tmp <- self$attributes[
-        sapply(
+        vapply(
           self$attributes,
-          function(attr) attr$displayName %in% display_names
+          function(attr) attr$displayName %in% display_names,
+          FUN.VALUE = logical(1)
         )
       ]
       AttributeSet$new(tmp)
@@ -297,7 +298,11 @@ AttributeSet <- R6::R6Class(
     #' @description Convert AttributeSet to list
     #' @return List of attributes DisplayName as strings
     as.list = function() {
-      sapply(self$attributes, function(attr) attr$displayName)
+      vapply(
+        self$attributes,
+        function(attr) attr$displayName,
+        FUN.VALUE = character(1)
+      )
     },
     #' @description Filter attributes based on regex pattern
     #' @param pattern Regular expression pattern to match against display names
@@ -306,7 +311,11 @@ AttributeSet <- R6::R6Class(
     filter = function(pattern, exclude = FALSE) {
       matches <- grepl(
         pattern,
-        sapply(self$attributes, function(attr) attr$displayName)
+        vapply(
+          self$attributes,
+          function(attr) attr$displayName,
+          FUN.VALUE = character(1)
+        )
       )
       if (exclude) {
         matches <- !matches
@@ -508,7 +517,16 @@ bm_query_builder <- function(
   stopifnot(inherits(dataset, "DatasetInfo"))
 
   # Handle AttributeInfo objects
-  if (all(sapply(attributes, inherits, "AttributeInfo"))) {
+  if (
+    all(
+      vapply(
+        attributes,
+        inherits,
+        FUN.VALUE = logical(1),
+        what = "AttributeInfo"
+      )
+    )
+  ) {
     attributes <- vapply(attributes, function(a) a$name, character(1))
   } else if (inherits(attributes, "AttributeSet")) {
     attributes <- vapply(
@@ -531,7 +549,16 @@ bm_query_builder <- function(
   filter_xml <- ""
 
   if (length(filters) > 0) {
-    if (all(sapply(filters, inherits, "FilterInfo"))) {
+    if (
+      all(
+        vapply(
+          filters,
+          inherits,
+          FUN.VALUE = logical(1),
+          what = "FilterInfo"
+        )
+      )
+    ) {
       # If user passed FilterInfo objects, extract value from each
       filter_xml <- paste(
         vapply(
@@ -631,9 +658,13 @@ query_hgnc_by_genes <- function(
 
   # Select mart: either by name/displayName or default to first one
   if (!is.null(mart_name)) {
-    mart_idx <- which(sapply(marts, function(m) {
-      m$name == mart_name || m$displayName == mart_name
-    }))
+    mart_idx <- which(vapply(
+      marts,
+      function(m) {
+        m$name == mart_name || m$displayName == mart_name
+      },
+      FUN.VALUE = logical(1)
+    ))
     if (length(mart_idx) == 0) {
       available_marts <- vapply(
         marts,
@@ -658,9 +689,13 @@ query_hgnc_by_genes <- function(
 
   # Select dataset: either by name/displayName or default to first one
   if (!is.null(dataset_name)) {
-    dataset_idx <- which(sapply(datasets, function(d) {
-      d$name == dataset_name || d$displayName == dataset_name
-    }))
+    dataset_idx <- which(vapply(
+      datasets,
+      function(d) {
+        d$name == dataset_name || d$displayName == dataset_name
+      },
+      FUN.VALUE = logical(1)
+    ))
     if (length(dataset_idx) == 0) {
       available_datasets <- vapply(
         datasets,

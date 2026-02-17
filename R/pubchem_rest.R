@@ -85,7 +85,12 @@ getPubchemCompound <- function(
 
   # filter failed
   # if any query failed, return the failed queries as attributes
-  failed <- sapply(resps_raw, httr2::resp_is_error, USE.NAMES = TRUE)
+  failed <- vapply(
+    resps_raw,
+    httr2::resp_is_error,
+    FUN.VALUE = logical(1),
+    USE.NAMES = TRUE
+  )
   if (any(failed)) {
     .warn(
       funContext,

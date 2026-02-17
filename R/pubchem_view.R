@@ -101,7 +101,13 @@ annotatePubchemCompound <- function(
     )
   })
 
-  .debug(funContext, paste0("query: ", sapply(requests, `[[`, i = "url")))
+  .debug(
+    funContext,
+    paste0(
+      "query: ",
+      vapply(requests, `[[`, FUN.VALUE = character(1), i = "url")
+    )
+  )
   if (query_only) {
     return(requests)
   }
