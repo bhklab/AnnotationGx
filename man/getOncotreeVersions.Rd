@@ -12,3 +12,10 @@ A \code{data.table} containing available Oncotree versions.
 \description{
 This function retrieves the available versions of Oncotree.
 }
+\examples{
+# Requires internet connection to Oncotree API
+if (interactive()) {
+  getOncotreeVersions()
+}
+
+}

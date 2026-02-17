@@ -32,3 +32,10 @@ A data.table with the list of sources in UniChem.
 \description{
 Get the list of sources in UniChem.
 }
+\examples{
+# Requires internet connection to UniChem
+if (interactive()) {
+  getUnichemSources()
+}
+
+}

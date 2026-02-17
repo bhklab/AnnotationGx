@@ -12,3 +12,10 @@ A \code{data.table} containing the tumor types from the Oncotree database.
 \description{
 This function retrieves the tumor types from the Oncotree database.
 }
+\examples{
+# Requires internet connection to Oncotree API
+if (interactive()) {
+  getOncotreeTumorTypes()
+}
+
+}
