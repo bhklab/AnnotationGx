@@ -46,5 +46,4 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
 Encoding: UTF-8
 URL: https://bhklab.github.io/AnnotationGx/
-biocViews: GeneExpression, Pharmacogenetics, Pharmacogenomics, Software,
-    Classification
+biocViews: Annotation, ReproducibleResearch
