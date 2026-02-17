@@ -23,6 +23,11 @@
 #'
 #'
 #' @return A data.table with the list of sources in UniChem.
+#' @examples
+#' # Requires internet connection to UniChem
+#' if (interactive()) {
+#'   getUnichemSources()
+#' }
 #'
 #' @export
 getUnichemSources <- function(all_columns = FALSE) {

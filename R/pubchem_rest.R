@@ -20,10 +20,15 @@
 #'
 #' @export
 getPubchemCompound <- function(
-    ids, from = "cid", to = "property", properties = c("Title", "InChIKey"),
-    raw = FALSE, query_only = FALSE, output = "JSON", ...
+  ids,
+  from = "cid",
+  to = "property",
+  properties = c("Title", "InChIKey"),
+  raw = FALSE,
+  query_only = FALSE,
+  output = "JSON",
+  ...
 ) {
-
   funContext <- .funContext("getPubchemCompound")
   to_ <- if (to == "property") {
     checkmate::assert_atomic(properties, all.missing = FALSE)
@@ -36,36 +41,56 @@ getPubchemCompound <- function(
   .info(funContext, "Building PubChem REST queries...")
   requests <- lapply(ids, function(x) {
     .build_pubchem_rest_query(
-      id = x, domain = "compound", namespace = from, operation = to_, output = output,
-      raw = raw, query_only = query_only, ...
+      id = x,
+      domain = "compound",
+      namespace = from,
+      operation = to_,
+      output = output,
+      raw = raw,
+      query_only = query_only,
+      ...
     )
   })
-  if (query_only) return(requests)
+  if (query_only) {
+    return(requests)
+  }
 
-  tryCatch({
-    .info(funContext, "Retrieving compound information...")
-    resps_raw <- httr2::req_perform_sequential(
-      requests, 
-      on_error = "continue", 
-      progress = "Querying PubCHEM REST API...."
-    )
-    names(resps_raw) <- ids
-  }, error = function(e) {
-    .err(funContext, " An error occurred while retrieving the compound information:\n", e)
-  })
-  
+  tryCatch(
+    {
+      .info(funContext, "Retrieving compound information...")
+      resps_raw <- httr2::req_perform_sequential(
+        requests,
+        on_error = "continue",
+        progress = "Querying PubCHEM REST API...."
+      )
+      names(resps_raw) <- ids
+    },
+    error = function(e) {
+      .err(
+        funContext,
+        " An error occurred while retrieving the compound information:\n",
+        e
+      )
+    }
+  )
+
   .debug(funContext, " Number of responses: ", length(resps_raw))
-  if (raw) return(resps_raw)
+  if (raw) {
+    return(resps_raw)
+  }
 
   # Parse the responses
   .info(funContext, "Parsing PubChem REST responses...")
   resps <- .parse_pubchem_rest_responses(resps_raw)
 
-  # filter failed 
+  # filter failed
   # if any query failed, return the failed queries as attributes
   failed <- sapply(resps_raw, httr2::resp_is_error, USE.NAMES = T)
   if (any(failed)) {
-    .warn(funContext, " Some queries failed. See the 'failed' object for details.")
+    .warn(
+      funContext,
+      " Some queries failed. See the 'failed' object for details."
+    )
     failures <- lapply(resps_raw[failed], function(resp) {
       .parse_resp_json(resp)$Fault
     })
@@ -75,7 +100,7 @@ getPubchemCompound <- function(
 
   # Combine the responses
   # might be able to just do the else part...
-  if (from != "name") { 
+  if (from != "name") {
     responses <- data.table::rbindlist(resps, fill = TRUE)
   } else {
     responses <- data.table::rbindlist(resps, idcol = from, fill = TRUE)
@@ -103,9 +128,15 @@ getPubchemCompound <- function(
 #'
 #' @export
 mapCompound2CID <- function(
-    names, first = FALSE, ...) {
+  names,
+  first = FALSE,
+  ...
+) {
   result <- getPubchemCompound(
-    ids = names, from = "name", to = "cids", ...
+    ids = names,
+    from = "name",
+    to = "cids",
+    ...
   )
 
   if (first) {
@@ -132,9 +163,16 @@ mapCompound2CID <- function(
 #'
 #' @export
 mapCID2Properties <- function(
-    ids, properties, ...) {
+  ids,
+  properties,
+  ...
+) {
   getPubchemCompound(
-    ids = ids, from = "cid", to = "property", properties = properties, ...
+    ids = ids,
+    from = "cid",
+    to = "property",
+    properties = properties,
+    ...
   )
 }
 
@@ -145,6 +183,11 @@ mapCID2Properties <- function(
 #' the name and type of each property.
 #'
 #' @return A data table containing the extracted property information.
+#' @examples
+#' # Requires internet connection to PubChem
+#' if (interactive()) {
+#'   getPubchemProperties()
+#' }
 #'
 #' @export
 getPubchemProperties <- function() {
@@ -162,6 +205,8 @@ getPubchemProperties <- function() {
     list(
       name = attr(x, "name"),
       type = gsub("xs:", "", attr(x, "type"))
-    ) |> .asDT()
-  }) |> data.table::rbindlist()
+    ) |>
+      .asDT()
+  }) |>
+    data.table::rbindlist()
 }

@@ -6,9 +6,10 @@
 #' @details
 #' This class encapsulates metadata about a BioMart database, including
 #' its name, display name, description, configuration, and other properties.
-#' 
+#'
 #' @keywords internal
-MartInfo <- R6::R6Class("MartInfo",
+MartInfo <- R6::R6Class(
+  "MartInfo",
   public = list(
     #' @field name The internal name of the mart
     name = NULL,
@@ -39,8 +40,16 @@ MartInfo <- R6::R6Class("MartInfo",
     #' @param meta List, additional metadata
     #' @param group Character, the group the mart belongs to
     #' @return A new MartInfo object
-    initialize = function(name, displayName, description, config,
-                          isHidden, operation, meta, group) {
+    initialize = function(
+      name,
+      displayName,
+      description,
+      config,
+      isHidden,
+      operation,
+      meta,
+      group
+    ) {
       self$name <- name
       self$displayName <- displayName
       self$description <- description
@@ -76,9 +85,10 @@ MartInfo <- R6::R6Class("MartInfo",
 #'  BioMart database,
 #' including its name, description, display name, and a reference
 #'  to the parent mart.
-#' 
+#'
 #' @keywords internal
-DatasetInfo <- R6::R6Class("DatasetInfo",
+DatasetInfo <- R6::R6Class(
+  "DatasetInfo",
   public = list(
     #' @field name The internal name of the dataset
     name = NULL,
@@ -127,9 +137,10 @@ DatasetInfo <- R6::R6Class("DatasetInfo",
 #' @details
 #' This class encapsulates information about a filter available in a BioMart dataset.
 #' Filters are used to specify conditions for querying and subsetting data from BioMart.
-#' 
+#'
 #' @keywords internal
-FilterInfo <- R6::R6Class("FilterInfo",
+FilterInfo <- R6::R6Class(
+  "FilterInfo",
   public = list(
     #' @field name The internal name of the filter used in BioMart queries
     name = NULL,
@@ -154,8 +165,14 @@ FilterInfo <- R6::R6Class("FilterInfo",
     #' @param isHidden Logical, whether the filter should be hidden in UIs
     #' @param values List or vector, possible values for the filter if applicable
     #' @return A new FilterInfo object
-    initialize = function(name, displayName = NULL, description = NULL,
-                          type = NULL, isHidden = NULL, values = NULL) {
+    initialize = function(
+      name,
+      displayName = NULL,
+      description = NULL,
+      type = NULL,
+      isHidden = NULL,
+      values = NULL
+    ) {
       self$name <- name
       self$displayName <- displayName
       self$description <- description
@@ -188,9 +205,10 @@ FilterInfo <- R6::R6Class("FilterInfo",
 #' @details
 #' This class encapsulates information about an attribute available in a BioMart dataset.
 #' Attributes are data fields that can be selected for retrieval in BioMart query results.
-#' 
+#'
 #' @keywords internal
-AttributeInfo <- R6::R6Class("AttributeInfo",
+AttributeInfo <- R6::R6Class(
+  "AttributeInfo",
   public = list(
     #' @field name The internal name of the attribute used in BioMart queries
     name = NULL,
@@ -212,8 +230,13 @@ AttributeInfo <- R6::R6Class("AttributeInfo",
     #' @param linkURL Character, URL for additional information about the attribute
     #' @param isHidden Logical, whether the attribute should be hidden in UIs
     #' @return A new AttributeInfo object
-    initialize = function(name, displayName = NULL, description = NULL,
-                          linkURL = NULL, isHidden = NULL) {
+    initialize = function(
+      name,
+      displayName = NULL,
+      description = NULL,
+      linkURL = NULL,
+      isHidden = NULL
+    ) {
       self$name <- name
       self$displayName <- displayName
       self$description <- description
@@ -239,9 +262,10 @@ AttributeInfo <- R6::R6Class("AttributeInfo",
 #'
 #' @description
 #' Represents a set of attributes from a BioMart dataset.
-#' 
+#'
 #' @keywords internal
-AttributeSet <- R6::R6Class("AttributeSet",
+AttributeSet <- R6::R6Class(
+  "AttributeSet",
   public = list(
     #' @field attributes List of AttributeInfo objects
     attributes = NULL,
@@ -258,7 +282,8 @@ AttributeSet <- R6::R6Class("AttributeSet",
     get_by_display_name = function(display_names) {
       tmp <- self$attributes[
         sapply(
-          self$attributes, function(attr) attr$displayName %in% display_names
+          self$attributes,
+          function(attr) attr$displayName %in% display_names
         )
       ]
       AttributeSet$new(tmp)
@@ -286,9 +311,12 @@ AttributeSet <- R6::R6Class("AttributeSet",
     #' @return A new AttributeSet with filtered attributes
     filter = function(pattern, exclude = FALSE) {
       matches <- grepl(
-        pattern, sapply(self$attributes, function(attr) attr$displayName)
+        pattern,
+        sapply(self$attributes, function(attr) attr$displayName)
       )
-      if (exclude) matches <- !matches
+      if (exclude) {
+        matches <- !matches
+      }
       AttributeSet$new(self$attributes[matches])
     }
   )
@@ -304,6 +332,10 @@ AttributeSet <- R6::R6Class("AttributeSet",
 #' retrieving information about available marts, datasets, attributes, and filters.
 #'
 #' @examples
+#' # Create a client object (no network call required)
+#' client <- BioMartClient$new("https://www.ensembl.org")
+#' client$path
+#'
 #' \dontrun{
 #' # Create a client for Ensembl BioMart
 #' client <- BioMartClient$new("https://www.ensembl.org")
@@ -317,9 +349,10 @@ AttributeSet <- R6::R6Class("AttributeSet",
 #' }
 #'
 #' @export
-#' 
+#'
 #' @keywords internal
-BioMartClient <- R6::R6Class("BioMartClient",
+BioMartClient <- R6::R6Class(
+  "BioMartClient",
   public = list(
     #' @field base_url Base URL of the BioMart service
     base_url = NULL,
@@ -361,7 +394,9 @@ BioMartClient <- R6::R6Class("BioMartClient",
     #' @return List of DatasetInfo objects
     get_datasets = function(mart) {
       stopifnot(inherits(mart, "MartInfo"))
-      step <- cli::cli_progress_step("[Dataset] Fetching datasets for {.val {mart$config}}")
+      step <- cli::cli_progress_step(
+        "[Dataset] Fetching datasets for {.val {mart$config}}"
+      )
       on.exit(cli::cli_progress_done(step), add = TRUE)
 
       res <- private$.request("datasets.json") |>
@@ -386,11 +421,16 @@ BioMartClient <- R6::R6Class("BioMartClient",
     #' @return List of attribute information
     get_attributes = function(dataset) {
       stopifnot(inherits(dataset, "DatasetInfo"))
-      step <- cli::cli_progress_step("[Attributes] Fetching attributes for {.val {dataset$name}} ({.val {dataset$mart$config}})")
+      step <- cli::cli_progress_step(
+        "[Attributes] Fetching attributes for {.val {dataset$name}} ({.val {dataset$mart$config}})"
+      )
       on.exit(cli::cli_progress_done(step), add = TRUE)
 
       res <- private$.request("attributes.json") |>
-        httr2::req_url_query(datasets = dataset$name, config = dataset$mart$config) |>
+        httr2::req_url_query(
+          datasets = dataset$name,
+          config = dataset$mart$config
+        ) |>
         httr2::req_perform() |>
         httr2::resp_body_json()
 
@@ -414,11 +454,16 @@ BioMartClient <- R6::R6Class("BioMartClient",
     #' @return List of filter information
     get_filters = function(dataset) {
       stopifnot(inherits(dataset, "DatasetInfo"))
-      step <- cli::cli_progress_step("[Filters] Fetching filters for {.val {dataset$name}} ({.val {dataset$mart$config}})")
+      step <- cli::cli_progress_step(
+        "[Filters] Fetching filters for {.val {dataset$name}} ({.val {dataset$mart$config}})"
+      )
       on.exit(cli::cli_progress_done(step), add = TRUE)
 
       res <- private$.request("filters.json") |>
-        httr2::req_url_query(datasets = dataset$name, config = dataset$mart$config) |>
+        httr2::req_url_query(
+          datasets = dataset$name,
+          config = dataset$mart$config
+        ) |>
         httr2::req_perform() |>
         httr2::resp_body_json()
 
@@ -455,22 +500,28 @@ BioMartClient <- R6::R6Class("BioMartClient",
 #' @param limit Integer, maximum number of rows to return, -1 for unlimited (default: -1)
 #'
 #' @return Character string containing the formatted XML BioMart query
-#' 
+#'
 #' @keywords internal
-bm_query_builder <- function(dataset,
-                             filters = list(),
-                             attributes = character(),
-                             client_name = "biomartclient",
-                             processor = "TSV",
-                             header = TRUE,
-                             limit = -1) {
+bm_query_builder <- function(
+  dataset,
+  filters = list(),
+  attributes = character(),
+  client_name = "biomartclient",
+  processor = "TSV",
+  header = TRUE,
+  limit = -1
+) {
   stopifnot(inherits(dataset, "DatasetInfo"))
 
   # Handle AttributeInfo objects
   if (all(sapply(attributes, inherits, "AttributeInfo"))) {
     attributes <- vapply(attributes, function(a) a$name, character(1))
   } else if (inherits(attributes, "AttributeSet")) {
-    attributes <- vapply(attributes$attributes, function(a) a$name, character(1))
+    attributes <- vapply(
+      attributes$attributes,
+      function(a) a$name,
+      character(1)
+    )
   } else if (!is.character(attributes)) {
     stop("attributes must be a character vector or AttributeSet")
   } else {
@@ -489,29 +540,38 @@ bm_query_builder <- function(dataset,
     if (all(sapply(filters, inherits, "FilterInfo"))) {
       # If user passed FilterInfo objects, extract value from each
       filter_xml <- paste(
-        vapply(filters, function(f) {
-          if (is.null(f$value)) {
-            stop(sprintf("Filter '%s' is missing a value", f$name))
-          }
-          val <- paste(f$value, collapse = ",")
-          # if the f$name has _text at the end, then we remove it
-          name <- sub("_text$", "", f$name)
-          sprintf('<Filter name="%s" value="%s"/>', name, val)
-        }, character(1)),
+        vapply(
+          filters,
+          function(f) {
+            if (is.null(f$value)) {
+              stop(sprintf("Filter '%s' is missing a value", f$name))
+            }
+            val <- paste(f$value, collapse = ",")
+            # if the f$name has _text at the end, then we remove it
+            name <- sub("_text$", "", f$name)
+            sprintf('<Filter name="%s" value="%s"/>', name, val)
+          },
+          character(1)
+        ),
         collapse = ""
       )
     } else {
       # Otherwise assume a named list: name -> value
       filter_xml <- paste(
-        vapply(names(filters), function(name) {
-          val <- paste(filters[[name]], collapse = ",")
-          # if the f$name has _text at the end, then we remove it
-          name <- sub("_text$", "", name)
-          sprintf(
-            '<Filter name="%s" value="%s" filter_list=""/>',
-            name, val
-          )
-        }, character(1)),
+        vapply(
+          names(filters),
+          function(name) {
+            val <- paste(filters[[name]], collapse = ",")
+            # if the f$name has _text at the end, then we remove it
+            name <- sub("_text$", "", name)
+            sprintf(
+              '<Filter name="%s" value="%s" filter_list=""/>',
+              name,
+              val
+            )
+          },
+          character(1)
+        ),
         collapse = ""
       )
     }
@@ -519,8 +579,14 @@ bm_query_builder <- function(dataset,
   xml <- sprintf(
     '<!DOCTYPE Query><Query client="%s" processor="%s" header="%d" limit="%d">
     <Dataset name="%s" config="%s">%s%s</Dataset></Query>',
-    client_name, processor, as.integer(header), as.integer(limit),
-    dataset$name, dataset$mart$config, filter_xml, attr_xml
+    client_name,
+    processor,
+    as.integer(header),
+    as.integer(limit),
+    dataset$name,
+    dataset$mart$config,
+    filter_xml,
+    attr_xml
   )
   xml <- gsub('"', "'", xml)
   xml <- gsub("\n\\s+", "", xml) # Remove newlines and indentation
@@ -544,9 +610,21 @@ bm_query_builder <- function(dataset,
 #'   to use (default: first available dataset).
 #'
 #' @return A data.table with results for matching gene symbols and attributes.
+#' @examples
+#' # Requires internet connection to HGNC BioMart
+#' if (interactive()) {
+#'   query_hgnc_by_genes(
+#'     genes = c("TP53", "BRCA1"),
+#'     attributes = c("Approved symbol", "Approved name")
+#'   )
+#' }
 #' @export
-query_hgnc_by_genes <- function(genes, attributes, mart_name = NULL,
-                                dataset_name = NULL) {
+query_hgnc_by_genes <- function(
+  genes,
+  attributes,
+  mart_name = NULL,
+  dataset_name = NULL
+) {
   stopifnot(is.character(genes), is.character(attributes))
 
   client <- BioMartClient$new("https://biomart.genenames.org")
@@ -563,11 +641,17 @@ query_hgnc_by_genes <- function(genes, attributes, mart_name = NULL,
       m$name == mart_name || m$displayName == mart_name
     }))
     if (length(mart_idx) == 0) {
-      available_marts <- vapply(marts, function(m) {
-        paste0(m$name, " (", m$displayName, ")")
-      }, character(1))
+      available_marts <- vapply(
+        marts,
+        function(m) {
+          paste0(m$name, " (", m$displayName, ")")
+        },
+        character(1)
+      )
       stop(
-        "Invalid mart name: '", mart_name, "'. Available marts: ",
+        "Invalid mart name: '",
+        mart_name,
+        "'. Available marts: ",
         paste(available_marts, collapse = ", ")
       )
     }
@@ -584,11 +668,16 @@ query_hgnc_by_genes <- function(genes, attributes, mart_name = NULL,
       d$name == dataset_name || d$displayName == dataset_name
     }))
     if (length(dataset_idx) == 0) {
-      available_datasets <- vapply(datasets, function(d) {
-        paste0(d$name, " (", d$displayName, ")")
-      }, character(1))
+      available_datasets <- vapply(
+        datasets,
+        function(d) {
+          paste0(d$name, " (", d$displayName, ")")
+        },
+        character(1)
+      )
       stop(
-        "Invalid dataset name: '", dataset_name,
+        "Invalid dataset name: '",
+        dataset_name,
         "'. Available datasets: ",
         paste(available_datasets, collapse = ", ")
       )
@@ -608,7 +697,8 @@ query_hgnc_by_genes <- function(genes, attributes, mart_name = NULL,
     # show valid attributes if available
     if (length(available) > 0) {
       errmsg <- paste(
-        errmsg, "\nAvailable attributes:\n\t-",
+        errmsg,
+        "\nAvailable attributes:\n\t-",
         paste(available, collapse = "\n\t- ")
       )
     }
