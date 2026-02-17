@@ -90,7 +90,7 @@ test_that(".build_cellosaurus_request accepts documented sort fields", {
 
 
 test_that("common_cellosaurus_fields returns the expected fields", {
-  fields <- AnnotationGx::cellosaurus_fields(common = T, upper = T)
+  fields <- AnnotationGx::cellosaurus_fields(common = TRUE, upper = TRUE)
   expect_character(fields)
   expect_fields <- c(
     "id",

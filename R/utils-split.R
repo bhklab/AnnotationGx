@@ -176,7 +176,8 @@ strSplit <- function(x, split, fixed = TRUE, n = Inf) {
       x <- split(x = x[, 2L], f = x[, 1L])
       x
     }
-  ) |> unlist(recursive = F)
+  ) |>
+    unlist(recursive = FALSE)
   object[[colName]] <- lst
   object
 }

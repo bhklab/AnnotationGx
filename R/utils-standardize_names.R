@@ -11,7 +11,7 @@
 #' # Output: [1] "JOHNDOE" "JANESMITH" "ALICE"
 #' @export
 standardize_names <- function(object) {
-  checkmate::assert_character(object, all.missing = F)
+  checkmate::assert_character(object, all.missing = FALSE)
   object <- tolower(object)
   object <- gsub(
     pattern = ",\\s.+$",
@@ -75,7 +75,9 @@ cleanCharacterStrings <- function(name, space_action = "") {
   name <- gsub("[\\,\\;\\+\\*\\$\\%\\#\\^\\_]", "", name, perl = TRUE)
 
   # remove hyphen
-  if (!space_action == "-") name <- gsub("-", "", name)
+  if (!space_action == "-") {
+    name <- gsub("-", "", name)
+  }
 
   # remove substring of round brackets and contents
   name <- gsub("\\s*\\(.*\\)", "", name)
@@ -86,12 +88,16 @@ cleanCharacterStrings <- function(name, space_action = "") {
   # remove substring of curly brackets and contents
   name <- gsub("\\s*\\{.*\\}", "", name)
 
-
   # convert entire string to uppercase
   name <- toupper(name)
 
   # dealing with unicode characters
-  name <- gsub("Unicode", "", iconv(name, "LATIN1", "ASCII", "Unicode"), perl = TRUE)
+  name <- gsub(
+    "Unicode",
+    "",
+    iconv(name, "LATIN1", "ASCII", "Unicode"),
+    perl = TRUE
+  )
 
   name
 }

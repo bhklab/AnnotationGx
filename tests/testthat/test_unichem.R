@@ -87,7 +87,7 @@ test_that("queryUnichemCompound returns the expected results 2", {
   result1 <- queryUnichemCompound(
     type = "inchikey",
     compound = "BSYNRYMUTXBXSQ-UHFFFAOYSA-N",
-    raw = T
+    raw = TRUE
   )
 
   expect_true(is.list(result1))
@@ -105,7 +105,7 @@ test_that("queryUnichemCompound returns the expected results 2", {
   result2 <- queryUnichemCompound(
     type = "inchikey",
     compound = "BSYNRYMUTXBXSQ-UHFFFAOYSA-N",
-    raw = F
+    raw = FALSE
   )
 
   expect_true(is.list(result2))

@@ -84,10 +84,10 @@ failed_again <-
 ```
 
 ```{r pubchem-failed-cleaned, eval = FALSE}
-failed_dt <- merge(failed_to_cids[!is.na(cids), ], failed, by.x = "name", by.y = "CTRP.treatmentid_CLEANED", all.x = F)
+failed_dt <- merge(failed_to_cids[!is.na(cids), ], failed, by.x = "name", by.y = "CTRP.treatmentid_CLEANED", all.x = FALSE)
 failed_dt$name <- NULL
 
-successful_dt <- merge(CTRP_treatmentMetadata, compounds_to_cids[!is.na(cids), ], by.x = "CTRP.treatmentid", by.y = "name", all.x = F)
+successful_dt <- merge(CTRP_treatmentMetadata, compounds_to_cids[!is.na(cids), ], by.x = "CTRP.treatmentid", by.y = "name", all.x = FALSE)
 
-mapped_PubChem <- data.table::rbindlist(list(successful_dt, failed_dt), use.names = T, fill = T)
+mapped_PubChem <- data.table::rbindlist(list(successful_dt, failed_dt), use.names = TRUE, fill = TRUE)
 ```

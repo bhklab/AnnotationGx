@@ -43,7 +43,7 @@ test_that("mapCell DOR 13 works", {
   name <- "DOR 13"
 
   result1 <- mapCell2Accession(name)
-  result2 <- mapCell2Accession(name, fuzzy = T)
+  result2 <- mapCell2Accession(name, fuzzy = TRUE)
   result3 <- mapCell2Accession(c(name, "HT"))
 
   expect_data_table(result1, nrows = 1, ncols = 1) # fails

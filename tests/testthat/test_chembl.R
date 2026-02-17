@@ -11,7 +11,13 @@ test_that("build_chembl_request constructs the correct URL", {
   format <- "json"
 
   # Call the function
-  url <- AnnotationGx:::.build_chembl_request(resource, field, filter_type, value, format)
+  url <- AnnotationGx:::.build_chembl_request(
+    resource,
+    field,
+    filter_type,
+    value,
+    format
+  )
 
   # Check the constructed URL
   expected_url <- "https://www.ebi.ac.uk/chembl/api/data/target?target_chembl_id__exact=CHEMBL2144069&format=json"
@@ -32,10 +38,12 @@ test_that("getChemblMechanism works", {
   expect_equal(ncol(mechanism), 17)
   expect_equal(mechanism$target_chembl_id, c("CHEMBL2363058", "CHEMBL2366381"))
 
-
-  url <- getChemblMechanism(chembl_id, returnURL = T)
+  url <- getChemblMechanism(chembl_id, returnURL = TRUE)
   expect_list(url)
-  expect_equal(url[[1]], "https://www.ebi.ac.uk/chembl/api/data/mechanism?molecule_chembl_id__in=CHEMBL1413&format=json")
+  expect_equal(
+    url[[1]],
+    "https://www.ebi.ac.uk/chembl/api/data/mechanism?molecule_chembl_id__in=CHEMBL1413&format=json"
+  )
 })
 
 
@@ -47,13 +55,28 @@ test_that("getChemblResourceFields works", {
   # should have 17 elements
   expect_length(mechanism_fields, 17)
   # should contain the expected fields
-  expect_equal(mechanism_fields, c(
-    "action_type", "binding_site_comment", "direct_interaction", "disease_efficacy",
-    "max_phase", "mec_id", "mechanism_comment", "mechanism_of_action",
-    "mechanism_refs", "molecular_mechanism", "molecule_chembl_id",
-    "parent_molecule_chembl_id", "record_id", "selectivity_comment",
-    "site_id", "target_chembl_id", "variant_sequence"
-  ))
+  expect_equal(
+    mechanism_fields,
+    c(
+      "action_type",
+      "binding_site_comment",
+      "direct_interaction",
+      "disease_efficacy",
+      "max_phase",
+      "mec_id",
+      "mechanism_comment",
+      "mechanism_of_action",
+      "mechanism_refs",
+      "molecular_mechanism",
+      "molecule_chembl_id",
+      "parent_molecule_chembl_id",
+      "record_id",
+      "selectivity_comment",
+      "site_id",
+      "target_chembl_id",
+      "variant_sequence"
+    )
+  )
 })
 
 test_that("queryChemblAPI constructs the correct URL and returns parsed JSON response", {
@@ -65,7 +88,13 @@ test_that("queryChemblAPI constructs the correct URL and returns parsed JSON res
   format <- "json"
   expected_url <- "https://www.ebi.ac.uk/chembl/api/data/mechanism?mechanism_of_action__icontains=Muscarinic%20acetylcholine%20receptor&format=json"
 
-  request <- AnnotationGx:::.build_chembl_request(resource, field, filter_type, value, format)
+  request <- AnnotationGx:::.build_chembl_request(
+    resource,
+    field,
+    filter_type,
+    value,
+    format
+  )
   expect_equal(request$url, expected_url)
 
   # Call the function
