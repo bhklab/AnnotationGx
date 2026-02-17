@@ -90,7 +90,7 @@ If some cell lines still cannot be found, there is an additional parameter for f
 mapCell2Accession("DOR 13")
 
 # Fuzzy
-mapCell2Accession("DOR 13", fuzzy =T)
+mapCell2Accession("DOR 13", fuzzy = TRUE)
 
 ```
 
