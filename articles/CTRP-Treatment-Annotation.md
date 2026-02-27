@@ -21,7 +21,6 @@ data(CTRP_treatmentMetadata)
 ```
 
 ``` r
-
 # get a random row from the CTRP_treatmentMetadata
 
 treatment <- CTRP_treatmentMetadata[1, CTRP.treatmentid]
@@ -38,17 +37,18 @@ mapCompound2CID(treatment)
 ### Annotating using PubChem
 
 ``` r
-(compounds_to_cids <- 
-  CTRP_treatmentMetadata[1:10, 
+(compounds_to_cids <-
+  CTRP_treatmentMetadata[
+    1:10,
     AnnotationGx::mapCompound2CID(
-        names =  CTRP.treatmentid,
-        first = TRUE
-        )
-      ]
+      names = CTRP.treatmentid,
+      first = TRUE
+    )
+  ]
 )
-failed <- 
-  attributes(compounds_to_cids)$failed |> 
-    names()
+failed <-
+  attributes(compounds_to_cids)$failed |>
+  names()
 ```
 
 ``` r
@@ -57,7 +57,8 @@ failed <- unique(CTRP_treatmentMetadata[CTRP.treatmentid %in% failed, ])
 failed[, CTRP.treatmentid_CLEANED := cleanCharacterStrings(CTRP.treatmentid)]
 
 (failed_to_cids <-
-  failed[, 
+  failed[
+    ,
     AnnotationGx::mapCompound2CID(
       names = CTRP.treatmentid_CLEANED,
       first = TRUE
@@ -65,15 +66,15 @@ failed[, CTRP.treatmentid_CLEANED := cleanCharacterStrings(CTRP.treatmentid)]
   ]
 )
 failed_again <-
-  attributes(failed_to_cids)$failed |> 
-    names()
+  attributes(failed_to_cids)$failed |>
+  names()
 ```
 
 ``` r
-failed_dt <- merge(failed_to_cids[!is.na(cids),], failed, by.x = "name", by.y = "CTRP.treatmentid_CLEANED", all.x = F)
+failed_dt <- merge(failed_to_cids[!is.na(cids), ], failed, by.x = "name", by.y = "CTRP.treatmentid_CLEANED", all.x = FALSE)
 failed_dt$name <- NULL
 
-successful_dt <- merge(CTRP_treatmentMetadata, compounds_to_cids[!is.na(cids),],by.x = "CTRP.treatmentid", by.y = "name",  all.x = F)
+successful_dt <- merge(CTRP_treatmentMetadata, compounds_to_cids[!is.na(cids), ], by.x = "CTRP.treatmentid", by.y = "name", all.x = FALSE)
 
-mapped_PubChem <- data.table::rbindlist(list(successful_dt, failed_dt), use.names = T, fill = T)
+mapped_PubChem <- data.table::rbindlist(list(successful_dt, failed_dt), use.names = TRUE, fill = TRUE)
 ```

@@ -172,54 +172,93 @@ cancer type.
 getOncotreeTumorTypes()
 #>          code     color
 #>        <char>    <char>
-#>   1:   BREAST   HotPink
-#>   2:   CERVIX      Teal
-#>   3:  BLADDER    Yellow
-#>   4:    BRAIN      Gray
-#>   5:  THYROID      Teal
+#>   1: PANCREAS    Purple
+#>   2:      PNS      Gray
+#>   3:    BRAIN      Gray
+#>   4:  THYROID      Teal
+#>   5:   THYMUS    Purple
 #>  ---                   
-#> 893:      LYP LimeGreen
-#> 894:   PCALCL LimeGreen
-#> 895: ALCLALKN LimeGreen
-#> 896:   BIALCL LimeGreen
-#> 897: ALCLALKP LimeGreen
+#> 893:   PCALCL LimeGreen
+#> 894:      LYP LimeGreen
+#> 895: ALCLALKP LimeGreen
+#> 896: ALCLALKN LimeGreen
+#> 897:   BIALCL LimeGreen
 #>                                                          name
 #>                                                        <char>
-#>   1:                                                   Breast
-#>   2:                                                   Cervix
-#>   3:                                    Bladder/Urinary Tract
-#>   4:                                                CNS/Brain
-#>   5:                                                  Thyroid
+#>   1:                                                 Pancreas
+#>   2:                                Peripheral Nervous System
+#>   3:                                                CNS/Brain
+#>   4:                                                  Thyroid
+#>   5:                                                   Thymus
 #>  ---                                                         
-#> 893:                                   Lymphomatoid Papulosis
-#> 894:         Primary Cutaneous Anaplastic Large Cell Lymphoma
-#> 895:              Anaplastic Large-Cell Lymphoma ALK Negative
-#> 896: Breast Implant-Associated Anaplastic Large-Cell Lymphoma
-#> 897:              Anaplastic Large-Cell Lymphoma ALK Positive
-#>                          mainType externalReferences  tissue
-#>                            <char>             <list>  <list>
-#>   1:                Breast Cancer           C0006141  C12971
-#>   2:              Cervical Cancer           C0007874  C12311
-#>   3: Bladder/Urinary Tract Cancer           C0005682  C12414
-#>   4:             CNS/Brain Cancer           C3714787  C12438
-#>   5:               Thyroid Cancer           C0040132  C12400
-#>  ---                                                        
-#> 893:    Mature T and NK Neoplasms           C0206182   C3721
-#> 894:    Mature T and NK Neoplasms           C1301362   C6860
-#> 895:    Mature T and NK Neoplasms           C1332078  C37194
-#> 896:    Mature T and NK Neoplasms           C4528210 C139012
-#> 897:    Mature T and NK Neoplasms           C1332079  C37193
-#>                   children parent history level revocations precursors
-#>                     <char> <char>  <list> <int>      <list>     <list>
-#>   1:                Breast TISSUE             1                       
-#>   2:                Cervix TISSUE             1                       
-#>   3: Bladder/Urinary Tract TISSUE             1                       
-#>   4:             CNS/Brain TISSUE             1                       
-#>   5:               Thyroid TISSUE             1                       
-#>  ---                                                                  
-#> 893:              Lymphoid  PCLPD             6                       
-#> 894:              Lymphoid  PCLPD             6                       
-#> 895:              Lymphoid   ALCL             6                       
-#> 896:              Lymphoid   ALCL             6                       
-#> 897:              Lymphoid   ALCL             6
+#> 893:         Primary Cutaneous Anaplastic Large Cell Lymphoma
+#> 894:                                   Lymphomatoid Papulosis
+#> 895:              Anaplastic Large-Cell Lymphoma ALK Positive
+#> 896:              Anaplastic Large-Cell Lymphoma ALK Negative
+#> 897: Breast Implant-Associated Anaplastic Large-Cell Lymphoma
+#>                              mainType externalReferences  tissue
+#>                                <char>             <list>  <list>
+#>   1:                Pancreatic Cancer           C0030274  C12393
+#>   2: Peripheral Nervous System Cancer           C0206417  C12465
+#>   3:                 CNS/Brain Cancer           C3714787  C12438
+#>   4:                   Thyroid Cancer           C0040132  C12400
+#>   5:                    Thymic Cancer           C0040113  C12433
+#>  ---                                                            
+#> 893:        Mature T and NK Neoplasms           C1301362   C6860
+#> 894:        Mature T and NK Neoplasms           C0206182   C3721
+#> 895:        Mature T and NK Neoplasms           C1332079  C37193
+#> 896:        Mature T and NK Neoplasms           C1332078  C37194
+#> 897:        Mature T and NK Neoplasms           C4528210 C139012
+#>                       children parent history level revocations precursors
+#>                         <char> <char>  <list> <int>      <list>     <list>
+#>   1:                  Pancreas TISSUE             1                       
+#>   2: Peripheral Nervous System TISSUE             1                       
+#>   3:                 CNS/Brain TISSUE             1                       
+#>   4:                   Thyroid TISSUE             1                       
+#>   5:                    Thymus TISSUE             1                       
+#>  ---                                                                      
+#> 893:                  Lymphoid  PCLPD             6                       
+#> 894:                  Lymphoid  PCLPD             6                       
+#> 895:                  Lymphoid   ALCL             6                       
+#> 896:                  Lymphoid   ALCL             6                       
+#> 897:                  Lymphoid   ALCL             6
+```
+
+``` r
+sessionInfo()
+#> R version 4.5.2 (2025-10-31)
+#> Platform: x86_64-pc-linux-gnu
+#> Running under: Ubuntu 24.04.3 LTS
+#> 
+#> Matrix products: default
+#> BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
+#> LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.26.so;  LAPACK version 3.12.0
+#> 
+#> locale:
+#>  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       
+#>  [4] LC_COLLATE=C.UTF-8     LC_MONETARY=C.UTF-8    LC_MESSAGES=C.UTF-8   
+#>  [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C          
+#> [10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C   
+#> 
+#> time zone: UTC
+#> tzcode source: system (glibc)
+#> 
+#> attached base packages:
+#> [1] stats     graphics  grDevices utils     datasets  methods   base     
+#> 
+#> other attached packages:
+#> [1] AnnotationGx_0.99.1
+#> 
+#> loaded via a namespace (and not attached):
+#>  [1] cli_3.6.5           knitr_1.51          rlang_1.1.7        
+#>  [4] xfun_0.56           textshaping_1.0.4   jsonlite_2.0.0     
+#>  [7] data.table_1.18.2.1 glue_1.8.0          backports_1.5.0    
+#> [10] htmltools_0.5.9     ragg_1.5.0          sass_0.4.10        
+#> [13] rappdirs_0.3.4      rmarkdown_2.30      evaluate_1.0.5     
+#> [16] jquerylib_0.1.4     fastmap_1.2.0       yaml_2.3.12        
+#> [19] lifecycle_1.0.5     httr2_1.2.2         compiler_4.5.2     
+#> [22] fs_1.6.6            systemfonts_1.3.1   digest_0.6.39      
+#> [25] R6_2.6.1            curl_7.0.0          magrittr_2.0.4     
+#> [28] bslib_0.10.0        checkmate_2.3.4     tools_4.5.2        
+#> [31] pkgdown_2.2.0       cachem_1.1.0        desc_1.4.3
 ```

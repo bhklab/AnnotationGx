@@ -29,33 +29,33 @@ A `data.table` containing the annotation headings and types.
 
 ``` r
 getPubchemAnnotationHeadings()
-#>               Heading     Type
-#>                <char>   <char>
-#>   1:  11B NMR Spectra Compound
-#>   2:  13C NMR Spectra Compound
-#>   3:  15N NMR Spectra Compound
-#>   4:  17O NMR Spectra Compound
-#>   5:  19F NMR Spectra Compound
-#>  ---                          
-#> 679: Wiley References Compound
-#> 680:      WormBase ID     Gene
-#> 681:      WormBase ID  Protein
-#> 682:  Xenbase Gene ID     Gene
-#> 683:          ZFIN ID     Gene
+#>              Heading     Type
+#>               <char>   <char>
+#>   1: 11B NMR Spectra Compound
+#>   2: 13C NMR Spectra Compound
+#>   3: 15N NMR Spectra Compound
+#>   4: 17O NMR Spectra Compound
+#>   5: 19F NMR Spectra Compound
+#>  ---                         
+#> 689:       Withdrawn Compound
+#> 690:     WormBase ID     Gene
+#> 691:     WormBase ID  Protein
+#> 692: Xenbase Gene ID     Gene
+#> 693:         ZFIN ID     Gene
 getPubchemAnnotationHeadings(type = "Compound")
-#>                                        Heading     Type
-#>                                         <char>   <char>
-#>   1:                           11B NMR Spectra Compound
-#>   2:                           13C NMR Spectra Compound
-#>   3:                           15N NMR Spectra Compound
-#>   4:                           17O NMR Spectra Compound
-#>   5:                           19F NMR Spectra Compound
-#>  ---                                                   
-#> 513: Volatilization from Water/Soil (Complete) Compound
-#> 514:                   WHO Essential Medicines Compound
-#> 515:                                  Wikidata Compound
-#> 516:                                 Wikipedia Compound
-#> 517:                          Wiley References Compound
+#>                      Heading     Type
+#>                       <char>   <char>
+#>   1:         11B NMR Spectra Compound
+#>   2:         13C NMR Spectra Compound
+#>   3:         15N NMR Spectra Compound
+#>   4:         17O NMR Spectra Compound
+#>   5:         19F NMR Spectra Compound
+#>  ---                                 
+#> 522: WHO Essential Medicines Compound
+#> 523:                Wikidata Compound
+#> 524:               Wikipedia Compound
+#> 525:        Wiley References Compound
+#> 526:               Withdrawn Compound
 getPubchemAnnotationHeadings(heading = "ChEMBL*")
 #>                Heading     Type
 #>                 <char>   <char>

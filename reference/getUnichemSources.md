@@ -51,3 +51,12 @@ getUnichemSources(all_columns = FALSE)
 ## Value
 
 A data.table with the list of sources in UniChem.
+
+## Examples
+
+``` r
+# Requires internet connection to UniChem
+if (interactive()) {
+  getUnichemSources()
+}
+```

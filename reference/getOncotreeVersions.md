@@ -11,3 +11,12 @@ getOncotreeVersions()
 ## Value
 
 A `data.table` containing available Oncotree versions.
+
+## Examples
+
+``` r
+# Requires internet connection to Oncotree API
+if (interactive()) {
+  getOncotreeVersions()
+}
+```

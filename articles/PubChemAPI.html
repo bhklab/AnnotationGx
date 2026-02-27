@@ -21,7 +21,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">AnnotationGx</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9097</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.99.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,6 +58,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/bhklab/AnnotationGx/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -74,7 +75,7 @@
       <h1>Querying PubChem</h1>
             
       
-
+      <small class="dont-index">Source: <a href="https://github.com/bhklab/AnnotationGx/blob/main/vignettes/PubChemAPI.Rmd" class="external-link"><code>vignettes/PubChemAPI.Rmd</code></a></small>
       <div class="d-none name"><code>PubChemAPI.Rmd</code></div>
     </div>
 
@@ -125,7 +126,11 @@ identifier.</p>
 them at once.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">drugs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>  <span class="st">"Aspirin"</span>, <span class="st">"Erlotinib"</span>, <span class="st">"Acadesine"</span>, <span class="st">"Camptothecin"</span>, <span class="st">"Vincaleukoblastine"</span>,</span>
+<span>  <span class="st">"Aspirin"</span>,</span>
+<span>  <span class="st">"Erlotinib"</span>,</span>
+<span>  <span class="st">"Acadesine"</span>,</span>
+<span>  <span class="st">"Camptothecin"</span>,</span>
+<span>  <span class="st">"Vincaleukoblastine"</span>,</span>
 <span>  <span class="st">"Cisplatin"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -154,11 +159,27 @@ name use the <code>first = TRUE</code> argument:</p>
 <span><span class="co">#&gt; 4:       Camptothecin   24360</span></span>
 <span><span class="co">#&gt; 5: Vincaleukoblastine   13342</span></span>
 <span><span class="co">#&gt; 6:          Cisplatin 5460033</span></span></code></pre></div>
-<p>In the case of a compound that can’t be mapped, <code>NA</code> will
-be returned and a warning will be issued.</p>
+<p>In the case that a compound cannot be mapped, <code>NA</code> will be
+returned and a warning will be issued.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="op">(</span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mapCompound2CID.html">mapCompound2CID</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">drugs</span>, <span class="st">"non existent compound"</span>, <span class="st">"another bad compound"</span><span class="op">)</span>, first <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">[15:06:54][WARNING][AnnotationGx::getPubchemCompound]  Some queries failed. See the 'failed' object for details. </span></span></span>
+<code class="sourceCode R"><span><span class="op">(</span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mapCompound2CID.html">mapCompound2CID</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">drugs</span>, <span class="st">"non existent compound"</span>, <span class="st">"another bad compound"</span><span class="op">)</span>,</span>
+<span>  first <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■                              </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■                           </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■                        </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■                     </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■                  </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■               </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■            </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■         </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■      </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span></span></span>
+<span><span class="co">#&gt; Querying PubCHEM REST API.... <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■            </span>  62% | ETA: 19s</span></span>
+<span><span class="co">#&gt; Querying PubCHEM REST API.... <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% | ETA:  0s</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">[15:07:34][WARNING][AnnotationGx::getPubchemCompound]  Some queries failed. See the 'failed' object for details. </span></span></span>
 <span><span class="co">#&gt;                     name    cids</span></span>
 <span><span class="co">#&gt;                   &lt;char&gt;   &lt;int&gt;</span></span>
 <span><span class="co">#&gt; 1:               Aspirin    2244</span></span>
@@ -287,38 +308,38 @@ get the available annotation headings and types.</p>
 </h4>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/getPubchemAnnotationHeadings.html">getPubchemAnnotationHeadings</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;               Heading     Type</span></span>
-<span><span class="co">#&gt;                &lt;char&gt;   &lt;char&gt;</span></span>
-<span><span class="co">#&gt;   1:  11B NMR Spectra Compound</span></span>
-<span><span class="co">#&gt;   2:  13C NMR Spectra Compound</span></span>
-<span><span class="co">#&gt;   3:  15N NMR Spectra Compound</span></span>
-<span><span class="co">#&gt;   4:  17O NMR Spectra Compound</span></span>
-<span><span class="co">#&gt;   5:  19F NMR Spectra Compound</span></span>
-<span><span class="co">#&gt;  ---                          </span></span>
-<span><span class="co">#&gt; 679: Wiley References Compound</span></span>
-<span><span class="co">#&gt; 680:      WormBase ID     Gene</span></span>
-<span><span class="co">#&gt; 681:      WormBase ID  Protein</span></span>
-<span><span class="co">#&gt; 682:  Xenbase Gene ID     Gene</span></span>
-<span><span class="co">#&gt; 683:          ZFIN ID     Gene</span></span></code></pre></div>
+<span><span class="co">#&gt;              Heading     Type</span></span>
+<span><span class="co">#&gt;               &lt;char&gt;   &lt;char&gt;</span></span>
+<span><span class="co">#&gt;   1: 11B NMR Spectra Compound</span></span>
+<span><span class="co">#&gt;   2: 13C NMR Spectra Compound</span></span>
+<span><span class="co">#&gt;   3: 15N NMR Spectra Compound</span></span>
+<span><span class="co">#&gt;   4: 17O NMR Spectra Compound</span></span>
+<span><span class="co">#&gt;   5: 19F NMR Spectra Compound</span></span>
+<span><span class="co">#&gt;  ---                         </span></span>
+<span><span class="co">#&gt; 689:       Withdrawn Compound</span></span>
+<span><span class="co">#&gt; 690:     WormBase ID     Gene</span></span>
+<span><span class="co">#&gt; 691:     WormBase ID  Protein</span></span>
+<span><span class="co">#&gt; 692: Xenbase Gene ID     Gene</span></span>
+<span><span class="co">#&gt; 693:         ZFIN ID     Gene</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="get-annotation-headings-for-a-specific-type">Get annotation headings for a specific type:<a class="anchor" aria-label="anchor" href="#get-annotation-headings-for-a-specific-type"></a>
 </h4>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/getPubchemAnnotationHeadings.html">getPubchemAnnotationHeadings</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"Compound"</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                                        Heading     Type</span></span>
-<span><span class="co">#&gt;                                         &lt;char&gt;   &lt;char&gt;</span></span>
-<span><span class="co">#&gt;   1:                           11B NMR Spectra Compound</span></span>
-<span><span class="co">#&gt;   2:                           13C NMR Spectra Compound</span></span>
-<span><span class="co">#&gt;   3:                           15N NMR Spectra Compound</span></span>
-<span><span class="co">#&gt;   4:                           17O NMR Spectra Compound</span></span>
-<span><span class="co">#&gt;   5:                           19F NMR Spectra Compound</span></span>
-<span><span class="co">#&gt;  ---                                                   </span></span>
-<span><span class="co">#&gt; 513: Volatilization from Water/Soil (Complete) Compound</span></span>
-<span><span class="co">#&gt; 514:                   WHO Essential Medicines Compound</span></span>
-<span><span class="co">#&gt; 515:                                  Wikidata Compound</span></span>
-<span><span class="co">#&gt; 516:                                 Wikipedia Compound</span></span>
-<span><span class="co">#&gt; 517:                          Wiley References Compound</span></span></code></pre></div>
+<span><span class="co">#&gt;                      Heading     Type</span></span>
+<span><span class="co">#&gt;                       &lt;char&gt;   &lt;char&gt;</span></span>
+<span><span class="co">#&gt;   1:         11B NMR Spectra Compound</span></span>
+<span><span class="co">#&gt;   2:         13C NMR Spectra Compound</span></span>
+<span><span class="co">#&gt;   3:         15N NMR Spectra Compound</span></span>
+<span><span class="co">#&gt;   4:         17O NMR Spectra Compound</span></span>
+<span><span class="co">#&gt;   5:         19F NMR Spectra Compound</span></span>
+<span><span class="co">#&gt;  ---                                 </span></span>
+<span><span class="co">#&gt; 522: WHO Essential Medicines Compound</span></span>
+<span><span class="co">#&gt; 523:                Wikidata Compound</span></span>
+<span><span class="co">#&gt; 524:               Wikipedia Compound</span></span>
+<span><span class="co">#&gt; 525:        Wiley References Compound</span></span>
+<span><span class="co">#&gt; 526:               Withdrawn Compound</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="get-annotation-headings-for-a-specific-heading">Get annotation headings for a specific heading:<a class="anchor" aria-label="anchor" href="#get-annotation-headings-for-a-specific-heading"></a>
@@ -374,6 +395,45 @@ RESTful interface for programmatic access to PubChem. Nucleic Acids Res.
 PUG-View: programmatic access to chemical annotations integrated in
 PubChem. J Cheminform. 2019 Aug 9; 11:56. <a href="doi:10.1186/s13321-019-0375-2" class="uri">doi:10.1186/s13321-019-0375-2</a>.</li>
 </ol>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; R version 4.5.2 (2025-10-31)</span></span>
+<span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu</span></span>
+<span><span class="co">#&gt; Running under: Ubuntu 24.04.3 LTS</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Matrix products: default</span></span>
+<span><span class="co">#&gt; BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 </span></span>
+<span><span class="co">#&gt; LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.26.so;  LAPACK version 3.12.0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; locale:</span></span>
+<span><span class="co">#&gt;  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       </span></span>
+<span><span class="co">#&gt;  [4] LC_COLLATE=C.UTF-8     LC_MONETARY=C.UTF-8    LC_MESSAGES=C.UTF-8   </span></span>
+<span><span class="co">#&gt;  [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C          </span></span>
+<span><span class="co">#&gt; [10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C   </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; time zone: UTC</span></span>
+<span><span class="co">#&gt; tzcode source: system (glibc)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; attached base packages:</span></span>
+<span><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; other attached packages:</span></span>
+<span><span class="co">#&gt; [1] AnnotationGx_0.99.1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
+<span><span class="co">#&gt;  [1] crayon_1.5.3        cli_3.6.5           knitr_1.51         </span></span>
+<span><span class="co">#&gt;  [4] rlang_1.1.7         xfun_0.56           textshaping_1.0.4  </span></span>
+<span><span class="co">#&gt;  [7] jsonlite_2.0.0      data.table_1.18.2.1 glue_1.8.0         </span></span>
+<span><span class="co">#&gt; [10] backports_1.5.0     htmltools_0.5.9     ragg_1.5.0         </span></span>
+<span><span class="co">#&gt; [13] sass_0.4.10         rappdirs_0.3.4      rmarkdown_2.30     </span></span>
+<span><span class="co">#&gt; [16] evaluate_1.0.5      jquerylib_0.1.4     fastmap_1.2.0      </span></span>
+<span><span class="co">#&gt; [19] yaml_2.3.12         lifecycle_1.0.5     memoise_2.0.1      </span></span>
+<span><span class="co">#&gt; [22] httr2_1.2.2         compiler_4.5.2      fs_1.6.6           </span></span>
+<span><span class="co">#&gt; [25] systemfonts_1.3.1   digest_0.6.39       R6_2.6.1           </span></span>
+<span><span class="co">#&gt; [28] parallel_4.5.2      curl_7.0.0          magrittr_2.0.4     </span></span>
+<span><span class="co">#&gt; [31] bslib_0.10.0        checkmate_2.3.4     withr_3.0.2        </span></span>
+<span><span class="co">#&gt; [34] tools_4.5.2         xml2_1.5.2          pkgdown_2.2.0      </span></span>
+<span><span class="co">#&gt; [37] cachem_1.1.0        desc_1.4.3</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

@@ -38,3 +38,15 @@ This function connects to the HGNC BioMart service and retrieves
 specified attributes for a list of gene symbols. It automatically
 handles the selection of marts and datasets based on provided
 parameters.
+
+## Examples
+
+``` r
+# Requires internet connection to HGNC BioMart
+if (interactive()) {
+  query_hgnc_by_genes(
+    genes = c("TP53", "BRCA1"),
+    attributes = c("Approved symbol", "Approved name")
+  )
+}
+```

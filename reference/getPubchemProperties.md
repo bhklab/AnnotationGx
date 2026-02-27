@@ -13,3 +13,12 @@ getPubchemProperties()
 ## Value
 
 A data table containing the extracted property information.
+
+## Examples
+
+``` r
+# Requires internet connection to PubChem
+if (interactive()) {
+  getPubchemProperties()
+}
+```

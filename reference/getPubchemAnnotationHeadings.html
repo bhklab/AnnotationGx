@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">AnnotationGx</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9097</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.99.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,6 +38,7 @@
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/bhklab/AnnotationGx/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
 
@@ -47,7 +48,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Get annotation headings (name only) based on type and heading criteria.</h1>
-
+      <small class="dont-index">Source: <a href="https://github.com/bhklab/AnnotationGx/blob/main/R/pubchem_view.R" class="external-link"><code>R/pubchem_view.R</code></a></small>
       <div class="d-none name"><code>getPubchemAnnotationHeadings.Rd</code></div>
     </div>
 
@@ -81,33 +82,33 @@ Options include "Compound", "Gene", "Taxonomy", "Element", "Assay", "Protein", "
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">getPubchemAnnotationHeadings</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               Heading     Type</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                &lt;char&gt;   &lt;char&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1:  11B NMR Spectra Compound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   2:  13C NMR Spectra Compound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   3:  15N NMR Spectra Compound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   4:  17O NMR Spectra Compound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   5:  19F NMR Spectra Compound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ---                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 679: Wiley References Compound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 680:      WormBase ID     Gene</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 681:      WormBase ID  Protein</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 682:  Xenbase Gene ID     Gene</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 683:          ZFIN ID     Gene</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              Heading     Type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;char&gt;   &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1: 11B NMR Spectra Compound</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2: 13C NMR Spectra Compound</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3: 15N NMR Spectra Compound</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4: 17O NMR Spectra Compound</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5: 19F NMR Spectra Compound</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ---                         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 689:       Withdrawn Compound</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 690:     WormBase ID     Gene</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 691:     WormBase ID  Protein</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 692: Xenbase Gene ID     Gene</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 693:         ZFIN ID     Gene</span>
 <span class="r-in"><span><span class="fu">getPubchemAnnotationHeadings</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"Compound"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                        Heading     Type</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                         &lt;char&gt;   &lt;char&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1:                           11B NMR Spectra Compound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   2:                           13C NMR Spectra Compound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   3:                           15N NMR Spectra Compound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   4:                           17O NMR Spectra Compound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   5:                           19F NMR Spectra Compound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                                   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 513: Volatilization from Water/Soil (Complete) Compound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 514:                   WHO Essential Medicines Compound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 515:                                  Wikidata Compound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 516:                                 Wikipedia Compound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 517:                          Wiley References Compound</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      Heading     Type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                       &lt;char&gt;   &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1:         11B NMR Spectra Compound</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2:         13C NMR Spectra Compound</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3:         15N NMR Spectra Compound</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4:         17O NMR Spectra Compound</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5:         19F NMR Spectra Compound</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 522: WHO Essential Medicines Compound</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 523:                Wikidata Compound</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 524:               Wikipedia Compound</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 525:        Wiley References Compound</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 526:               Withdrawn Compound</span>
 <span class="r-in"><span><span class="fu">getPubchemAnnotationHeadings</span><span class="op">(</span>heading <span class="op">=</span> <span class="st">"ChEMBL*"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                Heading     Type</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 &lt;char&gt;   &lt;char&gt;</span>

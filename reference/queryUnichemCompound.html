@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">AnnotationGx</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9097</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.99.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,6 +38,7 @@
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/bhklab/AnnotationGx/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
 
@@ -47,7 +48,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Query UniChem for a compound.</h1>
-
+      <small class="dont-index">Source: <a href="https://github.com/bhklab/AnnotationGx/blob/main/R/unichem.R" class="external-link"><code>R/unichem.R</code></a></small>
       <div class="d-none name"><code>queryUnichemCompound.Rd</code></div>
     </div>
 
@@ -118,243 +119,32 @@ compound). If <code>raw = TRUE</code>, raw responses are returned instead.</p>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">queryUnichemCompound</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sourceID"</span>, compound <span class="op">=</span> <span class="st">"444795"</span>, sourceID <span class="op">=</span> <span class="fl">22</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $External_Mappings</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                  compoundID             Name</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                      &lt;char&gt;           &lt;char&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:                CHEMBL38           chembl</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:                 DB00755         drugbank</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:                     REA              pdb</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:                    2644           gtopdb</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:                12014646     pubchem_dotf</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:                  C00777      kegg_ligand</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7:                   15367            chebi</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:            SAM002264647          nih_ncc</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:        ZINC000012358651             zinc</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:                 1934590       emolecules</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11:               tretinoin            atlas</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12:           retinoic acid            atlas</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13: all-trans retinoic acid            atlas</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14:     9-cis retinoic-acid            atlas</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15:              5688UTC01R           fdasrs</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16:         SCHEMBL19091395       surechembl</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17:             SCHEMBL3145       surechembl</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18:             PA164746900         pharmgkb</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19:             HMDB0001852             hmdb</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20:      Tretinoin(Aberela)          selleck</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21:                14849563  pubchem_tpharma</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22:                14825303  pubchem_tpharma</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23:                  444795          pubchem</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24:                60021090      nmrshiftdb2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25:               LSM-42854            lincs</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26:               4759-48-2            actor</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27:                302-79-4            actor</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28:             187175-63-9            actor</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29:             J2.378.058E          nikkaji</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30:             J1.313.469C          nikkaji</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31:               J623.910B          nikkaji</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 32:               J970.183D          nikkaji</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 33:                 J1.518K          nikkaji</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 34:               J494.243D          nikkaji</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 35:               J690.379G          nikkaji</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 36:               J646.157C          nikkaji</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 37:               J646.158A          nikkaji</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 38:               J528.606I          nikkaji</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 39:                   31883        bindingdb</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 40:                  323588        bindingdb</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 41:           DTXSID7021239          comptox</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 42:            LMPR01090019        lipidmaps</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 43:                    2722      drugcentral</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 44:              MTBLC15367     metabolights</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 45:                    6481           brenda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 46:                   12679           brenda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 47:                   21231           brenda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 48:                    2354           brenda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 49:                    5126           brenda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 50:                  193381           brenda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 51:                  260365           brenda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 52:               CB6222631     chemicalbook</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 53:               TRETINOIN         dailymed</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 54:                  ABEREL   clinicaltrials</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 55:                  EUDYNA   clinicaltrials</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 56:                VESANOID   clinicaltrials</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 57:                 ALTRENO   clinicaltrials</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 58:               TRETINOIN   clinicaltrials</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 59:                 RETIN A   clinicaltrials</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 60:                 RETIN-A   clinicaltrials</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 61:           RETINOIC ACID   clinicaltrials</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 62:                  RENOVA   clinicaltrials</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 63:                   AVITA   clinicaltrials</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 64:              NSC-122758   clinicaltrials</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 65:   TRETINOIN MICROSPHERE           rxnorm</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 66:                 ATRALIN           rxnorm</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 67:                 RETIN-A           rxnorm</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 68:                 ALTRENO           rxnorm</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 69:                 ACTICIN           rxnorm</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 70:                   AVITA           rxnorm</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 71:                  RENOVA           rxnorm</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 72:               TRETINOIN           rxnorm</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 73:                HY-14649   MedChemExpress</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 74:                PD001430 probes_and_drugs</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 75:                  VITAAC             CCDC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                  compoundID             Name</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                      &lt;char&gt;           &lt;char&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                    NameLong sourceID</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                      &lt;char&gt;    &lt;int&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:                                                  ChEMBL        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:                                                DrugBank        2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:                         PDBe (Protein Data Bank Europe)        3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:                                   Guide to Pharmacology        4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:                  PubChem ('Drugs of the Future' subset)        5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:   KEGG (Kyoto Encyclopedia of Genes and Genomes) Ligand        6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7:       ChEBI (Chemical Entities of Biological Interest).        7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:                                 NIH Clinical Collection        8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:                                                    ZINC        9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:                                              eMolecules       10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11:                                   Gene Expression Atlas       12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12:                                   Gene Expression Atlas       12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13:                                   Gene Expression Atlas       12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14:                                   Gene Expression Atlas       12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15:             FDA/USP Substance Registration System (SRS)       14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16:                                              SureChEMBL       15</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17:                                              SureChEMBL       15</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18:                                                PharmGKB       17</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19:                        Human Metabolome Database (HMDB)       18</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20:                                                 Selleck       20</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21:                       PubChem ('Thomson Pharma' subset)       21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22:                       PubChem ('Thomson Pharma' subset)       21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23:                                       PubChem Compounds       22</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24:                                              NMRShiftDB       24</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25: Library of Integrated Network-based Cellular Signatures       25</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26:                                                   ACToR       26</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27:                                                   ACToR       26</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28:                                                   ACToR       26</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29:                                                 Nikkaji       29</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30:                                                 Nikkaji       29</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31:                                                 Nikkaji       29</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 32:                                                 Nikkaji       29</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 33:                                                 Nikkaji       29</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 34:                                                 Nikkaji       29</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 35:                                                 Nikkaji       29</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 36:                                                 Nikkaji       29</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 37:                                                 Nikkaji       29</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 38:                                                 Nikkaji       29</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 39:                                               BindingDB       31</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 40:                                               BindingDB       31</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 41: EPA (Environmental Protection Agency) CompTox Dashboard       32</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 42:                                               LipidMaps       33</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 43:                                             DrugCentral       34</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 44:                                            Metabolights       36</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 45:                                                  Brenda       37</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 46:                                                  Brenda       37</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 47:                                                  Brenda       37</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 48:                                                  Brenda       37</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 49:                                                  Brenda       37</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 50:                                                  Brenda       37</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 51:                                                  Brenda       37</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 52:                                            ChemicalBook       39</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 53:                                                DailyMed       45</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 54:                                          clinicaltrials       46</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 55:                                          clinicaltrials       46</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 56:                                          clinicaltrials       46</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 57:                                          clinicaltrials       46</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 58:                                          clinicaltrials       46</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 59:                                          clinicaltrials       46</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 60:                                          clinicaltrials       46</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 61:                                          clinicaltrials       46</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 62:                                          clinicaltrials       46</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 63:                                          clinicaltrials       46</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 64:                                          clinicaltrials       46</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 65:                                                  rxnorm       47</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 66:                                                  rxnorm       47</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 67:                                                  rxnorm       47</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 68:                                                  rxnorm       47</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 69:                                                  rxnorm       47</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 70:                                                  rxnorm       47</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 71:                                                  rxnorm       47</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 72:                                                  rxnorm       47</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 73:                                          MedChemExpress       48</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 74:                                        Probes And Drugs       49</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 75:                                                    CCDC       50</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                    NameLong sourceID</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                      &lt;char&gt;    &lt;int&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                                                           sourceURL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                                                              &lt;char&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:                                                                        https://www.ebi.ac.uk/chembldb/compound/inspect/CHEMBL38</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:                                                                                            http://www.drugbank.ca/drugs/DB00755</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:                                                                http://www.ebi.ac.uk/pdbe-srv/pdbechem/chemicalCompound/show/REA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:                                                      http://www.guidetopharmacology.org/GRAC/LigandDisplayForward?ligandId=2644</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:                                                                              http://pubchem.ncbi.nlm.nih.gov/substance/12014646</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:                                                                                  http://www.genome.jp/dbget-bin/www_bget?C00777</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7:                                                                    http://www.ebi.ac.uk/chebi/searchId.do?chebiId=CHEBI%3A15367</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:                                                                                                                    SAM002264647</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:                                                                           http://zinc15.docking.org/substances/ZINC000012358651</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:                                                                             https://www.emolecules.com/cgi-bin/more?vid=1934590</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11:                                                                         http://www.ebi.ac.uk/gxa/query?conditionQuery=tretinoin</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12:                                                                     http://www.ebi.ac.uk/gxa/query?conditionQuery=retinoic acid</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13:                                                           http://www.ebi.ac.uk/gxa/query?conditionQuery=all-trans retinoic acid</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14:                                                               http://www.ebi.ac.uk/gxa/query?conditionQuery=9-cis retinoic-acid</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15:                                                                        https://precision.fda.gov/uniisearch/srs/unii/5688UTC01R</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16:                                                                             https://www.surechembl.org/chemical/SCHEMBL19091395</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17:                                                                                 https://www.surechembl.org/chemical/SCHEMBL3145</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18:                                                                                       https://www.pharmgkb.org/drug/PA164746900</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19:                                                                                      http://www.hmdb.ca/metabolites/HMDB0001852</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20:                                                                     http://www.selleckchem.com/products/Tretinoin(Aberela).html</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21:                                                                              http://pubchem.ncbi.nlm.nih.gov/substance/14849563</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22:                                                                              http://pubchem.ncbi.nlm.nih.gov/substance/14825303</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23:                                                                                 http://pubchem.ncbi.nlm.nih.gov/compound/444795</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24:                                                                                         http://nmrshiftdb.org/molecule/60021090</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25:                                                                            http://identifiers.org/lincs.smallmolecule/LSM-42854</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26:                                                                       http://actor.epa.gov/actor/chemical.xhtml?casrn=4759-48-2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27:                                                                        http://actor.epa.gov/actor/chemical.xhtml?casrn=302-79-4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28:                                                                     http://actor.epa.gov/actor/chemical.xhtml?casrn=187175-63-9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29:                                                                     http://jglobal.jst.go.jp/en/redirect?Nikkaji_No=J2.378.058E</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30:                                                                     http://jglobal.jst.go.jp/en/redirect?Nikkaji_No=J1.313.469C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31:                                                                       http://jglobal.jst.go.jp/en/redirect?Nikkaji_No=J623.910B</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 32:                                                                       http://jglobal.jst.go.jp/en/redirect?Nikkaji_No=J970.183D</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 33:                                                                         http://jglobal.jst.go.jp/en/redirect?Nikkaji_No=J1.518K</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 34:                                                                       http://jglobal.jst.go.jp/en/redirect?Nikkaji_No=J494.243D</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 35:                                                                       http://jglobal.jst.go.jp/en/redirect?Nikkaji_No=J690.379G</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 36:                                                                       http://jglobal.jst.go.jp/en/redirect?Nikkaji_No=J646.157C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 37:                                                                       http://jglobal.jst.go.jp/en/redirect?Nikkaji_No=J646.158A</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 38:                                                                       http://jglobal.jst.go.jp/en/redirect?Nikkaji_No=J528.606I</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 39:                                                http://www.bindingdb.org/bind/chemsearch/marvin/MolStructure.jsp?monomerid=31883</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 40:                                               http://www.bindingdb.org/bind/chemsearch/marvin/MolStructure.jsp?monomerid=323588</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 41:                                                                                 https://comptox.epa.gov/dashboard/DTXSID7021239</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 42:                                                                  http://www.lipidmaps.org/data/LMSDRecord.php?LMID=LMPR01090019</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 43:                                                                                            http://drugcentral.org/drugcard/2722</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 44:                                                                                    http://www.ebi.ac.uk/metabolights/MTBLC15367</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 45:                                                                 https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=6481</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 46:                                                                https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=12679</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 47:                                                                https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=21231</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 48:                                                                 https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=2354</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 49:                                                                 https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=5126</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 50:                                                               https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=193381</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 51:                                                               https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=260365</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 52:                                                               https://www.chemicalbook.com/ChemicalProductProperty_EN_CB6222631</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 53: https://dailymed.nlm.nih.gov/dailymed/search.cfm?adv=1&amp;labeltype=human&amp;query=ACTIVEMOIETY:(TRETINOIN)+OR+INGREDIENT:(TRETINOIN)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 54:                                                                    https://www.clinicaltrials.gov/ct2/results?cond=&amp;term=ABEREL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 55:                                                                    https://www.clinicaltrials.gov/ct2/results?cond=&amp;term=EUDYNA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 56:                                                                  https://www.clinicaltrials.gov/ct2/results?cond=&amp;term=VESANOID</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 57:                                                                   https://www.clinicaltrials.gov/ct2/results?cond=&amp;term=ALTRENO</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 58:                                                                 https://www.clinicaltrials.gov/ct2/results?cond=&amp;term=TRETINOIN</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 59:                                                                   https://www.clinicaltrials.gov/ct2/results?cond=&amp;term=RETIN A</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 60:                                                                   https://www.clinicaltrials.gov/ct2/results?cond=&amp;term=RETIN-A</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 61:                                                             https://www.clinicaltrials.gov/ct2/results?cond=&amp;term=RETINOIC ACID</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 62:                                                                    https://www.clinicaltrials.gov/ct2/results?cond=&amp;term=RENOVA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 63:                                                                     https://www.clinicaltrials.gov/ct2/results?cond=&amp;term=AVITA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 64:                                                                https://www.clinicaltrials.gov/ct2/results?cond=&amp;term=NSC-122758</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 65:                                                           https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&amp;searchTerm=221175</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 66:                                                           https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&amp;searchTerm=728470</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 67:                                                           https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&amp;searchTerm=153101</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 68:                                                          https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&amp;searchTerm=2055004</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 69:                                                           https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&amp;searchTerm=214998</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 70:                                                           https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&amp;searchTerm=215492</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 71:                                                           https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&amp;searchTerm=846950</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 72:                                                            https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&amp;searchTerm=10753</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 73:                                                                                         https://www.medchemexpress.com/HY-14649</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 74:                                                                                  https://www.probes-drugs.org/compound/PD001430</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 75:                                                         https://www.ccdc.cam.ac.uk/structures/search?sid=UNICHEM&amp;pid=csd:VITAAC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                                                           sourceURL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                                                              &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       compoundID             Name                            NameLong sourceID</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           &lt;char&gt;           &lt;char&gt;                              &lt;char&gt;    &lt;int&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1:    CHEMBL38           chembl                              ChEMBL        1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2:     DB00755         drugbank                            DrugBank        2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3:         3KV         rcsb_pdb                            RCSB PDB        3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4:         REA         rcsb_pdb                            RCSB PDB        3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5: CHEBI:15367            chebi                               ChEBI        7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                                                          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 275:      260365           brenda                              Brenda       37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 276:        5126           brenda                              Brenda       37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 277:        6481           brenda                              Brenda       37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 278:    PD001430 probes_and_drugs                        Probes&amp;Drugs       49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 279:      VITAAC             CCDC CSD (Cambridge Structural Database)       50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                    sourceURL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                       &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1:                https://www.ebi.ac.uk/chembldb/compound/inspect/CHEMBL38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2:                                   https://go.drugbank.com/drugs/DB00755</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3:                                         https://www.rcsb.org/ligand/3KV</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4:                                         https://www.rcsb.org/ligand/REA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5:                                 https://www.ebi.ac.uk/chebi/CHEBI:15367</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                                                        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 275:       https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=260365</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 276:         https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=5126</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 277:         https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=6481</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 278:                         https://www.probes-drugs.org/compounds/PD001430</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 279: https://www.ccdc.cam.ac.uk/structures/search?sid=UNICHEM&amp;pid=csd:VITAAC</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $UniChem_Mappings</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $UniChem_Mappings$UniChem.UCI</span>

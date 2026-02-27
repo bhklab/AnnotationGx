@@ -21,7 +21,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">AnnotationGx</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9097</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.99.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,6 +58,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/bhklab/AnnotationGx/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -76,7 +77,7 @@
 Shahzada Muhammad Shameel Farooq, and Christopher Eeles</h4>
                         
       
-
+      <small class="dont-index">Source: <a href="https://github.com/bhklab/AnnotationGx/blob/main/vignettes/Unichem.Rmd" class="external-link"><code>vignettes/Unichem.Rmd</code></a></small>
       <div class="d-none name"><code>Unichem.Rmd</code></div>
     </div>
 
@@ -121,47 +122,23 @@ are returned. To return all columns, pass the
 <span><span class="co">#&gt;               &lt;char&gt;    &lt;int&gt;</span></span>
 <span><span class="co">#&gt;  1:           chembl        1</span></span>
 <span><span class="co">#&gt;  2:         drugbank        2</span></span>
-<span><span class="co">#&gt;  3:              pdb        3</span></span>
+<span><span class="co">#&gt;  3:         rcsb_pdb        3</span></span>
 <span><span class="co">#&gt;  4:           gtopdb        4</span></span>
-<span><span class="co">#&gt;  5:     pubchem_dotf        5</span></span>
-<span><span class="co">#&gt;  6:      kegg_ligand        6</span></span>
-<span><span class="co">#&gt;  7:            chebi        7</span></span>
-<span><span class="co">#&gt;  8:          nih_ncc        8</span></span>
-<span><span class="co">#&gt;  9:             zinc        9</span></span>
-<span><span class="co">#&gt; 10:       emolecules       10</span></span>
-<span><span class="co">#&gt; 11:            atlas       12</span></span>
-<span><span class="co">#&gt; 12:           fdasrs       14</span></span>
-<span><span class="co">#&gt; 13:       surechembl       15</span></span>
-<span><span class="co">#&gt; 14:         pharmgkb       17</span></span>
-<span><span class="co">#&gt; 15:             hmdb       18</span></span>
-<span><span class="co">#&gt; 16:          selleck       20</span></span>
-<span><span class="co">#&gt; 17:  pubchem_tpharma       21</span></span>
-<span><span class="co">#&gt; 18:          pubchem       22</span></span>
-<span><span class="co">#&gt; 19:            mcule       23</span></span>
-<span><span class="co">#&gt; 20:      nmrshiftdb2       24</span></span>
-<span><span class="co">#&gt; 21:            lincs       25</span></span>
-<span><span class="co">#&gt; 22:            actor       26</span></span>
-<span><span class="co">#&gt; 23:            recon       27</span></span>
-<span><span class="co">#&gt; 24:          molport       28</span></span>
-<span><span class="co">#&gt; 25:          nikkaji       29</span></span>
-<span><span class="co">#&gt; 26:        bindingdb       31</span></span>
-<span><span class="co">#&gt; 27:          comptox       32</span></span>
-<span><span class="co">#&gt; 28:        lipidmaps       33</span></span>
-<span><span class="co">#&gt; 29:      drugcentral       34</span></span>
-<span><span class="co">#&gt; 30:     carotenoiddb       35</span></span>
-<span><span class="co">#&gt; 31:     metabolights       36</span></span>
-<span><span class="co">#&gt; 32:           brenda       37</span></span>
-<span><span class="co">#&gt; 33:             rhea       38</span></span>
-<span><span class="co">#&gt; 34:     chemicalbook       39</span></span>
-<span><span class="co">#&gt; 35:      swisslipids       41</span></span>
-<span><span class="co">#&gt; 36:         dailymed       45</span></span>
-<span><span class="co">#&gt; 37:   clinicaltrials       46</span></span>
-<span><span class="co">#&gt; 38:           rxnorm       47</span></span>
-<span><span class="co">#&gt; 39:   MedChemExpress       48</span></span>
-<span><span class="co">#&gt; 40: probes_and_drugs       49</span></span>
-<span><span class="co">#&gt; 41:             CCDC       50</span></span>
-<span><span class="co">#&gt;                 Name SourceID</span></span>
-<span><span class="co">#&gt;               &lt;char&gt;    &lt;int&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt;  5:            chebi        7</span></span>
+<span><span class="co">#&gt;  6:       surechembl       15</span></span>
+<span><span class="co">#&gt;  7:          pubchem       22</span></span>
+<span><span class="co">#&gt;  8:        bindingdb       31</span></span>
+<span><span class="co">#&gt;  9:        lipidmaps       33</span></span>
+<span><span class="co">#&gt; 10:      drugcentral       34</span></span>
+<span><span class="co">#&gt; 11:           brenda       37</span></span>
+<span><span class="co">#&gt; 12:             rhea       38</span></span>
+<span><span class="co">#&gt; 13:      swisslipids       41</span></span>
+<span><span class="co">#&gt; 14: probes_and_drugs       49</span></span>
+<span><span class="co">#&gt; 15:             CCDC       50</span></span>
+<span><span class="co">#&gt; 16:           fdasrs       14</span></span>
+<span><span class="co">#&gt; 17:             hmdb       18</span></span>
+<span><span class="co">#&gt; 18:      nmrshiftdb2       24</span></span>
+<span><span class="co">#&gt; 19:          molport       28</span></span></code></pre></div>
 <p>When mapping using the <code>queryUnichemCompound</code> function,
 these are the sources that can be used from, and the databases to which
 the compound mappings will be returned.</p>
@@ -209,174 +186,34 @@ to other Databases with the following headings:
 <p>Note: This type of query requires you to know the UniChem Identifier
 for the compound.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="fu"><a href="../reference/queryUnichemCompound.html">queryUnichemCompound</a></span><span class="op">(</span>compound <span class="op">=</span> <span class="st">"161671"</span>, type <span class="op">=</span> <span class="st">"uci"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/queryUnichemCompound.html">queryUnichemCompound</a></span><span class="op">(</span>compound <span class="op">=</span> <span class="st">"161671"</span>, type <span class="op">=</span> <span class="st">"uci"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $External_Mappings</span></span>
-<span><span class="co">#&gt;                       compoundID             Name</span></span>
-<span><span class="co">#&gt;                           &lt;char&gt;           &lt;char&gt;</span></span>
-<span><span class="co">#&gt;  1:                     CHEMBL25           chembl</span></span>
-<span><span class="co">#&gt;  2:                      DB00945         drugbank</span></span>
-<span><span class="co">#&gt;  3:                          AIN              pdb</span></span>
-<span><span class="co">#&gt;  4:                         4139           gtopdb</span></span>
-<span><span class="co">#&gt;  5:                     24714725     pubchem_dotf</span></span>
-<span><span class="co">#&gt;  6:                       C01405      kegg_ligand</span></span>
-<span><span class="co">#&gt;  7:                        15365            chebi</span></span>
-<span><span class="co">#&gt;  8:             ZINC000000000053             zinc</span></span>
-<span><span class="co">#&gt;  9:                       474821       emolecules</span></span>
-<span><span class="co">#&gt; 10:         acetylsalicylic acid            atlas</span></span>
-<span><span class="co">#&gt; 11:                      aspirin            atlas</span></span>
-<span><span class="co">#&gt; 12:                   R16CO5Y76E           fdasrs</span></span>
-<span><span class="co">#&gt; 13:                  SCHEMBL1353       surechembl</span></span>
-<span><span class="co">#&gt; 14:                     PA448497         pharmgkb</span></span>
-<span><span class="co">#&gt; 15:                  HMDB0001879             hmdb</span></span>
-<span><span class="co">#&gt; 16: aspirin-acetylsalicylic-acid          selleck</span></span>
-<span><span class="co">#&gt; 17:                     15195166  pubchem_tpharma</span></span>
-<span><span class="co">#&gt; 18:                         2244          pubchem</span></span>
-<span><span class="co">#&gt; 19:             MCULE-3199019536            mcule</span></span>
-<span><span class="co">#&gt; 20:                     20038075      nmrshiftdb2</span></span>
-<span><span class="co">#&gt; 21:                     LSM-5288            lincs</span></span>
-<span><span class="co">#&gt; 22:                   11126-35-5            actor</span></span>
-<span><span class="co">#&gt; 23:                      50-78-2            actor</span></span>
-<span><span class="co">#&gt; 24:                      J2.300K          nikkaji</span></span>
-<span><span class="co">#&gt; 25:                        22360        bindingdb</span></span>
-<span><span class="co">#&gt; 26:                DTXSID5020108          comptox</span></span>
-<span><span class="co">#&gt; 27:                           74      drugcentral</span></span>
-<span><span class="co">#&gt; 28:                         6476           brenda</span></span>
-<span><span class="co">#&gt; 29:                        32748           brenda</span></span>
-<span><span class="co">#&gt; 30:                         4779           brenda</span></span>
-<span><span class="co">#&gt; 31:                         3100           brenda</span></span>
-<span><span class="co">#&gt; 32:                       159662           brenda</span></span>
-<span><span class="co">#&gt; 33:                         2261           brenda</span></span>
-<span><span class="co">#&gt; 34:                    CB4421683     chemicalbook</span></span>
-<span><span class="co">#&gt; 35:                    CB5114818     chemicalbook</span></span>
-<span><span class="co">#&gt; 36:                      ASPIRIN         dailymed</span></span>
-<span><span class="co">#&gt; 37:         ACETYLSALICYLIC ACID   clinicaltrials</span></span>
-<span><span class="co">#&gt; 38:                      DURLAZA   clinicaltrials</span></span>
-<span><span class="co">#&gt; 39:                      ASPIRIN   clinicaltrials</span></span>
-<span><span class="co">#&gt; 40:            ASPIRIN DL-LYSINE   clinicaltrials</span></span>
-<span><span class="co">#&gt; 41:                    VENOPIRIN   clinicaltrials</span></span>
-<span><span class="co">#&gt; 42:                     MEASURIN   clinicaltrials</span></span>
-<span><span class="co">#&gt; 43:                   BAY1019036   clinicaltrials</span></span>
-<span><span class="co">#&gt; 44:      LYSINE ACETYLSALICYLATE   clinicaltrials</span></span>
-<span><span class="co">#&gt; 45:                      ECOTRIN           rxnorm</span></span>
-<span><span class="co">#&gt; 46:                      ASPIRIN           rxnorm</span></span>
-<span><span class="co">#&gt; 47:            ACETYL SALICYLATE           rxnorm</span></span>
-<span><span class="co">#&gt; 48:                      DURLAZA           rxnorm</span></span>
-<span><span class="co">#&gt; 49:                     HY-14654   MedChemExpress</span></span>
-<span><span class="co">#&gt; 50:                     PD002467 probes_and_drugs</span></span>
-<span><span class="co">#&gt; 51:                       ACSALA             CCDC</span></span>
-<span><span class="co">#&gt;                       compoundID             Name</span></span>
-<span><span class="co">#&gt;                           &lt;char&gt;           &lt;char&gt;</span></span>
-<span><span class="co">#&gt;                                                    NameLong sourceID</span></span>
-<span><span class="co">#&gt;                                                      &lt;char&gt;    &lt;int&gt;</span></span>
-<span><span class="co">#&gt;  1:                                                  ChEMBL        1</span></span>
-<span><span class="co">#&gt;  2:                                                DrugBank        2</span></span>
-<span><span class="co">#&gt;  3:                         PDBe (Protein Data Bank Europe)        3</span></span>
-<span><span class="co">#&gt;  4:                                   Guide to Pharmacology        4</span></span>
-<span><span class="co">#&gt;  5:                  PubChem ('Drugs of the Future' subset)        5</span></span>
-<span><span class="co">#&gt;  6:   KEGG (Kyoto Encyclopedia of Genes and Genomes) Ligand        6</span></span>
-<span><span class="co">#&gt;  7:       ChEBI (Chemical Entities of Biological Interest).        7</span></span>
-<span><span class="co">#&gt;  8:                                                    ZINC        9</span></span>
-<span><span class="co">#&gt;  9:                                              eMolecules       10</span></span>
-<span><span class="co">#&gt; 10:                                   Gene Expression Atlas       12</span></span>
-<span><span class="co">#&gt; 11:                                   Gene Expression Atlas       12</span></span>
-<span><span class="co">#&gt; 12:             FDA/USP Substance Registration System (SRS)       14</span></span>
-<span><span class="co">#&gt; 13:                                              SureChEMBL       15</span></span>
-<span><span class="co">#&gt; 14:                                                PharmGKB       17</span></span>
-<span><span class="co">#&gt; 15:                        Human Metabolome Database (HMDB)       18</span></span>
-<span><span class="co">#&gt; 16:                                                 Selleck       20</span></span>
-<span><span class="co">#&gt; 17:                       PubChem ('Thomson Pharma' subset)       21</span></span>
-<span><span class="co">#&gt; 18:                                       PubChem Compounds       22</span></span>
-<span><span class="co">#&gt; 19:                                                   Mcule       23</span></span>
-<span><span class="co">#&gt; 20:                                              NMRShiftDB       24</span></span>
-<span><span class="co">#&gt; 21: Library of Integrated Network-based Cellular Signatures       25</span></span>
-<span><span class="co">#&gt; 22:                                                   ACToR       26</span></span>
-<span><span class="co">#&gt; 23:                                                   ACToR       26</span></span>
-<span><span class="co">#&gt; 24:                                                 Nikkaji       29</span></span>
-<span><span class="co">#&gt; 25:                                               BindingDB       31</span></span>
-<span><span class="co">#&gt; 26: EPA (Environmental Protection Agency) CompTox Dashboard       32</span></span>
-<span><span class="co">#&gt; 27:                                             DrugCentral       34</span></span>
-<span><span class="co">#&gt; 28:                                                  Brenda       37</span></span>
-<span><span class="co">#&gt; 29:                                                  Brenda       37</span></span>
-<span><span class="co">#&gt; 30:                                                  Brenda       37</span></span>
-<span><span class="co">#&gt; 31:                                                  Brenda       37</span></span>
-<span><span class="co">#&gt; 32:                                                  Brenda       37</span></span>
-<span><span class="co">#&gt; 33:                                                  Brenda       37</span></span>
-<span><span class="co">#&gt; 34:                                            ChemicalBook       39</span></span>
-<span><span class="co">#&gt; 35:                                            ChemicalBook       39</span></span>
-<span><span class="co">#&gt; 36:                                                DailyMed       45</span></span>
-<span><span class="co">#&gt; 37:                                          clinicaltrials       46</span></span>
-<span><span class="co">#&gt; 38:                                          clinicaltrials       46</span></span>
-<span><span class="co">#&gt; 39:                                          clinicaltrials       46</span></span>
-<span><span class="co">#&gt; 40:                                          clinicaltrials       46</span></span>
-<span><span class="co">#&gt; 41:                                          clinicaltrials       46</span></span>
-<span><span class="co">#&gt; 42:                                          clinicaltrials       46</span></span>
-<span><span class="co">#&gt; 43:                                          clinicaltrials       46</span></span>
-<span><span class="co">#&gt; 44:                                          clinicaltrials       46</span></span>
-<span><span class="co">#&gt; 45:                                                  rxnorm       47</span></span>
-<span><span class="co">#&gt; 46:                                                  rxnorm       47</span></span>
-<span><span class="co">#&gt; 47:                                                  rxnorm       47</span></span>
-<span><span class="co">#&gt; 48:                                                  rxnorm       47</span></span>
-<span><span class="co">#&gt; 49:                                          MedChemExpress       48</span></span>
-<span><span class="co">#&gt; 50:                                        Probes And Drugs       49</span></span>
-<span><span class="co">#&gt; 51:                                                    CCDC       50</span></span>
-<span><span class="co">#&gt;                                                    NameLong sourceID</span></span>
-<span><span class="co">#&gt;                                                      &lt;char&gt;    &lt;int&gt;</span></span>
-<span><span class="co">#&gt;                                                                                                                                                                                          sourceURL</span></span>
-<span><span class="co">#&gt;                                                                                                                                                                                             &lt;char&gt;</span></span>
-<span><span class="co">#&gt;  1:                                                                                                                                       https://www.ebi.ac.uk/chembldb/compound/inspect/CHEMBL25</span></span>
-<span><span class="co">#&gt;  2:                                                                                                                                                           http://www.drugbank.ca/drugs/DB00945</span></span>
-<span><span class="co">#&gt;  3:                                                                                                                               http://www.ebi.ac.uk/pdbe-srv/pdbechem/chemicalCompound/show/AIN</span></span>
-<span><span class="co">#&gt;  4:                                                                                                                     http://www.guidetopharmacology.org/GRAC/LigandDisplayForward?ligandId=4139</span></span>
-<span><span class="co">#&gt;  5:                                                                                                                                             http://pubchem.ncbi.nlm.nih.gov/substance/24714725</span></span>
-<span><span class="co">#&gt;  6:                                                                                                                                                 http://www.genome.jp/dbget-bin/www_bget?C01405</span></span>
-<span><span class="co">#&gt;  7:                                                                                                                                   http://www.ebi.ac.uk/chebi/searchId.do?chebiId=CHEBI%3A15365</span></span>
-<span><span class="co">#&gt;  8:                                                                                                                                          http://zinc15.docking.org/substances/ZINC000000000053</span></span>
-<span><span class="co">#&gt;  9:                                                                                                                                             https://www.emolecules.com/cgi-bin/more?vid=474821</span></span>
-<span><span class="co">#&gt; 10:                                                                                                                             http://www.ebi.ac.uk/gxa/query?conditionQuery=acetylsalicylic acid</span></span>
-<span><span class="co">#&gt; 11:                                                                                                                                          http://www.ebi.ac.uk/gxa/query?conditionQuery=aspirin</span></span>
-<span><span class="co">#&gt; 12:                                                                                                                                       https://precision.fda.gov/uniisearch/srs/unii/R16CO5Y76E</span></span>
-<span><span class="co">#&gt; 13:                                                                                                                                                https://www.surechembl.org/chemical/SCHEMBL1353</span></span>
-<span><span class="co">#&gt; 14:                                                                                                                                                         https://www.pharmgkb.org/drug/PA448497</span></span>
-<span><span class="co">#&gt; 15:                                                                                                                                                     http://www.hmdb.ca/metabolites/HMDB0001879</span></span>
-<span><span class="co">#&gt; 16:                                                                                                                          http://www.selleckchem.com/products/aspirin-acetylsalicylic-acid.html</span></span>
-<span><span class="co">#&gt; 17:                                                                                                                                             http://pubchem.ncbi.nlm.nih.gov/substance/15195166</span></span>
-<span><span class="co">#&gt; 18:                                                                                                                                                  http://pubchem.ncbi.nlm.nih.gov/compound/2244</span></span>
-<span><span class="co">#&gt; 19:                                                                                                                                                             https://mcule.com/MCULE-3199019536</span></span>
-<span><span class="co">#&gt; 20:                                                                                                                                                        http://nmrshiftdb.org/molecule/20038075</span></span>
-<span><span class="co">#&gt; 21:                                                                                                                                            http://identifiers.org/lincs.smallmolecule/LSM-5288</span></span>
-<span><span class="co">#&gt; 22:                                                                                                                                     http://actor.epa.gov/actor/chemical.xhtml?casrn=11126-35-5</span></span>
-<span><span class="co">#&gt; 23:                                                                                                                                        http://actor.epa.gov/actor/chemical.xhtml?casrn=50-78-2</span></span>
-<span><span class="co">#&gt; 24:                                                                                                                                        http://jglobal.jst.go.jp/en/redirect?Nikkaji_No=J2.300K</span></span>
-<span><span class="co">#&gt; 25:                                                                                                               http://www.bindingdb.org/bind/chemsearch/marvin/MolStructure.jsp?monomerid=22360</span></span>
-<span><span class="co">#&gt; 26:                                                                                                                                                https://comptox.epa.gov/dashboard/DTXSID5020108</span></span>
-<span><span class="co">#&gt; 27:                                                                                                                                                             http://drugcentral.org/drugcard/74</span></span>
-<span><span class="co">#&gt; 28:                                                                                                                                https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=6476</span></span>
-<span><span class="co">#&gt; 29:                                                                                                                               https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=32748</span></span>
-<span><span class="co">#&gt; 30:                                                                                                                                https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=4779</span></span>
-<span><span class="co">#&gt; 31:                                                                                                                                https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=3100</span></span>
-<span><span class="co">#&gt; 32:                                                                                                                              https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=159662</span></span>
-<span><span class="co">#&gt; 33:                                                                                                                                https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=2261</span></span>
-<span><span class="co">#&gt; 34:                                                                                                                              https://www.chemicalbook.com/ChemicalProductProperty_EN_CB4421683</span></span>
-<span><span class="co">#&gt; 35:                                                                                                                              https://www.chemicalbook.com/ChemicalProductProperty_EN_CB5114818</span></span>
-<span><span class="co">#&gt; 36:                                                                    https://dailymed.nlm.nih.gov/dailymed/search.cfm?adv=1&amp;labeltype=human&amp;query=ACTIVEMOIETY:(ASPIRIN)+OR+INGREDIENT:(ASPIRIN)</span></span>
-<span><span class="co">#&gt; 37:                                                                                                                     https://www.clinicaltrials.gov/ct2/results?cond=&amp;term=ACETYLSALICYLIC ACID</span></span>
-<span><span class="co">#&gt; 38:                                                                                                                                  https://www.clinicaltrials.gov/ct2/results?cond=&amp;term=DURLAZA</span></span>
-<span><span class="co">#&gt; 39:                                                                                                                                  https://www.clinicaltrials.gov/ct2/results?cond=&amp;term=ASPIRIN</span></span>
-<span><span class="co">#&gt; 40:                                                                                                                        https://www.clinicaltrials.gov/ct2/results?cond=&amp;term=ASPIRIN DL-LYSINE</span></span>
-<span><span class="co">#&gt; 41:                                                                                                                                https://www.clinicaltrials.gov/ct2/results?cond=&amp;term=VENOPIRIN</span></span>
-<span><span class="co">#&gt; 42:                                                                                                                                 https://www.clinicaltrials.gov/ct2/results?cond=&amp;term=MEASURIN</span></span>
-<span><span class="co">#&gt; 43:                                                                                                                               https://www.clinicaltrials.gov/ct2/results?cond=&amp;term=BAY1019036</span></span>
-<span><span class="co">#&gt; 44:                                                                                                                  https://www.clinicaltrials.gov/ct2/results?cond=&amp;term=LYSINE ACETYLSALICYLATE</span></span>
-<span><span class="co">#&gt; 45:                                                                                                                          https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&amp;searchTerm=202554</span></span>
-<span><span class="co">#&gt; 46:                                                                                                                            https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&amp;searchTerm=1191</span></span>
-<span><span class="co">#&gt; 47:                                                                                                                           https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&amp;searchTerm=91101</span></span>
-<span><span class="co">#&gt; 48:                                                                                                                         https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&amp;searchTerm=1665357</span></span>
-<span><span class="co">#&gt; 49:                                                                                                                                                        https://www.medchemexpress.com/HY-14654</span></span>
-<span><span class="co">#&gt; 50:                                                                                                                                                 https://www.probes-drugs.org/compound/PD002467</span></span>
-<span><span class="co">#&gt; 51: https://www.ccdc.cam.ac.uk/structures/search?sid=UNICHEM&amp;pid=csd:ACSALA,WIHROY,GARYEH,HAPCOU,HUPPOX,KEWNOQ,SIBYUA,XOJMOZ,ARIFOX,DIPJAQ,DISXOU,HUNJEH,TAZRAO,VUGMIT,YIRPEW,YOSMOI,DIFHOP,UTUCIW</span></span>
-<span><span class="co">#&gt;                                                                                                                                                                                          sourceURL</span></span>
-<span><span class="co">#&gt;                                                                                                                                                                                             &lt;char&gt;</span></span>
+<span><span class="co">#&gt;       compoundID             Name                            NameLong sourceID</span></span>
+<span><span class="co">#&gt;           &lt;char&gt;           &lt;char&gt;                              &lt;char&gt;    &lt;int&gt;</span></span>
+<span><span class="co">#&gt;   1:    CHEMBL25           chembl                              ChEMBL        1</span></span>
+<span><span class="co">#&gt;   2:     DB00945         drugbank                            DrugBank        2</span></span>
+<span><span class="co">#&gt;   3:         AIN         rcsb_pdb                            RCSB PDB        3</span></span>
+<span><span class="co">#&gt;   4:        4139           gtopdb               Guide to Pharmacology        4</span></span>
+<span><span class="co">#&gt;   5: CHEBI:15365            chebi                               ChEBI        7</span></span>
+<span><span class="co">#&gt;  ---                                                                          </span></span>
+<span><span class="co">#&gt; 142:       32748           brenda                              Brenda       37</span></span>
+<span><span class="co">#&gt; 143:        4779           brenda                              Brenda       37</span></span>
+<span><span class="co">#&gt; 144:        6476           brenda                              Brenda       37</span></span>
+<span><span class="co">#&gt; 145:    PD002467 probes_and_drugs                        Probes&amp;Drugs       49</span></span>
+<span><span class="co">#&gt; 146:      ACSALA             CCDC CSD (Cambridge Structural Database)       50</span></span>
+<span><span class="co">#&gt;                                                                        sourceURL</span></span>
+<span><span class="co">#&gt;                                                                           &lt;char&gt;</span></span>
+<span><span class="co">#&gt;   1:                    https://www.ebi.ac.uk/chembldb/compound/inspect/CHEMBL25</span></span>
+<span><span class="co">#&gt;   2:                                       https://go.drugbank.com/drugs/DB00945</span></span>
+<span><span class="co">#&gt;   3:                                             https://www.rcsb.org/ligand/AIN</span></span>
+<span><span class="co">#&gt;   4: https://www.guidetopharmacology.org/GRAC/LigandDisplayForward?ligandId=4139</span></span>
+<span><span class="co">#&gt;   5:                                     https://www.ebi.ac.uk/chebi/CHEBI:15365</span></span>
+<span><span class="co">#&gt;  ---                                                                            </span></span>
+<span><span class="co">#&gt; 142:            https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=32748</span></span>
+<span><span class="co">#&gt; 143:             https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=4779</span></span>
+<span><span class="co">#&gt; 144:             https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=6476</span></span>
+<span><span class="co">#&gt; 145:                             https://www.probes-drugs.org/compounds/PD002467</span></span>
+<span><span class="co">#&gt; 146:     https://www.ccdc.cam.ac.uk/structures/search?sid=UNICHEM&amp;pid=csd:ACSALA</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $UniChem_Mappings</span></span>
 <span><span class="co">#&gt; $UniChem_Mappings$UniChem.UCI</span></span>
@@ -396,6 +233,43 @@ for the compound.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $UniChem_Mappings$UniChem.hAtoms</span></span>
 <span><span class="co">#&gt; [1] "2-5H,1H3,(H,11,12)"</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; R version 4.5.2 (2025-10-31)</span></span>
+<span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu</span></span>
+<span><span class="co">#&gt; Running under: Ubuntu 24.04.3 LTS</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Matrix products: default</span></span>
+<span><span class="co">#&gt; BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 </span></span>
+<span><span class="co">#&gt; LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.26.so;  LAPACK version 3.12.0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; locale:</span></span>
+<span><span class="co">#&gt;  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       </span></span>
+<span><span class="co">#&gt;  [4] LC_COLLATE=C.UTF-8     LC_MONETARY=C.UTF-8    LC_MESSAGES=C.UTF-8   </span></span>
+<span><span class="co">#&gt;  [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C          </span></span>
+<span><span class="co">#&gt; [10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C   </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; time zone: UTC</span></span>
+<span><span class="co">#&gt; tzcode source: system (glibc)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; attached base packages:</span></span>
+<span><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; other attached packages:</span></span>
+<span><span class="co">#&gt; [1] AnnotationGx_0.99.1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
+<span><span class="co">#&gt;  [1] cli_3.6.5           knitr_1.51          rlang_1.1.7        </span></span>
+<span><span class="co">#&gt;  [4] xfun_0.56           textshaping_1.0.4   jsonlite_2.0.0     </span></span>
+<span><span class="co">#&gt;  [7] data.table_1.18.2.1 glue_1.8.0          backports_1.5.0    </span></span>
+<span><span class="co">#&gt; [10] htmltools_0.5.9     ragg_1.5.0          sass_0.4.10        </span></span>
+<span><span class="co">#&gt; [13] rappdirs_0.3.4      rmarkdown_2.30      evaluate_1.0.5     </span></span>
+<span><span class="co">#&gt; [16] jquerylib_0.1.4     fastmap_1.2.0       yaml_2.3.12        </span></span>
+<span><span class="co">#&gt; [19] lifecycle_1.0.5     httr2_1.2.2         compiler_4.5.2     </span></span>
+<span><span class="co">#&gt; [22] fs_1.6.6            systemfonts_1.3.1   digest_0.6.39      </span></span>
+<span><span class="co">#&gt; [25] R6_2.6.1            curl_7.0.0          magrittr_2.0.4     </span></span>
+<span><span class="co">#&gt; [28] bslib_0.10.0        checkmate_2.3.4     tools_4.5.2        </span></span>
+<span><span class="co">#&gt; [31] pkgdown_2.2.0       cachem_1.1.0        desc_1.4.3</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

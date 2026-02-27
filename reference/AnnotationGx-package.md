@@ -17,6 +17,8 @@ Useful links:
 
 Authors:
 
+- Michael Tran <michaelcao-anh.tran@uhn.ca>
+
 - Christopher Eeles <christopher.eeles@uhnresearch.ca>
 
 - Benjamin Haibe-Kains <benjamin.haibe.kains@utoronto.ca>

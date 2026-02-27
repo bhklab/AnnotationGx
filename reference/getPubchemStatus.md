@@ -42,12 +42,12 @@ getPubchemStatus()
 #> Throttling status:
 #> Request Count status: Green (1%)
 #> Request Time status: Green (0%)
-#> Service status: Green (7%)
+#> Service status: Green (13%)
 getPubchemStatus(returnMessage = TRUE)
 #> Throttling status:
 #> Request Count status: Green (0%)
 #> Request Time status: Green (0%)
-#> Service status: Green (27%)
+#> Service status: Green (17%)
 #> $request_count
 #> $request_count$status
 #> [1] "Green"
@@ -69,7 +69,7 @@ getPubchemStatus(returnMessage = TRUE)
 #> [1] "Green"
 #> 
 #> $service$percent
-#> [1] 27
+#> [1] 17
 #> 
 #> 
 getPubchemStatus(printMessage = FALSE)

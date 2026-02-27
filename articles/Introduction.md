@@ -6,9 +6,8 @@
 
 `R` is an open-source statistical environment which can be easily
 modified to enhance its functionality via packages. `AnnotationGx` is a
-`R` package
-
-TODO::after submitting to cran update this
+`R` package hosted on Bioconductor and can be installed using
+`BiocManager`.
 
 ### Citing `AnnotationGx`
 
@@ -24,7 +23,7 @@ citation("AnnotationGx")
 #>   Tran M, Joseph J, Eeles C, Haibe-Kains B (2026). _AnnotationGx:
 #>   AnnotationGx: A package for building, updating and querying an
 #>   annotation database for pharmaco-genomic data_. R package version
-#>   0.0.0.9097, <https://bhklab.github.io/AnnotationGx/>.
+#>   0.99.1, <https://bhklab.github.io/AnnotationGx/>.
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
@@ -33,7 +32,7 @@ citation("AnnotationGx")
 #> annotation database for pharmaco-genomic data},
 #>     author = {Michael Tran and Jermiah Joseph and Christopher Eeles and Benjamin Haibe-Kains},
 #>     year = {2026},
-#>     note = {R package version 0.0.0.9097},
+#>     note = {R package version 0.99.1},
 #>     url = {https://bhklab.github.io/AnnotationGx/},
 #>   }
 ```
@@ -44,54 +43,40 @@ citation("AnnotationGx")
 library("AnnotationGx")
 ```
 
-    #> ─ Session info ───────────────────────────────────────────────────────────────────────────────────────────────────────
-    #>  setting  value
-    #>  version  R version 4.5.2 (2025-10-31)
-    #>  os       Ubuntu 24.04.3 LTS
-    #>  system   x86_64, linux-gnu
-    #>  ui       X11
-    #>  language en
-    #>  collate  C.UTF-8
-    #>  ctype    C.UTF-8
-    #>  tz       UTC
-    #>  date     2026-02-11
-    #>  pandoc   3.1.11 @ /opt/hostedtoolcache/pandoc/3.1.11/x64/ (via rmarkdown)
-    #>  quarto   NA
-    #> 
-    #> ─ Packages ───────────────────────────────────────────────────────────────────────────────────────────────────────────
-    #>  package      * version    date (UTC) lib source
-    #>  AnnotationGx * 0.0.0.9097 2026-02-11 [1] local
-    #>  backports      1.5.0      2024-05-23 [1] RSPM
-    #>  bslib          0.10.0     2026-01-26 [1] RSPM
-    #>  cachem         1.1.0      2024-05-16 [1] RSPM
-    #>  checkmate      2.3.4      2026-02-03 [1] RSPM
-    #>  cli            3.6.5      2025-04-23 [1] RSPM
-    #>  data.table     1.18.2.1   2026-01-27 [1] RSPM
-    #>  desc           1.4.3      2023-12-10 [1] RSPM
-    #>  digest         0.6.39     2025-11-19 [1] RSPM
-    #>  evaluate       1.0.5      2025-08-27 [1] RSPM
-    #>  fastmap        1.2.0      2024-05-15 [1] RSPM
-    #>  fs             1.6.6      2025-04-12 [1] RSPM
-    #>  htmltools      0.5.9      2025-12-04 [1] RSPM
-    #>  jquerylib      0.1.4      2021-04-26 [1] RSPM
-    #>  jsonlite       2.0.0      2025-03-27 [1] RSPM
-    #>  knitr          1.51       2025-12-20 [1] RSPM
-    #>  lifecycle      1.0.5      2026-01-08 [1] RSPM
-    #>  pkgdown        2.2.0      2025-11-06 [1] any (@2.2.0)
-    #>  R6             2.6.1      2025-02-15 [1] RSPM
-    #>  ragg           1.5.0      2025-09-02 [1] RSPM
-    #>  rlang          1.1.7      2026-01-09 [1] RSPM
-    #>  rmarkdown      2.30       2025-09-28 [1] RSPM
-    #>  sass           0.4.10     2025-04-11 [1] RSPM
-    #>  sessioninfo  * 1.2.3      2025-02-05 [1] RSPM
-    #>  systemfonts    1.3.1      2025-10-01 [1] RSPM
-    #>  textshaping    1.0.4      2025-10-10 [1] RSPM
-    #>  xfun           0.56       2026-01-18 [1] RSPM
-    #>  yaml           2.3.12     2025-12-10 [1] RSPM
-    #> 
-    #>  [1] /home/runner/work/_temp/Library
-    #>  [2] /opt/R/4.5.2/lib/R/site-library
-    #>  [3] /opt/R/4.5.2/lib/R/library
-    #>  * ── Packages attached to the search path.
-    #> 
-    #> ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+``` r
+sessionInfo()
+#> R version 4.5.2 (2025-10-31)
+#> Platform: x86_64-pc-linux-gnu
+#> Running under: Ubuntu 24.04.3 LTS
+#> 
+#> Matrix products: default
+#> BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
+#> LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.26.so;  LAPACK version 3.12.0
+#> 
+#> locale:
+#>  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       
+#>  [4] LC_COLLATE=C.UTF-8     LC_MONETARY=C.UTF-8    LC_MESSAGES=C.UTF-8   
+#>  [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C          
+#> [10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C   
+#> 
+#> time zone: UTC
+#> tzcode source: system (glibc)
+#> 
+#> attached base packages:
+#> [1] stats     graphics  grDevices utils     datasets  methods   base     
+#> 
+#> other attached packages:
+#> [1] AnnotationGx_0.99.1
+#> 
+#> loaded via a namespace (and not attached):
+#>  [1] backports_1.5.0     digest_0.6.39       desc_1.4.3         
+#>  [4] R6_2.6.1            fastmap_1.2.0       xfun_0.56          
+#>  [7] cachem_1.1.0        knitr_1.51          htmltools_0.5.9    
+#> [10] rmarkdown_2.30      lifecycle_1.0.5     cli_3.6.5          
+#> [13] sass_0.4.10         pkgdown_2.2.0       data.table_1.18.2.1
+#> [16] textshaping_1.0.4   jquerylib_0.1.4     systemfonts_1.3.1  
+#> [19] compiler_4.5.2      tools_4.5.2         ragg_1.5.0         
+#> [22] checkmate_2.3.4     evaluate_1.0.5      bslib_0.10.0       
+#> [25] yaml_2.3.12         jsonlite_2.0.0      rlang_1.1.7        
+#> [28] fs_1.6.6
+```

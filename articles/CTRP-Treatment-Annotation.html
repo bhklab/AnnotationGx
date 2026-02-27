@@ -21,7 +21,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">AnnotationGx</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9097</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.99.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,6 +58,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/bhklab/AnnotationGx/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -74,7 +75,7 @@
       <h1>Annotating CTRP Treatments</h1>
             
       
-
+      <small class="dont-index">Source: <a href="https://github.com/bhklab/AnnotationGx/blob/main/vignettes/articles/CTRP-Treatment-Annotation.Rmd" class="external-link"><code>vignettes/articles/CTRP-Treatment-Annotation.Rmd</code></a></small>
       <div class="d-none name"><code>CTRP-Treatment-Annotation.Rmd</code></div>
     </div>
 
@@ -107,8 +108,7 @@ compounds</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">CTRP_treatmentMetadata</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="co"># get a random row from the CTRP_treatmentMetadata</span></span>
+<code class="sourceCode R"><span><span class="co"># get a random row from the CTRP_treatmentMetadata</span></span>
 <span></span>
 <span><span class="va">treatment</span> <span class="op">&lt;-</span> <span class="va">CTRP_treatmentMetadata</span><span class="op">[</span><span class="fl">1</span>, <span class="va">CTRP.treatmentid</span><span class="op">]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"CTRP treatment id : %s"</span>, <span class="va">treatment</span><span class="op">)</span></span>
@@ -123,24 +123,26 @@ compounds</p>
 <h3 id="annotating-using-pubchem">Annotating using PubChem<a class="anchor" aria-label="anchor" href="#annotating-using-pubchem"></a>
 </h3>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="op">(</span><span class="va">compounds_to_cids</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="va">CTRP_treatmentMetadata</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, </span>
+<code class="sourceCode R"><span><span class="op">(</span><span class="va">compounds_to_cids</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">CTRP_treatmentMetadata</span><span class="op">[</span></span>
+<span>    <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>,</span>
 <span>    <span class="fu">AnnotationGx</span><span class="fu">::</span><span class="fu"><a href="../reference/mapCompound2CID.html">mapCompound2CID</a></span><span class="op">(</span></span>
-<span>        names <span class="op">=</span>  <span class="va">CTRP.treatmentid</span>,</span>
-<span>        first <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span>        <span class="op">)</span></span>
-<span>      <span class="op">]</span></span>
+<span>      names <span class="op">=</span> <span class="va">CTRP.treatmentid</span>,</span>
+<span>      first <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">]</span></span>
 <span><span class="op">)</span></span>
-<span><span class="va">failed</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/attributes.html" class="external-link">attributes</a></span><span class="op">(</span><span class="va">compounds_to_cids</span><span class="op">)</span><span class="op">$</span><span class="va">failed</span> <span class="op">|&gt;</span> </span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">failed</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/attributes.html" class="external-link">attributes</a></span><span class="op">(</span><span class="va">compounds_to_cids</span><span class="op">)</span><span class="op">$</span><span class="va">failed</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">failed</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">CTRP_treatmentMetadata</span><span class="op">[</span><span class="va">CTRP.treatmentid</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">failed</span>, <span class="op">]</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">failed</span><span class="op">[</span>, <span class="va">CTRP.treatmentid_CLEANED</span> <span class="op">:=</span> <span class="fu"><a href="../reference/cleanCharacterStrings.html">cleanCharacterStrings</a></span><span class="op">(</span><span class="va">CTRP.treatmentid</span><span class="op">)</span><span class="op">]</span></span>
 <span></span>
 <span><span class="op">(</span><span class="va">failed_to_cids</span> <span class="op">&lt;-</span></span>
-<span>  <span class="va">failed</span><span class="op">[</span>, </span>
+<span>  <span class="va">failed</span><span class="op">[</span></span>
+<span>    ,</span>
 <span>    <span class="fu">AnnotationGx</span><span class="fu">::</span><span class="fu"><a href="../reference/mapCompound2CID.html">mapCompound2CID</a></span><span class="op">(</span></span>
 <span>      names <span class="op">=</span> <span class="va">CTRP.treatmentid_CLEANED</span>,</span>
 <span>      first <span class="op">=</span> <span class="cn">TRUE</span></span>
@@ -148,15 +150,15 @@ compounds</p>
 <span>  <span class="op">]</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">failed_again</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/attributes.html" class="external-link">attributes</a></span><span class="op">(</span><span class="va">failed_to_cids</span><span class="op">)</span><span class="op">$</span><span class="va">failed</span> <span class="op">|&gt;</span> </span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/attributes.html" class="external-link">attributes</a></span><span class="op">(</span><span class="va">failed_to_cids</span><span class="op">)</span><span class="op">$</span><span class="va">failed</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">failed_dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">failed_to_cids</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">cids</span><span class="op">)</span>,<span class="op">]</span>, <span class="va">failed</span>, by.x <span class="op">=</span> <span class="st">"name"</span>, by.y <span class="op">=</span> <span class="st">"CTRP.treatmentid_CLEANED"</span>, all.x <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">failed_dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">failed_to_cids</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">cids</span><span class="op">)</span>, <span class="op">]</span>, <span class="va">failed</span>, by.x <span class="op">=</span> <span class="st">"name"</span>, by.y <span class="op">=</span> <span class="st">"CTRP.treatmentid_CLEANED"</span>, all.x <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">failed_dt</span><span class="op">$</span><span class="va">name</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span>
 <span></span>
-<span><span class="va">successful_dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">CTRP_treatmentMetadata</span>, <span class="va">compounds_to_cids</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">cids</span><span class="op">)</span>,<span class="op">]</span>,by.x <span class="op">=</span> <span class="st">"CTRP.treatmentid"</span>, by.y <span class="op">=</span> <span class="st">"name"</span>,  all.x <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span>
+<span><span class="va">successful_dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">CTRP_treatmentMetadata</span>, <span class="va">compounds_to_cids</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">cids</span><span class="op">)</span>, <span class="op">]</span>, by.x <span class="op">=</span> <span class="st">"CTRP.treatmentid"</span>, by.y <span class="op">=</span> <span class="st">"name"</span>, all.x <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">mapped_PubChem</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/data.table/man/rbindlist.html" class="external-link">rbindlist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">successful_dt</span>, <span class="va">failed_dt</span><span class="op">)</span>, use.names <span class="op">=</span> <span class="cn">T</span>, fill <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">mapped_PubChem</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/data.table/man/rbindlist.html" class="external-link">rbindlist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">successful_dt</span>, <span class="va">failed_dt</span><span class="op">)</span>, use.names <span class="op">=</span> <span class="cn">TRUE</span>, fill <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

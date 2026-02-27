@@ -151,6 +151,11 @@ The objects of this class are cloneable with this method.
 ## Examples
 
 ``` r
+# Create a client object (no network call required)
+client <- BioMartClient$new("https://www.ensembl.org")
+client$path
+#> [1] "biomart"
+
 if (FALSE) { # \dontrun{
 # Create a client for Ensembl BioMart
 client <- BioMartClient$new("https://www.ensembl.org")

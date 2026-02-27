@@ -102,6 +102,7 @@ This also applies to the data we start with. Take for example the GDSC
 example data provided:
 
 ``` r
+data(GDSC_sampleMetadata)
 head(GDSC_sampleMetadata)
 #>    GDSC.Sample_Name GDSC.COSMIC_ID
 #>              <char>          <num>
@@ -130,7 +131,7 @@ the 4 datasets CCLE, GDSC, CTRP, and gCSI.
 treatmentMetadata <- data.table::fread(system.file("extdata", "treatmentMetadata_annotated_pubchem_unichem_chembl.tsv", package = "AnnotationGx"))
 
 # two drugs: Erlotinib and Tanespimycin
-str(treatmentMetadata[pubchem.CID %in% c("6505803", "176870"),])
+str(treatmentMetadata[pubchem.CID %in% c("6505803", "176870"), ])
 #> Classes 'data.table' and 'data.frame':   2 obs. of  26 variables:
 #>  $ unichem.ChEMBL                  : chr  "CHEMBL553" "CHEMBL109480"
 #>  $ pubchem.CID                     : int  176870 6505803

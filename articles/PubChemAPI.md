@@ -47,7 +47,11 @@ at once.
 
 ``` r
 drugs <- c(
-  "Aspirin", "Erlotinib", "Acadesine", "Camptothecin", "Vincaleukoblastine",
+  "Aspirin",
+  "Erlotinib",
+  "Acadesine",
+  "Camptothecin",
+  "Vincaleukoblastine",
   "Cisplatin"
 )
 
@@ -81,12 +85,28 @@ mapCompound2CID(drugs, first = TRUE)
 #> 6:          Cisplatin 5460033
 ```
 
-In the case of a compound that can’t be mapped, `NA` will be returned
-and a warning will be issued.
+In the case that a compound cannot be mapped, `NA` will be returned and
+a warning will be issued.
 
 ``` r
-(result <- mapCompound2CID(c(drugs, "non existent compound", "another bad compound"), first = TRUE))
-#> [15:06:54][WARNING][AnnotationGx::getPubchemCompound]  Some queries failed. See the 'failed' object for details. 
+(result <- mapCompound2CID(
+  c(drugs, "non existent compound", "another bad compound"),
+  first = TRUE
+))
+#> Waiting 30s for retry backoff ■■                              
+#> Waiting 30s for retry backoff ■■■■■                           
+#> Waiting 30s for retry backoff ■■■■■■■■                        
+#> Waiting 30s for retry backoff ■■■■■■■■■■■                     
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■                  
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■               
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■            
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■         
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■      
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
+#> Querying PubCHEM REST API.... ■■■■■■■■■■■■■■■■■■■■              62% | ETA: 19s
+#> Querying PubCHEM REST API.... ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100% | ETA:  0s
+#> [15:07:34][WARNING][AnnotationGx::getPubchemCompound]  Some queries failed. See the 'failed' object for details. 
 #>                     name    cids
 #>                   <char>   <int>
 #> 1:               Aspirin    2244
@@ -218,38 +238,38 @@ available annotation headings and types.
 
 ``` r
 getPubchemAnnotationHeadings()
-#>               Heading     Type
-#>                <char>   <char>
-#>   1:  11B NMR Spectra Compound
-#>   2:  13C NMR Spectra Compound
-#>   3:  15N NMR Spectra Compound
-#>   4:  17O NMR Spectra Compound
-#>   5:  19F NMR Spectra Compound
-#>  ---                          
-#> 679: Wiley References Compound
-#> 680:      WormBase ID     Gene
-#> 681:      WormBase ID  Protein
-#> 682:  Xenbase Gene ID     Gene
-#> 683:          ZFIN ID     Gene
+#>              Heading     Type
+#>               <char>   <char>
+#>   1: 11B NMR Spectra Compound
+#>   2: 13C NMR Spectra Compound
+#>   3: 15N NMR Spectra Compound
+#>   4: 17O NMR Spectra Compound
+#>   5: 19F NMR Spectra Compound
+#>  ---                         
+#> 689:       Withdrawn Compound
+#> 690:     WormBase ID     Gene
+#> 691:     WormBase ID  Protein
+#> 692: Xenbase Gene ID     Gene
+#> 693:         ZFIN ID     Gene
 ```
 
 #### Get annotation headings for a specific type:
 
 ``` r
 getPubchemAnnotationHeadings(type = "Compound")
-#>                                        Heading     Type
-#>                                         <char>   <char>
-#>   1:                           11B NMR Spectra Compound
-#>   2:                           13C NMR Spectra Compound
-#>   3:                           15N NMR Spectra Compound
-#>   4:                           17O NMR Spectra Compound
-#>   5:                           19F NMR Spectra Compound
-#>  ---                                                   
-#> 513: Volatilization from Water/Soil (Complete) Compound
-#> 514:                   WHO Essential Medicines Compound
-#> 515:                                  Wikidata Compound
-#> 516:                                 Wikipedia Compound
-#> 517:                          Wiley References Compound
+#>                      Heading     Type
+#>                       <char>   <char>
+#>   1:         11B NMR Spectra Compound
+#>   2:         13C NMR Spectra Compound
+#>   3:         15N NMR Spectra Compound
+#>   4:         17O NMR Spectra Compound
+#>   5:         19F NMR Spectra Compound
+#>  ---                                 
+#> 522: WHO Essential Medicines Compound
+#> 523:                Wikidata Compound
+#> 524:               Wikipedia Compound
+#> 525:        Wiley References Compound
+#> 526:               Withdrawn Compound
 ```
 
 #### Get annotation headings for a specific heading:
@@ -304,3 +324,44 @@ result
     PUG-View: programmatic access to chemical annotations integrated in
     PubChem. J Cheminform. 2019 Aug 9; 11:56.
     <doi:10.1186/s13321-019-0375-2>.
+
+``` r
+sessionInfo()
+#> R version 4.5.2 (2025-10-31)
+#> Platform: x86_64-pc-linux-gnu
+#> Running under: Ubuntu 24.04.3 LTS
+#> 
+#> Matrix products: default
+#> BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
+#> LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.26.so;  LAPACK version 3.12.0
+#> 
+#> locale:
+#>  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       
+#>  [4] LC_COLLATE=C.UTF-8     LC_MONETARY=C.UTF-8    LC_MESSAGES=C.UTF-8   
+#>  [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C          
+#> [10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C   
+#> 
+#> time zone: UTC
+#> tzcode source: system (glibc)
+#> 
+#> attached base packages:
+#> [1] stats     graphics  grDevices utils     datasets  methods   base     
+#> 
+#> other attached packages:
+#> [1] AnnotationGx_0.99.1
+#> 
+#> loaded via a namespace (and not attached):
+#>  [1] crayon_1.5.3        cli_3.6.5           knitr_1.51         
+#>  [4] rlang_1.1.7         xfun_0.56           textshaping_1.0.4  
+#>  [7] jsonlite_2.0.0      data.table_1.18.2.1 glue_1.8.0         
+#> [10] backports_1.5.0     htmltools_0.5.9     ragg_1.5.0         
+#> [13] sass_0.4.10         rappdirs_0.3.4      rmarkdown_2.30     
+#> [16] evaluate_1.0.5      jquerylib_0.1.4     fastmap_1.2.0      
+#> [19] yaml_2.3.12         lifecycle_1.0.5     memoise_2.0.1      
+#> [22] httr2_1.2.2         compiler_4.5.2      fs_1.6.6           
+#> [25] systemfonts_1.3.1   digest_0.6.39       R6_2.6.1           
+#> [28] parallel_4.5.2      curl_7.0.0          magrittr_2.0.4     
+#> [31] bslib_0.10.0        checkmate_2.3.4     withr_3.0.2        
+#> [34] tools_4.5.2         xml2_1.5.2          pkgdown_2.2.0      
+#> [37] cachem_1.1.0        desc_1.4.3
+```

@@ -39,47 +39,23 @@ getUnichemSources()
 #>               <char>    <int>
 #>  1:           chembl        1
 #>  2:         drugbank        2
-#>  3:              pdb        3
+#>  3:         rcsb_pdb        3
 #>  4:           gtopdb        4
-#>  5:     pubchem_dotf        5
-#>  6:      kegg_ligand        6
-#>  7:            chebi        7
-#>  8:          nih_ncc        8
-#>  9:             zinc        9
-#> 10:       emolecules       10
-#> 11:            atlas       12
-#> 12:           fdasrs       14
-#> 13:       surechembl       15
-#> 14:         pharmgkb       17
-#> 15:             hmdb       18
-#> 16:          selleck       20
-#> 17:  pubchem_tpharma       21
-#> 18:          pubchem       22
-#> 19:            mcule       23
-#> 20:      nmrshiftdb2       24
-#> 21:            lincs       25
-#> 22:            actor       26
-#> 23:            recon       27
-#> 24:          molport       28
-#> 25:          nikkaji       29
-#> 26:        bindingdb       31
-#> 27:          comptox       32
-#> 28:        lipidmaps       33
-#> 29:      drugcentral       34
-#> 30:     carotenoiddb       35
-#> 31:     metabolights       36
-#> 32:           brenda       37
-#> 33:             rhea       38
-#> 34:     chemicalbook       39
-#> 35:      swisslipids       41
-#> 36:         dailymed       45
-#> 37:   clinicaltrials       46
-#> 38:           rxnorm       47
-#> 39:   MedChemExpress       48
-#> 40: probes_and_drugs       49
-#> 41:             CCDC       50
-#>                 Name SourceID
-#>               <char>    <int>
+#>  5:            chebi        7
+#>  6:       surechembl       15
+#>  7:          pubchem       22
+#>  8:        bindingdb       31
+#>  9:        lipidmaps       33
+#> 10:      drugcentral       34
+#> 11:           brenda       37
+#> 12:             rhea       38
+#> 13:      swisslipids       41
+#> 14: probes_and_drugs       49
+#> 15:             CCDC       50
+#> 16:           fdasrs       14
+#> 17:             hmdb       18
+#> 18:      nmrshiftdb2       24
+#> 19:          molport       28
 ```
 
 When mapping using the `queryUnichemCompound` function, these are the
@@ -122,174 +98,34 @@ Note: This type of query requires you to know the UniChem Identifier for
 the compound.
 
 ``` r
-
 queryUnichemCompound(compound = "161671", type = "uci")
 #> $External_Mappings
-#>                       compoundID             Name
-#>                           <char>           <char>
-#>  1:                     CHEMBL25           chembl
-#>  2:                      DB00945         drugbank
-#>  3:                          AIN              pdb
-#>  4:                         4139           gtopdb
-#>  5:                     24714725     pubchem_dotf
-#>  6:                       C01405      kegg_ligand
-#>  7:                        15365            chebi
-#>  8:             ZINC000000000053             zinc
-#>  9:                       474821       emolecules
-#> 10:         acetylsalicylic acid            atlas
-#> 11:                      aspirin            atlas
-#> 12:                   R16CO5Y76E           fdasrs
-#> 13:                  SCHEMBL1353       surechembl
-#> 14:                     PA448497         pharmgkb
-#> 15:                  HMDB0001879             hmdb
-#> 16: aspirin-acetylsalicylic-acid          selleck
-#> 17:                     15195166  pubchem_tpharma
-#> 18:                         2244          pubchem
-#> 19:             MCULE-3199019536            mcule
-#> 20:                     20038075      nmrshiftdb2
-#> 21:                     LSM-5288            lincs
-#> 22:                   11126-35-5            actor
-#> 23:                      50-78-2            actor
-#> 24:                      J2.300K          nikkaji
-#> 25:                        22360        bindingdb
-#> 26:                DTXSID5020108          comptox
-#> 27:                           74      drugcentral
-#> 28:                         6476           brenda
-#> 29:                        32748           brenda
-#> 30:                         4779           brenda
-#> 31:                         3100           brenda
-#> 32:                       159662           brenda
-#> 33:                         2261           brenda
-#> 34:                    CB4421683     chemicalbook
-#> 35:                    CB5114818     chemicalbook
-#> 36:                      ASPIRIN         dailymed
-#> 37:         ACETYLSALICYLIC ACID   clinicaltrials
-#> 38:                      DURLAZA   clinicaltrials
-#> 39:                      ASPIRIN   clinicaltrials
-#> 40:            ASPIRIN DL-LYSINE   clinicaltrials
-#> 41:                    VENOPIRIN   clinicaltrials
-#> 42:                     MEASURIN   clinicaltrials
-#> 43:                   BAY1019036   clinicaltrials
-#> 44:      LYSINE ACETYLSALICYLATE   clinicaltrials
-#> 45:                      ECOTRIN           rxnorm
-#> 46:                      ASPIRIN           rxnorm
-#> 47:            ACETYL SALICYLATE           rxnorm
-#> 48:                      DURLAZA           rxnorm
-#> 49:                     HY-14654   MedChemExpress
-#> 50:                     PD002467 probes_and_drugs
-#> 51:                       ACSALA             CCDC
-#>                       compoundID             Name
-#>                           <char>           <char>
-#>                                                    NameLong sourceID
-#>                                                      <char>    <int>
-#>  1:                                                  ChEMBL        1
-#>  2:                                                DrugBank        2
-#>  3:                         PDBe (Protein Data Bank Europe)        3
-#>  4:                                   Guide to Pharmacology        4
-#>  5:                  PubChem ('Drugs of the Future' subset)        5
-#>  6:   KEGG (Kyoto Encyclopedia of Genes and Genomes) Ligand        6
-#>  7:       ChEBI (Chemical Entities of Biological Interest).        7
-#>  8:                                                    ZINC        9
-#>  9:                                              eMolecules       10
-#> 10:                                   Gene Expression Atlas       12
-#> 11:                                   Gene Expression Atlas       12
-#> 12:             FDA/USP Substance Registration System (SRS)       14
-#> 13:                                              SureChEMBL       15
-#> 14:                                                PharmGKB       17
-#> 15:                        Human Metabolome Database (HMDB)       18
-#> 16:                                                 Selleck       20
-#> 17:                       PubChem ('Thomson Pharma' subset)       21
-#> 18:                                       PubChem Compounds       22
-#> 19:                                                   Mcule       23
-#> 20:                                              NMRShiftDB       24
-#> 21: Library of Integrated Network-based Cellular Signatures       25
-#> 22:                                                   ACToR       26
-#> 23:                                                   ACToR       26
-#> 24:                                                 Nikkaji       29
-#> 25:                                               BindingDB       31
-#> 26: EPA (Environmental Protection Agency) CompTox Dashboard       32
-#> 27:                                             DrugCentral       34
-#> 28:                                                  Brenda       37
-#> 29:                                                  Brenda       37
-#> 30:                                                  Brenda       37
-#> 31:                                                  Brenda       37
-#> 32:                                                  Brenda       37
-#> 33:                                                  Brenda       37
-#> 34:                                            ChemicalBook       39
-#> 35:                                            ChemicalBook       39
-#> 36:                                                DailyMed       45
-#> 37:                                          clinicaltrials       46
-#> 38:                                          clinicaltrials       46
-#> 39:                                          clinicaltrials       46
-#> 40:                                          clinicaltrials       46
-#> 41:                                          clinicaltrials       46
-#> 42:                                          clinicaltrials       46
-#> 43:                                          clinicaltrials       46
-#> 44:                                          clinicaltrials       46
-#> 45:                                                  rxnorm       47
-#> 46:                                                  rxnorm       47
-#> 47:                                                  rxnorm       47
-#> 48:                                                  rxnorm       47
-#> 49:                                          MedChemExpress       48
-#> 50:                                        Probes And Drugs       49
-#> 51:                                                    CCDC       50
-#>                                                    NameLong sourceID
-#>                                                      <char>    <int>
-#>                                                                                                                                                                                          sourceURL
-#>                                                                                                                                                                                             <char>
-#>  1:                                                                                                                                       https://www.ebi.ac.uk/chembldb/compound/inspect/CHEMBL25
-#>  2:                                                                                                                                                           http://www.drugbank.ca/drugs/DB00945
-#>  3:                                                                                                                               http://www.ebi.ac.uk/pdbe-srv/pdbechem/chemicalCompound/show/AIN
-#>  4:                                                                                                                     http://www.guidetopharmacology.org/GRAC/LigandDisplayForward?ligandId=4139
-#>  5:                                                                                                                                             http://pubchem.ncbi.nlm.nih.gov/substance/24714725
-#>  6:                                                                                                                                                 http://www.genome.jp/dbget-bin/www_bget?C01405
-#>  7:                                                                                                                                   http://www.ebi.ac.uk/chebi/searchId.do?chebiId=CHEBI%3A15365
-#>  8:                                                                                                                                          http://zinc15.docking.org/substances/ZINC000000000053
-#>  9:                                                                                                                                             https://www.emolecules.com/cgi-bin/more?vid=474821
-#> 10:                                                                                                                             http://www.ebi.ac.uk/gxa/query?conditionQuery=acetylsalicylic acid
-#> 11:                                                                                                                                          http://www.ebi.ac.uk/gxa/query?conditionQuery=aspirin
-#> 12:                                                                                                                                       https://precision.fda.gov/uniisearch/srs/unii/R16CO5Y76E
-#> 13:                                                                                                                                                https://www.surechembl.org/chemical/SCHEMBL1353
-#> 14:                                                                                                                                                         https://www.pharmgkb.org/drug/PA448497
-#> 15:                                                                                                                                                     http://www.hmdb.ca/metabolites/HMDB0001879
-#> 16:                                                                                                                          http://www.selleckchem.com/products/aspirin-acetylsalicylic-acid.html
-#> 17:                                                                                                                                             http://pubchem.ncbi.nlm.nih.gov/substance/15195166
-#> 18:                                                                                                                                                  http://pubchem.ncbi.nlm.nih.gov/compound/2244
-#> 19:                                                                                                                                                             https://mcule.com/MCULE-3199019536
-#> 20:                                                                                                                                                        http://nmrshiftdb.org/molecule/20038075
-#> 21:                                                                                                                                            http://identifiers.org/lincs.smallmolecule/LSM-5288
-#> 22:                                                                                                                                     http://actor.epa.gov/actor/chemical.xhtml?casrn=11126-35-5
-#> 23:                                                                                                                                        http://actor.epa.gov/actor/chemical.xhtml?casrn=50-78-2
-#> 24:                                                                                                                                        http://jglobal.jst.go.jp/en/redirect?Nikkaji_No=J2.300K
-#> 25:                                                                                                               http://www.bindingdb.org/bind/chemsearch/marvin/MolStructure.jsp?monomerid=22360
-#> 26:                                                                                                                                                https://comptox.epa.gov/dashboard/DTXSID5020108
-#> 27:                                                                                                                                                             http://drugcentral.org/drugcard/74
-#> 28:                                                                                                                                https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=6476
-#> 29:                                                                                                                               https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=32748
-#> 30:                                                                                                                                https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=4779
-#> 31:                                                                                                                                https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=3100
-#> 32:                                                                                                                              https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=159662
-#> 33:                                                                                                                                https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=2261
-#> 34:                                                                                                                              https://www.chemicalbook.com/ChemicalProductProperty_EN_CB4421683
-#> 35:                                                                                                                              https://www.chemicalbook.com/ChemicalProductProperty_EN_CB5114818
-#> 36:                                                                    https://dailymed.nlm.nih.gov/dailymed/search.cfm?adv=1&labeltype=human&query=ACTIVEMOIETY:(ASPIRIN)+OR+INGREDIENT:(ASPIRIN)
-#> 37:                                                                                                                     https://www.clinicaltrials.gov/ct2/results?cond=&term=ACETYLSALICYLIC ACID
-#> 38:                                                                                                                                  https://www.clinicaltrials.gov/ct2/results?cond=&term=DURLAZA
-#> 39:                                                                                                                                  https://www.clinicaltrials.gov/ct2/results?cond=&term=ASPIRIN
-#> 40:                                                                                                                        https://www.clinicaltrials.gov/ct2/results?cond=&term=ASPIRIN DL-LYSINE
-#> 41:                                                                                                                                https://www.clinicaltrials.gov/ct2/results?cond=&term=VENOPIRIN
-#> 42:                                                                                                                                 https://www.clinicaltrials.gov/ct2/results?cond=&term=MEASURIN
-#> 43:                                                                                                                               https://www.clinicaltrials.gov/ct2/results?cond=&term=BAY1019036
-#> 44:                                                                                                                  https://www.clinicaltrials.gov/ct2/results?cond=&term=LYSINE ACETYLSALICYLATE
-#> 45:                                                                                                                          https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&searchTerm=202554
-#> 46:                                                                                                                            https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&searchTerm=1191
-#> 47:                                                                                                                           https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&searchTerm=91101
-#> 48:                                                                                                                         https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&searchTerm=1665357
-#> 49:                                                                                                                                                        https://www.medchemexpress.com/HY-14654
-#> 50:                                                                                                                                                 https://www.probes-drugs.org/compound/PD002467
-#> 51: https://www.ccdc.cam.ac.uk/structures/search?sid=UNICHEM&pid=csd:ACSALA,WIHROY,GARYEH,HAPCOU,HUPPOX,KEWNOQ,SIBYUA,XOJMOZ,ARIFOX,DIPJAQ,DISXOU,HUNJEH,TAZRAO,VUGMIT,YIRPEW,YOSMOI,DIFHOP,UTUCIW
-#>                                                                                                                                                                                          sourceURL
-#>                                                                                                                                                                                             <char>
+#>       compoundID             Name                            NameLong sourceID
+#>           <char>           <char>                              <char>    <int>
+#>   1:    CHEMBL25           chembl                              ChEMBL        1
+#>   2:     DB00945         drugbank                            DrugBank        2
+#>   3:         AIN         rcsb_pdb                            RCSB PDB        3
+#>   4:        4139           gtopdb               Guide to Pharmacology        4
+#>   5: CHEBI:15365            chebi                               ChEBI        7
+#>  ---                                                                          
+#> 142:       32748           brenda                              Brenda       37
+#> 143:        4779           brenda                              Brenda       37
+#> 144:        6476           brenda                              Brenda       37
+#> 145:    PD002467 probes_and_drugs                        Probes&Drugs       49
+#> 146:      ACSALA             CCDC CSD (Cambridge Structural Database)       50
+#>                                                                        sourceURL
+#>                                                                           <char>
+#>   1:                    https://www.ebi.ac.uk/chembldb/compound/inspect/CHEMBL25
+#>   2:                                       https://go.drugbank.com/drugs/DB00945
+#>   3:                                             https://www.rcsb.org/ligand/AIN
+#>   4: https://www.guidetopharmacology.org/GRAC/LigandDisplayForward?ligandId=4139
+#>   5:                                     https://www.ebi.ac.uk/chebi/CHEBI:15365
+#>  ---                                                                            
+#> 142:            https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=32748
+#> 143:             https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=4779
+#> 144:             https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=6476
+#> 145:                             https://www.probes-drugs.org/compounds/PD002467
+#> 146:     https://www.ccdc.cam.ac.uk/structures/search?sid=UNICHEM&pid=csd:ACSALA
 #> 
 #> $UniChem_Mappings
 #> $UniChem_Mappings$UniChem.UCI
@@ -309,4 +145,43 @@ queryUnichemCompound(compound = "161671", type = "uci")
 #> 
 #> $UniChem_Mappings$UniChem.hAtoms
 #> [1] "2-5H,1H3,(H,11,12)"
+```
+
+``` r
+sessionInfo()
+#> R version 4.5.2 (2025-10-31)
+#> Platform: x86_64-pc-linux-gnu
+#> Running under: Ubuntu 24.04.3 LTS
+#> 
+#> Matrix products: default
+#> BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
+#> LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.26.so;  LAPACK version 3.12.0
+#> 
+#> locale:
+#>  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       
+#>  [4] LC_COLLATE=C.UTF-8     LC_MONETARY=C.UTF-8    LC_MESSAGES=C.UTF-8   
+#>  [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C          
+#> [10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C   
+#> 
+#> time zone: UTC
+#> tzcode source: system (glibc)
+#> 
+#> attached base packages:
+#> [1] stats     graphics  grDevices utils     datasets  methods   base     
+#> 
+#> other attached packages:
+#> [1] AnnotationGx_0.99.1
+#> 
+#> loaded via a namespace (and not attached):
+#>  [1] cli_3.6.5           knitr_1.51          rlang_1.1.7        
+#>  [4] xfun_0.56           textshaping_1.0.4   jsonlite_2.0.0     
+#>  [7] data.table_1.18.2.1 glue_1.8.0          backports_1.5.0    
+#> [10] htmltools_0.5.9     ragg_1.5.0          sass_0.4.10        
+#> [13] rappdirs_0.3.4      rmarkdown_2.30      evaluate_1.0.5     
+#> [16] jquerylib_0.1.4     fastmap_1.2.0       yaml_2.3.12        
+#> [19] lifecycle_1.0.5     httr2_1.2.2         compiler_4.5.2     
+#> [22] fs_1.6.6            systemfonts_1.3.1   digest_0.6.39      
+#> [25] R6_2.6.1            curl_7.0.0          magrittr_2.0.4     
+#> [28] bslib_0.10.0        checkmate_2.3.4     tools_4.5.2        
+#> [31] pkgdown_2.2.0       cachem_1.1.0        desc_1.4.3
 ```
