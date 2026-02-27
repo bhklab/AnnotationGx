@@ -110,6 +110,7 @@ For example, if we are using the Pubchem and DrugBank database, we might have co
 This also applies to the data we start with. Take for example the GDSC example data provided:
 
 ```{r gdsc-example}
+data(GDSC_sampleMetadata)
 head(GDSC_sampleMetadata)
 ```
 
