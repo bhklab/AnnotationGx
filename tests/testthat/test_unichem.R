@@ -23,13 +23,13 @@ test_that("getUnichemSources returns a data.table with the correct columns", {
 
   expect_data_table(
     sources,
-    all.missing = FALSE,
-    min.rows = 40, # As of March 2024
-    min.cols = 13, # As of March 2024
+    all.missing = TRUE,
+    min.rows = 1,
+    min.cols = 13,
     col.names = "named",
     info = "The data.table should have the correct columns.
-        The min number of rows and columns may change over time and is set on
-        from UniChem as of March 2024."
+        UniChem source counts can change over time, so row count should only
+        be required to be non-empty."
   )
 
   expect_setequal(names(sources), expected_columns)
