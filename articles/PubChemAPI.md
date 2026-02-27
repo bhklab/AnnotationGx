@@ -104,9 +104,20 @@ a warning will be issued.
 #> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■      
 #> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   
 #> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
-#> Querying PubCHEM REST API.... ■■■■■■■■■■■■■■■■■■■■              62% | ETA: 19s
-#> Querying PubCHEM REST API.... ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100% | ETA:  0s
-#> [15:07:34][WARNING][AnnotationGx::getPubchemCompound]  Some queries failed. See the 'failed' object for details. 
+#> Querying PubCHEM REST API.... ■■■■■■■■■■■■■■■■■■■■■■■           75% | ETA: 10s
+#> Waiting 30s for retry backoff ■■■■                            
+#> Waiting 30s for retry backoff ■■■■■■■                         
+#> Waiting 30s for retry backoff ■■■■■■■■■■                      
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■                   
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■                
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■             
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■          
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■       
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■    
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
+#> Querying PubCHEM REST API.... ■■■■■■■■■■■■■■■■■■■■■■■           75% | ETA: 10sQuerying PubCHEM REST API.... ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100% | ETA:  0s
+#> [16:05:12][WARNING][AnnotationGx::getPubchemCompound]  Some queries failed. See the 'failed' object for details. 
 #>                     name    cids
 #>                   <char>   <int>
 #> 1:               Aspirin    2244

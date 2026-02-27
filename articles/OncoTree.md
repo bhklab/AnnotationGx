@@ -170,58 +170,45 @@ cancer type.
 
 ``` r
 getOncotreeTumorTypes()
-#>          code     color
-#>        <char>    <char>
-#>   1: PANCREAS    Purple
-#>   2:      PNS      Gray
-#>   3:    BRAIN      Gray
-#>   4:  THYROID      Teal
-#>   5:   THYMUS    Purple
-#>  ---                   
-#> 893:   PCALCL LimeGreen
-#> 894:      LYP LimeGreen
-#> 895: ALCLALKP LimeGreen
-#> 896: ALCLALKN LimeGreen
-#> 897:   BIALCL LimeGreen
-#>                                                          name
-#>                                                        <char>
-#>   1:                                                 Pancreas
-#>   2:                                Peripheral Nervous System
-#>   3:                                                CNS/Brain
-#>   4:                                                  Thyroid
-#>   5:                                                   Thymus
-#>  ---                                                         
-#> 893:         Primary Cutaneous Anaplastic Large Cell Lymphoma
-#> 894:                                   Lymphomatoid Papulosis
-#> 895:              Anaplastic Large-Cell Lymphoma ALK Positive
-#> 896:              Anaplastic Large-Cell Lymphoma ALK Negative
-#> 897: Breast Implant-Associated Anaplastic Large-Cell Lymphoma
-#>                              mainType externalReferences  tissue
-#>                                <char>             <list>  <list>
-#>   1:                Pancreatic Cancer           C0030274  C12393
-#>   2: Peripheral Nervous System Cancer           C0206417  C12465
-#>   3:                 CNS/Brain Cancer           C3714787  C12438
-#>   4:                   Thyroid Cancer           C0040132  C12400
-#>   5:                    Thymic Cancer           C0040113  C12433
-#>  ---                                                            
-#> 893:        Mature T and NK Neoplasms           C1301362   C6860
-#> 894:        Mature T and NK Neoplasms           C0206182   C3721
-#> 895:        Mature T and NK Neoplasms           C1332079  C37193
-#> 896:        Mature T and NK Neoplasms           C1332078  C37194
-#> 897:        Mature T and NK Neoplasms           C4528210 C139012
-#>                       children parent history level revocations precursors
-#>                         <char> <char>  <list> <int>      <list>     <list>
-#>   1:                  Pancreas TISSUE             1                       
-#>   2: Peripheral Nervous System TISSUE             1                       
-#>   3:                 CNS/Brain TISSUE             1                       
-#>   4:                   Thyroid TISSUE             1                       
-#>   5:                    Thymus TISSUE             1                       
-#>  ---                                                                      
-#> 893:                  Lymphoid  PCLPD             6                       
-#> 894:                  Lymphoid  PCLPD             6                       
-#> 895:                  Lymphoid   ALCL             6                       
-#> 896:                  Lymphoid   ALCL             6                       
-#> 897:                  Lymphoid   ALCL             6
+#>           code       color                                                 name
+#>         <char>      <char>                                               <char>
+#>   1:  PANCREAS      Purple                                             Pancreas
+#>   2: HEAD_NECK     DarkRed                                        Head and Neck
+#>   3:   MYELOID LightSalmon                                              Myeloid
+#>   4:     LYMPH   LimeGreen                                             Lymphoid
+#>   5:      BONE       White                                                 Bone
+#>  ---                                                                           
+#> 893:       ABC   LimeGreen                                Activated B-cell Type
+#> 894:       GCB   LimeGreen                          Germinal Center B-Cell Type
+#> 895:     MIDDO   LimeGreen Monoclonal Immunoglobulin Deposition Diseases, Other
+#> 896:     MIDDA   LimeGreen                                          Amyloidosis
+#> 897:        WM   LimeGreen                        Waldenstrom Macroglobulinemia
+#>                     mainType externalReferences tissue      children   parent
+#>                       <char>             <list> <list>        <char>   <char>
+#>   1:       Pancreatic Cancer           C0030274 C12393      Pancreas   TISSUE
+#>   2:    Head and Neck Cancer           C0460004 C12418 Head and Neck   TISSUE
+#>   3:            Blood Cancer           C0005767 C12434       Myeloid   TISSUE
+#>   4:        Lymphatic Cancer           C0024202 C13252      Lymphoid   TISSUE
+#>   5:             Bone Cancer           C0262950 C12366          Bone   TISSUE
+#>  ---                                                                         
+#> 893: Mature B-Cell Neoplasms             [NULL] [NULL]      Lymphoid DLBCLNOS
+#> 894: Mature B-Cell Neoplasms          C1333295  C36080      Lymphoid DLBCLNOS
+#> 895: Mature B-Cell Neoplasms           C2939462 [NULL]      Lymphoid     MIDD
+#> 896: Mature B-Cell Neoplasms           C0002726  C2868      Lymphoid     MIDD
+#> 897: Mature B-Cell Neoplasms           C0024419 C80307      Lymphoid      LPL
+#>      history level revocations precursors
+#>       <list> <int>      <list>     <list>
+#>   1:             1                       
+#>   2:             1                       
+#>   3:   BLOOD     1                       
+#>   4:             1                       
+#>   5:             1                       
+#>  ---                                     
+#> 893:             6                       
+#> 894:             6                       
+#> 895:             6                       
+#> 896:             6                       
+#> 897:             6
 ```
 
 ``` r
