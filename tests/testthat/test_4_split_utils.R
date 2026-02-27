@@ -39,5 +39,4 @@ test_that(".splitCol splits a column into a character list", {
   result2 <- .splitCol(input, "col", split = "; ")
   expected2 <- data.table(col = c(list("apple;banana"), list("orange;grape")))
   expect_equal(result2, expected2)
-  
 })

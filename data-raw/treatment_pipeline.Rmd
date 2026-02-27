@@ -219,7 +219,7 @@ gdsc_merged <- merge(
   compounds_to_cids[!is.na(cids)][order(name)],
   by.x = "Name", 
   by.y = "name",
-  all = T)
+  all = TRUE)
 
 
 non_na_gdsc_merged <- gdsc_merged[!is.na(V1) & !is.na(cids),]

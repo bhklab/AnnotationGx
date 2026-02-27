@@ -20,7 +20,6 @@ test_that("checkThrottlingStatus Works", {
   url <- "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/Aspirin/cids/JSON"
 
 
-
   response <- AnnotationGx:::.buildURL(url) |>
     AnnotationGx:::.build_pubchem_request() |>
     httr2::req_perform()

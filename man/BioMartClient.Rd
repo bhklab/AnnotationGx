@@ -11,6 +11,10 @@ This class provides methods for querying BioMart REST API endpoints,
 retrieving information about available marts, datasets, attributes, and filters.
 }
 \examples{
+# Create a client object (no network call required)
+client <- BioMartClient$new("https://www.ensembl.org")
+client$path
+
 \dontrun{
 # Create a client for Ensembl BioMart
 client <- BioMartClient$new("https://www.ensembl.org")

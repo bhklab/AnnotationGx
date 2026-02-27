@@ -52,7 +52,7 @@ test_that("standardize_names Error", {
 
   names <- c(1, 1, 1)
   expect_error(standardize_names(names))
-}) 
+})
 
 
 # Test case 6: Standardize names with special characters
@@ -142,4 +142,3 @@ test_that("cleanCharacterStrings handles different scenarios", {
   result6 <- cleanCharacterStrings(input6)
   expect_equal(result6, expected6)
 })
-

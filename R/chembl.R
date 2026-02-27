@@ -63,8 +63,9 @@
 #' @noRd
 #' @keywords internal
 .build_chembl_request <- function(
-    resource,
-    field = NULL, filter_type = NULL, value = NULL, format = "json") {
+  resource,
+  field = NULL, filter_type = NULL, value = NULL, format = "json"
+) {
   # possible formats for now are XML, JSON and YAML
   checkmate::assert_choice(resource, c(.chembl_resources(), paste0(.chembl_resources(), "/schema")))
   checkmate::assert_choice(field, getChemblResourceFields(resource), null.ok = TRUE)
@@ -105,8 +106,8 @@
 #'
 #' @export
 queryChemblAPI <- function(resource, field, filter_type, value, format = "json") {
-  .build_chembl_request(resource, field, filter_type, value, format) |> 
-    .perform_request() |> 
+  .build_chembl_request(resource, field, filter_type, value, format) |>
+    .perform_request() |>
     .parse_resp_json()
 }
 
@@ -133,9 +134,9 @@ queryChemblAPI <- function(resource, field, filter_type, value, format = "json")
 #'
 #' @export
 getChemblMechanism <- function(
-    chembl.ID, resources = "mechanism", field = "molecule_chembl_id", filter_type = "in",
-    returnURL = FALSE, raw = FALSE) {
-
+  chembl.ID, resources = "mechanism", field = "molecule_chembl_id", filter_type = "in",
+  returnURL = FALSE, raw = FALSE
+) {
   funContext <- .funContext("getChemblMechanism")
   # constructChemblQuery(resource = "mechanism", field = "molecule_chembl_id", filter_type = "in", value = "CHEMBL1413")
   # urls <- constructChemblQuery(resource = resources, field = field, filter_type = filter_type, value = chembl.ID)
@@ -169,7 +170,7 @@ getChemblMechanism <- function(
     }
     x
   })
-  
+
   data.table::rbindlist(response_dts, fill = TRUE)
 }
 
@@ -200,7 +201,7 @@ getChemblResourceFields <- function(resource) {
 #' getChemblResources()
 #'
 #' @export
-getChemblResources <- function(){
+getChemblResources <- function() {
   .chembl_resources()
 }
 
@@ -214,6 +215,6 @@ getChemblResources <- function(){
 #' getChemblFilterTypes()
 #'
 #' @export
-getChemblFilterTypes <- function(){
+getChemblFilterTypes <- function() {
   .chembl_filter_types()
 }

@@ -3,7 +3,7 @@ library(testthat)
 library(checkmate)
 
 
-test_that("mapcompound",{
+test_that("mapcompound", {
   result <- mapCompound2CID(c("aspirin", "caffeine"))
 
   expect_data_table(
@@ -15,8 +15,11 @@ test_that("mapcompound",{
   )
 })
 
-test_that("mapproperties",{
-  props <- mapCID2Properties(ids = c(123, 456), properties = c("MolecularWeight", "CanonicalSMILES"))
+test_that("mapproperties", {
+  props <- mapCID2Properties(
+    ids = c(123, 456),
+    properties = c("MolecularWeight", "CanonicalSMILES")
+  )
 
   expect_data_table(
     x = props,
@@ -31,10 +34,10 @@ test_that("getPubchemCompound", {
   result <- getPubchemCompound(2244)
   expect_class(result, "data.table")
 
-  res2 <- getPubchemCompound(c(3672), query_only = T)
+  res2 <- getPubchemCompound(c(3672), query_only = TRUE)
   expect_class(res2, "list")
 
-  res3 <- getPubchemCompound(c(3672), raw = T)
+  res3 <- getPubchemCompound(c(3672), raw = TRUE)
   expect_class(res3, "list")
   expect_class(res3[[1]], "httr2_response")
 

@@ -1,11 +1,11 @@
 Package: AnnotationGx
 Title: AnnotationGx: A package for building, updating and querying an
     annotation database for pharmaco-genomic data
-Version: 0.0.0.9097
+Version: 0.99.1
 Authors@R: c(
-    person("Michael", "Tran", role = c("aut"),
+    person("Michael", "Tran", role = c("aut", "cre"),
         email = "michaelcao-anh.tran@uhn.ca"),
-    person("Jermiah", "Joseph", role = c("aut", "cre"),
+    person("Jermiah", "Joseph", role = c("aut"),
         email = "jermiah.joseph@gmail.com"),
     person("Christopher", "Eeles", role = c("aut"),
         email = "christopher.eeles@uhnresearch.ca"),
@@ -18,7 +18,7 @@ Description: A package for building, updating and querying an
     of functions for curating your data using the annotations retrieved from
     those APIs.
 Depends: 
-    R (>= 2.10)
+    R (>= 4.5.0)
 Imports: 
     checkmate,
     crayon,
@@ -36,13 +36,14 @@ Suggests:
     rmarkdown,
     RefManageR,
     sessioninfo
+BugReports: https://github.com/bhklab/AnnotationGx/issues/new?template=issue_template.md
 Config/testthat/edition: 3
 Config/testthat/parallel: true
 Config/testthat/start-first: watcher, parallel*
 License: GPL (>= 3) + file LICENSE
-LazyData: true
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
 Encoding: UTF-8
 URL: https://bhklab.github.io/AnnotationGx/
+biocViews: Annotation

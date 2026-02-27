@@ -20,7 +20,7 @@ test_that("Returns data table for main types", {
     ncols = 1,
     min.rows = 100,
     all.missing = FALSE,
-    col.names = 'named'
+    col.names = "named"
   )
 })
 
@@ -31,6 +31,6 @@ test_that("Returns data table for tumor types", {
     ncols = 12,
     min.rows = 800,
     all.missing = FALSE,
-    col.names = 'named'
+    col.names = "named"
   )
 })

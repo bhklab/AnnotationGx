@@ -14,32 +14,46 @@
 #'
 #' @export
 getPubchemAnnotationHeadings <- function(
-    type = "all", heading = NULL) {
+  type = "all",
+  heading = NULL
+) {
   funContext <- .funContext("getPubchemAnnotationHeadings")
 
   .debug(funContext, " type: ", type, " heading: ", heading)
   # TODO:: messy...
   checkmate::assert(
     checkmate::test_choice(
-      tolower(type), tolower(c(
-        "Compound", "Gene", "Taxonomy", "Element",
-        "Assay", "Protein", "Cell", "Pathway"
+      tolower(type),
+      tolower(c(
+        "Compound",
+        "Gene",
+        "Taxonomy",
+        "Element",
+        "Assay",
+        "Protein",
+        "Cell",
+        "Pathway"
       ))
-    ) || type == "all"
+    ) ||
+      type == "all"
   )
 
   ann_dt <- .get_all_heading_types()
   .debug(funContext, " ann_dt: ", utils::capture.output(utils::str(ann_dt)))
   if (type != "all") {
-    ann_dt <- ann_dt[grepl(type, ann_dt$Type, ignore.case = T), ]
+    ann_dt <- ann_dt[grepl(type, ann_dt$Type, ignore.case = TRUE), ]
   }
   if (!is.null(heading)) {
-    ann_dt <- ann_dt[grepl(heading, ann_dt$Heading, ignore.case = F), ]
+    ann_dt <- ann_dt[grepl(heading, ann_dt$Heading, ignore.case = FALSE), ]
   }
 
   if (nrow(ann_dt) == 0) {
     .warn(
-      funContext, " No headings found for type: `", type, "` and heading: `", heading,
+      funContext,
+      " No headings found for type: `",
+      type,
+      "` and heading: `",
+      heading,
       "`.\nTry getPubchemAnnotationHeadings(type = 'all') for available headings and types"
     )
   }
@@ -66,37 +80,60 @@ getPubchemAnnotationHeadings <- function(
 #'
 #' @export
 annotatePubchemCompound <- function(
-    cids, heading = "ChEMBL ID", source = NULL, parse_function = identity,
-    query_only = FALSE, raw = FALSE, nParallel = 1
-  ) {
+  cids,
+  heading = "ChEMBL ID",
+  source = NULL,
+  parse_function = identity,
+  query_only = FALSE,
+  raw = FALSE,
+  nParallel = 1
+) {
   funContext <- .funContext("annotatePubchemCompound")
 
   .info(funContext, sprintf("Building requests for %s CIDs", length(cids)))
   requests <- lapply(cids, function(cid) {
     .build_pubchem_view_query(
-      id = cid, record = "compound", heading = heading,
-      output = "JSON", source = source
-      )
-   }
-  )
-
-  .debug(funContext, paste0("query: ", sapply(requests, `[[`, i = "url")))
-  if (query_only) return(requests)
-
-  tryCatch({
-    resp_raw <- httr2::req_perform_sequential(
-      reqs = requests, 
-      on_error = "continue",
-      progress = "Performing API requests..."
-  )}, error = function(e) {
-    .err(funContext, "An error occurred while performing requests:\n", e)
+      id = cid,
+      record = "compound",
+      heading = heading,
+      output = "JSON",
+      source = source
+    )
   })
 
-  if (raw) return(resp_raw)
+  .debug(
+    funContext,
+    paste0(
+      "query: ",
+      vapply(requests, `[[`, FUN.VALUE = character(1), i = "url")
+    )
+  )
+  if (query_only) {
+    return(requests)
+  }
 
-  responses <- lapply(seq_along(resp_raw), function(i){
+  tryCatch(
+    {
+      resp_raw <- httr2::req_perform_sequential(
+        reqs = requests,
+        on_error = "continue",
+        progress = "Performing API requests..."
+      )
+    },
+    error = function(e) {
+      .err(funContext, "An error occurred while performing requests:\n", e)
+    }
+  )
+
+  if (raw) {
+    return(resp_raw)
+  }
+
+  responses <- lapply(seq_along(resp_raw), function(i) {
     resp <- resp_raw[[i]]
-    if(is.null(resp)) return(NA_character_)
+    if (is.null(resp)) {
+      return(NA_character_)
+    }
     tryCatch(
       {
         .parse_resp_json(resp)
@@ -104,10 +141,13 @@ annotatePubchemCompound <- function(
       error = function(e) {
         warnmsg <- sprintf(
           "\nThe response could not be parsed:\n\t%s\tReturning NA instead for CID: %s for the heading: %s",
-          e, cids[i], heading
+          e,
+          cids[i],
+          heading
         )
         .warn(
-          funContext, warnmsg
+          funContext,
+          warnmsg
         )
         resp
       }
@@ -115,34 +155,36 @@ annotatePubchemCompound <- function(
   })
 
   # apply the parse function to each response depending on heading
-  parsed_responses <- parallel::mclapply(responses, function(response) {
-    switch(heading,
-      "ChEMBL ID" = .parseCHEMBLresponse(response),
-      "CAS" = .parseCASresponse(response),
-      "NSC Number" = .parseNSCresponse(response),
-      "ATC Code" = .parseATCresponse(response),
-      "Drug Induced Liver Injury" = .parseDILIresponse(response),
-      tryCatch(
-        {
-          parse_function(response)
-        },
-        error = function(e) {
-          .warn(
-            funContext, "The parseFUN function failed: ", e,
-            ". Returning unparsed results instead. Please test the parseFUN
+  parsed_responses <- parallel::mclapply(
+    responses,
+    function(response) {
+      switch(heading,
+        "ChEMBL ID" = .parseCHEMBLresponse(response),
+        "CAS" = .parseCASresponse(response),
+        "NSC Number" = .parseNSCresponse(response),
+        "ATC Code" = .parseATCresponse(response),
+        "Drug Induced Liver Injury" = .parseDILIresponse(response),
+        tryCatch(
+          {
+            parse_function(response)
+          },
+          error = function(e) {
+            .warn(
+              funContext,
+              "The parseFUN function failed: ",
+              e,
+              ". Returning unparsed results instead. Please test the parseFUN
                   on the returned data."
-          )
-          response
-        }
+            )
+            response
+          }
+        )
       )
-    )
-  },
-  mc.cores = nParallel 
-)
-  
+    },
+    mc.cores = nParallel
+  )
 
   sapply(parsed_responses, .replace_null)
-
 }
 
 # helper function to replace NULL with NA

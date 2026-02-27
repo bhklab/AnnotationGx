@@ -20,6 +20,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Michael Tran \email{michaelcao-anh.tran@uhn.ca}
   \item Christopher Eeles \email{christopher.eeles@uhnresearch.ca}
   \item Benjamin Haibe-Kains \email{benjamin.haibe.kains@utoronto.ca}
 }

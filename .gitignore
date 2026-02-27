@@ -19,4 +19,3 @@ Treatment-Annotation*.Rmd
 ./*.csv
 CCLE_treatmentMetadata.csv
 AnnotationGx.code-workspace
-AnnotationGx.code-workspace

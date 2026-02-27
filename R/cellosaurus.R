@@ -118,7 +118,7 @@ mapCell2Accession <- function(
     ids <- as.character(ids)
   }
 
-  to = c(
+  to <- c(
     "ac",
     "id",
     "sy",
@@ -315,10 +315,10 @@ mapCell2Accession <- function(
 ## handles optional keys, removes discontinued identifiers from the DR field,
 ## and converts the resulting list into a data table.
 .processEntry <- function(x) {
-  requiredKeys = c("AC", "CA", "DT", "ID")
-  nestedKeys = c("DI", "DR", "HI")
-  optionalKeys = c("AG", "SX", "SY")
-  specialKeys = c("CC")
+  requiredKeys <- c("AC", "CA", "DT", "ID")
+  nestedKeys <- c("DI", "DR", "HI")
+  optionalKeys <- c("AG", "SX", "SY")
+  specialKeys <- c("CC")
 
   x <- .split_cellosaurus_lines(x)
 
