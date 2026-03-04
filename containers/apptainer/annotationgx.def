@@ -1,0 +1,19 @@
+Bootstrap: docker
+From: rocker/r-ver:4.3.2
+
+%post
+    apt-get update && apt-get install -y \
+        libcurl4-openssl-dev \
+        libssl-dev \
+        libxml2-dev \
+        git
+
+    R -e "install.packages('BiocManager', repos='https://cloud.r-project.org')"
+    R -e "BiocManager::install('AnnotationGx')"
+
+%environment
+    export LC_ALL=C
+
+%labels
+    Maintainer AnnotationGx Team
+    Description "Apptainer container for AnnotationGx"
