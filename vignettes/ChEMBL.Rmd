@@ -33,6 +33,10 @@ retrieval in a programmatic fashion. We can use the API to query CHEMBL ID of a
 compound, retrieve all molecule mechanisms of action, query compound_record 
 resource and molecule resource from the ChEMBL database.
 
+## Licensing
+
+ChEMBL is licensed under [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/). Source: https://www.ebi.ac.uk/chembl/
+
 
 ## Setup
 
