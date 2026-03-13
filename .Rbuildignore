@@ -7,7 +7,6 @@
 ^cran-comments\.md$
 ^LICENSE.md
 ^.github
-Dockerfile
 ^LICENSE\.md$
 trash
 ^data-raw$

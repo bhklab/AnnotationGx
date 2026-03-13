@@ -1,4 +1,4 @@
-# Build with: docker build -t bhklab/annotationgx-r:$TAG -f Dockerfile .
+# Build with: docker build -t bhklab/annotationgx-r:$TAG -f inst/Dockerfile .
 #  you can set TAG=$(grep  'Version:' DESCRIPTION  | grep -oE '[0-9]+(\.[0-9]+)*')
 # To push to dockerhub run docker push bhklab/annotationgx-r:$TAG
 FROM bioconductor/bioconductor:3.18
