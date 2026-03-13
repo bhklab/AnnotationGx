@@ -39,6 +39,10 @@ HTTP requests or the API specifications. In doing so we hope to provide an
 R native interface for mapping between various cheminformatic databases,
 accessible to anyone familar with using R functions!
 
+## Licensing
+
+UniChem is provided under the [EMBL-EBI Terms of Use](https://www.ebi.ac.uk/about/terms-of-use/). Source: https://www.ebi.ac.uk/licencing/
+
 ```{r load-package}
 library(AnnotationGx)
 ```
