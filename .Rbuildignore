@@ -18,5 +18,4 @@ trash
 ^doc$
 ^Meta$
 ^vignettes/articles$
-AnnotationGx.code-workspace
 ^inst/extdata/bhklabAnnotationFiles/drugs_with_ids\\.csv$
