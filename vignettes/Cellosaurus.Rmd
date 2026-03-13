@@ -28,6 +28,10 @@ https://www.cellosaurus.org/description.html.
 The `AnnotationGx` package provides a wrapper around the Cellosaurus API to 
 map cell line identifiers to the Cellosaurus database fields. 
 
+## Licensing
+
+Cellosaurus is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Source: https://www.cellosaurus.org/faq
+
 ## Setup
 
 ```{r setup}
