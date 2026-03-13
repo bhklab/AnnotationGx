@@ -38,6 +38,10 @@ is mapped to their data, but not curated by PubChem itself.
   - i.e it provides access to annotations from external sources such as
 UniProt, ChEBI, and ChEMBL, given a specific identifier.
 
+## Licensing
+
+PubChem data usage is described by the [NCBI Website and Data Usage Policies](https://www.ncbi.nlm.nih.gov/home/about/policies/). Source: https://www.ncbi.nlm.nih.gov/home/about/policies/
+
 
 # Setup
 
