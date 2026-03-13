@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 OncoTree is a standardized classification system used in cancer research 
 and clinical practice to categorize different types of cancer based on 
 their tissue of origin, molecular characteristics, and other relevant factors. 
-Developed by the National Cancer Institute (NCI) within the United States, 
+Developed by Memorial Sloan Kettering Cancer Center (MSK), 
 OncoTree provides a hierarchical framework that organizes cancer types into
 a structured tree-like diagram.
 
@@ -30,6 +30,10 @@ a structured tree-like diagram.
   structured tree-like diagram.
 - useful for ensuring consistency in how cancer types are classified and 
   reported across different studies and clinical settings.
+
+## Licensing
+
+OncoTree is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Source: https://github.com/cBioPortal/oncotree
 
 
 # Setup
