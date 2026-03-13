@@ -119,32 +119,84 @@ compound). If <code>raw = TRUE</code>, raw responses are returned instead.</p>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">queryUnichemCompound</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sourceID"</span>, compound <span class="op">=</span> <span class="st">"444795"</span>, sourceID <span class="op">=</span> <span class="fl">22</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $External_Mappings</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       compoundID             Name                            NameLong sourceID</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           &lt;char&gt;           &lt;char&gt;                              &lt;char&gt;    &lt;int&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1:    CHEMBL38           chembl                              ChEMBL        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   2:     DB00755         drugbank                            DrugBank        2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   3:         3KV         rcsb_pdb                            RCSB PDB        3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   4:         REA         rcsb_pdb                            RCSB PDB        3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   5: CHEBI:15367            chebi                               ChEBI        7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                                                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 275:      260365           brenda                              Brenda       37</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 276:        5126           brenda                              Brenda       37</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 277:        6481           brenda                              Brenda       37</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 278:    PD001430 probes_and_drugs                        Probes&amp;Drugs       49</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 279:      VITAAC             CCDC CSD (Cambridge Structural Database)       50</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                    sourceURL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                       &lt;char&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1:                https://www.ebi.ac.uk/chembldb/compound/inspect/CHEMBL38</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   2:                                   https://go.drugbank.com/drugs/DB00755</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   3:                                         https://www.rcsb.org/ligand/3KV</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   4:                                         https://www.rcsb.org/ligand/REA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   5:                                 https://www.ebi.ac.uk/chebi/CHEBI:15367</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 275:       https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=260365</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 276:         https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=5126</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 277:         https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=6481</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 278:                         https://www.probes-drugs.org/compounds/PD001430</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 279: https://www.ccdc.cam.ac.uk/structures/search?sid=UNICHEM&amp;pid=csd:VITAAC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              compoundID             Name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                  &lt;char&gt;           &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:            CHEMBL38           chembl</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:             DB00755         drugbank</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:                 3KV         rcsb_pdb</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:                 REA         rcsb_pdb</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:         CHEBI:15367            chebi</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:          5688UTC01R           fdasrs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:                3145       surechembl</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:         HMDB0001852             hmdb</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:              444795          pubchem</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10: Molport-000-883-857          molport</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:               31883        bindingdb</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:        LMPR01090019        lipidmaps</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13:                2722      drugcentral</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14:               12679           brenda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15:              193381           brenda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16:               21231           brenda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17:                2354           brenda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18:              260365           brenda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19:                5126           brenda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20:                6481           brenda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21:            PD001430 probes_and_drugs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22:              VITAAC             CCDC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              compoundID             Name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                  &lt;char&gt;           &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                        NameLong sourceID</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                          &lt;char&gt;    &lt;int&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:                                      ChEMBL        1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:                                    DrugBank        2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:                                    RCSB PDB        3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:                                    RCSB PDB        3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:                                       ChEBI        7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6: FDA/USP Substance Registration System (SRS)       14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:                                  SureChEMBL       15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:                                        HMDB       18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:                           PubChem Compounds       22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:                                     MolPort       28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:                                   BindingDB       31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:       LIPID MAPS® Structure Database (LMSD)       33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13:                                 DrugCentral       34</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14:                                      Brenda       37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15:                                      Brenda       37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16:                                      Brenda       37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17:                                      Brenda       37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18:                                      Brenda       37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19:                                      Brenda       37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20:                                      Brenda       37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21:                                Probes&amp;Drugs       49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22:         CSD (Cambridge Structural Database)       50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                        NameLong sourceID</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                          &lt;char&gt;    &lt;int&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                             sourceURL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:                          https://www.ebi.ac.uk/chembldb/compound/inspect/CHEMBL38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:                                             https://go.drugbank.com/drugs/DB00755</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:                                                   https://www.rcsb.org/ligand/3KV</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:                                                   https://www.rcsb.org/ligand/REA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:                                           https://www.ebi.ac.uk/chebi/CHEBI:15367</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:              https://d20b1koi85gdl2.cloudfront.net/uniisearch/srs/unii/5688UTC01R</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:                                          https://www.surechembl.org/chemical/3145</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:                                       https://www.hmdb.ca/metabolites/HMDB0001852</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:                                  https://pubchem.ncbi.nlm.nih.gov/compound/444795</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:                         https://www.molport.com/shop/compound/Molport-000-883-857</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11: https://www.bindingdb.org/bind/chemsearch/marvin/MolStructure.jsp?monomerid=31883</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:                   https://www.lipidmaps.org/data/LMSDRecord.php?LMID=LMPR01090019</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13:                                             https://drugcentral.org/drugcard/2722</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14:                  https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=12679</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15:                 https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=193381</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16:                  https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=21231</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17:                   https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=2354</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18:                 https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=260365</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19:                   https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=5126</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20:                   https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=6481</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21:                                   https://www.probes-drugs.org/compounds/PD001430</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22:           https://www.ccdc.cam.ac.uk/structures/search?sid=UNICHEM&amp;pid=csd:VITAAC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                             sourceURL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                &lt;char&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $UniChem_Mappings</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $UniChem_Mappings$UniChem.UCI</span>

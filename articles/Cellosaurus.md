@@ -14,6 +14,12 @@ for more information and a detailed description can be found at
 The `AnnotationGx` package provides a wrapper around the Cellosaurus API
 to map cell line identifiers to the Cellosaurus database fields.
 
+## Licensing
+
+Cellosaurus is licensed under [CC BY
+4.0](https://creativecommons.org/licenses/by/4.0/). Source:
+<https://www.cellosaurus.org/faq>
+
 ## Setup
 
 ``` r
@@ -41,10 +47,10 @@ line names to the Cellosaurus database.
 
 ``` r
 mapCell2Accession("hela")
-#> [16:03:06][INFO][AnnotationGx::mapCell2Accession] Creating Cellosaurus queries 
-#> [16:03:06][INFO][AnnotationGx::mapCell2Accession] Building Cellosaurus requests 
-#> [16:03:07][INFO][AnnotationGx::mapCell2Accession] Performing Cellosaurus queries 
-#> [16:03:09][INFO][AnnotationGx::mapCell2Accession] Parsing Cellosaurus responses 
+#> [05:34:43][INFO][AnnotationGx::mapCell2Accession] Creating Cellosaurus queries 
+#> [05:34:43][INFO][AnnotationGx::mapCell2Accession] Building Cellosaurus requests 
+#> [05:34:44][INFO][AnnotationGx::mapCell2Accession] Performing Cellosaurus queries 
+#> [05:34:45][INFO][AnnotationGx::mapCell2Accession] Parsing Cellosaurus responses 
 #>    cellLineName accession  query
 #>          <char>    <char> <char>
 #> 1:         HeLa CVCL_0030   hela
@@ -52,10 +58,10 @@ mapCell2Accession("hela")
 
 ``` r
 mapCell2Accession("A549")
-#> [16:03:13][INFO][AnnotationGx::mapCell2Accession] Creating Cellosaurus queries 
-#> [16:03:13][INFO][AnnotationGx::mapCell2Accession] Building Cellosaurus requests 
-#> [16:03:13][INFO][AnnotationGx::mapCell2Accession] Performing Cellosaurus queries 
-#> [16:03:15][INFO][AnnotationGx::mapCell2Accession] Parsing Cellosaurus responses 
+#> [05:34:49][INFO][AnnotationGx::mapCell2Accession] Creating Cellosaurus queries 
+#> [05:34:49][INFO][AnnotationGx::mapCell2Accession] Building Cellosaurus requests 
+#> [05:34:50][INFO][AnnotationGx::mapCell2Accession] Performing Cellosaurus queries 
+#> [05:34:51][INFO][AnnotationGx::mapCell2Accession] Parsing Cellosaurus responses 
 #>    cellLineName accession  query
 #>          <char>    <char> <char>
 #> 1:        A-549 CVCL_0023   A549
@@ -65,11 +71,11 @@ Functionality for mapping multiple cell lines is also supported.
 
 ``` r
 mapCell2Accession(c("A549", "THIS SHOULD FAIL", "BT474"))
-#> [16:03:19][INFO][AnnotationGx::mapCell2Accession] Creating Cellosaurus queries 
-#> [16:03:19][INFO][AnnotationGx::mapCell2Accession] Building Cellosaurus requests 
-#> [16:03:20][INFO][AnnotationGx::mapCell2Accession] Performing Cellosaurus queries 
-#> [16:03:21][INFO][AnnotationGx::mapCell2Accession] Parsing Cellosaurus responses 
-#> [16:03:25][WARNING]No results found for THIS SHOULD FAIL 
+#> [05:34:55][INFO][AnnotationGx::mapCell2Accession] Creating Cellosaurus queries 
+#> [05:34:55][INFO][AnnotationGx::mapCell2Accession] Building Cellosaurus requests 
+#> [05:34:55][INFO][AnnotationGx::mapCell2Accession] Performing Cellosaurus queries 
+#> [05:34:57][INFO][AnnotationGx::mapCell2Accession] Parsing Cellosaurus responses 
+#> [05:35:01][WARNING]No results found for THIS SHOULD FAIL 
 #>    cellLineName accession            query
 #>          <char>    <char>           <char>
 #> 1:        A-549 CVCL_0023             A549
@@ -83,12 +89,10 @@ common mapping. To return all possible mappings, set `parsed = FALSE`.
 ``` r
 # parsed
 mapCell2Accession(c("A549", "hela", "BT474"), parsed = TRUE)
-#> [16:03:25][INFO][AnnotationGx::mapCell2Accession] Creating Cellosaurus queries 
-#> [16:03:25][INFO][AnnotationGx::mapCell2Accession] Building Cellosaurus requests 
-#> [16:03:26][INFO][AnnotationGx::mapCell2Accession] Performing Cellosaurus queries 
-#> Querying Cellosaurus... ■■■■■■■■■■■                       33% | ETA:  2s
-#> Querying Cellosaurus... ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100% | ETA:  0s
-#> [16:03:28][INFO][AnnotationGx::mapCell2Accession] Parsing Cellosaurus responses 
+#> [05:35:01][INFO][AnnotationGx::mapCell2Accession] Creating Cellosaurus queries 
+#> [05:35:01][INFO][AnnotationGx::mapCell2Accession] Building Cellosaurus requests 
+#> [05:35:01][INFO][AnnotationGx::mapCell2Accession] Performing Cellosaurus queries 
+#> [05:35:03][INFO][AnnotationGx::mapCell2Accession] Parsing Cellosaurus responses 
 #>    cellLineName accession  query
 #>          <char>    <char> <char>
 #> 1:        A-549 CVCL_0023   A549
@@ -97,10 +101,10 @@ mapCell2Accession(c("A549", "hela", "BT474"), parsed = TRUE)
 
 # no parsing
 mapCell2Accession(c("A549", "hela", "BT474"), parsed = FALSE)
-#> [16:03:36][INFO][AnnotationGx::mapCell2Accession] Creating Cellosaurus queries 
-#> [16:03:36][INFO][AnnotationGx::mapCell2Accession] Building Cellosaurus requests 
-#> [16:03:37][INFO][AnnotationGx::mapCell2Accession] Performing Cellosaurus queries 
-#> [16:03:39][INFO][AnnotationGx::mapCell2Accession] Parsing Cellosaurus responses 
+#> [05:35:12][INFO][AnnotationGx::mapCell2Accession] Creating Cellosaurus queries 
+#> [05:35:12][INFO][AnnotationGx::mapCell2Accession] Building Cellosaurus requests 
+#> [05:35:12][INFO][AnnotationGx::mapCell2Accession] Performing Cellosaurus queries 
+#> [05:35:14][INFO][AnnotationGx::mapCell2Accession] Parsing Cellosaurus responses 
 #>       cellLineName accession         category ageAtSampling sexOfCell
 #>             <char>    <char>           <char>        <char>    <char>
 #>    1:        A-549 CVCL_0023 Cancer cell line           58Y      Male
@@ -150,10 +154,10 @@ synonyms of the cell line names.
 ``` r
 samples <- c("SK23", "SJCRH30")
 mapCell2Accession(samples)
-#> [16:03:46][INFO][AnnotationGx::mapCell2Accession] Creating Cellosaurus queries 
-#> [16:03:46][INFO][AnnotationGx::mapCell2Accession] Building Cellosaurus requests 
-#> [16:03:47][INFO][AnnotationGx::mapCell2Accession] Performing Cellosaurus queries 
-#> [16:03:48][INFO][AnnotationGx::mapCell2Accession] Parsing Cellosaurus responses 
+#> [05:35:21][INFO][AnnotationGx::mapCell2Accession] Creating Cellosaurus queries 
+#> [05:35:21][INFO][AnnotationGx::mapCell2Accession] Building Cellosaurus requests 
+#> [05:35:22][INFO][AnnotationGx::mapCell2Accession] Performing Cellosaurus queries 
+#> [05:35:22][INFO][AnnotationGx::mapCell2Accession] Parsing Cellosaurus responses 
 #>    cellLineName accession   query
 #>          <char>    <char>  <char>
 #> 1:    SK-MEL-23 CVCL_6027    SK23
@@ -166,21 +170,21 @@ parameter for fuzzy searching.
 ``` r
 # No fuzzy
 mapCell2Accession("DOR 13")
-#> [16:03:48][INFO][AnnotationGx::mapCell2Accession] Creating Cellosaurus queries 
-#> [16:03:48][INFO][AnnotationGx::mapCell2Accession] Building Cellosaurus requests 
-#> [16:03:48][INFO][AnnotationGx::mapCell2Accession] Performing Cellosaurus queries 
-#> [16:03:49][INFO][AnnotationGx::mapCell2Accession] Parsing Cellosaurus responses 
-#> [16:03:49][WARNING]No results found for DOR 13 
+#> [05:35:23][INFO][AnnotationGx::mapCell2Accession] Creating Cellosaurus queries 
+#> [05:35:23][INFO][AnnotationGx::mapCell2Accession] Building Cellosaurus requests 
+#> [05:35:23][INFO][AnnotationGx::mapCell2Accession] Performing Cellosaurus queries 
+#> [05:35:23][INFO][AnnotationGx::mapCell2Accession] Parsing Cellosaurus responses 
+#> [05:35:23][WARNING]No results found for DOR 13 
 #>     query
 #>    <char>
 #> 1: DOR 13
 
 # Fuzzy
 mapCell2Accession("DOR 13", fuzzy = TRUE)
-#> [16:03:49][INFO][AnnotationGx::mapCell2Accession] Creating Cellosaurus queries 
-#> [16:03:49][INFO][AnnotationGx::mapCell2Accession] Building Cellosaurus requests 
-#> [16:03:49][INFO][AnnotationGx::mapCell2Accession] Performing Cellosaurus queries 
-#> [16:03:50][INFO][AnnotationGx::mapCell2Accession] Parsing Cellosaurus responses 
+#> [05:35:23][INFO][AnnotationGx::mapCell2Accession] Creating Cellosaurus queries 
+#> [05:35:23][INFO][AnnotationGx::mapCell2Accession] Building Cellosaurus requests 
+#> [05:35:23][INFO][AnnotationGx::mapCell2Accession] Performing Cellosaurus queries 
+#> [05:35:24][INFO][AnnotationGx::mapCell2Accession] Parsing Cellosaurus responses 
 #>    cellLineName accession  query
 #>          <char>    <char> <char>
 #> 1:        DOV13 CVCL_6774 DOR 13
@@ -226,15 +230,15 @@ default the function will try to map to
 ``` r
 # Annotate the A549 cell line
 mappedAccessions <- mapCell2Accession("A549")
-#> [16:03:50][INFO][AnnotationGx::mapCell2Accession] Creating Cellosaurus queries 
-#> [16:03:50][INFO][AnnotationGx::mapCell2Accession] Building Cellosaurus requests 
-#> [16:03:50][INFO][AnnotationGx::mapCell2Accession] Performing Cellosaurus queries 
-#> [16:03:52][INFO][AnnotationGx::mapCell2Accession] Parsing Cellosaurus responses 
+#> [05:35:24][INFO][AnnotationGx::mapCell2Accession] Creating Cellosaurus queries 
+#> [05:35:24][INFO][AnnotationGx::mapCell2Accession] Building Cellosaurus requests 
+#> [05:35:24][INFO][AnnotationGx::mapCell2Accession] Performing Cellosaurus queries 
+#> [05:35:25][INFO][AnnotationGx::mapCell2Accession] Parsing Cellosaurus responses 
 
 annotateCellAccession(accessions = mappedAccessions$accession)
-#> [16:03:55][INFO][AnnotationGx::annotateCellAccession] Building Cellosaurus requests... 
-#> [16:03:56][INFO][AnnotationGx::annotateCellAccession] Performing Requests... 
-#> [16:03:57][INFO][AnnotationGx::annotateCellAccession] Parsing Responses... 
+#> [05:35:29][INFO][AnnotationGx::annotateCellAccession] Building Cellosaurus requests... 
+#> [05:35:29][INFO][AnnotationGx::annotateCellAccession] Performing Requests... 
+#> [05:35:29][INFO][AnnotationGx::annotateCellAccession] Parsing Responses... 
 #>    cellLineName accession         category
 #>          <char>    <char>           <char>
 #> 1:        A-549 CVCL_0023 Cancer cell line
@@ -251,7 +255,7 @@ annotateCellAccession(accessions = mappedAccessions$accession)
 
 ``` r
 sessionInfo()
-#> R version 4.5.2 (2025-10-31)
+#> R version 4.5.3 (2026-03-11)
 #> Platform: x86_64-pc-linux-gnu
 #> Running under: Ubuntu 24.04.3 LTS
 #> 
@@ -276,12 +280,12 @@ sessionInfo()
 #> 
 #> loaded via a namespace (and not attached):
 #>  [1] crayon_1.5.3      cli_3.6.5         knitr_1.51        rlang_1.1.7      
-#>  [5] xfun_0.56         textshaping_1.0.4 jsonlite_2.0.0    glue_1.8.0       
-#>  [9] backports_1.5.0   htmltools_0.5.9   ragg_1.5.0        sass_0.4.10      
+#>  [5] xfun_0.56         textshaping_1.0.5 jsonlite_2.0.0    glue_1.8.0       
+#>  [9] backports_1.5.0   htmltools_0.5.9   ragg_1.5.1        sass_0.4.10      
 #> [13] rappdirs_0.3.4    rmarkdown_2.30    evaluate_1.0.5    jquerylib_0.1.4  
 #> [17] fastmap_1.2.0     yaml_2.3.12       lifecycle_1.0.5   httr2_1.2.2      
-#> [21] compiler_4.5.2    fs_1.6.6          systemfonts_1.3.1 digest_0.6.39    
-#> [25] R6_2.6.1          curl_7.0.0        parallel_4.5.2    magrittr_2.0.4   
-#> [29] bslib_0.10.0      checkmate_2.3.4   withr_3.0.2       tools_4.5.2      
+#> [21] compiler_4.5.3    fs_1.6.7          systemfonts_1.3.2 digest_0.6.39    
+#> [25] R6_2.6.1          curl_7.0.0        parallel_4.5.3    magrittr_2.0.4   
+#> [29] bslib_0.10.0      checkmate_2.3.4   withr_3.0.2       tools_4.5.3      
 #> [33] pkgdown_2.2.0     cachem_1.1.0      desc_1.4.3
 ```

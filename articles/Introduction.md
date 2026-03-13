@@ -45,7 +45,7 @@ library("AnnotationGx")
 
 ``` r
 sessionInfo()
-#> R version 4.5.2 (2025-10-31)
+#> R version 4.5.3 (2026-03-11)
 #> Platform: x86_64-pc-linux-gnu
 #> Running under: Ubuntu 24.04.3 LTS
 #> 
@@ -74,9 +74,9 @@ sessionInfo()
 #>  [7] cachem_1.1.0        knitr_1.51          htmltools_0.5.9    
 #> [10] rmarkdown_2.30      lifecycle_1.0.5     cli_3.6.5          
 #> [13] sass_0.4.10         pkgdown_2.2.0       data.table_1.18.2.1
-#> [16] textshaping_1.0.4   jquerylib_0.1.4     systemfonts_1.3.1  
-#> [19] compiler_4.5.2      tools_4.5.2         ragg_1.5.0         
+#> [16] textshaping_1.0.5   jquerylib_0.1.4     systemfonts_1.3.2  
+#> [19] compiler_4.5.3      tools_4.5.3         ragg_1.5.1         
 #> [22] checkmate_2.3.4     evaluate_1.0.5      bslib_0.10.0       
 #> [25] yaml_2.3.12         jsonlite_2.0.0      rlang_1.1.7        
-#> [28] fs_1.6.6
+#> [28] fs_1.6.7
 ```

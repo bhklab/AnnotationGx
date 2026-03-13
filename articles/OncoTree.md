@@ -5,9 +5,9 @@
 OncoTree is a standardized classification system used in cancer research
 and clinical practice to categorize different types of cancer based on
 their tissue of origin, molecular characteristics, and other relevant
-factors. Developed by the National Cancer Institute (NCI) within the
-United States, OncoTree provides a hierarchical framework that organizes
-cancer types into a structured tree-like diagram.
+factors. Developed by Memorial Sloan Kettering Cancer Center (MSK),
+OncoTree provides a hierarchical framework that organizes cancer types
+into a structured tree-like diagram.
 
 - provides a standardized classification system for categorizing
   different types of cancer based on their tissue of origin, molecular
@@ -16,6 +16,12 @@ cancer types into a structured tree-like diagram.
   structured tree-like diagram.
 - useful for ensuring consistency in how cancer types are classified and
   reported across different studies and clinical settings.
+
+### Licensing
+
+OncoTree is licensed under [CC BY
+4.0](https://creativecommons.org/licenses/by/4.0/). Source:
+<https://github.com/cBioPortal/oncotree>
 
 ## Setup
 
@@ -170,50 +176,63 @@ cancer type.
 
 ``` r
 getOncotreeTumorTypes()
-#>           code       color                                                 name
-#>         <char>      <char>                                               <char>
-#>   1:  PANCREAS      Purple                                             Pancreas
-#>   2: HEAD_NECK     DarkRed                                        Head and Neck
-#>   3:   MYELOID LightSalmon                                              Myeloid
-#>   4:     LYMPH   LimeGreen                                             Lymphoid
-#>   5:      BONE       White                                                 Bone
-#>  ---                                                                           
-#> 893:       ABC   LimeGreen                                Activated B-cell Type
-#> 894:       GCB   LimeGreen                          Germinal Center B-Cell Type
-#> 895:     MIDDO   LimeGreen Monoclonal Immunoglobulin Deposition Diseases, Other
-#> 896:     MIDDA   LimeGreen                                          Amyloidosis
-#> 897:        WM   LimeGreen                        Waldenstrom Macroglobulinemia
-#>                     mainType externalReferences tissue      children   parent
-#>                       <char>             <list> <list>        <char>   <char>
-#>   1:       Pancreatic Cancer           C0030274 C12393      Pancreas   TISSUE
-#>   2:    Head and Neck Cancer           C0460004 C12418 Head and Neck   TISSUE
-#>   3:            Blood Cancer           C0005767 C12434       Myeloid   TISSUE
-#>   4:        Lymphatic Cancer           C0024202 C13252      Lymphoid   TISSUE
-#>   5:             Bone Cancer           C0262950 C12366          Bone   TISSUE
-#>  ---                                                                         
-#> 893: Mature B-Cell Neoplasms             [NULL] [NULL]      Lymphoid DLBCLNOS
-#> 894: Mature B-Cell Neoplasms          C1333295  C36080      Lymphoid DLBCLNOS
-#> 895: Mature B-Cell Neoplasms           C2939462 [NULL]      Lymphoid     MIDD
-#> 896: Mature B-Cell Neoplasms           C0002726  C2868      Lymphoid     MIDD
-#> 897: Mature B-Cell Neoplasms           C0024419 C80307      Lymphoid      LPL
-#>      history level revocations precursors
-#>       <list> <int>      <list>     <list>
-#>   1:             1                       
-#>   2:             1                       
-#>   3:   BLOOD     1                       
-#>   4:             1                       
-#>   5:             1                       
-#>  ---                                     
-#> 893:             6                       
-#> 894:             6                       
-#> 895:             6                       
-#> 896:             6                       
-#> 897:             6
+#>               code     color
+#>             <char>    <char>
+#>   1: BILIARY_TRACT     Green
+#>   2:           PNS      Gray
+#>   3:         BRAIN      Gray
+#>   4: ADRENAL_GLAND    Purple
+#>   5:          LUNG Gainsboro
+#>  ---                        
+#> 893:        BIALCL LimeGreen
+#> 894:      ALCLALKP LimeGreen
+#> 895:      ALCLALKN LimeGreen
+#> 896:        PCALCL LimeGreen
+#> 897:           LYP LimeGreen
+#>                                                          name
+#>                                                        <char>
+#>   1:                                            Biliary Tract
+#>   2:                                Peripheral Nervous System
+#>   3:                                                CNS/Brain
+#>   4:                                            Adrenal Gland
+#>   5:                                                     Lung
+#>  ---                                                         
+#> 893: Breast Implant-Associated Anaplastic Large-Cell Lymphoma
+#> 894:              Anaplastic Large-Cell Lymphoma ALK Positive
+#> 895:              Anaplastic Large-Cell Lymphoma ALK Negative
+#> 896:         Primary Cutaneous Anaplastic Large Cell Lymphoma
+#> 897:                                   Lymphomatoid Papulosis
+#>                              mainType externalReferences  tissue
+#>                                <char>             <list>  <list>
+#>   1:             Biliary Tract Cancer           C0005423  C12678
+#>   2: Peripheral Nervous System Cancer           C0206417  C12465
+#>   3:                 CNS/Brain Cancer           C3714787  C12438
+#>   4:             Adrenal Gland Cancer           C0001625  C12666
+#>   5:                      Lung Cancer           C0024109  C12468
+#>  ---                                                            
+#> 893:        Mature T and NK Neoplasms           C4528210 C139012
+#> 894:        Mature T and NK Neoplasms           C1332079  C37193
+#> 895:        Mature T and NK Neoplasms           C1332078  C37194
+#> 896:        Mature T and NK Neoplasms           C1301362   C6860
+#> 897:        Mature T and NK Neoplasms           C0206182   C3721
+#>                       children parent history level revocations precursors
+#>                         <char> <char>  <list> <int>      <list>     <list>
+#>   1:             Biliary Tract TISSUE             1                       
+#>   2: Peripheral Nervous System TISSUE             1                       
+#>   3:                 CNS/Brain TISSUE             1                       
+#>   4:             Adrenal Gland TISSUE             1                       
+#>   5:                      Lung TISSUE             1                       
+#>  ---                                                                      
+#> 893:                  Lymphoid   ALCL             6                       
+#> 894:                  Lymphoid   ALCL             6                       
+#> 895:                  Lymphoid   ALCL             6                       
+#> 896:                  Lymphoid  PCLPD             6                       
+#> 897:                  Lymphoid  PCLPD             6
 ```
 
 ``` r
 sessionInfo()
-#> R version 4.5.2 (2025-10-31)
+#> R version 4.5.3 (2026-03-11)
 #> Platform: x86_64-pc-linux-gnu
 #> Running under: Ubuntu 24.04.3 LTS
 #> 
@@ -238,14 +257,14 @@ sessionInfo()
 #> 
 #> loaded via a namespace (and not attached):
 #>  [1] cli_3.6.5           knitr_1.51          rlang_1.1.7        
-#>  [4] xfun_0.56           textshaping_1.0.4   jsonlite_2.0.0     
+#>  [4] xfun_0.56           textshaping_1.0.5   jsonlite_2.0.0     
 #>  [7] data.table_1.18.2.1 glue_1.8.0          backports_1.5.0    
-#> [10] htmltools_0.5.9     ragg_1.5.0          sass_0.4.10        
+#> [10] htmltools_0.5.9     ragg_1.5.1          sass_0.4.10        
 #> [13] rappdirs_0.3.4      rmarkdown_2.30      evaluate_1.0.5     
 #> [16] jquerylib_0.1.4     fastmap_1.2.0       yaml_2.3.12        
-#> [19] lifecycle_1.0.5     httr2_1.2.2         compiler_4.5.2     
-#> [22] fs_1.6.6            systemfonts_1.3.1   digest_0.6.39      
+#> [19] lifecycle_1.0.5     httr2_1.2.2         compiler_4.5.3     
+#> [22] fs_1.6.7            systemfonts_1.3.2   digest_0.6.39      
 #> [25] R6_2.6.1            curl_7.0.0          magrittr_2.0.4     
-#> [28] bslib_0.10.0        checkmate_2.3.4     tools_4.5.2        
+#> [28] bslib_0.10.0        checkmate_2.3.4     tools_4.5.3        
 #> [31] pkgdown_2.2.0       cachem_1.1.0        desc_1.4.3
 ```

@@ -2,4 +2,4 @@
 
 ## AnnotationGx (development version)
 
-- Initial CRAN submission.
+- Initial Bioconductor submission.

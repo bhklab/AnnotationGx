@@ -22,6 +22,12 @@ hope to provide an R native interface for mapping between various
 cheminformatic databases, accessible to anyone familar with using R
 functions!
 
+### Licensing
+
+UniChem is provided under the [EMBL-EBI Terms of
+Use](https://www.ebi.ac.uk/about/terms-of-use/). Source:
+<https://www.ebi.ac.uk/licencing/>
+
 ``` r
 library(AnnotationGx)
 ```
@@ -37,25 +43,25 @@ returned. To return all columns, pass the `all_columns = TRUE` argument
 getUnichemSources()
 #>                 Name SourceID
 #>               <char>    <int>
-#>  1:           chembl        1
-#>  2:         drugbank        2
-#>  3:         rcsb_pdb        3
-#>  4:           gtopdb        4
-#>  5:            chebi        7
-#>  6:       surechembl       15
-#>  7:          pubchem       22
-#>  8:        bindingdb       31
-#>  9:        lipidmaps       33
-#> 10:      drugcentral       34
-#> 11:           brenda       37
-#> 12:             rhea       38
+#>  1: probes_and_drugs       49
+#>  2:          pubchem       22
+#>  3:        bindingdb       31
+#>  4:        lipidmaps       33
+#>  5:           fdasrs       14
+#>  6:      nmrshiftdb2       24
+#>  7:      drugcentral       34
+#>  8:           chembl        1
+#>  9:         rcsb_pdb        3
+#> 10:             rhea       38
+#> 11:       surechembl       15
+#> 12:           brenda       37
 #> 13:      swisslipids       41
-#> 14: probes_and_drugs       49
-#> 15:             CCDC       50
-#> 16:           fdasrs       14
-#> 17:             hmdb       18
-#> 18:      nmrshiftdb2       24
-#> 19:          molport       28
+#> 14:             CCDC       50
+#> 15:          molport       28
+#> 16:           gtopdb        4
+#> 17:            chebi        7
+#> 18:         drugbank        2
+#> 19:             hmdb       18
 ```
 
 When mapping using the `queryUnichemCompound` function, these are the
@@ -100,32 +106,81 @@ the compound.
 ``` r
 queryUnichemCompound(compound = "161671", type = "uci")
 #> $External_Mappings
-#>       compoundID             Name                            NameLong sourceID
-#>           <char>           <char>                              <char>    <int>
-#>   1:    CHEMBL25           chembl                              ChEMBL        1
-#>   2:     DB00945         drugbank                            DrugBank        2
-#>   3:         AIN         rcsb_pdb                            RCSB PDB        3
-#>   4:        4139           gtopdb               Guide to Pharmacology        4
-#>   5: CHEBI:15365            chebi                               ChEBI        7
-#>  ---                                                                          
-#> 142:       32748           brenda                              Brenda       37
-#> 143:        4779           brenda                              Brenda       37
-#> 144:        6476           brenda                              Brenda       37
-#> 145:    PD002467 probes_and_drugs                        Probes&Drugs       49
-#> 146:      ACSALA             CCDC CSD (Cambridge Structural Database)       50
-#>                                                                        sourceURL
-#>                                                                           <char>
-#>   1:                    https://www.ebi.ac.uk/chembldb/compound/inspect/CHEMBL25
-#>   2:                                       https://go.drugbank.com/drugs/DB00945
-#>   3:                                             https://www.rcsb.org/ligand/AIN
-#>   4: https://www.guidetopharmacology.org/GRAC/LigandDisplayForward?ligandId=4139
-#>   5:                                     https://www.ebi.ac.uk/chebi/CHEBI:15365
-#>  ---                                                                            
-#> 142:            https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=32748
-#> 143:             https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=4779
-#> 144:             https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=6476
-#> 145:                             https://www.probes-drugs.org/compounds/PD002467
-#> 146:     https://www.ccdc.cam.ac.uk/structures/search?sid=UNICHEM&pid=csd:ACSALA
+#>              compoundID             Name
+#>                  <char>           <char>
+#>  1:            CHEMBL25           chembl
+#>  2:             DB00945         drugbank
+#>  3:                 AIN         rcsb_pdb
+#>  4:                4139           gtopdb
+#>  5:         CHEBI:15365            chebi
+#>  6:          R16CO5Y76E           fdasrs
+#>  7:                1353       surechembl
+#>  8:            29350479       surechembl
+#>  9:         HMDB0001879             hmdb
+#> 10:                2244          pubchem
+#> 11: Molport-000-871-622          molport
+#> 12:               22360        bindingdb
+#> 13:                  74      drugcentral
+#> 14:              159662           brenda
+#> 15:                2261           brenda
+#> 16:                3100           brenda
+#> 17:               32748           brenda
+#> 18:                4779           brenda
+#> 19:                6476           brenda
+#> 20:            PD002467 probes_and_drugs
+#> 21:              ACSALA             CCDC
+#>              compoundID             Name
+#>                  <char>           <char>
+#>                                        NameLong sourceID
+#>                                          <char>    <int>
+#>  1:                                      ChEMBL        1
+#>  2:                                    DrugBank        2
+#>  3:                                    RCSB PDB        3
+#>  4:                       Guide to Pharmacology        4
+#>  5:                                       ChEBI        7
+#>  6: FDA/USP Substance Registration System (SRS)       14
+#>  7:                                  SureChEMBL       15
+#>  8:                                  SureChEMBL       15
+#>  9:                                        HMDB       18
+#> 10:                           PubChem Compounds       22
+#> 11:                                     MolPort       28
+#> 12:                                   BindingDB       31
+#> 13:                                 DrugCentral       34
+#> 14:                                      Brenda       37
+#> 15:                                      Brenda       37
+#> 16:                                      Brenda       37
+#> 17:                                      Brenda       37
+#> 18:                                      Brenda       37
+#> 19:                                      Brenda       37
+#> 20:                                Probes&Drugs       49
+#> 21:         CSD (Cambridge Structural Database)       50
+#>                                        NameLong sourceID
+#>                                          <char>    <int>
+#>                                                                             sourceURL
+#>                                                                                <char>
+#>  1:                          https://www.ebi.ac.uk/chembldb/compound/inspect/CHEMBL25
+#>  2:                                             https://go.drugbank.com/drugs/DB00945
+#>  3:                                                   https://www.rcsb.org/ligand/AIN
+#>  4:       https://www.guidetopharmacology.org/GRAC/LigandDisplayForward?ligandId=4139
+#>  5:                                           https://www.ebi.ac.uk/chebi/CHEBI:15365
+#>  6:              https://d20b1koi85gdl2.cloudfront.net/uniisearch/srs/unii/R16CO5Y76E
+#>  7:                                          https://www.surechembl.org/chemical/1353
+#>  8:                                      https://www.surechembl.org/chemical/29350479
+#>  9:                                       https://www.hmdb.ca/metabolites/HMDB0001879
+#> 10:                                    https://pubchem.ncbi.nlm.nih.gov/compound/2244
+#> 11:                         https://www.molport.com/shop/compound/Molport-000-871-622
+#> 12: https://www.bindingdb.org/bind/chemsearch/marvin/MolStructure.jsp?monomerid=22360
+#> 13:                                               https://drugcentral.org/drugcard/74
+#> 14:                 https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=159662
+#> 15:                   https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=2261
+#> 16:                   https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=3100
+#> 17:                  https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=32748
+#> 18:                   https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=4779
+#> 19:                   https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=6476
+#> 20:                                   https://www.probes-drugs.org/compounds/PD002467
+#> 21:           https://www.ccdc.cam.ac.uk/structures/search?sid=UNICHEM&pid=csd:ACSALA
+#>                                                                             sourceURL
+#>                                                                                <char>
 #> 
 #> $UniChem_Mappings
 #> $UniChem_Mappings$UniChem.UCI
@@ -149,7 +204,7 @@ queryUnichemCompound(compound = "161671", type = "uci")
 
 ``` r
 sessionInfo()
-#> R version 4.5.2 (2025-10-31)
+#> R version 4.5.3 (2026-03-11)
 #> Platform: x86_64-pc-linux-gnu
 #> Running under: Ubuntu 24.04.3 LTS
 #> 
@@ -174,14 +229,14 @@ sessionInfo()
 #> 
 #> loaded via a namespace (and not attached):
 #>  [1] cli_3.6.5           knitr_1.51          rlang_1.1.7        
-#>  [4] xfun_0.56           textshaping_1.0.4   jsonlite_2.0.0     
+#>  [4] xfun_0.56           textshaping_1.0.5   jsonlite_2.0.0     
 #>  [7] data.table_1.18.2.1 glue_1.8.0          backports_1.5.0    
-#> [10] htmltools_0.5.9     ragg_1.5.0          sass_0.4.10        
+#> [10] htmltools_0.5.9     ragg_1.5.1          sass_0.4.10        
 #> [13] rappdirs_0.3.4      rmarkdown_2.30      evaluate_1.0.5     
 #> [16] jquerylib_0.1.4     fastmap_1.2.0       yaml_2.3.12        
-#> [19] lifecycle_1.0.5     httr2_1.2.2         compiler_4.5.2     
-#> [22] fs_1.6.6            systemfonts_1.3.1   digest_0.6.39      
+#> [19] lifecycle_1.0.5     httr2_1.2.2         compiler_4.5.3     
+#> [22] fs_1.6.7            systemfonts_1.3.2   digest_0.6.39      
 #> [25] R6_2.6.1            curl_7.0.0          magrittr_2.0.4     
-#> [28] bslib_0.10.0        checkmate_2.3.4     tools_4.5.2        
+#> [28] bslib_0.10.0        checkmate_2.3.4     tools_4.5.3        
 #> [31] pkgdown_2.2.0       cachem_1.1.0        desc_1.4.3
 ```

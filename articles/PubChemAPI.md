@@ -25,6 +25,12 @@ give accesse to aggregated annotations for a given chemical compound
 i.e it provides access to annotations from external sources such as
 UniProt, ChEBI, and ChEMBL, given a specific identifier.
 
+### Licensing
+
+PubChem data usage is described by the [NCBI Website and Data Usage
+Policies](https://www.ncbi.nlm.nih.gov/home/about/policies/). Source:
+<https://www.ncbi.nlm.nih.gov/home/about/policies/>
+
 ## Setup
 
 ``` r
@@ -75,6 +81,18 @@ the `first = TRUE` argument:
 
 ``` r
 mapCompound2CID(drugs, first = TRUE)
+#> Waiting 30s for retry backoff ■■                              
+#> Waiting 30s for retry backoff ■■■                             
+#> Waiting 30s for retry backoff ■■■■■■                          
+#> Waiting 30s for retry backoff ■■■■■■■■■                       
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■                    
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■                 
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■              
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■           
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■        
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■     
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
 #>                  name    cids
 #>                <char>   <int>
 #> 1:            Aspirin    2244
@@ -93,31 +111,7 @@ a warning will be issued.
   c(drugs, "non existent compound", "another bad compound"),
   first = TRUE
 ))
-#> Waiting 30s for retry backoff ■■                              
-#> Waiting 30s for retry backoff ■■■■■                           
-#> Waiting 30s for retry backoff ■■■■■■■■                        
-#> Waiting 30s for retry backoff ■■■■■■■■■■■                     
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■                  
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■               
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■            
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■         
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■      
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
-#> Querying PubCHEM REST API.... ■■■■■■■■■■■■■■■■■■■■■■■           75% | ETA: 10s
-#> Waiting 30s for retry backoff ■■■■                            
-#> Waiting 30s for retry backoff ■■■■■■■                         
-#> Waiting 30s for retry backoff ■■■■■■■■■■                      
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■                   
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■                
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■             
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■          
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■       
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■    
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
-#> Querying PubCHEM REST API.... ■■■■■■■■■■■■■■■■■■■■■■■           75% | ETA: 10sQuerying PubCHEM REST API.... ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100% | ETA:  0s
-#> [16:05:12][WARNING][AnnotationGx::getPubchemCompound]  Some queries failed. See the 'failed' object for details. 
+#> [05:36:12][WARNING][AnnotationGx::getPubchemCompound]  Some queries failed. See the 'failed' object for details. 
 #>                     name    cids
 #>                   <char>   <int>
 #> 1:               Aspirin    2244
@@ -218,6 +212,19 @@ properties <- c("Title", "MolecularFormula", "InChIKey", "MolecularWeight")
 
 # Need to remove NA values from the query as they will cause an error
 result[!is.na(cids), mapCID2Properties(ids = cids, properties = properties)]
+#> Waiting 30s for retry backoff ■■                              
+#> Waiting 30s for retry backoff ■■■■                            
+#> Waiting 30s for retry backoff ■■■■■■■                         
+#> Waiting 30s for retry backoff ■■■■■■■■■■                      
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■                   
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■               
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■            
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■          
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■       
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■    
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
+#> Querying PubCHEM REST API.... ■■■■■■■■■■■■■■■■■■■■■■■■■■        83% | ETA:  6s
+#> Querying PubCHEM REST API.... ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100% | ETA:  0s
 #>        CID MolecularFormula MolecularWeight                    InChIKey
 #>      <int>           <char>          <char>                      <char>
 #> 1:    2244           C9H8O4          180.16 BSYNRYMUTXBXSQ-UHFFFAOYSA-N
@@ -257,11 +264,11 @@ getPubchemAnnotationHeadings()
 #>   4: 17O NMR Spectra Compound
 #>   5: 19F NMR Spectra Compound
 #>  ---                         
-#> 689:       Withdrawn Compound
-#> 690:     WormBase ID     Gene
-#> 691:     WormBase ID  Protein
-#> 692: Xenbase Gene ID     Gene
-#> 693:         ZFIN ID     Gene
+#> 694:       Withdrawn Compound
+#> 695:     WormBase ID     Gene
+#> 696:     WormBase ID  Protein
+#> 697: Xenbase Gene ID     Gene
+#> 698:         ZFIN ID     Gene
 ```
 
 #### Get annotation headings for a specific type:
@@ -276,11 +283,11 @@ getPubchemAnnotationHeadings(type = "Compound")
 #>   4:         17O NMR Spectra Compound
 #>   5:         19F NMR Spectra Compound
 #>  ---                                 
-#> 522: WHO Essential Medicines Compound
-#> 523:                Wikidata Compound
-#> 524:               Wikipedia Compound
-#> 525:        Wiley References Compound
-#> 526:               Withdrawn Compound
+#> 525: WHO Essential Medicines Compound
+#> 526:                Wikidata Compound
+#> 527:               Wikipedia Compound
+#> 528:        Wiley References Compound
+#> 529:               Withdrawn Compound
 ```
 
 #### Get annotation headings for a specific heading:
@@ -338,7 +345,7 @@ result
 
 ``` r
 sessionInfo()
-#> R version 4.5.2 (2025-10-31)
+#> R version 4.5.3 (2026-03-11)
 #> Platform: x86_64-pc-linux-gnu
 #> Running under: Ubuntu 24.04.3 LTS
 #> 
@@ -363,16 +370,16 @@ sessionInfo()
 #> 
 #> loaded via a namespace (and not attached):
 #>  [1] crayon_1.5.3        cli_3.6.5           knitr_1.51         
-#>  [4] rlang_1.1.7         xfun_0.56           textshaping_1.0.4  
+#>  [4] rlang_1.1.7         xfun_0.56           textshaping_1.0.5  
 #>  [7] jsonlite_2.0.0      data.table_1.18.2.1 glue_1.8.0         
-#> [10] backports_1.5.0     htmltools_0.5.9     ragg_1.5.0         
+#> [10] backports_1.5.0     htmltools_0.5.9     ragg_1.5.1         
 #> [13] sass_0.4.10         rappdirs_0.3.4      rmarkdown_2.30     
 #> [16] evaluate_1.0.5      jquerylib_0.1.4     fastmap_1.2.0      
 #> [19] yaml_2.3.12         lifecycle_1.0.5     memoise_2.0.1      
-#> [22] httr2_1.2.2         compiler_4.5.2      fs_1.6.6           
-#> [25] systemfonts_1.3.1   digest_0.6.39       R6_2.6.1           
-#> [28] parallel_4.5.2      curl_7.0.0          magrittr_2.0.4     
+#> [22] httr2_1.2.2         compiler_4.5.3      fs_1.6.7           
+#> [25] systemfonts_1.3.2   digest_0.6.39       R6_2.6.1           
+#> [28] parallel_4.5.3      curl_7.0.0          magrittr_2.0.4     
 #> [31] bslib_0.10.0        checkmate_2.3.4     withr_3.0.2        
-#> [34] tools_4.5.2         xml2_1.5.2          pkgdown_2.2.0      
+#> [34] tools_4.5.3         xml2_1.5.2          pkgdown_2.2.0      
 #> [37] cachem_1.1.0        desc_1.4.3
 ```
