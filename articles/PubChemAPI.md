@@ -84,14 +84,14 @@ mapCompound2CID(drugs, first = TRUE)
 #> Waiting 30s for retry backoff ■■                              
 #> Waiting 30s for retry backoff ■■■                             
 #> Waiting 30s for retry backoff ■■■■■■                          
-#> Waiting 30s for retry backoff ■■■■■■■■■                       
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■                    
+#> Waiting 30s for retry backoff ■■■■■■■■                        
+#> Waiting 30s for retry backoff ■■■■■■■■■■■                     
 #> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■                 
 #> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■              
 #> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■           
 #> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■        
 #> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■     
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   
 #> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
 #>                  name    cids
 #>                <char>   <int>
@@ -111,7 +111,7 @@ a warning will be issued.
   c(drugs, "non existent compound", "another bad compound"),
   first = TRUE
 ))
-#> [05:36:12][WARNING][AnnotationGx::getPubchemCompound]  Some queries failed. See the 'failed' object for details. 
+#> [13:25:02][WARNING][AnnotationGx::getPubchemCompound]  Some queries failed. See the 'failed' object for details. 
 #>                     name    cids
 #>                   <char>   <int>
 #> 1:               Aspirin    2244
@@ -213,18 +213,16 @@ properties <- c("Title", "MolecularFormula", "InChIKey", "MolecularWeight")
 # Need to remove NA values from the query as they will cause an error
 result[!is.na(cids), mapCID2Properties(ids = cids, properties = properties)]
 #> Waiting 30s for retry backoff ■■                              
-#> Waiting 30s for retry backoff ■■■■                            
-#> Waiting 30s for retry backoff ■■■■■■■                         
-#> Waiting 30s for retry backoff ■■■■■■■■■■                      
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■                   
+#> Waiting 30s for retry backoff ■■■■■                           
+#> Waiting 30s for retry backoff ■■■■■■■■                        
+#> Waiting 30s for retry backoff ■■■■■■■■■■■                     
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■                  
 #> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■               
 #> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■            
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■          
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■       
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■    
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■         
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■      
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   
 #> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
-#> Querying PubCHEM REST API.... ■■■■■■■■■■■■■■■■■■■■■■■■■■        83% | ETA:  6s
-#> Querying PubCHEM REST API.... ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100% | ETA:  0s
 #>        CID MolecularFormula MolecularWeight                    InChIKey
 #>      <int>           <char>          <char>                      <char>
 #> 1:    2244           C9H8O4          180.16 BSYNRYMUTXBXSQ-UHFFFAOYSA-N
@@ -370,13 +368,13 @@ sessionInfo()
 #> 
 #> loaded via a namespace (and not attached):
 #>  [1] crayon_1.5.3        cli_3.6.5           knitr_1.51         
-#>  [4] rlang_1.1.7         xfun_0.56           textshaping_1.0.5  
+#>  [4] rlang_1.1.7         xfun_0.57           textshaping_1.0.5  
 #>  [7] jsonlite_2.0.0      data.table_1.18.2.1 glue_1.8.0         
-#> [10] backports_1.5.0     htmltools_0.5.9     ragg_1.5.1         
+#> [10] backports_1.5.0     htmltools_0.5.9     ragg_1.5.2         
 #> [13] sass_0.4.10         rappdirs_0.3.4      rmarkdown_2.30     
 #> [16] evaluate_1.0.5      jquerylib_0.1.4     fastmap_1.2.0      
 #> [19] yaml_2.3.12         lifecycle_1.0.5     memoise_2.0.1      
-#> [22] httr2_1.2.2         compiler_4.5.3      fs_1.6.7           
+#> [22] httr2_1.2.2         compiler_4.5.3      fs_2.0.0           
 #> [25] systemfonts_1.3.2   digest_0.6.39       R6_2.6.1           
 #> [28] parallel_4.5.3      curl_7.0.0          magrittr_2.0.4     
 #> [31] bslib_0.10.0        checkmate_2.3.4     withr_3.0.2        

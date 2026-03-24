@@ -178,11 +178,11 @@ cancer type.
 getOncotreeTumorTypes()
 #>               code     color
 #>             <char>    <char>
-#>   1: BILIARY_TRACT     Green
-#>   2:           PNS      Gray
-#>   3:         BRAIN      Gray
-#>   4: ADRENAL_GLAND    Purple
-#>   5:          LUNG Gainsboro
+#>   1:        PLEURA      Blue
+#>   2:      PANCREAS    Purple
+#>   3:        CERVIX      Teal
+#>   4:          SKIN     Black
+#>   5: ADRENAL_GLAND    Purple
 #>  ---                        
 #> 893:        BIALCL LimeGreen
 #> 894:      ALCLALKP LimeGreen
@@ -191,43 +191,43 @@ getOncotreeTumorTypes()
 #> 897:           LYP LimeGreen
 #>                                                          name
 #>                                                        <char>
-#>   1:                                            Biliary Tract
-#>   2:                                Peripheral Nervous System
-#>   3:                                                CNS/Brain
-#>   4:                                            Adrenal Gland
-#>   5:                                                     Lung
+#>   1:                                                   Pleura
+#>   2:                                                 Pancreas
+#>   3:                                                   Cervix
+#>   4:                                                     Skin
+#>   5:                                            Adrenal Gland
 #>  ---                                                         
 #> 893: Breast Implant-Associated Anaplastic Large-Cell Lymphoma
 #> 894:              Anaplastic Large-Cell Lymphoma ALK Positive
 #> 895:              Anaplastic Large-Cell Lymphoma ALK Negative
 #> 896:         Primary Cutaneous Anaplastic Large Cell Lymphoma
 #> 897:                                   Lymphomatoid Papulosis
-#>                              mainType externalReferences  tissue
-#>                                <char>             <list>  <list>
-#>   1:             Biliary Tract Cancer           C0005423  C12678
-#>   2: Peripheral Nervous System Cancer           C0206417  C12465
-#>   3:                 CNS/Brain Cancer           C3714787  C12438
-#>   4:             Adrenal Gland Cancer           C0001625  C12666
-#>   5:                      Lung Cancer           C0024109  C12468
-#>  ---                                                            
-#> 893:        Mature T and NK Neoplasms           C4528210 C139012
-#> 894:        Mature T and NK Neoplasms           C1332079  C37193
-#> 895:        Mature T and NK Neoplasms           C1332078  C37194
-#> 896:        Mature T and NK Neoplasms           C1301362   C6860
-#> 897:        Mature T and NK Neoplasms           C0206182   C3721
-#>                       children parent history level revocations precursors
-#>                         <char> <char>  <list> <int>      <list>     <list>
-#>   1:             Biliary Tract TISSUE             1                       
-#>   2: Peripheral Nervous System TISSUE             1                       
-#>   3:                 CNS/Brain TISSUE             1                       
-#>   4:             Adrenal Gland TISSUE             1                       
-#>   5:                      Lung TISSUE             1                       
-#>  ---                                                                      
-#> 893:                  Lymphoid   ALCL             6                       
-#> 894:                  Lymphoid   ALCL             6                       
-#> 895:                  Lymphoid   ALCL             6                       
-#> 896:                  Lymphoid  PCLPD             6                       
-#> 897:                  Lymphoid  PCLPD             6
+#>                       mainType externalReferences  tissue      children parent
+#>                         <char>             <list>  <list>        <char> <char>
+#>   1:            Pleural Cancer           C0032225  C12469        Pleura TISSUE
+#>   2:         Pancreatic Cancer           C0030274  C12393      Pancreas TISSUE
+#>   3:           Cervical Cancer           C0007874  C12311        Cervix TISSUE
+#>   4:               Skin Cancer           C1123023  C12470          Skin TISSUE
+#>   5:      Adrenal Gland Cancer           C0001625  C12666 Adrenal Gland TISSUE
+#>  ---                                                                          
+#> 893: Mature T and NK Neoplasms           C4528210 C139012      Lymphoid   ALCL
+#> 894: Mature T and NK Neoplasms           C1332079  C37193      Lymphoid   ALCL
+#> 895: Mature T and NK Neoplasms           C1332078  C37194      Lymphoid   ALCL
+#> 896: Mature T and NK Neoplasms           C1301362   C6860      Lymphoid  PCLPD
+#> 897: Mature T and NK Neoplasms           C0206182   C3721      Lymphoid  PCLPD
+#>      history level revocations precursors
+#>       <list> <int>      <list>     <list>
+#>   1:             1                       
+#>   2:             1                       
+#>   3:             1                       
+#>   4:             1                       
+#>   5:             1                       
+#>  ---                                     
+#> 893:             6                       
+#> 894:             6                       
+#> 895:             6                       
+#> 896:             6                       
+#> 897:             6
 ```
 
 ``` r
@@ -257,13 +257,13 @@ sessionInfo()
 #> 
 #> loaded via a namespace (and not attached):
 #>  [1] cli_3.6.5           knitr_1.51          rlang_1.1.7        
-#>  [4] xfun_0.56           textshaping_1.0.5   jsonlite_2.0.0     
+#>  [4] xfun_0.57           textshaping_1.0.5   jsonlite_2.0.0     
 #>  [7] data.table_1.18.2.1 glue_1.8.0          backports_1.5.0    
-#> [10] htmltools_0.5.9     ragg_1.5.1          sass_0.4.10        
+#> [10] htmltools_0.5.9     ragg_1.5.2          sass_0.4.10        
 #> [13] rappdirs_0.3.4      rmarkdown_2.30      evaluate_1.0.5     
 #> [16] jquerylib_0.1.4     fastmap_1.2.0       yaml_2.3.12        
 #> [19] lifecycle_1.0.5     httr2_1.2.2         compiler_4.5.3     
-#> [22] fs_1.6.7            systemfonts_1.3.2   digest_0.6.39      
+#> [22] fs_2.0.0            systemfonts_1.3.2   digest_0.6.39      
 #> [25] R6_2.6.1            curl_7.0.0          magrittr_2.0.4     
 #> [28] bslib_0.10.0        checkmate_2.3.4     tools_4.5.3        
 #> [31] pkgdown_2.2.0       cachem_1.1.0        desc_1.4.3

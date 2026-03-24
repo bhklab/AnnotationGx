@@ -70,13 +70,13 @@ sessionInfo()
 #> 
 #> loaded via a namespace (and not attached):
 #>  [1] backports_1.5.0     digest_0.6.39       desc_1.4.3         
-#>  [4] R6_2.6.1            fastmap_1.2.0       xfun_0.56          
+#>  [4] R6_2.6.1            fastmap_1.2.0       xfun_0.57          
 #>  [7] cachem_1.1.0        knitr_1.51          htmltools_0.5.9    
 #> [10] rmarkdown_2.30      lifecycle_1.0.5     cli_3.6.5          
 #> [13] sass_0.4.10         pkgdown_2.2.0       data.table_1.18.2.1
 #> [16] textshaping_1.0.5   jquerylib_0.1.4     systemfonts_1.3.2  
-#> [19] compiler_4.5.3      tools_4.5.3         ragg_1.5.1         
+#> [19] compiler_4.5.3      tools_4.5.3         ragg_1.5.2         
 #> [22] checkmate_2.3.4     evaluate_1.0.5      bslib_0.10.0       
 #> [25] yaml_2.3.12         jsonlite_2.0.0      rlang_1.1.7        
-#> [28] fs_1.6.7
+#> [28] fs_2.0.0
 ```

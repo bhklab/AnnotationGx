@@ -160,14 +160,14 @@ name use the <code>first = TRUE</code> argument:</p>
 <span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■                              </span></span></span>
 <span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■                             </span></span></span>
 <span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■                          </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■                       </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■                    </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■                        </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■                     </span></span></span>
 <span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■                 </span></span></span>
 <span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■              </span></span></span>
 <span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■           </span></span></span>
 <span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■        </span></span></span>
 <span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■     </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   </span></span></span>
 <span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span></span></span>
 <span><span class="co">#&gt;                  name    cids</span></span>
 <span><span class="co">#&gt;                &lt;char&gt;   &lt;int&gt;</span></span>
@@ -184,7 +184,7 @@ returned and a warning will be issued.</p>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">drugs</span>, <span class="st">"non existent compound"</span>, <span class="st">"another bad compound"</span><span class="op">)</span>,</span>
 <span>  first <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">[05:36:12][WARNING][AnnotationGx::getPubchemCompound]  Some queries failed. See the 'failed' object for details. </span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">[13:25:02][WARNING][AnnotationGx::getPubchemCompound]  Some queries failed. See the 'failed' object for details. </span></span></span>
 <span><span class="co">#&gt;                     name    cids</span></span>
 <span><span class="co">#&gt;                   &lt;char&gt;   &lt;int&gt;</span></span>
 <span><span class="co">#&gt; 1:               Aspirin    2244</span></span>
@@ -283,18 +283,16 @@ specific CID.</p>
 <span><span class="co"># Need to remove NA values from the query as they will cause an error</span></span>
 <span><span class="va">result</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">cids</span><span class="op">)</span>, <span class="fu"><a href="../reference/mapCID2Properties.html">mapCID2Properties</a></span><span class="op">(</span>ids <span class="op">=</span> <span class="va">cids</span>, properties <span class="op">=</span> <span class="va">properties</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■                              </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■                            </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■                         </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■                      </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■                   </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■                           </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■                        </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■                     </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■                  </span></span></span>
 <span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■               </span></span></span>
 <span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■            </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■          </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■       </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■    </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■         </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■      </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   </span></span></span>
 <span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span></span></span>
-<span><span class="co">#&gt; Querying PubCHEM REST API.... <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■      </span>  83% | ETA:  6s</span></span>
-<span><span class="co">#&gt; Querying PubCHEM REST API.... <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% | ETA:  0s</span></span>
 <span><span class="co">#&gt;        CID MolecularFormula MolecularWeight                    InChIKey</span></span>
 <span><span class="co">#&gt;      &lt;int&gt;           &lt;char&gt;          &lt;char&gt;                      &lt;char&gt;</span></span>
 <span><span class="co">#&gt; 1:    2244           C9H8O4          180.16 BSYNRYMUTXBXSQ-UHFFFAOYSA-N</span></span>
@@ -440,13 +438,13 @@ PubChem. J Cheminform. 2019 Aug 9; 11:56. <a href="doi:10.1186/s13321-019-0375-2
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
 <span><span class="co">#&gt;  [1] crayon_1.5.3        cli_3.6.5           knitr_1.51         </span></span>
-<span><span class="co">#&gt;  [4] rlang_1.1.7         xfun_0.56           textshaping_1.0.5  </span></span>
+<span><span class="co">#&gt;  [4] rlang_1.1.7         xfun_0.57           textshaping_1.0.5  </span></span>
 <span><span class="co">#&gt;  [7] jsonlite_2.0.0      data.table_1.18.2.1 glue_1.8.0         </span></span>
-<span><span class="co">#&gt; [10] backports_1.5.0     htmltools_0.5.9     ragg_1.5.1         </span></span>
+<span><span class="co">#&gt; [10] backports_1.5.0     htmltools_0.5.9     ragg_1.5.2         </span></span>
 <span><span class="co">#&gt; [13] sass_0.4.10         rappdirs_0.3.4      rmarkdown_2.30     </span></span>
 <span><span class="co">#&gt; [16] evaluate_1.0.5      jquerylib_0.1.4     fastmap_1.2.0      </span></span>
 <span><span class="co">#&gt; [19] yaml_2.3.12         lifecycle_1.0.5     memoise_2.0.1      </span></span>
-<span><span class="co">#&gt; [22] httr2_1.2.2         compiler_4.5.3      fs_1.6.7           </span></span>
+<span><span class="co">#&gt; [22] httr2_1.2.2         compiler_4.5.3      fs_2.0.0           </span></span>
 <span><span class="co">#&gt; [25] systemfonts_1.3.2   digest_0.6.39       R6_2.6.1           </span></span>
 <span><span class="co">#&gt; [28] parallel_4.5.3      curl_7.0.0          magrittr_2.0.4     </span></span>
 <span><span class="co">#&gt; [31] bslib_0.10.0        checkmate_2.3.4     withr_3.0.2        </span></span>

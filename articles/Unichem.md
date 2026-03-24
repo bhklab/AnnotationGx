@@ -112,23 +112,24 @@ queryUnichemCompound(compound = "161671", type = "uci")
 #>  2:             DB00945         drugbank
 #>  3:                 AIN         rcsb_pdb
 #>  4:                4139           gtopdb
-#>  5:         CHEBI:15365            chebi
-#>  6:          R16CO5Y76E           fdasrs
-#>  7:                1353       surechembl
-#>  8:            29350479       surechembl
-#>  9:         HMDB0001879             hmdb
-#> 10:                2244          pubchem
-#> 11: Molport-000-871-622          molport
-#> 12:               22360        bindingdb
-#> 13:                  74      drugcentral
-#> 14:              159662           brenda
-#> 15:                2261           brenda
-#> 16:                3100           brenda
-#> 17:               32748           brenda
-#> 18:                4779           brenda
-#> 19:                6476           brenda
-#> 20:            PD002467 probes_and_drugs
-#> 21:              ACSALA             CCDC
+#>  5:                 AIN             pdbe
+#>  6:         CHEBI:15365            chebi
+#>  7:          R16CO5Y76E           fdasrs
+#>  8:                1353       surechembl
+#>  9:            29350479       surechembl
+#> 10:         HMDB0001879             hmdb
+#> 11:                2244          pubchem
+#> 12: Molport-000-871-622          molport
+#> 13:               22360        bindingdb
+#> 14:                  74      drugcentral
+#> 15:              159662           brenda
+#> 16:                2261           brenda
+#> 17:                3100           brenda
+#> 18:               32748           brenda
+#> 19:                4779           brenda
+#> 20:                6476           brenda
+#> 21:            PD002467 probes_and_drugs
+#> 22:              ACSALA             CCDC
 #>              compoundID             Name
 #>                  <char>           <char>
 #>                                        NameLong sourceID
@@ -137,23 +138,24 @@ queryUnichemCompound(compound = "161671", type = "uci")
 #>  2:                                    DrugBank        2
 #>  3:                                    RCSB PDB        3
 #>  4:                       Guide to Pharmacology        4
-#>  5:                                       ChEBI        7
-#>  6: FDA/USP Substance Registration System (SRS)       14
-#>  7:                                  SureChEMBL       15
+#>  5:                 Protein Data Bank in Europe        5
+#>  6:                                       ChEBI        7
+#>  7: FDA/USP Substance Registration System (SRS)       14
 #>  8:                                  SureChEMBL       15
-#>  9:                                        HMDB       18
-#> 10:                           PubChem Compounds       22
-#> 11:                                     MolPort       28
-#> 12:                                   BindingDB       31
-#> 13:                                 DrugCentral       34
-#> 14:                                      Brenda       37
+#>  9:                                  SureChEMBL       15
+#> 10:                                        HMDB       18
+#> 11:                           PubChem Compounds       22
+#> 12:                                     MolPort       28
+#> 13:                                   BindingDB       31
+#> 14:                                 DrugCentral       34
 #> 15:                                      Brenda       37
 #> 16:                                      Brenda       37
 #> 17:                                      Brenda       37
 #> 18:                                      Brenda       37
 #> 19:                                      Brenda       37
-#> 20:                                Probes&Drugs       49
-#> 21:         CSD (Cambridge Structural Database)       50
+#> 20:                                      Brenda       37
+#> 21:                                Probes&Drugs       49
+#> 22:         CSD (Cambridge Structural Database)       50
 #>                                        NameLong sourceID
 #>                                          <char>    <int>
 #>                                                                             sourceURL
@@ -162,23 +164,24 @@ queryUnichemCompound(compound = "161671", type = "uci")
 #>  2:                                             https://go.drugbank.com/drugs/DB00945
 #>  3:                                                   https://www.rcsb.org/ligand/AIN
 #>  4:       https://www.guidetopharmacology.org/GRAC/LigandDisplayForward?ligandId=4139
-#>  5:                                           https://www.ebi.ac.uk/chebi/CHEBI:15365
-#>  6:              https://d20b1koi85gdl2.cloudfront.net/uniisearch/srs/unii/R16CO5Y76E
-#>  7:                                          https://www.surechembl.org/chemical/1353
-#>  8:                                      https://www.surechembl.org/chemical/29350479
-#>  9:                                       https://www.hmdb.ca/metabolites/HMDB0001879
-#> 10:                                    https://pubchem.ncbi.nlm.nih.gov/compound/2244
-#> 11:                         https://www.molport.com/shop/compound/Molport-000-871-622
-#> 12: https://www.bindingdb.org/bind/chemsearch/marvin/MolStructure.jsp?monomerid=22360
-#> 13:                                               https://drugcentral.org/drugcard/74
-#> 14:                 https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=159662
-#> 15:                   https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=2261
-#> 16:                   https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=3100
-#> 17:                  https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=32748
-#> 18:                   https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=4779
-#> 19:                   https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=6476
-#> 20:                                   https://www.probes-drugs.org/compounds/PD002467
-#> 21:           https://www.ccdc.cam.ac.uk/structures/search?sid=UNICHEM&pid=csd:ACSALA
+#>  5:                 https://www.ebi.ac.uk/pdbe-srv/pdbechem/chemicalCompound/show/AIN
+#>  6:                                           https://www.ebi.ac.uk/chebi/CHEBI:15365
+#>  7:              https://d20b1koi85gdl2.cloudfront.net/uniisearch/srs/unii/R16CO5Y76E
+#>  8:                                          https://www.surechembl.org/chemical/1353
+#>  9:                                      https://www.surechembl.org/chemical/29350479
+#> 10:                                       https://www.hmdb.ca/metabolites/HMDB0001879
+#> 11:                                    https://pubchem.ncbi.nlm.nih.gov/compound/2244
+#> 12:                         https://www.molport.com/shop/compound/Molport-000-871-622
+#> 13: https://www.bindingdb.org/bind/chemsearch/marvin/MolStructure.jsp?monomerid=22360
+#> 14:                                               https://drugcentral.org/drugcard/74
+#> 15:                 https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=159662
+#> 16:                   https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=2261
+#> 17:                   https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=3100
+#> 18:                  https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=32748
+#> 19:                   https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=4779
+#> 20:                   https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=6476
+#> 21:                                   https://www.probes-drugs.org/compounds/PD002467
+#> 22:           https://www.ccdc.cam.ac.uk/structures/search?sid=UNICHEM&pid=csd:ACSALA
 #>                                                                             sourceURL
 #>                                                                                <char>
 #> 
@@ -229,13 +232,13 @@ sessionInfo()
 #> 
 #> loaded via a namespace (and not attached):
 #>  [1] cli_3.6.5           knitr_1.51          rlang_1.1.7        
-#>  [4] xfun_0.56           textshaping_1.0.5   jsonlite_2.0.0     
+#>  [4] xfun_0.57           textshaping_1.0.5   jsonlite_2.0.0     
 #>  [7] data.table_1.18.2.1 glue_1.8.0          backports_1.5.0    
-#> [10] htmltools_0.5.9     ragg_1.5.1          sass_0.4.10        
+#> [10] htmltools_0.5.9     ragg_1.5.2          sass_0.4.10        
 #> [13] rappdirs_0.3.4      rmarkdown_2.30      evaluate_1.0.5     
 #> [16] jquerylib_0.1.4     fastmap_1.2.0       yaml_2.3.12        
 #> [19] lifecycle_1.0.5     httr2_1.2.2         compiler_4.5.3     
-#> [22] fs_1.6.7            systemfonts_1.3.2   digest_0.6.39      
+#> [22] fs_2.0.0            systemfonts_1.3.2   digest_0.6.39      
 #> [25] R6_2.6.1            curl_7.0.0          magrittr_2.0.4     
 #> [28] bslib_0.10.0        checkmate_2.3.4     tools_4.5.3        
 #> [31] pkgdown_2.2.0       cachem_1.1.0        desc_1.4.3
