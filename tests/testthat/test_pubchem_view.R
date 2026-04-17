@@ -92,6 +92,18 @@ test_that("AnnotationGx::annotatePubchemCompound", {
   annotatePubchemCompound(CID, heading = "CAS", parse_function = fake_parser)
 })
 
+test_that("AnnotationGx:::.clean_parsed_annotation removes duplicate values", {
+  expect_equal(
+    AnnotationGx:::.clean_parsed_annotation(c("CHEMBL553", "CHEMBL553")),
+    "CHEMBL553"
+  )
+  expect_equal(
+    AnnotationGx:::.clean_parsed_annotation(c("A", "B", "A")),
+    "A; B"
+  )
+  expect_true(is.na(AnnotationGx:::.clean_parsed_annotation(NA_character_)))
+})
+
 test_that("AnnotationGx:::.build_pubchem_view_query", {
   # Test case 1: Test with default parameters
   query <- AnnotationGx:::.build_pubchem_view_query(id = "12345")

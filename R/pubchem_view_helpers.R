@@ -129,6 +129,13 @@
 #' @noRd
 #' @keywords internal
 .clean_parsed_annotation <- function(result) {
+  result <- result[!is.na(result)]
+  result <- unique(result)
+
+  if (length(result) == 0) {
+    return(NA_character_)
+  }
+
   # If returned value is a list, concatenate the elements into a single string with ";"
   if (length(result) > 1) {
     return(paste(result, collapse = "; "))
