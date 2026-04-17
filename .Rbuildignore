@@ -17,5 +17,6 @@ trash
 ^\.github$
 ^doc$
 ^Meta$
+^\.quarto$
 ^vignettes/articles$
 ^inst/extdata/bhklabAnnotationFiles/drugs_with_ids\\.csv$
