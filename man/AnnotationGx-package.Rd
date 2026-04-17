@@ -16,11 +16,11 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Jermiah Joseph \email{jermiah.joseph@gmail.com}
+\strong{Maintainer}: Michael Tran \email{michaelcao-anh.tran@uhn.ca}
 
 Authors:
 \itemize{
-  \item Michael Tran \email{michaelcao-anh.tran@uhn.ca}
+  \item Jermiah Joseph \email{jermiah.joseph@gmail.com}
   \item Christopher Eeles \email{christopher.eeles@uhnresearch.ca}
   \item Benjamin Haibe-Kains \email{benjamin.haibe.kains@utoronto.ca}
 }
