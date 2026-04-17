@@ -160,14 +160,14 @@ name use the <code>first = TRUE</code> argument:</p>
 <span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■                              </span></span></span>
 <span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■                             </span></span></span>
 <span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■                          </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■                        </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■                     </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■                       </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■                    </span></span></span>
 <span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■                 </span></span></span>
 <span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■              </span></span></span>
 <span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■           </span></span></span>
 <span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■        </span></span></span>
 <span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■     </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  </span></span></span>
 <span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span></span></span>
 <span><span class="co">#&gt;                  name    cids</span></span>
 <span><span class="co">#&gt;                &lt;char&gt;   &lt;int&gt;</span></span>
@@ -184,7 +184,18 @@ returned and a warning will be issued.</p>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">drugs</span>, <span class="st">"non existent compound"</span>, <span class="st">"another bad compound"</span><span class="op">)</span>,</span>
 <span>  first <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">[13:25:02][WARNING][AnnotationGx::getPubchemCompound]  Some queries failed. See the 'failed' object for details. </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■                              </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■                           </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■                        </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■                     </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■                  </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■               </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■            </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■         </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■      </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   </span></span></span>
+<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">[20:56:34][WARNING][AnnotationGx::getPubchemCompound]  Some queries failed. See the 'failed' object for details. </span></span></span>
 <span><span class="co">#&gt;                     name    cids</span></span>
 <span><span class="co">#&gt;                   &lt;char&gt;   &lt;int&gt;</span></span>
 <span><span class="co">#&gt; 1:               Aspirin    2244</span></span>
@@ -228,50 +239,50 @@ the compound. To view the available properties from Pubchem, use the
 <span><span class="co">#&gt;  2:         MolecularFormula       string</span></span>
 <span><span class="co">#&gt;  3:          MolecularWeight       string</span></span>
 <span><span class="co">#&gt;  4:                   SMILES       string</span></span>
-<span><span class="co">#&gt;  5:          CanonicalSMILES       string</span></span>
-<span><span class="co">#&gt;  6:           IsomericSMILES       string</span></span>
-<span><span class="co">#&gt;  7:                    InChI       string</span></span>
-<span><span class="co">#&gt;  8:                 InChIKey       string</span></span>
-<span><span class="co">#&gt;  9:                IUPACName       string</span></span>
-<span><span class="co">#&gt; 10:                    XLogP       double</span></span>
-<span><span class="co">#&gt; 11:                ExactMass       string</span></span>
-<span><span class="co">#&gt; 12:         MonoisotopicMass       string</span></span>
-<span><span class="co">#&gt; 13:                     TPSA       double</span></span>
-<span><span class="co">#&gt; 14:               Complexity          int</span></span>
-<span><span class="co">#&gt; 15:                   Charge          int</span></span>
-<span><span class="co">#&gt; 16:          HBondDonorCount          int</span></span>
-<span><span class="co">#&gt; 17:       HBondAcceptorCount          int</span></span>
-<span><span class="co">#&gt; 18:       RotatableBondCount          int</span></span>
-<span><span class="co">#&gt; 19:           HeavyAtomCount          int</span></span>
-<span><span class="co">#&gt; 20:         IsotopeAtomCount          int</span></span>
-<span><span class="co">#&gt; 21:          AtomStereoCount          int</span></span>
-<span><span class="co">#&gt; 22:   DefinedAtomStereoCount          int</span></span>
-<span><span class="co">#&gt; 23: UndefinedAtomStereoCount          int</span></span>
-<span><span class="co">#&gt; 24:          BondStereoCount          int</span></span>
-<span><span class="co">#&gt; 25:   DefinedBondStereoCount          int</span></span>
-<span><span class="co">#&gt; 26: UndefinedBondStereoCount          int</span></span>
-<span><span class="co">#&gt; 27:        CovalentUnitCount          int</span></span>
-<span><span class="co">#&gt; 28:                 Volume3D       double</span></span>
-<span><span class="co">#&gt; 29:      XStericQuadrupole3D       double</span></span>
-<span><span class="co">#&gt; 30:      YStericQuadrupole3D       double</span></span>
-<span><span class="co">#&gt; 31:      ZStericQuadrupole3D       double</span></span>
-<span><span class="co">#&gt; 32:           FeatureCount3D          int</span></span>
-<span><span class="co">#&gt; 33:   FeatureAcceptorCount3D          int</span></span>
-<span><span class="co">#&gt; 34:      FeatureDonorCount3D          int</span></span>
-<span><span class="co">#&gt; 35:      FeatureAnionCount3D          int</span></span>
-<span><span class="co">#&gt; 36:     FeatureCationCount3D          int</span></span>
-<span><span class="co">#&gt; 37:       FeatureRingCount3D          int</span></span>
-<span><span class="co">#&gt; 38: FeatureHydrophobeCount3D          int</span></span>
-<span><span class="co">#&gt; 39:     ConformerModelRMSD3D       double</span></span>
-<span><span class="co">#&gt; 40:    EffectiveRotorCount3D       double</span></span>
-<span><span class="co">#&gt; 41:         ConformerCount3D          int</span></span>
-<span><span class="co">#&gt; 42:            Fingerprint2D base64Binary</span></span>
-<span><span class="co">#&gt; 43:                    Title       string</span></span>
-<span><span class="co">#&gt; 44:              PatentCount          int</span></span>
-<span><span class="co">#&gt; 45:        PatentFamilyCount          int</span></span>
-<span><span class="co">#&gt; 46:          LiteratureCount          int</span></span>
-<span><span class="co">#&gt; 47:          AnnotationTypes       string</span></span>
-<span><span class="co">#&gt; 48:      AnnotationTypeCount          int</span></span>
+<span><span class="co">#&gt;  5:       ConnectivitySMILES       string</span></span>
+<span><span class="co">#&gt;  6:                    InChI       string</span></span>
+<span><span class="co">#&gt;  7:                 InChIKey       string</span></span>
+<span><span class="co">#&gt;  8:                IUPACName       string</span></span>
+<span><span class="co">#&gt;  9:                    XLogP       double</span></span>
+<span><span class="co">#&gt; 10:                ExactMass       string</span></span>
+<span><span class="co">#&gt; 11:         MonoisotopicMass       string</span></span>
+<span><span class="co">#&gt; 12:                     TPSA       double</span></span>
+<span><span class="co">#&gt; 13:               Complexity          int</span></span>
+<span><span class="co">#&gt; 14:                   Charge          int</span></span>
+<span><span class="co">#&gt; 15:          HBondDonorCount          int</span></span>
+<span><span class="co">#&gt; 16:       HBondAcceptorCount          int</span></span>
+<span><span class="co">#&gt; 17:       RotatableBondCount          int</span></span>
+<span><span class="co">#&gt; 18:           HeavyAtomCount          int</span></span>
+<span><span class="co">#&gt; 19:         IsotopeAtomCount          int</span></span>
+<span><span class="co">#&gt; 20:          AtomStereoCount          int</span></span>
+<span><span class="co">#&gt; 21:   DefinedAtomStereoCount          int</span></span>
+<span><span class="co">#&gt; 22: UndefinedAtomStereoCount          int</span></span>
+<span><span class="co">#&gt; 23:          BondStereoCount          int</span></span>
+<span><span class="co">#&gt; 24:   DefinedBondStereoCount          int</span></span>
+<span><span class="co">#&gt; 25: UndefinedBondStereoCount          int</span></span>
+<span><span class="co">#&gt; 26:        CovalentUnitCount          int</span></span>
+<span><span class="co">#&gt; 27:                 Volume3D       double</span></span>
+<span><span class="co">#&gt; 28:      XStericQuadrupole3D       double</span></span>
+<span><span class="co">#&gt; 29:      YStericQuadrupole3D       double</span></span>
+<span><span class="co">#&gt; 30:      ZStericQuadrupole3D       double</span></span>
+<span><span class="co">#&gt; 31:           FeatureCount3D          int</span></span>
+<span><span class="co">#&gt; 32:   FeatureAcceptorCount3D          int</span></span>
+<span><span class="co">#&gt; 33:      FeatureDonorCount3D          int</span></span>
+<span><span class="co">#&gt; 34:      FeatureAnionCount3D          int</span></span>
+<span><span class="co">#&gt; 35:     FeatureCationCount3D          int</span></span>
+<span><span class="co">#&gt; 36:       FeatureRingCount3D          int</span></span>
+<span><span class="co">#&gt; 37: FeatureHydrophobeCount3D          int</span></span>
+<span><span class="co">#&gt; 38:     ConformerModelRMSD3D       double</span></span>
+<span><span class="co">#&gt; 39:    EffectiveRotorCount3D       double</span></span>
+<span><span class="co">#&gt; 40:         ConformerCount3D          int</span></span>
+<span><span class="co">#&gt; 41:            Fingerprint2D base64Binary</span></span>
+<span><span class="co">#&gt; 42:                    Title       string</span></span>
+<span><span class="co">#&gt; 43:              PatentCount          int</span></span>
+<span><span class="co">#&gt; 44:        PatentFamilyCount          int</span></span>
+<span><span class="co">#&gt; 45:          LiteratureCount          int</span></span>
+<span><span class="co">#&gt; 46:          AnnotationTypes       string</span></span>
+<span><span class="co">#&gt; 47:      AnnotationTypeCount          int</span></span>
+<span><span class="co">#&gt; 48:         SourceCategories       string</span></span>
 <span><span class="co">#&gt;                         name         type</span></span>
 <span><span class="co">#&gt;                       &lt;char&gt;       &lt;char&gt;</span></span></code></pre></div>
 <p>After deciding which properties to query, you can use the
@@ -282,17 +293,6 @@ specific CID.</p>
 <span></span>
 <span><span class="co"># Need to remove NA values from the query as they will cause an error</span></span>
 <span><span class="va">result</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">cids</span><span class="op">)</span>, <span class="fu"><a href="../reference/mapCID2Properties.html">mapCID2Properties</a></span><span class="op">(</span>ids <span class="op">=</span> <span class="va">cids</span>, properties <span class="op">=</span> <span class="va">properties</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■                              </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■                           </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■                        </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■                     </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■                  </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■               </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■            </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■         </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■      </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   </span></span></span>
-<span><span class="co">#&gt; Waiting 30s for retry backoff <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span></span></span>
 <span><span class="co">#&gt;        CID MolecularFormula MolecularWeight                    InChIKey</span></span>
 <span><span class="co">#&gt;      &lt;int&gt;           &lt;char&gt;          &lt;char&gt;                      &lt;char&gt;</span></span>
 <span><span class="co">#&gt; 1:    2244           C9H8O4          180.16 BSYNRYMUTXBXSQ-UHFFFAOYSA-N</span></span>
@@ -332,11 +332,11 @@ get the available annotation headings and types.</p>
 <span><span class="co">#&gt;   4: 17O NMR Spectra Compound</span></span>
 <span><span class="co">#&gt;   5: 19F NMR Spectra Compound</span></span>
 <span><span class="co">#&gt;  ---                         </span></span>
-<span><span class="co">#&gt; 694:       Withdrawn Compound</span></span>
-<span><span class="co">#&gt; 695:     WormBase ID     Gene</span></span>
-<span><span class="co">#&gt; 696:     WormBase ID  Protein</span></span>
-<span><span class="co">#&gt; 697: Xenbase Gene ID     Gene</span></span>
-<span><span class="co">#&gt; 698:         ZFIN ID     Gene</span></span></code></pre></div>
+<span><span class="co">#&gt; 697:       Withdrawn Compound</span></span>
+<span><span class="co">#&gt; 698:     WormBase ID     Gene</span></span>
+<span><span class="co">#&gt; 699:     WormBase ID  Protein</span></span>
+<span><span class="co">#&gt; 700: Xenbase Gene ID     Gene</span></span>
+<span><span class="co">#&gt; 701:         ZFIN ID     Gene</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="get-annotation-headings-for-a-specific-type">Get annotation headings for a specific type:<a class="anchor" aria-label="anchor" href="#get-annotation-headings-for-a-specific-type"></a>
@@ -351,11 +351,11 @@ get the available annotation headings and types.</p>
 <span><span class="co">#&gt;   4:         17O NMR Spectra Compound</span></span>
 <span><span class="co">#&gt;   5:         19F NMR Spectra Compound</span></span>
 <span><span class="co">#&gt;  ---                                 </span></span>
-<span><span class="co">#&gt; 525: WHO Essential Medicines Compound</span></span>
-<span><span class="co">#&gt; 526:                Wikidata Compound</span></span>
-<span><span class="co">#&gt; 527:               Wikipedia Compound</span></span>
-<span><span class="co">#&gt; 528:        Wiley References Compound</span></span>
-<span><span class="co">#&gt; 529:               Withdrawn Compound</span></span></code></pre></div>
+<span><span class="co">#&gt; 529: WHO Essential Medicines Compound</span></span>
+<span><span class="co">#&gt; 530:                Wikidata Compound</span></span>
+<span><span class="co">#&gt; 531:               Wikipedia Compound</span></span>
+<span><span class="co">#&gt; 532:        Wiley References Compound</span></span>
+<span><span class="co">#&gt; 533:               Withdrawn Compound</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="get-annotation-headings-for-a-specific-heading">Get annotation headings for a specific heading:<a class="anchor" aria-label="anchor" href="#get-annotation-headings-for-a-specific-heading"></a>
@@ -415,7 +415,7 @@ PubChem. J Cheminform. 2019 Aug 9; 11:56. <a href="doi:10.1186/s13321-019-0375-2
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; R version 4.5.3 (2026-03-11)</span></span>
 <span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu</span></span>
-<span><span class="co">#&gt; Running under: Ubuntu 24.04.3 LTS</span></span>
+<span><span class="co">#&gt; Running under: Ubuntu 24.04.4 LTS</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Matrix products: default</span></span>
 <span><span class="co">#&gt; BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 </span></span>
@@ -437,16 +437,16 @@ PubChem. J Cheminform. 2019 Aug 9; 11:56. <a href="doi:10.1186/s13321-019-0375-2
 <span><span class="co">#&gt; [1] AnnotationGx_0.99.1</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
-<span><span class="co">#&gt;  [1] crayon_1.5.3        cli_3.6.5           knitr_1.51         </span></span>
-<span><span class="co">#&gt;  [4] rlang_1.1.7         xfun_0.57           textshaping_1.0.5  </span></span>
+<span><span class="co">#&gt;  [1] crayon_1.5.3        cli_3.6.6           knitr_1.51         </span></span>
+<span><span class="co">#&gt;  [4] rlang_1.2.0         xfun_0.57           textshaping_1.0.5  </span></span>
 <span><span class="co">#&gt;  [7] jsonlite_2.0.0      data.table_1.18.2.1 glue_1.8.0         </span></span>
-<span><span class="co">#&gt; [10] backports_1.5.0     htmltools_0.5.9     ragg_1.5.2         </span></span>
-<span><span class="co">#&gt; [13] sass_0.4.10         rappdirs_0.3.4      rmarkdown_2.30     </span></span>
+<span><span class="co">#&gt; [10] backports_1.5.1     htmltools_0.5.9     ragg_1.5.2         </span></span>
+<span><span class="co">#&gt; [13] sass_0.4.10         rappdirs_0.3.4      rmarkdown_2.31     </span></span>
 <span><span class="co">#&gt; [16] evaluate_1.0.5      jquerylib_0.1.4     fastmap_1.2.0      </span></span>
-<span><span class="co">#&gt; [19] yaml_2.3.12         lifecycle_1.0.5     memoise_2.0.1      </span></span>
-<span><span class="co">#&gt; [22] httr2_1.2.2         compiler_4.5.3      fs_2.0.0           </span></span>
+<span><span class="co">#&gt; [19] yaml_2.3.12         lifecycle_1.0.5     httr2_1.2.2        </span></span>
+<span><span class="co">#&gt; [22] memoise_2.0.1       compiler_4.5.3      fs_2.0.1           </span></span>
 <span><span class="co">#&gt; [25] systemfonts_1.3.2   digest_0.6.39       R6_2.6.1           </span></span>
-<span><span class="co">#&gt; [28] parallel_4.5.3      curl_7.0.0          magrittr_2.0.4     </span></span>
+<span><span class="co">#&gt; [28] parallel_4.5.3      curl_7.0.0          magrittr_2.0.5     </span></span>
 <span><span class="co">#&gt; [31] bslib_0.10.0        checkmate_2.3.4     withr_3.0.2        </span></span>
 <span><span class="co">#&gt; [34] tools_4.5.3         xml2_1.5.2          pkgdown_2.2.0      </span></span>
 <span><span class="co">#&gt; [37] cachem_1.1.0        desc_1.4.3</span></span></code></pre></div>

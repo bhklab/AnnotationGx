@@ -37,11 +37,11 @@ getPubchemAnnotationHeadings()
 #>   4: 17O NMR Spectra Compound
 #>   5: 19F NMR Spectra Compound
 #>  ---                         
-#> 694:       Withdrawn Compound
-#> 695:     WormBase ID     Gene
-#> 696:     WormBase ID  Protein
-#> 697: Xenbase Gene ID     Gene
-#> 698:         ZFIN ID     Gene
+#> 697:       Withdrawn Compound
+#> 698:     WormBase ID     Gene
+#> 699:     WormBase ID  Protein
+#> 700: Xenbase Gene ID     Gene
+#> 701:         ZFIN ID     Gene
 getPubchemAnnotationHeadings(type = "Compound")
 #>                      Heading     Type
 #>                       <char>   <char>
@@ -51,11 +51,11 @@ getPubchemAnnotationHeadings(type = "Compound")
 #>   4:         17O NMR Spectra Compound
 #>   5:         19F NMR Spectra Compound
 #>  ---                                 
-#> 525: WHO Essential Medicines Compound
-#> 526:                Wikidata Compound
-#> 527:               Wikipedia Compound
-#> 528:        Wiley References Compound
-#> 529:               Withdrawn Compound
+#> 529: WHO Essential Medicines Compound
+#> 530:                Wikidata Compound
+#> 531:               Wikipedia Compound
+#> 532:        Wiley References Compound
+#> 533:               Withdrawn Compound
 getPubchemAnnotationHeadings(heading = "ChEMBL*")
 #>                Heading     Type
 #>                 <char>   <char>

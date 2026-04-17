@@ -84,14 +84,14 @@ mapCompound2CID(drugs, first = TRUE)
 #> Waiting 30s for retry backoff ■■                              
 #> Waiting 30s for retry backoff ■■■                             
 #> Waiting 30s for retry backoff ■■■■■■                          
-#> Waiting 30s for retry backoff ■■■■■■■■                        
-#> Waiting 30s for retry backoff ■■■■■■■■■■■                     
+#> Waiting 30s for retry backoff ■■■■■■■■■                       
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■                    
 #> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■                 
 #> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■              
 #> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■           
 #> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■        
 #> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■     
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
 #>                  name    cids
 #>                <char>   <int>
@@ -111,7 +111,18 @@ a warning will be issued.
   c(drugs, "non existent compound", "another bad compound"),
   first = TRUE
 ))
-#> [13:25:02][WARNING][AnnotationGx::getPubchemCompound]  Some queries failed. See the 'failed' object for details. 
+#> Waiting 30s for retry backoff ■■                              
+#> Waiting 30s for retry backoff ■■■■■                           
+#> Waiting 30s for retry backoff ■■■■■■■■                        
+#> Waiting 30s for retry backoff ■■■■■■■■■■■                     
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■                  
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■               
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■            
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■         
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■      
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
+#> [20:56:34][WARNING][AnnotationGx::getPubchemCompound]  Some queries failed. See the 'failed' object for details. 
 #>                     name    cids
 #>                   <char>   <int>
 #> 1:               Aspirin    2244
@@ -156,50 +167,50 @@ getPubchemProperties()
 #>  2:         MolecularFormula       string
 #>  3:          MolecularWeight       string
 #>  4:                   SMILES       string
-#>  5:          CanonicalSMILES       string
-#>  6:           IsomericSMILES       string
-#>  7:                    InChI       string
-#>  8:                 InChIKey       string
-#>  9:                IUPACName       string
-#> 10:                    XLogP       double
-#> 11:                ExactMass       string
-#> 12:         MonoisotopicMass       string
-#> 13:                     TPSA       double
-#> 14:               Complexity          int
-#> 15:                   Charge          int
-#> 16:          HBondDonorCount          int
-#> 17:       HBondAcceptorCount          int
-#> 18:       RotatableBondCount          int
-#> 19:           HeavyAtomCount          int
-#> 20:         IsotopeAtomCount          int
-#> 21:          AtomStereoCount          int
-#> 22:   DefinedAtomStereoCount          int
-#> 23: UndefinedAtomStereoCount          int
-#> 24:          BondStereoCount          int
-#> 25:   DefinedBondStereoCount          int
-#> 26: UndefinedBondStereoCount          int
-#> 27:        CovalentUnitCount          int
-#> 28:                 Volume3D       double
-#> 29:      XStericQuadrupole3D       double
-#> 30:      YStericQuadrupole3D       double
-#> 31:      ZStericQuadrupole3D       double
-#> 32:           FeatureCount3D          int
-#> 33:   FeatureAcceptorCount3D          int
-#> 34:      FeatureDonorCount3D          int
-#> 35:      FeatureAnionCount3D          int
-#> 36:     FeatureCationCount3D          int
-#> 37:       FeatureRingCount3D          int
-#> 38: FeatureHydrophobeCount3D          int
-#> 39:     ConformerModelRMSD3D       double
-#> 40:    EffectiveRotorCount3D       double
-#> 41:         ConformerCount3D          int
-#> 42:            Fingerprint2D base64Binary
-#> 43:                    Title       string
-#> 44:              PatentCount          int
-#> 45:        PatentFamilyCount          int
-#> 46:          LiteratureCount          int
-#> 47:          AnnotationTypes       string
-#> 48:      AnnotationTypeCount          int
+#>  5:       ConnectivitySMILES       string
+#>  6:                    InChI       string
+#>  7:                 InChIKey       string
+#>  8:                IUPACName       string
+#>  9:                    XLogP       double
+#> 10:                ExactMass       string
+#> 11:         MonoisotopicMass       string
+#> 12:                     TPSA       double
+#> 13:               Complexity          int
+#> 14:                   Charge          int
+#> 15:          HBondDonorCount          int
+#> 16:       HBondAcceptorCount          int
+#> 17:       RotatableBondCount          int
+#> 18:           HeavyAtomCount          int
+#> 19:         IsotopeAtomCount          int
+#> 20:          AtomStereoCount          int
+#> 21:   DefinedAtomStereoCount          int
+#> 22: UndefinedAtomStereoCount          int
+#> 23:          BondStereoCount          int
+#> 24:   DefinedBondStereoCount          int
+#> 25: UndefinedBondStereoCount          int
+#> 26:        CovalentUnitCount          int
+#> 27:                 Volume3D       double
+#> 28:      XStericQuadrupole3D       double
+#> 29:      YStericQuadrupole3D       double
+#> 30:      ZStericQuadrupole3D       double
+#> 31:           FeatureCount3D          int
+#> 32:   FeatureAcceptorCount3D          int
+#> 33:      FeatureDonorCount3D          int
+#> 34:      FeatureAnionCount3D          int
+#> 35:     FeatureCationCount3D          int
+#> 36:       FeatureRingCount3D          int
+#> 37: FeatureHydrophobeCount3D          int
+#> 38:     ConformerModelRMSD3D       double
+#> 39:    EffectiveRotorCount3D       double
+#> 40:         ConformerCount3D          int
+#> 41:            Fingerprint2D base64Binary
+#> 42:                    Title       string
+#> 43:              PatentCount          int
+#> 44:        PatentFamilyCount          int
+#> 45:          LiteratureCount          int
+#> 46:          AnnotationTypes       string
+#> 47:      AnnotationTypeCount          int
+#> 48:         SourceCategories       string
 #>                         name         type
 #>                       <char>       <char>
 ```
@@ -212,17 +223,6 @@ properties <- c("Title", "MolecularFormula", "InChIKey", "MolecularWeight")
 
 # Need to remove NA values from the query as they will cause an error
 result[!is.na(cids), mapCID2Properties(ids = cids, properties = properties)]
-#> Waiting 30s for retry backoff ■■                              
-#> Waiting 30s for retry backoff ■■■■■                           
-#> Waiting 30s for retry backoff ■■■■■■■■                        
-#> Waiting 30s for retry backoff ■■■■■■■■■■■                     
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■                  
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■               
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■            
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■         
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■      
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
 #>        CID MolecularFormula MolecularWeight                    InChIKey
 #>      <int>           <char>          <char>                      <char>
 #> 1:    2244           C9H8O4          180.16 BSYNRYMUTXBXSQ-UHFFFAOYSA-N
@@ -262,11 +262,11 @@ getPubchemAnnotationHeadings()
 #>   4: 17O NMR Spectra Compound
 #>   5: 19F NMR Spectra Compound
 #>  ---                         
-#> 694:       Withdrawn Compound
-#> 695:     WormBase ID     Gene
-#> 696:     WormBase ID  Protein
-#> 697: Xenbase Gene ID     Gene
-#> 698:         ZFIN ID     Gene
+#> 697:       Withdrawn Compound
+#> 698:     WormBase ID     Gene
+#> 699:     WormBase ID  Protein
+#> 700: Xenbase Gene ID     Gene
+#> 701:         ZFIN ID     Gene
 ```
 
 #### Get annotation headings for a specific type:
@@ -281,11 +281,11 @@ getPubchemAnnotationHeadings(type = "Compound")
 #>   4:         17O NMR Spectra Compound
 #>   5:         19F NMR Spectra Compound
 #>  ---                                 
-#> 525: WHO Essential Medicines Compound
-#> 526:                Wikidata Compound
-#> 527:               Wikipedia Compound
-#> 528:        Wiley References Compound
-#> 529:               Withdrawn Compound
+#> 529: WHO Essential Medicines Compound
+#> 530:                Wikidata Compound
+#> 531:               Wikipedia Compound
+#> 532:        Wiley References Compound
+#> 533:               Withdrawn Compound
 ```
 
 #### Get annotation headings for a specific heading:
@@ -345,7 +345,7 @@ result
 sessionInfo()
 #> R version 4.5.3 (2026-03-11)
 #> Platform: x86_64-pc-linux-gnu
-#> Running under: Ubuntu 24.04.3 LTS
+#> Running under: Ubuntu 24.04.4 LTS
 #> 
 #> Matrix products: default
 #> BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
@@ -367,16 +367,16 @@ sessionInfo()
 #> [1] AnnotationGx_0.99.1
 #> 
 #> loaded via a namespace (and not attached):
-#>  [1] crayon_1.5.3        cli_3.6.5           knitr_1.51         
-#>  [4] rlang_1.1.7         xfun_0.57           textshaping_1.0.5  
+#>  [1] crayon_1.5.3        cli_3.6.6           knitr_1.51         
+#>  [4] rlang_1.2.0         xfun_0.57           textshaping_1.0.5  
 #>  [7] jsonlite_2.0.0      data.table_1.18.2.1 glue_1.8.0         
-#> [10] backports_1.5.0     htmltools_0.5.9     ragg_1.5.2         
-#> [13] sass_0.4.10         rappdirs_0.3.4      rmarkdown_2.30     
+#> [10] backports_1.5.1     htmltools_0.5.9     ragg_1.5.2         
+#> [13] sass_0.4.10         rappdirs_0.3.4      rmarkdown_2.31     
 #> [16] evaluate_1.0.5      jquerylib_0.1.4     fastmap_1.2.0      
-#> [19] yaml_2.3.12         lifecycle_1.0.5     memoise_2.0.1      
-#> [22] httr2_1.2.2         compiler_4.5.3      fs_2.0.0           
+#> [19] yaml_2.3.12         lifecycle_1.0.5     httr2_1.2.2        
+#> [22] memoise_2.0.1       compiler_4.5.3      fs_2.0.1           
 #> [25] systemfonts_1.3.2   digest_0.6.39       R6_2.6.1           
-#> [28] parallel_4.5.3      curl_7.0.0          magrittr_2.0.4     
+#> [28] parallel_4.5.3      curl_7.0.0          magrittr_2.0.5     
 #> [31] bslib_0.10.0        checkmate_2.3.4     withr_3.0.2        
 #> [34] tools_4.5.3         xml2_1.5.2          pkgdown_2.2.0      
 #> [37] cachem_1.1.0        desc_1.4.3

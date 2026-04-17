@@ -67,87 +67,32 @@ compound). If `raw = TRUE`, raw responses are returned instead.
 ``` r
 queryUnichemCompound(type = "sourceID", compound = "444795", sourceID = 22)
 #> $External_Mappings
-#>              compoundID             Name
-#>                  <char>           <char>
-#>  1:            CHEMBL38           chembl
-#>  2:             DB00755         drugbank
-#>  3:                 3KV         rcsb_pdb
-#>  4:                 REA         rcsb_pdb
-#>  5:                 REA             pdbe
-#>  6:         CHEBI:15367            chebi
-#>  7:          5688UTC01R           fdasrs
-#>  8:                3145       surechembl
-#>  9:         HMDB0001852             hmdb
-#> 10:              444795          pubchem
-#> 11: Molport-000-883-857          molport
-#> 12:               31883        bindingdb
-#> 13:        LMPR01090019        lipidmaps
-#> 14:                2722      drugcentral
-#> 15:               12679           brenda
-#> 16:              193381           brenda
-#> 17:               21231           brenda
-#> 18:                2354           brenda
-#> 19:              260365           brenda
-#> 20:                5126           brenda
-#> 21:                6481           brenda
-#> 22:            PD001430 probes_and_drugs
-#> 23:              VITAAC             CCDC
-#>              compoundID             Name
-#>                  <char>           <char>
-#>                                        NameLong sourceID
-#>                                          <char>    <int>
-#>  1:                                      ChEMBL        1
-#>  2:                                    DrugBank        2
-#>  3:                                    RCSB PDB        3
-#>  4:                                    RCSB PDB        3
-#>  5:                 Protein Data Bank in Europe        5
-#>  6:                                       ChEBI        7
-#>  7: FDA/USP Substance Registration System (SRS)       14
-#>  8:                                  SureChEMBL       15
-#>  9:                                        HMDB       18
-#> 10:                           PubChem Compounds       22
-#> 11:                                     MolPort       28
-#> 12:                                   BindingDB       31
-#> 13:       LIPID MAPS® Structure Database (LMSD)       33
-#> 14:                                 DrugCentral       34
-#> 15:                                      Brenda       37
-#> 16:                                      Brenda       37
-#> 17:                                      Brenda       37
-#> 18:                                      Brenda       37
-#> 19:                                      Brenda       37
-#> 20:                                      Brenda       37
-#> 21:                                      Brenda       37
-#> 22:                                Probes&Drugs       49
-#> 23:         CSD (Cambridge Structural Database)       50
-#>                                        NameLong sourceID
-#>                                          <char>    <int>
-#>                                                                             sourceURL
-#>                                                                                <char>
-#>  1:                          https://www.ebi.ac.uk/chembldb/compound/inspect/CHEMBL38
-#>  2:                                             https://go.drugbank.com/drugs/DB00755
-#>  3:                                                   https://www.rcsb.org/ligand/3KV
-#>  4:                                                   https://www.rcsb.org/ligand/REA
-#>  5:                 https://www.ebi.ac.uk/pdbe-srv/pdbechem/chemicalCompound/show/REA
-#>  6:                                           https://www.ebi.ac.uk/chebi/CHEBI:15367
-#>  7:              https://d20b1koi85gdl2.cloudfront.net/uniisearch/srs/unii/5688UTC01R
-#>  8:                                          https://www.surechembl.org/chemical/3145
-#>  9:                                       https://www.hmdb.ca/metabolites/HMDB0001852
-#> 10:                                  https://pubchem.ncbi.nlm.nih.gov/compound/444795
-#> 11:                         https://www.molport.com/shop/compound/Molport-000-883-857
-#> 12: https://www.bindingdb.org/bind/chemsearch/marvin/MolStructure.jsp?monomerid=31883
-#> 13:                   https://www.lipidmaps.org/data/LMSDRecord.php?LMID=LMPR01090019
-#> 14:                                             https://drugcentral.org/drugcard/2722
-#> 15:                  https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=12679
-#> 16:                 https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=193381
-#> 17:                  https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=21231
-#> 18:                   https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=2354
-#> 19:                 https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=260365
-#> 20:                   https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=5126
-#> 21:                   https://www.brenda-enzymes.org/ligand.php?brenda_ligand_id=6481
-#> 22:                                   https://www.probes-drugs.org/compounds/PD001430
-#> 23:           https://www.ccdc.cam.ac.uk/structures/search?sid=UNICHEM&pid=csd:VITAAC
-#>                                                                             sourceURL
-#>                                                                                <char>
+#>       compoundID             Name                            NameLong sourceID
+#>           <char>           <char>                              <char>    <int>
+#>   1:    CHEMBL38           chembl                              ChEMBL        1
+#>   2:     DB00755         drugbank                            DrugBank        2
+#>   3:         3KV         rcsb_pdb                            RCSB PDB        3
+#>   4:         REA         rcsb_pdb                            RCSB PDB        3
+#>   5:         REA             pdbe         Protein Data Bank in Europe        5
+#>  ---                                                                          
+#> 206: NCT06358677   clinicaltrials                     Clinical Trials       46
+#> 207: NCT06439888   clinicaltrials                     Clinical Trials       46
+#> 208: NCT06484920   clinicaltrials                     Clinical Trials       46
+#> 209:    PD001430 probes_and_drugs                        Probes&Drugs       49
+#> 210:      VITAAC             CCDC CSD (Cambridge Structural Database)       50
+#>                                                                    sourceURL
+#>                                                                       <char>
+#>   1:                https://www.ebi.ac.uk/chembldb/compound/inspect/CHEMBL38
+#>   2:                                   https://go.drugbank.com/drugs/DB00755
+#>   3:                                         https://www.rcsb.org/ligand/3KV
+#>   4:                                         https://www.rcsb.org/ligand/REA
+#>   5:       https://www.ebi.ac.uk/pdbe-srv/pdbechem/chemicalCompound/show/REA
+#>  ---                                                                        
+#> 206:                            https://clinicaltrials.gov/study/NCT06358677
+#> 207:                            https://clinicaltrials.gov/study/NCT06439888
+#> 208:                            https://clinicaltrials.gov/study/NCT06484920
+#> 209:                         https://www.probes-drugs.org/compounds/PD001430
+#> 210: https://www.ccdc.cam.ac.uk/structures/search?sid=UNICHEM&pid=csd:VITAAC
 #> 
 #> $UniChem_Mappings
 #> $UniChem_Mappings$UniChem.UCI

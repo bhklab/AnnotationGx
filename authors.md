@@ -2,13 +2,13 @@
 
 ## Authors
 
-- **Michael Tran**. Author.
+- **Michael Tran**. Author, maintainer.
 
 - **Jermiah Joseph**. Author.
 
 - **Christopher Eeles**. Author.
 
-- **Benjamin Haibe-Kains**. Author, maintainer.
+- **Benjamin Haibe-Kains**. Author.
 
 ## Citation
 

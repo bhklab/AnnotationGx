@@ -176,65 +176,65 @@ cancer type.
 
 ``` r
 getOncotreeTumorTypes()
-#>               code     color
-#>             <char>    <char>
-#>   1:        PLEURA      Blue
-#>   2:      PANCREAS    Purple
-#>   3:        CERVIX      Teal
-#>   4:          SKIN     Black
-#>   5: ADRENAL_GLAND    Purple
-#>  ---                        
-#> 893:        BIALCL LimeGreen
-#> 894:      ALCLALKP LimeGreen
-#> 895:      ALCLALKN LimeGreen
-#> 896:        PCALCL LimeGreen
-#> 897:           LYP LimeGreen
+#>          code        color
+#>        <char>       <char>
+#>   1:     BONE        White
+#>   2:     LUNG    Gainsboro
+#>   3:   UTERUS    PeachPuff
+#>   4:  STOMACH LightSkyBlue
+#>   5:   PLEURA         Blue
+#>  ---                      
+#> 893:   BIALCL    LimeGreen
+#> 894: ALCLALKP    LimeGreen
+#> 895: ALCLALKN    LimeGreen
+#> 896:   PCALCL    LimeGreen
+#> 897:      LYP    LimeGreen
 #>                                                          name
 #>                                                        <char>
-#>   1:                                                   Pleura
-#>   2:                                                 Pancreas
-#>   3:                                                   Cervix
-#>   4:                                                     Skin
-#>   5:                                            Adrenal Gland
+#>   1:                                                     Bone
+#>   2:                                                     Lung
+#>   3:                                                   Uterus
+#>   4:                                        Esophagus/Stomach
+#>   5:                                                   Pleura
 #>  ---                                                         
 #> 893: Breast Implant-Associated Anaplastic Large-Cell Lymphoma
 #> 894:              Anaplastic Large-Cell Lymphoma ALK Positive
 #> 895:              Anaplastic Large-Cell Lymphoma ALK Negative
 #> 896:         Primary Cutaneous Anaplastic Large Cell Lymphoma
 #> 897:                                   Lymphomatoid Papulosis
-#>                       mainType externalReferences  tissue      children parent
-#>                         <char>             <list>  <list>        <char> <char>
-#>   1:            Pleural Cancer           C0032225  C12469        Pleura TISSUE
-#>   2:         Pancreatic Cancer           C0030274  C12393      Pancreas TISSUE
-#>   3:           Cervical Cancer           C0007874  C12311        Cervix TISSUE
-#>   4:               Skin Cancer           C1123023  C12470          Skin TISSUE
-#>   5:      Adrenal Gland Cancer           C0001625  C12666 Adrenal Gland TISSUE
-#>  ---                                                                          
-#> 893: Mature T and NK Neoplasms           C4528210 C139012      Lymphoid   ALCL
-#> 894: Mature T and NK Neoplasms           C1332079  C37193      Lymphoid   ALCL
-#> 895: Mature T and NK Neoplasms           C1332078  C37194      Lymphoid   ALCL
-#> 896: Mature T and NK Neoplasms           C1301362   C6860      Lymphoid  PCLPD
-#> 897: Mature T and NK Neoplasms           C0206182   C3721      Lymphoid  PCLPD
-#>      history level revocations precursors
-#>       <list> <int>      <list>     <list>
-#>   1:             1                       
-#>   2:             1                       
-#>   3:             1                       
-#>   4:             1                       
-#>   5:             1                       
-#>  ---                                     
-#> 893:             6                       
-#> 894:             6                       
-#> 895:             6                       
-#> 896:             6                       
-#> 897:             6
+#>                       mainType externalReferences  tissue          children
+#>                         <char>             <list>  <list>            <char>
+#>   1:               Bone Cancer           C0262950  C12366              Bone
+#>   2:               Lung Cancer           C0024109  C12468              Lung
+#>   3:            Uterine Cancer           C0042149  C12405            Uterus
+#>   4: Esophageal/Stomach Cancer           C0038351  C12391 Esophagus/Stomach
+#>   5:            Pleural Cancer           C0032225  C12469            Pleura
+#>  ---                                                                       
+#> 893: Mature T and NK Neoplasms           C4528210 C139012          Lymphoid
+#> 894: Mature T and NK Neoplasms           C1332079  C37193          Lymphoid
+#> 895: Mature T and NK Neoplasms           C1332078  C37194          Lymphoid
+#> 896: Mature T and NK Neoplasms           C1301362   C6860          Lymphoid
+#> 897: Mature T and NK Neoplasms           C0206182   C3721          Lymphoid
+#>      parent history level revocations precursors
+#>      <char>  <list> <int>      <list>     <list>
+#>   1: TISSUE             1                       
+#>   2: TISSUE             1                       
+#>   3: TISSUE             1                       
+#>   4: TISSUE             1                       
+#>   5: TISSUE             1                       
+#>  ---                                            
+#> 893:   ALCL             6                       
+#> 894:   ALCL             6                       
+#> 895:   ALCL             6                       
+#> 896:  PCLPD             6                       
+#> 897:  PCLPD             6
 ```
 
 ``` r
 sessionInfo()
 #> R version 4.5.3 (2026-03-11)
 #> Platform: x86_64-pc-linux-gnu
-#> Running under: Ubuntu 24.04.3 LTS
+#> Running under: Ubuntu 24.04.4 LTS
 #> 
 #> Matrix products: default
 #> BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
@@ -256,15 +256,16 @@ sessionInfo()
 #> [1] AnnotationGx_0.99.1
 #> 
 #> loaded via a namespace (and not attached):
-#>  [1] cli_3.6.5           knitr_1.51          rlang_1.1.7        
+#>  [1] cli_3.6.6           knitr_1.51          rlang_1.2.0        
 #>  [4] xfun_0.57           textshaping_1.0.5   jsonlite_2.0.0     
-#>  [7] data.table_1.18.2.1 glue_1.8.0          backports_1.5.0    
+#>  [7] data.table_1.18.2.1 glue_1.8.0          backports_1.5.1    
 #> [10] htmltools_0.5.9     ragg_1.5.2          sass_0.4.10        
-#> [13] rappdirs_0.3.4      rmarkdown_2.30      evaluate_1.0.5     
+#> [13] rappdirs_0.3.4      rmarkdown_2.31      evaluate_1.0.5     
 #> [16] jquerylib_0.1.4     fastmap_1.2.0       yaml_2.3.12        
-#> [19] lifecycle_1.0.5     httr2_1.2.2         compiler_4.5.3     
-#> [22] fs_2.0.0            systemfonts_1.3.2   digest_0.6.39      
-#> [25] R6_2.6.1            curl_7.0.0          magrittr_2.0.4     
-#> [28] bslib_0.10.0        checkmate_2.3.4     tools_4.5.3        
-#> [31] pkgdown_2.2.0       cachem_1.1.0        desc_1.4.3
+#> [19] lifecycle_1.0.5     httr2_1.2.2         memoise_2.0.1      
+#> [22] compiler_4.5.3      fs_2.0.1            systemfonts_1.3.2  
+#> [25] digest_0.6.39       R6_2.6.1            curl_7.0.0         
+#> [28] magrittr_2.0.5      bslib_0.10.0        checkmate_2.3.4    
+#> [31] tools_4.5.3         pkgdown_2.2.0       cachem_1.1.0       
+#> [34] desc_1.4.3
 ```

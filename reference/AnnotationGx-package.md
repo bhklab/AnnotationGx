@@ -13,11 +13,11 @@ Useful links:
 
 ## Author
 
-**Maintainer**: Jermiah Joseph <jermiah.joseph@gmail.com>
+**Maintainer**: Michael Tran <michaelcao-anh.tran@uhn.ca>
 
 Authors:
 
-- Michael Tran <michaelcao-anh.tran@uhn.ca>
+- Jermiah Joseph <jermiah.joseph@gmail.com>
 
 - Christopher Eeles <christopher.eeles@uhnresearch.ca>
 

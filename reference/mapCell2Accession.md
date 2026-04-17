@@ -87,6 +87,8 @@ example, `sy` becomes `synonyms`).
 
 ``` r
 mapCell2Accession(ids = c("A549", "MCF7"))
+#> Querying Cellosaurus... ■■■■■■■■■■■■■■■■                  50% | ETA:  2s
+#> Querying Cellosaurus... ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100% | ETA:  0s
 #>    cellLineName accession  query
 #>          <char>    <char> <char>
 #> 1:        A-549 CVCL_0023   A549

@@ -40,12 +40,12 @@ parsed information from the response is also returned.
 ``` r
 getPubchemStatus()
 #> Throttling status:
-#> Request Count status: Green (1%)
+#> Request Count status: Green (0%)
 #> Request Time status: Green (0%)
-#> Service status: Green (20%)
+#> Service status: Green (30%)
 getPubchemStatus(returnMessage = TRUE)
 #> Throttling status:
-#> Request Count status: Green (0%)
+#> Request Count status: Green (1%)
 #> Request Time status: Green (0%)
 #> Service status: Green (37%)
 #> $request_count
@@ -53,7 +53,7 @@ getPubchemStatus(returnMessage = TRUE)
 #> [1] "Green"
 #> 
 #> $request_count$percent
-#> [1] 0
+#> [1] 1
 #> 
 #> 
 #> $request_time
