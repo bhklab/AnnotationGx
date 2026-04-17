@@ -2,6 +2,7 @@
 #'
 #' https://pubchem.ncbi.nlm.nih.gov/rest/pug/annotations/headings/JSON will return a list of all available headings
 #'
+#' @importFrom memoise memoise
 #' @keywords internal
 #' @noRd
 .get_all_heading_types_base <- function() {
@@ -12,7 +13,7 @@
 }
 
 #' @keywords internal
-.get_all_heading_types <- memoise::memoise(.get_all_heading_types_base)
+.get_all_heading_types <- memoise(.get_all_heading_types_base)
 
 #' Build a PubChem REST query URL
 #'
@@ -43,18 +44,38 @@
 #' @keywords internal
 #' @noRd
 .build_pubchem_view_query <- function(
-  id, annotation = "data", record = "compound",
-  page = NULL, version = NULL, heading = NULL, source = NULL,
-  output = "JSON", ...
+  id,
+  annotation = "data",
+  record = "compound",
+  page = NULL,
+  version = NULL,
+  heading = NULL,
+  source = NULL,
+  output = "JSON",
+  ...
 ) {
   funContext <- .funContext(".build_pubchem_view_query")
 
   # Check the inputs
   checkmate::assert_choice(
     annotation,
-    c("data", "index", "annotations", "categories", "neighbors", "literature", "structure", "image", "qr", "linkout")
+    c(
+      "data",
+      "index",
+      "annotations",
+      "categories",
+      "neighbors",
+      "literature",
+      "structure",
+      "image",
+      "qr",
+      "linkout"
+    )
   )
-  checkmate::assert_choice(record, c("compound", "substance", "assay", "cell", "gene", "protein"))
+  checkmate::assert_choice(
+    record,
+    c("compound", "substance", "assay", "cell", "gene", "protein")
+  )
 
   # Configure the options for the query
   opts_ <- list()
@@ -152,7 +173,10 @@
 #' @keywords internal
 .parseATCresponse <- function(result) {
   df <- result[["Record"]][["Reference"]]
-  df[df$SourceName == "WHO Anatomical Therapeutic Chemical (ATC) Classification", "SourceID"] |>
+  df[
+    df$SourceName == "WHO Anatomical Therapeutic Chemical (ATC) Classification",
+    "SourceID"
+  ] |>
     .clean_parsed_annotation()
 }
 
@@ -163,6 +187,9 @@
 #' @keywords internal
 .parseDILIresponse <- function(result) {
   df <- result[["Record"]][["Reference"]]
-  df[df$SourceName == "Drug Induced Liver Injury Rank (DILIrank) Dataset", "SourceID"] |>
+  df[
+    df$SourceName == "Drug Induced Liver Injury Rank (DILIrank) Dataset",
+    "SourceID"
+  ] |>
     .clean_parsed_annotation()
 }

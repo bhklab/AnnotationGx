@@ -2,6 +2,7 @@
 #'
 #' @export
 #'
+#' @import methods
 #' @details
 #' Intentionally only performs exact matching. Refer to `filterNested` function
 #' for partial matching support with regular expressions.
@@ -27,7 +28,9 @@
 #' showMethods("matchNested")
 setGeneric(
   name = "matchNested",
-  def = function(x, table, ..., keep_duplicates = FALSE) standardGeneric("matchNested"),
+  def = function(x, table, ..., keep_duplicates = FALSE) {
+    standardGeneric("matchNested")
+  },
   signature = c("x", "table", "keep_duplicates")
 )
 
