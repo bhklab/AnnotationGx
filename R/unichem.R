@@ -108,6 +108,70 @@ getUnichemSources <- function(all_columns = FALSE) {
   sources_dt[, c("Name", "SourceID")]
 }
 
+.parse_unichem_response <- function(
+  response,
+  request_label,
+  request = NULL,
+  max_attempts = 3L,
+  retry_delay = 1
+) {
+  attempt <- 1L
+  current_response <- response
+
+  while (attempt <= max_attempts) {
+    parsed <- tryCatch(
+      .parse_resp_json(current_response),
+      error = identity
+    )
+
+    if (!inherits(parsed, "error")) {
+      return(parsed)
+    }
+
+    content_type <- tryCatch(
+      httr2::resp_content_type(current_response),
+      error = function(...) "unknown"
+    )
+
+    if (
+      !is.null(request) &&
+        content_type != "application/json" &&
+        attempt < max_attempts
+    ) {
+      Sys.sleep(retry_delay)
+      current_response <- request |>
+        .perform_request()
+      attempt <- attempt + 1L
+      next
+    }
+
+    status <- tryCatch(
+      httr2::resp_status(current_response),
+      error = function(...) {
+        NA_integer_
+      }
+    )
+    body_preview <- tryCatch(
+      substr(httr2::resp_body_string(current_response), 1, 200),
+      error = function(...) "<response body unavailable>"
+    )
+
+    .err(
+      .funContext("AnnotationGx::queryUnichemCompound"),
+      paste0(
+        "UniChem returned a non-JSON response for ",
+        request_label,
+        " (status: ",
+        status,
+        ", content type: ",
+        content_type,
+        "). Body preview: ",
+        body_preview
+      )
+    )
+  }
+}
+
 #' Query UniChem for a compound.
 #'
 #' This function queries the UniChem API for a compound based on the provided parameters.
@@ -265,7 +329,18 @@ queryUnichemCompound <- function(
     responses <- .perform_request_parallel(requests, progress = progress)
     names(responses) <- names(requests)
 
-    parsed_responses <- Map(.parse_resp_json, responses)
+    parsed_responses <- Map(
+      function(response, request, cmp_label) {
+        .parse_unichem_response(
+          response,
+          paste0("compound `", cmp_label, "` with type `", type, "`"),
+          request = request
+        )
+      },
+      responses,
+      requests,
+      names(responses)
+    )
 
     if (raw) {
       names(parsed_responses) <- names(responses)
@@ -298,7 +373,11 @@ queryUnichemCompound <- function(
   }
 
   response <- request |> .perform_request()
-  parsed <- .parse_resp_json(response)
+  parsed <- .parse_unichem_response(
+    response,
+    paste0("compound `", compounds[[1L]], "` with type `", type, "`"),
+    request = request
+  )
 
   if (raw) {
     return(parsed)
