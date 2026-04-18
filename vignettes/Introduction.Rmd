@@ -6,7 +6,7 @@ author:
     - BHKLab 
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{1. Introduction to AnnotationGx}
+  %\VignetteIndexEntry{Introduction to AnnotationGx}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}  
 ---
