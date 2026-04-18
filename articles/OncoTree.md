@@ -176,58 +176,58 @@ cancer type.
 
 ``` r
 getOncotreeTumorTypes()
-#>          code        color
-#>        <char>       <char>
-#>   1:     BONE        White
-#>   2:     LUNG    Gainsboro
-#>   3:   UTERUS    PeachPuff
-#>   4:  STOMACH LightSkyBlue
-#>   5:   PLEURA         Blue
-#>  ---                      
-#> 893:   BIALCL    LimeGreen
-#> 894: ALCLALKP    LimeGreen
-#> 895: ALCLALKN    LimeGreen
-#> 896:   PCALCL    LimeGreen
-#> 897:      LYP    LimeGreen
+#>           code     color
+#>         <char>    <char>
+#>   1:   THYROID      Teal
+#>   2: HEAD_NECK   DarkRed
+#>   3:    THYMUS    Purple
+#>   4:     BRAIN      Gray
+#>   5:    KIDNEY    Orange
+#>  ---                    
+#> 893:  ALCLALKP LimeGreen
+#> 894:  ALCLALKN LimeGreen
+#> 895:    BIALCL LimeGreen
+#> 896:    PCALCL LimeGreen
+#> 897:       LYP LimeGreen
 #>                                                          name
 #>                                                        <char>
-#>   1:                                                     Bone
-#>   2:                                                     Lung
-#>   3:                                                   Uterus
-#>   4:                                        Esophagus/Stomach
-#>   5:                                                   Pleura
+#>   1:                                                  Thyroid
+#>   2:                                            Head and Neck
+#>   3:                                                   Thymus
+#>   4:                                                CNS/Brain
+#>   5:                                                   Kidney
 #>  ---                                                         
-#> 893: Breast Implant-Associated Anaplastic Large-Cell Lymphoma
-#> 894:              Anaplastic Large-Cell Lymphoma ALK Positive
-#> 895:              Anaplastic Large-Cell Lymphoma ALK Negative
+#> 893:              Anaplastic Large-Cell Lymphoma ALK Positive
+#> 894:              Anaplastic Large-Cell Lymphoma ALK Negative
+#> 895: Breast Implant-Associated Anaplastic Large-Cell Lymphoma
 #> 896:         Primary Cutaneous Anaplastic Large Cell Lymphoma
 #> 897:                                   Lymphomatoid Papulosis
-#>                       mainType externalReferences  tissue          children
-#>                         <char>             <list>  <list>            <char>
-#>   1:               Bone Cancer           C0262950  C12366              Bone
-#>   2:               Lung Cancer           C0024109  C12468              Lung
-#>   3:            Uterine Cancer           C0042149  C12405            Uterus
-#>   4: Esophageal/Stomach Cancer           C0038351  C12391 Esophagus/Stomach
-#>   5:            Pleural Cancer           C0032225  C12469            Pleura
-#>  ---                                                                       
-#> 893: Mature T and NK Neoplasms           C4528210 C139012          Lymphoid
-#> 894: Mature T and NK Neoplasms           C1332079  C37193          Lymphoid
-#> 895: Mature T and NK Neoplasms           C1332078  C37194          Lymphoid
-#> 896: Mature T and NK Neoplasms           C1301362   C6860          Lymphoid
-#> 897: Mature T and NK Neoplasms           C0206182   C3721          Lymphoid
-#>      parent history level revocations precursors
-#>      <char>  <list> <int>      <list>     <list>
-#>   1: TISSUE             1                       
-#>   2: TISSUE             1                       
-#>   3: TISSUE             1                       
-#>   4: TISSUE             1                       
-#>   5: TISSUE             1                       
-#>  ---                                            
-#> 893:   ALCL             6                       
-#> 894:   ALCL             6                       
-#> 895:   ALCL             6                       
-#> 896:  PCLPD             6                       
-#> 897:  PCLPD             6
+#>                       mainType externalReferences  tissue      children parent
+#>                         <char>             <list>  <list>        <char> <char>
+#>   1:            Thyroid Cancer           C0040132  C12400       Thyroid TISSUE
+#>   2:      Head and Neck Cancer           C0460004  C12418 Head and Neck TISSUE
+#>   3:             Thymic Cancer           C0040113  C12433        Thymus TISSUE
+#>   4:          CNS/Brain Cancer           C3714787  C12438     CNS/Brain TISSUE
+#>   5:             Kidney Cancer           C0022646  C12415        Kidney TISSUE
+#>  ---                                                                          
+#> 893: Mature T and NK Neoplasms           C1332079  C37193      Lymphoid   ALCL
+#> 894: Mature T and NK Neoplasms           C1332078  C37194      Lymphoid   ALCL
+#> 895: Mature T and NK Neoplasms           C4528210 C139012      Lymphoid   ALCL
+#> 896: Mature T and NK Neoplasms           C1301362   C6860      Lymphoid  PCLPD
+#> 897: Mature T and NK Neoplasms           C0206182   C3721      Lymphoid  PCLPD
+#>      history level revocations precursors
+#>       <list> <int>      <list>     <list>
+#>   1:             1                       
+#>   2:             1                       
+#>   3:             1                       
+#>   4:             1                       
+#>   5:             1                       
+#>  ---                                     
+#> 893:             6                       
+#> 894:             6                       
+#> 895:             6                       
+#> 896:             6                       
+#> 897:             6
 ```
 
 ``` r

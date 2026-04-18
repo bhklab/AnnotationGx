@@ -82,16 +82,15 @@ the `first = TRUE` argument:
 ``` r
 mapCompound2CID(drugs, first = TRUE)
 #> Waiting 30s for retry backoff ■■                              
-#> Waiting 30s for retry backoff ■■■                             
-#> Waiting 30s for retry backoff ■■■■■■                          
-#> Waiting 30s for retry backoff ■■■■■■■■■                       
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■                    
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■                 
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■              
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■           
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■        
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■     
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 30s for retry backoff ■■■■■                           
+#> Waiting 30s for retry backoff ■■■■■■■■                        
+#> Waiting 30s for retry backoff ■■■■■■■■■■■                     
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■                  
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■               
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■            
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■         
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■      
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   
 #> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
 #>                  name    cids
 #>                <char>   <int>
@@ -111,18 +110,7 @@ a warning will be issued.
   c(drugs, "non existent compound", "another bad compound"),
   first = TRUE
 ))
-#> Waiting 30s for retry backoff ■■                              
-#> Waiting 30s for retry backoff ■■■■■                           
-#> Waiting 30s for retry backoff ■■■■■■■■                        
-#> Waiting 30s for retry backoff ■■■■■■■■■■■                     
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■                  
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■               
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■            
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■         
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■      
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
-#> [20:56:34][WARNING][AnnotationGx::getPubchemCompound]  Some queries failed. See the 'failed' object for details. 
+#> [02:33:57][WARNING][AnnotationGx::getPubchemCompound]  Some queries failed. See the 'failed' object for details. 
 #>                     name    cids
 #>                   <char>   <int>
 #> 1:               Aspirin    2244
