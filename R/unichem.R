@@ -32,11 +32,14 @@
 #' @export
 getUnichemSources <- function(all_columns = FALSE) {
   funContext <- .funContext("AnnotationGx::getUnichemSources")
-
-  response <- .build_unichem_query("sources") |>
-    .build_request() |>
+  request <- .build_unichem_query("sources") |>
+    .build_request()
+  response <- request |>
     .perform_request() |>
-    .parse_resp_json()
+    .parse_unichem_response(
+      request_label = "UniChem sources",
+      request = request
+    )
 
   if (response$response != "Success") {
     .err(funContext, "Unichem API request failed.")
