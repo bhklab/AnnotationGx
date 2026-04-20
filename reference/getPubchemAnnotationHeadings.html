@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">AnnotationGx</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.99.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.99.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -82,43 +82,21 @@ Options include "Compound", "Gene", "Taxonomy", "Element", "Assay", "Protein", "
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">getPubchemAnnotationHeadings</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              Heading     Type</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;char&gt;   &lt;char&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1: 11B NMR Spectra Compound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   2: 13C NMR Spectra Compound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   3: 15N NMR Spectra Compound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   4: 17O NMR Spectra Compound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   5: 19F NMR Spectra Compound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ---                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 697:       Withdrawn Compound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 698:     WormBase ID     Gene</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 699:     WormBase ID  Protein</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 700: Xenbase Gene ID     Gene</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 701:         ZFIN ID     Gene</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: PUGREST.ServerBusy</span>
 <span class="r-in"><span><span class="fu">getPubchemAnnotationHeadings</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"Compound"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                      Heading     Type</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                       &lt;char&gt;   &lt;char&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1:         11B NMR Spectra Compound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   2:         13C NMR Spectra Compound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   3:         15N NMR Spectra Compound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   4:         17O NMR Spectra Compound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   5:         19F NMR Spectra Compound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 529: WHO Essential Medicines Compound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 530:                Wikidata Compound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 531:               Wikipedia Compound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 532:        Wiley References Compound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 533:               Withdrawn Compound</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">[13:58:02][WARNING][AnnotationGx::getPubchemAnnotationHeadings]  No headings found for type: ` Compound ` and heading: `  `.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">Try getPubchemAnnotationHeadings(type = 'all') for available headings and types </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Empty data.table (0 rows and 1 cols): x</span>
 <span class="r-in"><span><span class="fu">getPubchemAnnotationHeadings</span><span class="op">(</span>heading <span class="op">=</span> <span class="st">"ChEMBL*"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                Heading     Type</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 &lt;char&gt;   &lt;char&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: ChEMBL Cell Line ID     Cell</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:           ChEMBL ID Compound</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:    ChEMBL Target ID  Protein</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">[13:58:02][WARNING][AnnotationGx::getPubchemAnnotationHeadings]  No headings found for type: ` all ` and heading: ` ChEMBL* `.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">Try getPubchemAnnotationHeadings(type = 'all') for available headings and types </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Empty data.table (0 rows and 1 cols): x</span>
 <span class="r-in"><span><span class="fu">getPubchemAnnotationHeadings</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"Compound"</span>, heading <span class="op">=</span> <span class="st">"ChEMBL*"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      Heading     Type</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;char&gt;   &lt;char&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: ChEMBL ID Compound</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">[13:58:02][WARNING][AnnotationGx::getPubchemAnnotationHeadings]  No headings found for type: ` Compound ` and heading: ` ChEMBL* `.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">Try getPubchemAnnotationHeadings(type = 'all') for available headings and types </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Empty data.table (0 rows and 1 cols): x</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

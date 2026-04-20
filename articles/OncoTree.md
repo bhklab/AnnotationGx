@@ -176,48 +176,48 @@ cancer type.
 
 ``` r
 getOncotreeTumorTypes()
-#>           code     color
-#>         <char>    <char>
-#>   1:   THYROID      Teal
-#>   2: HEAD_NECK   DarkRed
-#>   3:    THYMUS    Purple
-#>   4:     BRAIN      Gray
-#>   5:    KIDNEY    Orange
-#>  ---                    
-#> 893:  ALCLALKP LimeGreen
-#> 894:  ALCLALKN LimeGreen
-#> 895:    BIALCL LimeGreen
-#> 896:    PCALCL LimeGreen
-#> 897:       LYP LimeGreen
+#>          code          color
+#>        <char>         <char>
+#>   1:  MYELOID    LightSalmon
+#>   2:    VULVA         Purple
+#>   3:   UTERUS      PeachPuff
+#>   4:    OTHER          Black
+#>   5:    LIVER MediumSeaGreen
+#>  ---                        
+#> 893:   PCALCL      LimeGreen
+#> 894:      LYP      LimeGreen
+#> 895:   BIALCL      LimeGreen
+#> 896: ALCLALKP      LimeGreen
+#> 897: ALCLALKN      LimeGreen
 #>                                                          name
 #>                                                        <char>
-#>   1:                                                  Thyroid
-#>   2:                                            Head and Neck
-#>   3:                                                   Thymus
-#>   4:                                                CNS/Brain
-#>   5:                                                   Kidney
+#>   1:                                                  Myeloid
+#>   2:                                             Vulva/Vagina
+#>   3:                                                   Uterus
+#>   4:                                                    Other
+#>   5:                                                    Liver
 #>  ---                                                         
-#> 893:              Anaplastic Large-Cell Lymphoma ALK Positive
-#> 894:              Anaplastic Large-Cell Lymphoma ALK Negative
+#> 893:         Primary Cutaneous Anaplastic Large Cell Lymphoma
+#> 894:                                   Lymphomatoid Papulosis
 #> 895: Breast Implant-Associated Anaplastic Large-Cell Lymphoma
-#> 896:         Primary Cutaneous Anaplastic Large Cell Lymphoma
-#> 897:                                   Lymphomatoid Papulosis
-#>                       mainType externalReferences  tissue      children parent
-#>                         <char>             <list>  <list>        <char> <char>
-#>   1:            Thyroid Cancer           C0040132  C12400       Thyroid TISSUE
-#>   2:      Head and Neck Cancer           C0460004  C12418 Head and Neck TISSUE
-#>   3:             Thymic Cancer           C0040113  C12433        Thymus TISSUE
-#>   4:          CNS/Brain Cancer           C3714787  C12438     CNS/Brain TISSUE
-#>   5:             Kidney Cancer           C0022646  C12415        Kidney TISSUE
-#>  ---                                                                          
-#> 893: Mature T and NK Neoplasms           C1332079  C37193      Lymphoid   ALCL
-#> 894: Mature T and NK Neoplasms           C1332078  C37194      Lymphoid   ALCL
-#> 895: Mature T and NK Neoplasms           C4528210 C139012      Lymphoid   ALCL
-#> 896: Mature T and NK Neoplasms           C1301362   C6860      Lymphoid  PCLPD
-#> 897: Mature T and NK Neoplasms           C0206182   C3721      Lymphoid  PCLPD
+#> 896:              Anaplastic Large-Cell Lymphoma ALK Positive
+#> 897:              Anaplastic Large-Cell Lymphoma ALK Negative
+#>                       mainType externalReferences  tissue     children parent
+#>                         <char>             <list>  <list>       <char> <char>
+#>   1:              Blood Cancer           C0005767  C12434      Myeloid TISSUE
+#>   2:     Vulvar/Vaginal Cancer           C0042993  C12408 Vulva/Vagina TISSUE
+#>   3:            Uterine Cancer           C0042149  C12405       Uterus TISSUE
+#>   4:              Other Cancer           C0205394  C17649        Other TISSUE
+#>   5:              Liver Cancer           C0023884  C12392        Liver TISSUE
+#>  ---                                                                         
+#> 893: Mature T and NK Neoplasms           C1301362   C6860     Lymphoid  PCLPD
+#> 894: Mature T and NK Neoplasms           C0206182   C3721     Lymphoid  PCLPD
+#> 895: Mature T and NK Neoplasms           C4528210 C139012     Lymphoid   ALCL
+#> 896: Mature T and NK Neoplasms           C1332079  C37193     Lymphoid   ALCL
+#> 897: Mature T and NK Neoplasms           C1332078  C37194     Lymphoid   ALCL
 #>      history level revocations precursors
 #>       <list> <int>      <list>     <list>
-#>   1:             1                       
+#>   1:   BLOOD     1                       
 #>   2:             1                       
 #>   3:             1                       
 #>   4:             1                       
@@ -253,17 +253,17 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] AnnotationGx_0.99.1
+#> [1] AnnotationGx_0.99.2
 #> 
 #> loaded via a namespace (and not attached):
 #>  [1] cli_3.6.6           knitr_1.51          rlang_1.2.0        
 #>  [4] xfun_0.57           textshaping_1.0.5   jsonlite_2.0.0     
-#>  [7] data.table_1.18.2.1 glue_1.8.0          backports_1.5.1    
+#>  [7] data.table_1.18.2.1 glue_1.8.1          backports_1.5.1    
 #> [10] htmltools_0.5.9     ragg_1.5.2          sass_0.4.10        
 #> [13] rappdirs_0.3.4      rmarkdown_2.31      evaluate_1.0.5     
 #> [16] jquerylib_0.1.4     fastmap_1.2.0       yaml_2.3.12        
 #> [19] lifecycle_1.0.5     httr2_1.2.2         memoise_2.0.1      
-#> [22] compiler_4.5.3      fs_2.0.1            systemfonts_1.3.2  
+#> [22] compiler_4.5.3      fs_2.1.0            systemfonts_1.3.2  
 #> [25] digest_0.6.39       R6_2.6.1            curl_7.0.0         
 #> [28] magrittr_2.0.5      bslib_0.10.0        checkmate_2.3.4    
 #> [31] tools_4.5.3         pkgdown_2.2.0       cachem_1.1.0       

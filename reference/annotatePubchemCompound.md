@@ -58,7 +58,52 @@ The annotated information about the PubChem compound.
 
 ``` r
 annotatePubchemCompound(cid = 2244)
-#> [1] "CHEMBL25"
+#> Waiting 30s for retry backoff ■■                              
+#> Waiting 30s for retry backoff ■■                              
+#> Waiting 30s for retry backoff ■■■■■                           
+#> Waiting 30s for retry backoff ■■■■■■■■                        
+#> Waiting 30s for retry backoff ■■■■■■■■■■■                     
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■                  
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■               
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■            
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■         
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■      
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
+#> Waiting 30s for retry backoff ■■                              
+#> Waiting 30s for retry backoff ■■■■■                           
+#> Waiting 30s for retry backoff ■■■■■■■■                        
+#> Waiting 30s for retry backoff ■■■■■■■■■■■                     
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■                  
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■               
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■            
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■         
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■      
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
+#> Waiting 30s for retry backoff ■■                              
+#> Waiting 30s for retry backoff ■■■■■                           
+#> Waiting 30s for retry backoff ■■■■■■■■                        
+#> Waiting 30s for retry backoff ■■■■■■■■■■■                     
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■                  
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■               
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■            
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■         
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■      
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
+#> Waiting 30s for retry backoff ■■                              
+#> Waiting 30s for retry backoff ■■■■                            
+#> Waiting 30s for retry backoff ■■■■■■■                         
+#> Waiting 30s for retry backoff ■■■■■■■■■■                      
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■                   
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■                
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■             
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■          
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■       
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■    
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
+#> Error: Assertion on 'heading' failed: FALSE.
 annotatePubchemCompound(cid = c(2244, 67890), heading = "CAS")
-#> [1] "50-78-2"  "407-59-0"
+#> Error: Assertion on 'heading' failed: FALSE.
 ```

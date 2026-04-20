@@ -43,25 +43,25 @@ returned. To return all columns, pass the `all_columns = TRUE` argument
 getUnichemSources()
 #>                 Name SourceID
 #>               <char>    <int>
-#>  1:           chembl        1
-#>  2:         drugbank        2
-#>  3:         rcsb_pdb        3
-#>  4:           gtopdb        4
-#>  5:            chebi        7
-#>  6:       surechembl       15
-#>  7:          pubchem       22
-#>  8:        bindingdb       31
-#>  9:        lipidmaps       33
-#> 10:      drugcentral       34
-#> 11:           brenda       37
-#> 12:             rhea       38
+#>  1: probes_and_drugs       49
+#>  2:          pubchem       22
+#>  3:        bindingdb       31
+#>  4:        lipidmaps       33
+#>  5:           fdasrs       14
+#>  6:      nmrshiftdb2       24
+#>  7:      drugcentral       34
+#>  8:           chembl        1
+#>  9:         rcsb_pdb        3
+#> 10:             rhea       38
+#> 11:       surechembl       15
+#> 12:           brenda       37
 #> 13:      swisslipids       41
-#> 14: probes_and_drugs       49
-#> 15:             CCDC       50
-#> 16:           fdasrs       14
-#> 17:             hmdb       18
-#> 18:      nmrshiftdb2       24
-#> 19:          molport       28
+#> 14:             CCDC       50
+#> 15:          molport       28
+#> 16:           gtopdb        4
+#> 17:            chebi        7
+#> 18:         drugbank        2
+#> 19:             hmdb       18
 #> 20:             pdbe        5
 #> 21:          comptox       32
 #> 22:   clinicaltrials       46
@@ -181,17 +181,17 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] AnnotationGx_0.99.1
+#> [1] AnnotationGx_0.99.2
 #> 
 #> loaded via a namespace (and not attached):
 #>  [1] cli_3.6.6           knitr_1.51          rlang_1.2.0        
 #>  [4] xfun_0.57           textshaping_1.0.5   jsonlite_2.0.0     
-#>  [7] data.table_1.18.2.1 glue_1.8.0          backports_1.5.1    
+#>  [7] data.table_1.18.2.1 glue_1.8.1          backports_1.5.1    
 #> [10] htmltools_0.5.9     ragg_1.5.2          sass_0.4.10        
 #> [13] rappdirs_0.3.4      rmarkdown_2.31      evaluate_1.0.5     
 #> [16] jquerylib_0.1.4     fastmap_1.2.0       yaml_2.3.12        
 #> [19] lifecycle_1.0.5     httr2_1.2.2         memoise_2.0.1      
-#> [22] compiler_4.5.3      fs_2.0.1            systemfonts_1.3.2  
+#> [22] compiler_4.5.3      fs_2.1.0            systemfonts_1.3.2  
 #> [25] digest_0.6.39       R6_2.6.1            curl_7.0.0         
 #> [28] magrittr_2.0.5      bslib_0.10.0        checkmate_2.3.4    
 #> [31] tools_4.5.3         pkgdown_2.2.0       cachem_1.1.0       
