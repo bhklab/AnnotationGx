@@ -29,19 +29,41 @@ A `data.table` containing the annotation headings and types.
 
 ``` r
 getPubchemAnnotationHeadings()
-#>                     x
-#>                <char>
-#> 1: PUGREST.ServerBusy
+#>              Heading     Type
+#>               <char>   <char>
+#>   1: 11B NMR Spectra Compound
+#>   2: 13C NMR Spectra Compound
+#>   3: 15N NMR Spectra Compound
+#>   4: 17O NMR Spectra Compound
+#>   5: 19F NMR Spectra Compound
+#>  ---                         
+#> 697:       Withdrawn Compound
+#> 698:     WormBase ID     Gene
+#> 699:     WormBase ID  Protein
+#> 700: Xenbase Gene ID     Gene
+#> 701:         ZFIN ID     Gene
 getPubchemAnnotationHeadings(type = "Compound")
-#> [13:58:02][WARNING][AnnotationGx::getPubchemAnnotationHeadings]  No headings found for type: ` Compound ` and heading: `  `.
-#> Try getPubchemAnnotationHeadings(type = 'all') for available headings and types 
-#> Empty data.table (0 rows and 1 cols): x
+#>                      Heading     Type
+#>                       <char>   <char>
+#>   1:         11B NMR Spectra Compound
+#>   2:         13C NMR Spectra Compound
+#>   3:         15N NMR Spectra Compound
+#>   4:         17O NMR Spectra Compound
+#>   5:         19F NMR Spectra Compound
+#>  ---                                 
+#> 529: WHO Essential Medicines Compound
+#> 530:                Wikidata Compound
+#> 531:               Wikipedia Compound
+#> 532:        Wiley References Compound
+#> 533:               Withdrawn Compound
 getPubchemAnnotationHeadings(heading = "ChEMBL*")
-#> [13:58:02][WARNING][AnnotationGx::getPubchemAnnotationHeadings]  No headings found for type: ` all ` and heading: ` ChEMBL* `.
-#> Try getPubchemAnnotationHeadings(type = 'all') for available headings and types 
-#> Empty data.table (0 rows and 1 cols): x
+#>                Heading     Type
+#>                 <char>   <char>
+#> 1: ChEMBL Cell Line ID     Cell
+#> 2:           ChEMBL ID Compound
+#> 3:    ChEMBL Target ID  Protein
 getPubchemAnnotationHeadings(type = "Compound", heading = "ChEMBL*")
-#> [13:58:02][WARNING][AnnotationGx::getPubchemAnnotationHeadings]  No headings found for type: ` Compound ` and heading: ` ChEMBL* `.
-#> Try getPubchemAnnotationHeadings(type = 'all') for available headings and types 
-#> Empty data.table (0 rows and 1 cols): x
+#>      Heading     Type
+#>       <char>   <char>
+#> 1: ChEMBL ID Compound
 ```

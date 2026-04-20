@@ -176,58 +176,58 @@ cancer type.
 
 ``` r
 getOncotreeTumorTypes()
-#>          code          color
-#>        <char>         <char>
-#>   1:  MYELOID    LightSalmon
-#>   2:    VULVA         Purple
-#>   3:   UTERUS      PeachPuff
-#>   4:    OTHER          Black
-#>   5:    LIVER MediumSeaGreen
-#>  ---                        
-#> 893:   PCALCL      LimeGreen
-#> 894:      LYP      LimeGreen
-#> 895:   BIALCL      LimeGreen
-#> 896: ALCLALKP      LimeGreen
-#> 897: ALCLALKN      LimeGreen
+#>          code        color
+#>        <char>       <char>
+#>   1:      PNS         Gray
+#>   2:     LUNG    Gainsboro
+#>   3:    PENIS         Blue
+#>   4:   KIDNEY       Orange
+#>   5:  STOMACH LightSkyBlue
+#>  ---                      
+#> 893:   BIALCL    LimeGreen
+#> 894: ALCLALKP    LimeGreen
+#> 895: ALCLALKN    LimeGreen
+#> 896:      LYP    LimeGreen
+#> 897:   PCALCL    LimeGreen
 #>                                                          name
 #>                                                        <char>
-#>   1:                                                  Myeloid
-#>   2:                                             Vulva/Vagina
-#>   3:                                                   Uterus
-#>   4:                                                    Other
-#>   5:                                                    Liver
+#>   1:                                Peripheral Nervous System
+#>   2:                                                     Lung
+#>   3:                                                    Penis
+#>   4:                                                   Kidney
+#>   5:                                        Esophagus/Stomach
 #>  ---                                                         
-#> 893:         Primary Cutaneous Anaplastic Large Cell Lymphoma
-#> 894:                                   Lymphomatoid Papulosis
-#> 895: Breast Implant-Associated Anaplastic Large-Cell Lymphoma
-#> 896:              Anaplastic Large-Cell Lymphoma ALK Positive
-#> 897:              Anaplastic Large-Cell Lymphoma ALK Negative
-#>                       mainType externalReferences  tissue     children parent
-#>                         <char>             <list>  <list>       <char> <char>
-#>   1:              Blood Cancer           C0005767  C12434      Myeloid TISSUE
-#>   2:     Vulvar/Vaginal Cancer           C0042993  C12408 Vulva/Vagina TISSUE
-#>   3:            Uterine Cancer           C0042149  C12405       Uterus TISSUE
-#>   4:              Other Cancer           C0205394  C17649        Other TISSUE
-#>   5:              Liver Cancer           C0023884  C12392        Liver TISSUE
-#>  ---                                                                         
-#> 893: Mature T and NK Neoplasms           C1301362   C6860     Lymphoid  PCLPD
-#> 894: Mature T and NK Neoplasms           C0206182   C3721     Lymphoid  PCLPD
-#> 895: Mature T and NK Neoplasms           C4528210 C139012     Lymphoid   ALCL
-#> 896: Mature T and NK Neoplasms           C1332079  C37193     Lymphoid   ALCL
-#> 897: Mature T and NK Neoplasms           C1332078  C37194     Lymphoid   ALCL
-#>      history level revocations precursors
-#>       <list> <int>      <list>     <list>
-#>   1:   BLOOD     1                       
-#>   2:             1                       
-#>   3:             1                       
-#>   4:             1                       
-#>   5:             1                       
-#>  ---                                     
-#> 893:             6                       
-#> 894:             6                       
-#> 895:             6                       
-#> 896:             6                       
-#> 897:             6
+#> 893: Breast Implant-Associated Anaplastic Large-Cell Lymphoma
+#> 894:              Anaplastic Large-Cell Lymphoma ALK Positive
+#> 895:              Anaplastic Large-Cell Lymphoma ALK Negative
+#> 896:                                   Lymphomatoid Papulosis
+#> 897:         Primary Cutaneous Anaplastic Large Cell Lymphoma
+#>                              mainType externalReferences  tissue
+#>                                <char>             <list>  <list>
+#>   1: Peripheral Nervous System Cancer           C0206417  C12465
+#>   2:                      Lung Cancer           C0024109  C12468
+#>   3:                    Penile Cancer           C0030851  C12409
+#>   4:                    Kidney Cancer           C0022646  C12415
+#>   5:        Esophageal/Stomach Cancer           C0038351  C12391
+#>  ---                                                            
+#> 893:        Mature T and NK Neoplasms           C4528210 C139012
+#> 894:        Mature T and NK Neoplasms           C1332079  C37193
+#> 895:        Mature T and NK Neoplasms           C1332078  C37194
+#> 896:        Mature T and NK Neoplasms           C0206182   C3721
+#> 897:        Mature T and NK Neoplasms           C1301362   C6860
+#>                       children parent history level revocations precursors
+#>                         <char> <char>  <list> <int>      <list>     <list>
+#>   1: Peripheral Nervous System TISSUE             1                       
+#>   2:                      Lung TISSUE             1                       
+#>   3:                     Penis TISSUE             1                       
+#>   4:                    Kidney TISSUE             1                       
+#>   5:         Esophagus/Stomach TISSUE             1                       
+#>  ---                                                                      
+#> 893:                  Lymphoid   ALCL             6                       
+#> 894:                  Lymphoid   ALCL             6                       
+#> 895:                  Lymphoid   ALCL             6                       
+#> 896:                  Lymphoid  PCLPD             6                       
+#> 897:                  Lymphoid  PCLPD             6
 ```
 
 ``` r
@@ -253,7 +253,7 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] AnnotationGx_0.99.2
+#> [1] AnnotationGx_0.99.3
 #> 
 #> loaded via a namespace (and not attached):
 #>  [1] cli_3.6.6           knitr_1.51          rlang_1.2.0        

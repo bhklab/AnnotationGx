@@ -65,103 +65,12 @@ A data.table containing the retrieved compound information.
 ``` r
 properties <- c("Title", "MolecularFormula", "InChIKey", "CanonicalSMILES")
 getPubchemCompound(c(3672, 176870), from = "cid", to = "property", properties = properties)
-#> Waiting 30s for retry backoff ■■                              
-#> Waiting 30s for retry backoff ■■■■■                           
-#> Waiting 30s for retry backoff ■■■■■■■■                        
-#> Waiting 30s for retry backoff ■■■■■■■■■■■                     
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■                  
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■               
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■            
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■         
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■      
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
-#> Waiting 30s for retry backoff ■■                              
-#> Waiting 30s for retry backoff ■■■■■                           
-#> Waiting 30s for retry backoff ■■■■■■■■                        
-#> Waiting 30s for retry backoff ■■■■■■■■■■■                     
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■                  
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■                
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■             
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■         
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■      
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
-#> Waiting 30s for retry backoff ■■                              
-#> Waiting 30s for retry backoff ■■■■                            
-#> Waiting 30s for retry backoff ■■■■■■■                         
-#> Waiting 30s for retry backoff ■■■■■■■■■■                      
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■                   
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■                
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■             
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■          
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■       
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■    
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
-#> Waiting 30s for retry backoff ■■                              
-#> Waiting 30s for retry backoff ■■■■                            
-#> Waiting 30s for retry backoff ■■■■■■■                         
-#> Waiting 30s for retry backoff ■■■■■■■■■■                      
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■                   
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■                
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■             
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■          
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■       
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■    
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
-#> Querying PubCHEM REST API.... ■■■■■■■■■■■■■■■■                  50% | ETA:  2m
-#> Waiting 30s for retry backoff ■■■■                            
-#> Waiting 30s for retry backoff ■■■■■■■                         
-#> Waiting 30s for retry backoff ■■■■■■■■■■                      
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■                   
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■                
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■             
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■          
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■       
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■    
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
-#> Querying PubCHEM REST API.... ■■■■■■■■■■■■■■■■                  50% | ETA:  2m
-#> Waiting 30s for retry backoff ■■■■                            
-#> Waiting 30s for retry backoff ■■■■■■■                         
-#> Waiting 30s for retry backoff ■■■■■■■■■■                      
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■                    
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■                 
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■              
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■           
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■       
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■    
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
-#> Querying PubCHEM REST API.... ■■■■■■■■■■■■■■■■                  50% | ETA:  2m
-#> Waiting 30s for retry backoff ■■■                             
-#> Waiting 30s for retry backoff ■■■■■■                          
-#> Waiting 30s for retry backoff ■■■■■■■■■                       
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■                    
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■                 
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■              
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■           
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■        
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■     
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
-#> Querying PubCHEM REST API.... ■■■■■■■■■■■■■■■■                  50% | ETA:  2m
-#> Waiting 30s for retry backoff ■■■                             
-#> Waiting 30s for retry backoff ■■■■■■                          
-#> Waiting 30s for retry backoff ■■■■■■■■■                       
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■                    
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■                 
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■              
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■           
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■        
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■     
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
-#> Querying PubCHEM REST API.... ■■■■■■■■■■■■■■■■                  50% | ETA:  2m
-#> Querying PubCHEM REST API.... ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100% | ETA:  0s
-#> [14:02:05][WARNING][AnnotationGx::getPubchemCompound]  Some queries failed. See the 'failed' object for details. 
-#>    property/Title,MolecularFormula,InChIKey,CanonicalSMILES
-#>                                                       <int>
-#> 1:                                                       NA
-#> 2:                                                       NA
+#>       CID MolecularFormula                                   ConnectivitySMILES
+#>     <int>           <char>                                               <char>
+#> 1:   3672         C13H18O2                        CC(C)CC1=CC=C(C=C1)C(C)C(=O)O
+#> 2: 176870       C22H23N3O4 COCCOC1=C(C=C2C(=C1)C(=NC=N2)NC3=CC=CC(=C3)C#C)OCCOC
+#>                       InChIKey            Title
+#>                         <char>           <char>
+#> 1: HEFNNWSXXWATRW-UHFFFAOYSA-N Ibuprofen, (+-)-
+#> 2: AAKJLRGGTJKAMG-UHFFFAOYSA-N        Erlotinib
 ```

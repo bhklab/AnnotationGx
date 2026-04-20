@@ -23,7 +23,7 @@ citation("AnnotationGx")
 #>   Tran M, Joseph J, Eeles C, Haibe-Kains B (2026). _AnnotationGx:
 #>   AnnotationGx: A package for building, updating and querying an
 #>   annotation database for pharmaco-genomic data_. R package version
-#>   0.99.2, <https://bhklab.github.io/AnnotationGx/>.
+#>   0.99.3, <https://bhklab.github.io/AnnotationGx/>.
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
@@ -32,7 +32,7 @@ citation("AnnotationGx")
 #> annotation database for pharmaco-genomic data},
 #>     author = {Michael Tran and Jermiah Joseph and Christopher Eeles and Benjamin Haibe-Kains},
 #>     year = {2026},
-#>     note = {R package version 0.99.2},
+#>     note = {R package version 0.99.3},
 #>     url = {https://bhklab.github.io/AnnotationGx/},
 #>   }
 ```
@@ -66,7 +66,7 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] AnnotationGx_0.99.2
+#> [1] AnnotationGx_0.99.3
 #> 
 #> loaded via a namespace (and not attached):
 #>  [1] backports_1.5.1     digest_0.6.39       desc_1.4.3         

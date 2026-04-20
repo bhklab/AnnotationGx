@@ -62,8 +62,6 @@ drugs <- c(
 )
 
 mapCompound2CID(drugs)
-#> Querying PubCHEM REST API.... ■■■■■■■■■■■■■■■■                  50% | ETA:  1s
-#> Querying PubCHEM REST API.... ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100% | ETA:  0s
 #>                  name    cids
 #>                <char>   <int>
 #> 1:            Aspirin    2244
@@ -102,18 +100,29 @@ a warning will be issued.
   first = TRUE
 ))
 #> Waiting 30s for retry backoff ■■                              
+#> Waiting 30s for retry backoff ■■■                             
+#> Waiting 30s for retry backoff ■■■■■■                          
+#> Waiting 30s for retry backoff ■■■■■■■■                        
+#> Waiting 30s for retry backoff ■■■■■■■■■■■                     
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■                 
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■              
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■           
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■        
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■      
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
 #> Waiting 30s for retry backoff ■■                              
 #> Waiting 30s for retry backoff ■■■■■                           
 #> Waiting 30s for retry backoff ■■■■■■■■                        
 #> Waiting 30s for retry backoff ■■■■■■■■■■■                     
 #> Waiting 30s for retry backoff ■■■■■■■■■■■■■■                  
-#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■              
+#> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■               
 #> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■            
 #> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■         
 #> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■      
 #> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   
 #> Waiting 30s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
-#> [16:08:19][WARNING][AnnotationGx::getPubchemCompound]  Some queries failed. See the 'failed' object for details. 
+#> [17:26:32][WARNING][AnnotationGx::getPubchemCompound]  Some queries failed. See the 'failed' object for details. 
 #>                     name    cids
 #>                   <char>   <int>
 #> 1:               Aspirin    2244
@@ -355,7 +364,7 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] AnnotationGx_0.99.2
+#> [1] AnnotationGx_0.99.3
 #> 
 #> loaded via a namespace (and not attached):
 #>  [1] crayon_1.5.3        cli_3.6.6           knitr_1.51         
