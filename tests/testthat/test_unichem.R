@@ -3,6 +3,10 @@ library(AnnotationGx)
 library(checkmate)
 
 test_that("getUnichemSources returns a data.table with the correct columns", {
+  skip_on_bioc()
+  skip_if_offline()
+  skip_if_unichem_unavailable()
+
   sources <- getUnichemSources(all_columns = TRUE)
 
   expected_columns <- c(
@@ -37,6 +41,10 @@ test_that("getUnichemSources returns a data.table with the correct columns", {
 
 
 test_that("queryUnichemCompound returns the expected results", {
+  skip_on_bioc()
+  skip_if_offline()
+  skip_if_unichem_unavailable()
+
   # Test case 1
   result1 <- queryUnichemCompound(
     type = "sourceID",
@@ -55,6 +63,10 @@ test_that("queryUnichemCompound returns the expected results", {
 })
 
 test_that("queryUnichemCompound handles vector inputs", {
+  skip_on_bioc()
+  skip_if_offline()
+  skip_if_unichem_unavailable()
+
   fallback <- c(
     "444795",
     "444796"
@@ -73,6 +85,10 @@ test_that("queryUnichemCompound handles vector inputs", {
 })
 
 test_that("queryUnichemCompound handles non source id lists", {
+  skip_on_bioc()
+  skip_if_offline()
+  skip_if_unichem_unavailable()
+
   compounds <- c("538323", "538324")
   results <- queryUnichemCompound(
     compound = compounds,
@@ -83,6 +99,10 @@ test_that("queryUnichemCompound handles non source id lists", {
   expect_named(results, compounds)
 })
 test_that("queryUnichemCompound returns the expected results 2", {
+  skip_on_bioc()
+  skip_if_offline()
+  skip_if_unichem_unavailable()
+
   # Test case 1
   result1 <- queryUnichemCompound(
     type = "inchikey",

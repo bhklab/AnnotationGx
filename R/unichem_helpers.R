@@ -14,7 +14,8 @@
 #' @noRd
 #' @keywords internal
 .build_unichem_query <- function(
-  endpoint, query_only = FALSE
+  endpoint,
+  query_only = FALSE
 ) {
   funContext <- .funContext("AnnotationGx:::.build_unichem_query")
 
@@ -54,7 +55,10 @@
 #' @noRd
 #' @keywords internal
 .build_unichem_compound_req <- function(
-  type, compound, sourceID = NULL, ...
+  type,
+  compound,
+  sourceID = NULL,
+  ...
 ) {
   funContext <- .funContext("AnnotationGx:::.build_unichem_compound_req")
 
@@ -74,14 +78,12 @@
     checkmate::assert_integerish(
       x = sourceID,
       lower = 1,
-      upper = max(getUnichemSources()$SourceID),
       len = 1
     )
     sourceID
   } else {
     NULL
   }
-
 
   request <- base_url |>
     .build_request() |>

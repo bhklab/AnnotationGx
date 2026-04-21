@@ -199,7 +199,13 @@ getUnichemSources <- function(all_columns = FALSE) {
 #'   compound). If `raw = TRUE`, raw responses are returned instead.
 #'
 #' @examples
-#' queryUnichemCompound(type = "sourceID", compound = "444795", sourceID = 22)
+#' if (interactive()) {
+#'   queryUnichemCompound(
+#'     type = "sourceID",
+#'     compound = "444795",
+#'     sourceID = 22
+#'   )
+#' }
 #'
 #' @export
 queryUnichemCompound <- function(
@@ -233,7 +239,11 @@ queryUnichemCompound <- function(
       return(rep(NA_integer_, length(compounds)))
     }
 
-    checkmate::assert_integerish(src_ids, any.missing = FALSE)
+    checkmate::assert_integerish(
+      src_ids,
+      lower = 1,
+      any.missing = FALSE
+    )
 
     if (length(src_ids) == 1L) {
       src_ids <- rep(src_ids, length(compounds))
@@ -243,18 +253,11 @@ queryUnichemCompound <- function(
         "when type = 'sourceID'"
       )
     }
-    checkmate::assert_integerish(src_ids, any.missing = FALSE)
-
-    valid_ids <- getUnichemSources()$SourceID
-    invalid_ids <- setdiff(unique(src_ids), valid_ids)
-    if (length(invalid_ids) > 0L) {
-      stop(
-        "`sourceID` contains value(s) not available in UniChem: ",
-        paste(invalid_ids, collapse = ", "),
-        "\nValid source IDs: ",
-        paste(valid_ids, collapse = ", ")
-      )
-    }
+    checkmate::assert_integerish(
+      src_ids,
+      lower = 1,
+      any.missing = FALSE
+    )
     src_ids
   }
 

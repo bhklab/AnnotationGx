@@ -45,6 +45,12 @@ compound). If \code{raw = TRUE}, raw responses are returned instead.
 This function queries the UniChem API for a compound based on the provided parameters.
 }
 \examples{
-queryUnichemCompound(type = "sourceID", compound = "444795", sourceID = 22)
+if (interactive()) {
+  queryUnichemCompound(
+    type = "sourceID",
+    compound = "444795",
+    sourceID = 22
+  )
+}
 
 }
