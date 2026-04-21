@@ -20,6 +20,7 @@ Description: A package for building, updating and querying an
 Depends: 
     R (>= 4.6.0)
 Imports: 
+    BiocFileCache,
     checkmate,
     crayon,
     httr2,
