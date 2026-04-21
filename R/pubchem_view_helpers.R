@@ -7,9 +7,17 @@
 #' @noRd
 .get_all_heading_types_base <- function() {
   url <- "https://pubchem.ncbi.nlm.nih.gov/rest/pug/annotations/headings/JSON"
-  req <- .build_pubchem_request(url)
-  response <- httr2::req_perform(req) |> .parse_resp_json()
-  .asDT(response[[1]][[1]])
+
+  .cache_fetch(
+    namespace = "pubchem/annotation-headings",
+    params = list(url = url),
+    FUN = function() {
+      req <- .build_pubchem_request(url)
+      response <- httr2::req_perform(req) |>
+        .parse_resp_json()
+      .asDT(response[[1]][[1]])
+    }
+  )
 }
 
 #' @keywords internal

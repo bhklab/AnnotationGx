@@ -64,11 +64,21 @@
 #' @keywords internal
 .build_chembl_request <- function(
   resource,
-  field = NULL, filter_type = NULL, value = NULL, format = "json"
+  field = NULL,
+  filter_type = NULL,
+  value = NULL,
+  format = "json"
 ) {
   # possible formats for now are XML, JSON and YAML
-  checkmate::assert_choice(resource, c(.chembl_resources(), paste0(.chembl_resources(), "/schema")))
-  checkmate::assert_choice(field, getChemblResourceFields(resource), null.ok = TRUE)
+  checkmate::assert_choice(
+    resource,
+    c(.chembl_resources(), paste0(.chembl_resources(), "/schema"))
+  )
+  checkmate::assert_choice(
+    field,
+    getChemblResourceFields(resource),
+    null.ok = TRUE
+  )
   checkmate::assert_choice(filter_type, .chembl_filter_types(), null.ok = TRUE)
   checkmate::assert_character(value, null.ok = TRUE)
   checkmate::assert_choice(format, c("json", "xml", "yaml"))
@@ -105,10 +115,28 @@
 #' queryChemblAPI("mechanism", "molecule_chembl_id", "in", "CHEMBL1413")
 #'
 #' @export
-queryChemblAPI <- function(resource, field, filter_type, value, format = "json") {
-  .build_chembl_request(resource, field, filter_type, value, format) |>
-    .perform_request() |>
-    .parse_resp_json()
+queryChemblAPI <- function(
+  resource,
+  field,
+  filter_type,
+  value,
+  format = "json"
+) {
+  .cache_fetch(
+    namespace = "chembl/query",
+    params = list(
+      resource = resource,
+      field = field,
+      filter_type = filter_type,
+      value = value,
+      format = format
+    ),
+    FUN = function() {
+      .build_chembl_request(resource, field, filter_type, value, format) |>
+        .perform_request() |>
+        .parse_resp_json()
+    }
+  )
 }
 
 
@@ -134,24 +162,42 @@ queryChemblAPI <- function(resource, field, filter_type, value, format = "json")
 #'
 #' @export
 getChemblMechanism <- function(
-  chembl.ID, resources = "mechanism", field = "molecule_chembl_id", filter_type = "in",
-  returnURL = FALSE, raw = FALSE
+  chembl.ID,
+  resources = "mechanism",
+  field = "molecule_chembl_id",
+  filter_type = "in",
+  returnURL = FALSE,
+  raw = FALSE
 ) {
   funContext <- .funContext("getChemblMechanism")
   # constructChemblQuery(resource = "mechanism", field = "molecule_chembl_id", filter_type = "in", value = "CHEMBL1413")
   # urls <- constructChemblQuery(resource = resources, field = field, filter_type = filter_type, value = chembl.ID)
   # urls <- URLencode(urls)
 
-  .info(funContext, "Retrieving ChEMBL Mechanism information for ", length(chembl.ID), " ChEMBL IDs.")
+  .info(
+    funContext,
+    "Retrieving ChEMBL Mechanism information for ",
+    length(chembl.ID),
+    " ChEMBL IDs."
+  )
   response_dts <- lapply(chembl.ID, function(chembl.ID) {
-    request <- .build_chembl_request(resource = resources, field = field, filter_type = filter_type, value = chembl.ID)
+    request <- .build_chembl_request(
+      resource = resources,
+      field = field,
+      filter_type = filter_type,
+      value = chembl.ID
+    )
 
     if (returnURL) {
       return(request$url)
     }
-    response <- .perform_request(request)
 
-    response_json <- .parse_resp_json(response)
+    response_json <- queryChemblAPI(
+      resource = resources,
+      field = field,
+      filter_type = filter_type,
+      value = chembl.ID
+    )
     if (raw) {
       return(response_json)
     }

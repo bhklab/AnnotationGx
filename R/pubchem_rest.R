@@ -30,91 +30,112 @@ getPubchemCompound <- function(
   ...
 ) {
   funContext <- .funContext("getPubchemCompound")
-  to_ <- if (to == "property") {
-    checkmate::assert_atomic(properties, all.missing = FALSE)
-    checkmate::assert_character(properties)
-    to <- paste0(to, "/", paste0(properties, collapse = ","))
-  } else {
-    to
-  }
-
-  .info(funContext, "Building PubChem REST queries...")
-  requests <- lapply(ids, function(x) {
-    .build_pubchem_rest_query(
-      id = x,
-      domain = "compound",
-      namespace = from,
-      operation = to_,
-      output = output,
-      raw = raw,
-      query_only = query_only,
-      ...
-    )
-  })
-  if (query_only) {
-    return(requests)
-  }
-
-  tryCatch(
-    {
-      .info(funContext, "Retrieving compound information...")
-      resps_raw <- httr2::req_perform_sequential(
-        requests,
-        on_error = "continue",
-        progress = "Querying PubCHEM REST API...."
-      )
-      names(resps_raw) <- ids
-    },
-    error = function(e) {
-      .err(
-        funContext,
-        " An error occurred while retrieving the compound information:\n",
-        e
-      )
+  query_impl <- function() {
+    response_name <- to
+    operation <- if (to == "property") {
+      checkmate::assert_atomic(properties, all.missing = FALSE)
+      checkmate::assert_character(properties)
+      response_name <- paste0(to, "/", paste0(properties, collapse = ","))
+      response_name
+    } else {
+      to
     }
-  )
 
-  .debug(funContext, " Number of responses: ", length(resps_raw))
-  if (raw) {
-    return(resps_raw)
-  }
-
-  # Parse the responses
-  .info(funContext, "Parsing PubChem REST responses...")
-  resps <- .parse_pubchem_rest_responses(resps_raw)
-
-  # filter failed
-  # if any query failed, return the failed queries as attributes
-  failed <- vapply(
-    resps_raw,
-    httr2::resp_is_error,
-    FUN.VALUE = logical(1),
-    USE.NAMES = TRUE
-  )
-  if (any(failed)) {
-    .warn(
-      funContext,
-      " Some queries failed. See the 'failed' object for details."
-    )
-    failures <- lapply(resps_raw[failed], function(resp) {
-      .parse_resp_json(resp)$Fault
+    .info(funContext, "Building PubChem REST queries...")
+    requests <- lapply(ids, function(x) {
+      .build_pubchem_rest_query(
+        id = x,
+        domain = "compound",
+        namespace = from,
+        operation = operation,
+        output = output,
+        raw = raw,
+        query_only = query_only,
+        ...
+      )
     })
-  } else {
-    failures <- NULL
+    if (query_only) {
+      return(requests)
+    }
+
+    tryCatch(
+      {
+        .info(funContext, "Retrieving compound information...")
+        resps_raw <- httr2::req_perform_sequential(
+          requests,
+          on_error = "continue",
+          progress = "Querying PubCHEM REST API...."
+        )
+        names(resps_raw) <- ids
+      },
+      error = function(e) {
+        .err(
+          funContext,
+          " An error occurred while retrieving the compound information:\n",
+          e
+        )
+      }
+    )
+
+    .debug(funContext, " Number of responses: ", length(resps_raw))
+    if (raw) {
+      return(resps_raw)
+    }
+
+    # Parse the responses
+    .info(funContext, "Parsing PubChem REST responses...")
+    resps <- .parse_pubchem_rest_responses(resps_raw)
+
+    # filter failed
+    # if any query failed, return the failed queries as attributes
+    failed <- vapply(
+      resps_raw,
+      httr2::resp_is_error,
+      FUN.VALUE = logical(1),
+      USE.NAMES = TRUE
+    )
+    if (any(failed)) {
+      .warn(
+        funContext,
+        " Some queries failed. See the 'failed' object for details."
+      )
+      failures <- lapply(resps_raw[failed], function(resp) {
+        .parse_resp_json(resp)$Fault
+      })
+    } else {
+      failures <- NULL
+    }
+
+    # Combine the responses
+    # might be able to just do the else part...
+    if (from != "name") {
+      responses <- data.table::rbindlist(resps, fill = TRUE)
+    } else {
+      responses <- data.table::rbindlist(resps, idcol = from, fill = TRUE)
+    }
+    data.table::setnames(responses, "V1", response_name, skip_absent = TRUE)
+
+    attributes(responses)$failed <- failures
+
+    responses
   }
 
-  # Combine the responses
-  # might be able to just do the else part...
-  if (from != "name") {
-    responses <- data.table::rbindlist(resps, fill = TRUE)
-  } else {
-    responses <- data.table::rbindlist(resps, idcol = from, fill = TRUE)
+  if (query_only || raw) {
+    return(query_impl())
   }
-  data.table::setnames(responses, "V1", to, skip_absent = TRUE)
 
-  attributes(responses)$failed <- failures
-
-  return(responses)
+  .cache_fetch(
+    namespace = "pubchem/compound-query",
+    params = list(
+      ids = ids,
+      from = from,
+      to = to,
+      properties = properties,
+      output = output,
+      extra = list(...)
+    ),
+    FUN = query_impl
+  )
 }
 
 
@@ -197,21 +218,30 @@ mapCID2Properties <- function(
 #' @export
 getPubchemProperties <- function() {
   url <- "https://pubchem.ncbi.nlm.nih.gov/pug_rest/pug_rest.xsd"
-  response <- .build_request(url) |>
-    .perform_request()
 
-  node_list <- xml2::read_xml(response$body) |>
-    xml2::xml_children() |>
-    xml2::as_list()
+  .cache_fetch(
+    namespace = "pubchem/properties",
+    params = list(url = url),
+    FUN = function() {
+      response <- .build_request(url) |>
+        .perform_request()
 
-  properties <- node_list[[3]]$complexType$sequence$element$complexType$sequence
+      node_list <- xml2::read_xml(response$body) |>
+        xml2::xml_children() |>
+        xml2::as_list()
 
-  lapply(properties, function(x) {
-    list(
-      name = attr(x, "name"),
-      type = gsub("xs:", "", attr(x, "type"))
-    ) |>
-      .asDT()
-  }) |>
-    data.table::rbindlist()
+      properties <- node_list[[
+        3
+      ]]$complexType$sequence$element$complexType$sequence
+
+      lapply(properties, function(x) {
+        list(
+          name = attr(x, "name"),
+          type = gsub("xs:", "", attr(x, "type"))
+        ) |>
+          .asDT()
+      }) |>
+        data.table::rbindlist()
+    }
+  )
 }
