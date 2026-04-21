@@ -166,8 +166,7 @@ annotatePubchemCompound <- function(
     parsed_responses <- parallel::mclapply(
       responses,
       function(response) {
-        switch(
-          heading,
+        switch(heading,
           "ChEMBL ID" = .parseCHEMBLresponse(response),
           "CAS" = .parseCASresponse(response),
           "NSC Number" = .parseNSCresponse(response),

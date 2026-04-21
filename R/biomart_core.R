@@ -40,16 +40,14 @@ MartInfo <- R6::R6Class(
     #' @param meta List, additional metadata
     #' @param group Character, the group the mart belongs to
     #' @return A new MartInfo object
-    initialize = function(
-      name,
-      displayName,
-      description,
-      config,
-      isHidden,
-      operation,
-      meta,
-      group
-    ) {
+    initialize = function(name,
+                          displayName,
+                          description,
+                          config,
+                          isHidden,
+                          operation,
+                          meta,
+                          group) {
       self$name <- name
       self$displayName <- displayName
       self$description <- description
@@ -165,14 +163,12 @@ FilterInfo <- R6::R6Class(
     #' @param isHidden Logical, whether the filter should be hidden in UIs
     #' @param values List or vector, possible values for the filter if applicable
     #' @return A new FilterInfo object
-    initialize = function(
-      name,
-      displayName = NULL,
-      description = NULL,
-      type = NULL,
-      isHidden = NULL,
-      values = NULL
-    ) {
+    initialize = function(name,
+                          displayName = NULL,
+                          description = NULL,
+                          type = NULL,
+                          isHidden = NULL,
+                          values = NULL) {
       self$name <- name
       self$displayName <- displayName
       self$description <- description
@@ -230,13 +226,11 @@ AttributeInfo <- R6::R6Class(
     #' @param linkURL Character, URL for additional information about the attribute
     #' @param isHidden Logical, whether the attribute should be hidden in UIs
     #' @return A new AttributeInfo object
-    initialize = function(
-      name,
-      displayName = NULL,
-      description = NULL,
-      linkURL = NULL,
-      isHidden = NULL
-    ) {
+    initialize = function(name,
+                          displayName = NULL,
+                          description = NULL,
+                          linkURL = NULL,
+                          isHidden = NULL) {
       self$name <- name
       self$displayName <- displayName
       self$description <- description
