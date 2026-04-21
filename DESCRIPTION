@@ -3,13 +3,13 @@ Title: AnnotationGx: A package for building, updating and querying an
     annotation database for pharmaco-genomic data
 Version: 0.99.4
 Authors@R: c(
-    person("Michael", "Tran", role = c("aut", "cre"),
+    person("Michael", "Tran", role = c("aut"),
         email = "michaelcao-anh.tran@uhn.ca"),
     person("Jermiah", "Joseph", role = c("aut"),
         email = "jermiah.joseph@gmail.com"),
     person("Christopher", "Eeles", role = c("aut"),
         email = "christopher.eeles@uhnresearch.ca"),
-    person("Benjamin", "Haibe-Kains", role = c("aut"),
+    person("Benjamin", "Haibe-Kains", role = c("aut", "cre"),
         email = "benjamin.haibe.kains@utoronto.ca")
     )
 Description: A package for building, updating and querying an
