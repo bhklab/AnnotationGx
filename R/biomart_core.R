@@ -40,14 +40,16 @@ MartInfo <- R6::R6Class(
     #' @param meta List, additional metadata
     #' @param group Character, the group the mart belongs to
     #' @return A new MartInfo object
-    initialize = function(name,
-                          displayName,
-                          description,
-                          config,
-                          isHidden,
-                          operation,
-                          meta,
-                          group) {
+    initialize = function(
+      name,
+      displayName,
+      description,
+      config,
+      isHidden,
+      operation,
+      meta,
+      group
+    ) {
       self$name <- name
       self$displayName <- displayName
       self$description <- description
@@ -163,12 +165,14 @@ FilterInfo <- R6::R6Class(
     #' @param isHidden Logical, whether the filter should be hidden in UIs
     #' @param values List or vector, possible values for the filter if applicable
     #' @return A new FilterInfo object
-    initialize = function(name,
-                          displayName = NULL,
-                          description = NULL,
-                          type = NULL,
-                          isHidden = NULL,
-                          values = NULL) {
+    initialize = function(
+      name,
+      displayName = NULL,
+      description = NULL,
+      type = NULL,
+      isHidden = NULL,
+      values = NULL
+    ) {
       self$name <- name
       self$displayName <- displayName
       self$description <- description
@@ -226,11 +230,13 @@ AttributeInfo <- R6::R6Class(
     #' @param linkURL Character, URL for additional information about the attribute
     #' @param isHidden Logical, whether the attribute should be hidden in UIs
     #' @return A new AttributeInfo object
-    initialize = function(name,
-                          displayName = NULL,
-                          description = NULL,
-                          linkURL = NULL,
-                          isHidden = NULL) {
+    initialize = function(
+      name,
+      displayName = NULL,
+      description = NULL,
+      linkURL = NULL,
+      isHidden = NULL
+    ) {
       self$name <- name
       self$displayName <- displayName
       self$description <- description
@@ -381,9 +387,18 @@ BioMartClient <- R6::R6Class(
       step <- cli::cli_progress_step("[Fetch] Fetching available marts")
       on.exit(cli::cli_progress_done(step), add = TRUE)
 
-      res <- private$.request("marts.json") |>
-        httr2::req_perform() |>
-        httr2::resp_body_json()
+      res <- .cache_fetch(
+        namespace = "biomart/marts",
+        params = list(
+          base_url = self$base_url,
+          path = self$path
+        ),
+        FUN = function() {
+          private$.request("marts.json") |>
+            httr2::req_perform() |>
+            httr2::resp_body_json()
+        }
+      )
 
       lapply(res, function(mart) {
         do.call(MartInfo$new, mart)
@@ -402,10 +417,20 @@ BioMartClient <- R6::R6Class(
       )
       on.exit(cli::cli_progress_done(step), add = TRUE)
 
-      res <- private$.request("datasets.json") |>
-        httr2::req_url_query(config = mart$config) |>
-        httr2::req_perform() |>
-        httr2::resp_body_json()
+      res <- .cache_fetch(
+        namespace = "biomart/datasets",
+        params = list(
+          base_url = self$base_url,
+          path = self$path,
+          config = mart$config
+        ),
+        FUN = function() {
+          private$.request("datasets.json") |>
+            httr2::req_url_query(config = mart$config) |>
+            httr2::req_perform() |>
+            httr2::resp_body_json()
+        }
+      )
 
       lapply(res, function(d) {
         DatasetInfo$new(
@@ -429,13 +454,24 @@ BioMartClient <- R6::R6Class(
       )
       on.exit(cli::cli_progress_done(step), add = TRUE)
 
-      res <- private$.request("attributes.json") |>
-        httr2::req_url_query(
-          datasets = dataset$name,
+      res <- .cache_fetch(
+        namespace = "biomart/attributes",
+        params = list(
+          base_url = self$base_url,
+          path = self$path,
+          dataset = dataset$name,
           config = dataset$mart$config
-        ) |>
-        httr2::req_perform() |>
-        httr2::resp_body_json()
+        ),
+        FUN = function() {
+          private$.request("attributes.json") |>
+            httr2::req_url_query(
+              datasets = dataset$name,
+              config = dataset$mart$config
+            ) |>
+            httr2::req_perform() |>
+            httr2::resp_body_json()
+        }
+      )
 
       attrs <- lapply(res, function(a) {
         AttributeInfo$new(
@@ -462,13 +498,24 @@ BioMartClient <- R6::R6Class(
       )
       on.exit(cli::cli_progress_done(step), add = TRUE)
 
-      res <- private$.request("filters.json") |>
-        httr2::req_url_query(
-          datasets = dataset$name,
+      res <- .cache_fetch(
+        namespace = "biomart/filters",
+        params = list(
+          base_url = self$base_url,
+          path = self$path,
+          dataset = dataset$name,
           config = dataset$mart$config
-        ) |>
-        httr2::req_perform() |>
-        httr2::resp_body_json()
+        ),
+        FUN = function() {
+          private$.request("filters.json") |>
+            httr2::req_url_query(
+              datasets = dataset$name,
+              config = dataset$mart$config
+            ) |>
+            httr2::req_perform() |>
+            httr2::resp_body_json()
+        }
+      )
 
       lapply(res, function(f) {
         FilterInfo$new(
@@ -648,104 +695,119 @@ query_hgnc_by_genes <- function(
 ) {
   stopifnot(is.character(genes), is.character(attributes))
 
-  client <- BioMartClient$new("https://biomart.genenames.org")
-  marts <- client$get_marts()
-  # TODO:: since this function is specific for genes,
-  # we shouldnt be allowing user to choose mart and dataset
-  # extract this selection to a separate function
-  # and make this function only for hgnc genes
-  # this way we can also maybe use something else?
+  query_impl <- function() {
+    client <- BioMartClient$new("https://biomart.genenames.org")
+    marts <- client$get_marts()
+    # TODO:: since this function is specific for genes,
+    # we shouldnt be allowing user to choose mart and dataset
+    # extract this selection to a separate function
+    # and make this function only for hgnc genes
+    # this way we can also maybe use something else?
 
-  # Select mart: either by name/displayName or default to first one
-  if (!is.null(mart_name)) {
-    mart_idx <- which(vapply(
-      marts,
-      function(m) {
-        m$name == mart_name || m$displayName == mart_name
-      },
-      FUN.VALUE = logical(1)
-    ))
-    if (length(mart_idx) == 0) {
-      available_marts <- vapply(
+    # Select mart: either by name/displayName or default to first one
+    if (!is.null(mart_name)) {
+      mart_idx <- which(vapply(
         marts,
         function(m) {
-          paste0(m$name, " (", m$displayName, ")")
+          m$name == mart_name || m$displayName == mart_name
         },
-        character(1)
-      )
-      stop(
-        "Invalid mart name: '",
-        mart_name,
-        "'. Available marts: ",
-        paste(available_marts, collapse = ", ")
-      )
+        FUN.VALUE = logical(1)
+      ))
+      if (length(mart_idx) == 0) {
+        available_marts <- vapply(
+          marts,
+          function(m) {
+            paste0(m$name, " (", m$displayName, ")")
+          },
+          character(1)
+        )
+        stop(
+          "Invalid mart name: '",
+          mart_name,
+          "'. Available marts: ",
+          paste(available_marts, collapse = ", ")
+        )
+      }
+      mart <- marts[[mart_idx[1]]]
+    } else {
+      mart <- marts[[1]]
     }
-    mart <- marts[[mart_idx[1]]]
-  } else {
-    mart <- marts[[1]]
-  }
 
-  datasets <- client$get_datasets(mart)
+    datasets <- client$get_datasets(mart)
 
-  # Select dataset: either by name/displayName or default to first one
-  if (!is.null(dataset_name)) {
-    dataset_idx <- which(vapply(
-      datasets,
-      function(d) {
-        d$name == dataset_name || d$displayName == dataset_name
-      },
-      FUN.VALUE = logical(1)
-    ))
-    if (length(dataset_idx) == 0) {
-      available_datasets <- vapply(
+    # Select dataset: either by name/displayName or default to first one
+    if (!is.null(dataset_name)) {
+      dataset_idx <- which(vapply(
         datasets,
         function(d) {
-          paste0(d$name, " (", d$displayName, ")")
+          d$name == dataset_name || d$displayName == dataset_name
         },
-        character(1)
-      )
-      stop(
-        "Invalid dataset name: '",
-        dataset_name,
-        "'. Available datasets: ",
-        paste(available_datasets, collapse = ", ")
-      )
+        FUN.VALUE = logical(1)
+      ))
+      if (length(dataset_idx) == 0) {
+        available_datasets <- vapply(
+          datasets,
+          function(d) {
+            paste0(d$name, " (", d$displayName, ")")
+          },
+          character(1)
+        )
+        stop(
+          "Invalid dataset name: '",
+          dataset_name,
+          "'. Available datasets: ",
+          paste(available_datasets, collapse = ", ")
+        )
+      }
+      dset <- datasets[[dataset_idx[1]]]
+    } else {
+      dset <- datasets[[1]]
     }
-    dset <- datasets[[dataset_idx[1]]]
-  } else {
-    dset <- datasets[[1]]
-  }
 
-  attrset <- client$get_attributes(dset)
+    attrset <- client$get_attributes(dset)
 
-  valid_attrs <- attrset$get_by_display_name(attributes)
-  if (length(valid_attrs$attributes) != length(attributes)) {
-    available <- vapply(attrset$attributes, \(a) a$displayName, character(1))
-    missing <- setdiff(attributes, available)
-    errmsg <- paste("Invalid attribute(s):", paste(missing, collapse = ", "))
-    # show valid attributes if available
-    if (length(available) > 0) {
-      errmsg <- paste(
-        errmsg,
-        "\nAvailable attributes:\n\t-",
-        paste(available, collapse = "\n\t- ")
-      )
+    valid_attrs <- attrset$get_by_display_name(attributes)
+    if (length(valid_attrs$attributes) != length(attributes)) {
+      available <- vapply(attrset$attributes, \(a) a$displayName, character(1))
+      missing <- setdiff(attributes, available)
+      errmsg <- paste("Invalid attribute(s):", paste(missing, collapse = ", "))
+      # show valid attributes if available
+      if (length(available) > 0) {
+        errmsg <- paste(
+          errmsg,
+          "\nAvailable attributes:\n\t-",
+          paste(available, collapse = "\n\t- ")
+        )
+      }
+      stop(errmsg)
     }
-    stop(errmsg)
-  }
 
-  q <- bm_query_builder(
-    dataset = dset,
-    attributes = valid_attrs,
-    filters = list(
-      hgnc_gene__approved_symbol_1010_text = paste(genes, collapse = ",")
+    q <- bm_query_builder(
+      dataset = dset,
+      attributes = valid_attrs,
+      filters = list(
+        hgnc_gene__approved_symbol_1010_text = paste(genes, collapse = ",")
+      )
     )
+
+    resp <- httr2::request(
+      "https://biomart.genenames.org/martservice/results"
+    ) |>
+      httr2::req_url_query(query = q) |>
+      httr2::req_perform() |>
+      .parse_resp_tsv()
+
+    data.table::as.data.table(resp)
+  }
+
+  .cache_fetch(
+    namespace = "biomart/hgnc-query",
+    params = list(
+      genes = genes,
+      attributes = attributes,
+      mart_name = mart_name,
+      dataset_name = dataset_name
+    ),
+    FUN = query_impl
   )
-
-  resp <- httr2::request("https://biomart.genenames.org/martservice/results") |>
-    httr2::req_url_query(query = q) |>
-    httr2::req_perform() |>
-    .parse_resp_tsv()
-
-  data.table::as.data.table(resp)
 }

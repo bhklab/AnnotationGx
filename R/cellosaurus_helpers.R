@@ -241,10 +241,16 @@
 #' @noRd
 .cellosaurus_schema <- function() {
   url <- .buildURL("https://api.cellosaurus.org/openapi.json")
-  request <- .build_request(url)
 
-  resp <- .perform_request(request)
-  .parse_resp_json(resp)
+  .cache_fetch(
+    namespace = "cellosaurus/schema",
+    params = list(url = url),
+    FUN = function() {
+      request <- .build_request(url)
+      resp <- .perform_request(request)
+      .parse_resp_json(resp)
+    }
+  )
 }
 
 

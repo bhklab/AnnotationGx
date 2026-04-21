@@ -32,77 +32,83 @@
 #' @export
 getUnichemSources <- function(all_columns = FALSE) {
   funContext <- .funContext("AnnotationGx::getUnichemSources")
-  request <- .build_unichem_query("sources") |>
-    .build_request()
-  response <- request |>
-    .perform_request() |>
-    .parse_unichem_response(
-      request_label = "UniChem sources",
-      request = request
-    )
+  sources_dt <- .cache_fetch(
+    namespace = "unichem/sources",
+    params = list(all_columns = TRUE),
+    FUN = function() {
+      request <- .build_unichem_query("sources") |>
+        .build_request()
+      response <- request |>
+        .perform_request() |>
+        .parse_unichem_response(
+          request_label = "UniChem sources",
+          request = request
+        )
 
-  if (response$response != "Success") {
-    .err(funContext, "Unichem API request failed.")
-  }
+      if (response$response != "Success") {
+        .err(funContext, "Unichem API request failed.")
+      }
 
-  .debug(
-    funContext,
-    sprintf("Unichem sourceCount: %s", response$totalSources)
+      .debug(
+        funContext,
+        sprintf("Unichem sourceCount: %s", response$totalSources)
+      )
+
+      sources_dt <- .asDT(response$sources)
+
+      old_names <- c(
+        "UCICount",
+        "baseIdUrl",
+        "description",
+        "lastUpdated",
+        "name",
+        "nameLabel",
+        "nameLong",
+        "sourceID",
+        "srcDetails",
+        "srcReleaseDate",
+        "srcReleaseNumber",
+        "srcUrl",
+        "updateComments"
+      )
+
+      new_names <- c(
+        "CompoundCount",
+        "BaseURL",
+        "Description",
+        "LastUpdated",
+        "Name",
+        "NameLabel",
+        "NameLong",
+        "SourceID",
+        "Details",
+        "ReleaseDate",
+        "ReleaseNumber",
+        "URL",
+        "UpdateComments"
+      )
+
+      data.table::setnames(sources_dt, old_names, new_names)
+
+      new_order <- c(
+        "Name",
+        "NameLabel",
+        "NameLong",
+        "SourceID",
+        "CompoundCount",
+        "BaseURL",
+        "URL",
+        "Details",
+        "Description",
+        "ReleaseNumber",
+        "ReleaseDate",
+        "LastUpdated",
+        "UpdateComments"
+      )
+
+      sources_dt[, new_order, with = FALSE]
+    }
   )
-
-  sources_dt <- .asDT(response$sources)
-
-  old_names <- c(
-    "UCICount",
-    "baseIdUrl",
-    "description",
-    "lastUpdated",
-    "name",
-    "nameLabel",
-    "nameLong",
-    "sourceID",
-    "srcDetails",
-    "srcReleaseDate",
-    "srcReleaseNumber",
-    "srcUrl",
-    "updateComments"
-  )
-
-  new_names <- c(
-    "CompoundCount",
-    "BaseURL",
-    "Description",
-    "LastUpdated",
-    "Name",
-    "NameLabel",
-    "NameLong",
-    "SourceID",
-    "Details",
-    "ReleaseDate",
-    "ReleaseNumber",
-    "URL",
-    "UpdateComments"
-  )
-
-  data.table::setnames(sources_dt, old_names, new_names)
-
-  new_order <- c(
-    "Name",
-    "NameLabel",
-    "NameLong",
-    "SourceID",
-    "CompoundCount",
-    "BaseURL",
-    "URL",
-    "Details",
-    "Description",
-    "ReleaseNumber",
-    "ReleaseDate",
-    "LastUpdated",
-    "UpdateComments"
-  )
-
-  sources_dt <- sources_dt[, new_order, with = FALSE]
 
   if (all_columns) {
     return(sources_dt)
@@ -261,8 +267,6 @@ queryUnichemCompound <- function(
     src_ids
   }
 
-  source_ids <- validate_source_ids(sourceID)
-
   build_request <- function(cmp, src) {
     .build_unichem_compound_req(
       type = type,
@@ -317,77 +321,98 @@ queryUnichemCompound <- function(
     )
   }
 
-  if (many_queries) {
-    requests <- Map(build_request, compounds, source_ids)
-    name_candidates <- names(compounds)
-    if (
-      !is.null(name_candidates) && length(name_candidates) == length(compounds)
-    ) {
-      names(requests) <- name_candidates
-    } else {
-      names(requests) <- as.character(compounds)
+  query_impl <- function() {
+    source_ids <- validate_source_ids(sourceID)
+
+    if (many_queries) {
+      requests <- Map(build_request, compounds, source_ids)
+      name_candidates <- names(compounds)
+      if (
+        !is.null(name_candidates) &&
+          length(name_candidates) == length(compounds)
+      ) {
+        names(requests) <- name_candidates
+      } else {
+        names(requests) <- as.character(compounds)
+      }
+
+      if (request_only) {
+        return(requests)
+      }
+
+      responses <- .perform_request_parallel(requests, progress = progress)
+      names(responses) <- names(requests)
+
+      parsed_responses <- Map(
+        function(response, request, cmp_label) {
+          .parse_unichem_response(
+            response,
+            paste0("compound `", cmp_label, "` with type `", type, "`"),
+            request = request
+          )
+        },
+        responses,
+        requests,
+        names(responses)
+      )
+
+      if (raw) {
+        names(parsed_responses) <- names(responses)
+        return(parsed_responses)
+      }
+
+      results <- Map(
+        function(parsed, cmp_label) {
+          tryCatch(
+            parse_response(parsed, cmp_label),
+            error = function(e) {
+              structure(
+                list(error = conditionMessage(e)),
+                class = c("unichem_error", "list")
+              )
+            }
+          )
+        },
+        parsed_responses,
+        names(responses)
+      )
+
+      names(results) <- names(responses)
+      return(results)
     }
 
+    request <- build_request(compounds[[1L]], source_ids[[1L]])
     if (request_only) {
-      return(requests)
+      return(request)
     }
 
-    responses <- .perform_request_parallel(requests, progress = progress)
-    names(responses) <- names(requests)
-
-    parsed_responses <- Map(
-      function(response, request, cmp_label) {
-        .parse_unichem_response(
-          response,
-          paste0("compound `", cmp_label, "` with type `", type, "`"),
-          request = request
-        )
-      },
-      responses,
-      requests,
-      names(responses)
+    response <- request |>
+      .perform_request()
+    parsed <- .parse_unichem_response(
+      response,
+      paste0("compound `", compounds[[1L]], "` with type `", type, "`"),
+      request = request
     )
 
     if (raw) {
-      names(parsed_responses) <- names(responses)
-      return(parsed_responses)
+      return(parsed)
     }
 
-    results <- Map(
-      function(parsed, cmp_label) {
-        tryCatch(
-          parse_response(parsed, cmp_label),
-          error = function(e) {
-            structure(
-              list(error = conditionMessage(e)),
-              class = c("unichem_error", "list")
-            )
-          }
-        )
-      },
-      parsed_responses,
-      names(responses)
-    )
-
-    names(results) <- names(responses)
-    return(results)
+    parse_response(parsed, compounds[[1L]])
   }
 
-  request <- build_request(compounds[[1L]], source_ids[[1L]])
-  if (request_only) {
-    return(request)
+  if (request_only || raw) {
+    return(query_impl())
   }
 
-  response <- request |> .perform_request()
-  parsed <- .parse_unichem_response(
-    response,
-    paste0("compound `", compounds[[1L]], "` with type `", type, "`"),
-    request = request
+  .cache_fetch(
+    namespace = "unichem/query",
+    params = list(
+      compound = compounds,
+      type = type,
+      sourceID = sourceID,
+      extra = list(...)
+    ),
+    FUN = query_impl
   )
-
-  if (raw) {
-    return(parsed)
-  }
-
-  parse_response(parsed, compounds[[1L]])
 }
