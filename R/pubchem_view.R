@@ -89,102 +89,129 @@ annotatePubchemCompound <- function(
   nParallel = 1
 ) {
   funContext <- .funContext("annotatePubchemCompound")
-
-  .info(funContext, sprintf("Building requests for %s CIDs", length(cids)))
-  requests <- lapply(cids, function(cid) {
-    .build_pubchem_view_query(
-      id = cid,
-      record = "compound",
-      heading = heading,
-      output = "JSON",
-      source = source
-    )
-  })
-
-  .debug(
-    funContext,
-    paste0(
-      "query: ",
-      vapply(requests, `[[`, FUN.VALUE = character(1), i = "url")
-    )
+  cacheable_headings <- c(
+    "ChEMBL ID",
+    "CAS",
+    "NSC Number",
+    "ATC Code",
+    "Drug Induced Liver Injury"
   )
-  if (query_only) {
-    return(requests)
-  }
 
-  tryCatch(
-    {
-      resp_raw <- httr2::req_perform_sequential(
-        reqs = requests,
-        on_error = "continue",
-        progress = "Performing API requests..."
+  query_impl <- function() {
+    .info(funContext, sprintf("Building requests for %s CIDs", length(cids)))
+    requests <- lapply(cids, function(cid) {
+      .build_pubchem_view_query(
+        id = cid,
+        record = "compound",
+        heading = heading,
+        output = "JSON",
+        source = source
       )
-    },
-    error = function(e) {
-      .err(funContext, "An error occurred while performing requests:\n", e)
-    }
-  )
+    })
 
-  if (raw) {
-    return(resp_raw)
-  }
-
-  responses <- lapply(seq_along(resp_raw), function(i) {
-    resp <- resp_raw[[i]]
-    if (is.null(resp)) {
-      return(NA_character_)
+    .debug(
+      funContext,
+      paste0(
+        "query: ",
+        vapply(requests, `[[`, FUN.VALUE = character(1), i = "url")
+      )
+    )
+    if (query_only) {
+      return(requests)
     }
+
     tryCatch(
       {
-        .parse_resp_json(resp)
+        resp_raw <- httr2::req_perform_sequential(
+          reqs = requests,
+          on_error = "continue",
+          progress = "Performing API requests..."
+        )
       },
       error = function(e) {
-        warnmsg <- sprintf(
-          "\nThe response could not be parsed:\n\t%s\tReturning NA instead for CID: %s for the heading: %s",
-          e,
-          cids[i],
-          heading
-        )
-        .warn(
-          funContext,
-          warnmsg
-        )
-        resp
+        .err(funContext, "An error occurred while performing requests:\n", e)
       }
     )
-  })
 
-  # apply the parse function to each response depending on heading
-  parsed_responses <- parallel::mclapply(
-    responses,
-    function(response) {
-      switch(heading,
-        "ChEMBL ID" = .parseCHEMBLresponse(response),
-        "CAS" = .parseCASresponse(response),
-        "NSC Number" = .parseNSCresponse(response),
-        "ATC Code" = .parseATCresponse(response),
-        "Drug Induced Liver Injury" = .parseDILIresponse(response),
-        tryCatch(
-          {
-            parse_function(response)
-          },
-          error = function(e) {
-            .warn(
-              funContext,
-              "The parseFUN function failed: ",
-              e,
-              ". Returning unparsed results instead. Please test the parseFUN
-                  on the returned data."
-            )
-            response
-          }
-        )
+    if (raw) {
+      return(resp_raw)
+    }
+
+    responses <- lapply(seq_along(resp_raw), function(i) {
+      resp <- resp_raw[[i]]
+      if (is.null(resp)) {
+        return(NA_character_)
+      }
+      tryCatch(
+        {
+          .parse_resp_json(resp)
+        },
+        error = function(e) {
+          warnmsg <- sprintf(
+            "\nThe response could not be parsed:\n\t%s\tReturning NA instead for CID: %s for the heading: %s",
+            e,
+            cids[i],
+            heading
+          )
+          .warn(
+            funContext,
+            warnmsg
+          )
+          resp
+        }
       )
-    },
-    mc.cores = nParallel
-  )
+    })
 
-  sapply(parsed_responses, .replace_null)
+    # apply the parse function to each response depending on heading
+    parsed_responses <- parallel::mclapply(
+      responses,
+      function(response) {
+        switch(heading,
+          "ChEMBL ID" = .parseCHEMBLresponse(response),
+          "CAS" = .parseCASresponse(response),
+          "NSC Number" = .parseNSCresponse(response),
+          "ATC Code" = .parseATCresponse(response),
+          "Drug Induced Liver Injury" = .parseDILIresponse(response),
+          tryCatch(
+            {
+              parse_function(response)
+            },
+            error = function(e) {
+              .warn(
+                funContext,
+                "The parseFUN function failed: ",
+                e,
+                ". Returning unparsed results instead. Please test the parseFUN
+                    on the returned data."
+              )
+              response
+            }
+          )
+        )
+      },
+      mc.cores = nParallel
+    )
+
+    sapply(parsed_responses, .replace_null)
+  }
+
+  cacheable <- !query_only &&
+    !raw &&
+    (heading %in% cacheable_headings || identical(parse_function, identity))
+
+  if (!cacheable) {
+    return(query_impl())
+  }
+
+  .cache_fetch(
+    namespace = "pubchem/view-annotation",
+    params = list(
+      cids = cids,
+      heading = heading,
+      source = source
+    ),
+    FUN = query_impl
+  )
 }
 
 # helper function to replace NULL with NA

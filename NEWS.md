@@ -1,3 +1,3 @@
-# Changes in version 0.99.6
+# Changes in version 0.99.7
 
-- Initial Bioconductor Release
+- Add persistent caching with `BiocFileCache` for remote metadata and parsed API query results.

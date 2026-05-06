@@ -14,11 +14,18 @@
 ) {
   url <- "http://oncotree.mskcc.org"
   targetClean <- match.arg(target)
-  .buildURL(url, "api", targetClean) |>
-    .build_request() |>
-    .perform_request() |>
-    .parse_resp_json() |>
-    .asDT()
+
+  .cache_fetch(
+    namespace = "oncotree/reference",
+    params = list(target = targetClean, base_url = url),
+    FUN = function() {
+      .buildURL(url, "api", targetClean) |>
+        .build_request() |>
+        .perform_request() |>
+        .parse_resp_json() |>
+        .asDT()
+    }
+  )
 }
 #' Get available Oncotree versions
 #'

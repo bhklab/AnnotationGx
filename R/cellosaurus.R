@@ -132,93 +132,115 @@ mapCell2Accession <- function(
     "hi"
   )
 
-  # create query list
-  .info(funContext, "Creating Cellosaurus queries")
+  query_impl <- function() {
+    # create query list
+    .info(funContext, "Creating Cellosaurus queries")
 
-  queries <- .create_cellosaurus_queries(ids, from, fuzzy)
-  names(queries) <- ids
+    queries <- .create_cellosaurus_queries(ids, from, fuzzy)
+    names(queries) <- ids
 
-  .info(funContext, "Building Cellosaurus requests")
-  # build the list of requests
-  requests <- parallel::mclapply(
-    queries,
-    function(query) {
-      .build_cellosaurus_request(
-        query = query,
-        to = to,
-        numResults = numResults,
-        sort = sort,
-        output = "TXT"
-      )
-    },
-    mc.cores = getOption("annotationgx.mc.cores", getOption("mc.cores", 1L))
-  )
-
-  if (query_only) {
-    return(lapply(requests, function(req) req$url))
-  }
-
-  # Submit requests using parallel httr2 since cellosaurus doesnt throttle
-  .info(funContext, "Performing Cellosaurus queries")
-  responses <- .perform_request_parallel(
-    requests,
-    progress = "Querying Cellosaurus..."
-  )
-  names(responses) <- as.character(ids) # in case its an numeric ID  like cosmic ids
-  if (raw) {
-    return(responses)
-  }
-
-  # parse the responses
-  .info(funContext, "Parsing Cellosaurus responses")
-  responses_dt <- parallel::mclapply(
-    ids,
-    function(name) {
-      resp <- responses[[name]]
-
-      resp <- .parse_cellosaurus_lines(resp)
-      if (length(resp) == 0L) {
-        .warn(paste0("No results found for ", name))
-        result <- data.table::data.table()
-        result$query <- name
-        return(result)
-      }
-      response_dt <- .parse_cellosaurus_text(
-        resp,
-        name,
-        parsed = parsed,
-        keep_duplicates = keep_duplicates
-      )
-      response_dt
-    },
-    mc.cores = getOption("annotationgx.mc.cores", getOption("mc.cores", 1L))
-  )
-
-  responses_dt <- data.table::rbindlist(responses_dt, fill = TRUE)
-
-  if (!include_query) {
-    query_cols <- grep("^query", names(responses_dt), value = TRUE)
-    if (length(query_cols) > 0L) {
-      responses_dt[, (query_cols) := NULL]
-    }
-  }
-
-  core_cols <- c("cellLineName", "accession")
-  existing_core <- core_cols[core_cols %in% names(responses_dt)]
-  if (length(existing_core) > 0L) {
-    query_cols <- if (include_query) {
-      grep("^query", names(responses_dt), value = TRUE)
-    } else {
-      character(0)
-    }
-    extra_cols <- setdiff(names(responses_dt), c(existing_core, query_cols))
-    data.table::setcolorder(
-      responses_dt,
-      c(existing_core, extra_cols, query_cols)
+    .info(funContext, "Building Cellosaurus requests")
+    # build the list of requests
+    requests <- parallel::mclapply(
+      queries,
+      function(query) {
+        .build_cellosaurus_request(
+          query = query,
+          to = to,
+          numResults = numResults,
+          sort = sort,
+          output = "TXT"
+        )
+      },
+      mc.cores = getOption("annotationgx.mc.cores", getOption("mc.cores", 1L))
     )
+
+    if (query_only) {
+      return(lapply(requests, function(req) req$url))
+    }
+
+    # Submit requests using parallel httr2 since cellosaurus doesnt throttle
+    .info(funContext, "Performing Cellosaurus queries")
+    responses <- .perform_request_parallel(
+      requests,
+      progress = "Querying Cellosaurus..."
+    )
+    names(responses) <- as.character(ids) # in case its an numeric ID  like cosmic ids
+    if (raw) {
+      return(responses)
+    }
+
+    # parse the responses
+    .info(funContext, "Parsing Cellosaurus responses")
+    responses_dt <- parallel::mclapply(
+      ids,
+      function(name) {
+        resp <- responses[[name]]
+
+        resp <- .parse_cellosaurus_lines(resp)
+        if (length(resp) == 0L) {
+          .warn(paste0("No results found for ", name))
+          result <- data.table::data.table()
+          result$query <- name
+          return(result)
+        }
+        response_dt <- .parse_cellosaurus_text(
+          resp,
+          name,
+          parsed = parsed,
+          keep_duplicates = keep_duplicates
+        )
+        response_dt
+      },
+      mc.cores = getOption("annotationgx.mc.cores", getOption("mc.cores", 1L))
+    )
+
+    responses_dt <- data.table::rbindlist(responses_dt, fill = TRUE)
+
+    if (!include_query) {
+      query_cols <- grep("^query", names(responses_dt), value = TRUE)
+      if (length(query_cols) > 0L) {
+        responses_dt[, (query_cols) := NULL]
+      }
+    }
+
+    core_cols <- c("cellLineName", "accession")
+    existing_core <- core_cols[core_cols %in% names(responses_dt)]
+    if (length(existing_core) > 0L) {
+      query_cols <- if (include_query) {
+        grep("^query", names(responses_dt), value = TRUE)
+      } else {
+        character(0)
+      }
+      extra_cols <- setdiff(names(responses_dt), c(existing_core, query_cols))
+      data.table::setcolorder(
+        responses_dt,
+        c(existing_core, extra_cols, query_cols)
+      )
+    }
+
+    responses_dt
   }
 
-  return(responses_dt)
+  if (query_only || raw) {
+    return(query_impl())
+  }
+
+  .cache_fetch(
+    namespace = "cellosaurus/map-cell-to-accession",
+    params = list(
+      ids = ids,
+      numResults = numResults,
+      from = from,
+      sort = sort,
+      keep_duplicates = keep_duplicates,
+      fuzzy = fuzzy,
+      parsed = parsed,
+      include_query = include_query,
+      extra = list(...)
+    ),
+    FUN = query_impl
+  )
 }
 
 
