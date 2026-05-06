@@ -45,8 +45,8 @@ about:
   repository: https://github.com/bhklab/AnnotationGx
   license: GPL-3.0-or-later
   license_file: LICENSE.md
-  summary: Annotation database helpers for pharmaco-genomic data
+  summary: Annotation database helpers for pharmacogenomic data
   description: |
-    AnnotationGx provides API interfaces to bioinformatic and
+    AnnotationGx provides API interfaces to public bioinformatic and
     chemoinformatic databases, plus helpers for curating data with the
     retrieved annotations.
