@@ -18,7 +18,7 @@ Description: A package for building, updating and querying an
     of functions for curating your data using the annotations retrieved from
     those APIs.
 Depends: 
-    R (>= 4.6.0)
+    R (>= 4.5.0)
 Imports: 
     BiocFileCache,
     checkmate,

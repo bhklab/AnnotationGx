@@ -1,0 +1,52 @@
+context:
+  version: "0.99.7"
+
+package:
+  name: annotationgx
+  version: ${{ version }}
+
+source:
+  path: .
+
+build:
+  number: 0
+  noarch: generic
+  script: R CMD INSTALL --build .
+
+requirements:
+  host:
+    - r-base >=4.5.0
+    - bioconductor-biocfilecache
+    - r-checkmate
+    - r-crayon
+    - r-data.table
+    - r-httr2
+    - r-memoise
+    - r-readr
+    - r-xml2
+  run:
+    - r-base >=4.5.0
+    - bioconductor-biocfilecache
+    - r-checkmate
+    - r-crayon
+    - r-data.table
+    - r-httr2
+    - r-memoise
+    - r-readr
+    - r-xml2
+
+tests:
+  - r:
+      libraries:
+        - AnnotationGx
+
+about:
+  homepage: https://bhklab.github.io/AnnotationGx/
+  repository: https://github.com/bhklab/AnnotationGx
+  license: GPL-3.0-or-later
+  license_file: LICENSE.md
+  summary: Annotation database helpers for pharmaco-genomic data
+  description: |
+    AnnotationGx provides API interfaces to bioinformatic and
+    chemoinformatic databases, plus helpers for curating data with the
+    retrieved annotations.
