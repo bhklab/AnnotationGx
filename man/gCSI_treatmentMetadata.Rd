@@ -3,14 +3,29 @@
 \docType{data}
 \name{gCSI_treatmentMetadata}
 \alias{gCSI_treatmentMetadata}
-\title{gCSI_treatmentMetadata is some preprocessed treatment metadata from the gCSI dataset}
+\title{gCSI Treatment Metadata}
 \format{
-An object of class \code{data.table} (inherits from \code{data.frame}) with 44 rows and 2 columns.
+A \code{data.table} with 44 rows and 2 columns:
+\describe{
+\item{gCSI.treatmentid}{gCSI treatment name.}
+\item{gCSI.NormDrugName}{Normalized gCSI treatment name.}
+}
+}
+\source{
+gCSI source metadata; BHKLab-curated PSet on ORCESTRA,
+\url{https://www.orcestra.ca/pset/10.5281/zenodo.4737437}. See
+\code{system.file("extdata", "LICENSES.md", package = "AnnotationGx")} for
+bundled data provenance notes.
 }
 \usage{
-gCSI_treatmentMetadata
+data(gCSI_treatmentMetadata)
 }
 \description{
-gCSI_treatmentMetadata is some preprocessed treatment metadata from the gCSI dataset
+A column-reduced example treatment metadata table derived from gCSI response
+metadata.
+}
+\examples{
+data(gCSI_treatmentMetadata)
+head(gCSI_treatmentMetadata)
 }
 \keyword{datasets}

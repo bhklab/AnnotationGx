@@ -3,14 +3,29 @@
 \docType{data}
 \name{GDSC_treatmentMetadata}
 \alias{GDSC_treatmentMetadata}
-\title{GDSC_treatmentMetadata is some preprocessed treatment metadata from the GDSC dataset}
+\title{GDSC Treatment Metadata}
 \format{
-An object of class \code{data.table} (inherits from \code{data.frame}) with 621 rows and 3 columns.
+A \code{data.table} with 621 rows and 3 columns:
+\describe{
+\item{GDSC.treatmentid}{GDSC treatment name.}
+\item{GDSC.synonyms}{GDSC-provided treatment synonyms.}
+\item{GDSC.drug_id}{GDSC drug identifier.}
+}
+}
+\source{
+GDSC, \url{https://www.cancerrxgene.org/}; BHKLab-curated PSet on
+ORCESTRA, \url{https://www.orcestra.ca/pset/10.5281/zenodo.3905481}. See
+\code{system.file("extdata", "LICENSES.md", package = "AnnotationGx")} for
+bundled data provenance notes.
 }
 \usage{
-GDSC_treatmentMetadata
+data(GDSC_treatmentMetadata)
 }
 \description{
-GDSC_treatmentMetadata is some preprocessed treatment metadata from the GDSC dataset
+A column-reduced example treatment metadata table derived from GDSC.
+}
+\examples{
+data(GDSC_treatmentMetadata)
+head(GDSC_treatmentMetadata)
 }
 \keyword{datasets}

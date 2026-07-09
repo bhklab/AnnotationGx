@@ -1,7 +1,7 @@
 Package: AnnotationGx
 Title: AnnotationGx: A package for building, updating and querying an
     annotation database for pharmaco-genomic data
-Version: 0.99.7
+Version: 0.99.8
 Authors@R: c(
     person("Michael", "Tran", role = c("aut"),
         email = "michaelcao-anh.tran@uhn.ca"),
@@ -18,18 +18,21 @@ Description: A package for building, updating and querying an
     of functions for curating your data using the annotations retrieved from
     those APIs.
 Depends: 
-    R (>= 4.5.0)
+    R (>= 4.6.0)
 Imports: 
     BiocFileCache,
     checkmate,
+    cli,
     crayon,
-    httr2,
     data.table,
+    httr2,
+    memoise,
     readr,
-    xml2,
+    R6,
     methods,
-    memoise
+    xml2
 Suggests: 
+    BiocStyle,
     testthat (>= 3.0.0),
     covr,
     readxl,
@@ -41,10 +44,10 @@ BugReports: https://github.com/bhklab/AnnotationGx/issues/new?template=issue_tem
 Config/testthat/edition: 3
 Config/testthat/parallel: true
 Config/testthat/start-first: watcher, parallel*
-License: GPL (>= 3) + file LICENSE
+License: GPL-3
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
 Encoding: UTF-8
 URL: https://bhklab.github.io/AnnotationGx/
-biocViews: Annotation
+biocViews: Annotation, Pharmacogenomics, Cheminformatics
+Config/roxygen2/version: 8.0.0

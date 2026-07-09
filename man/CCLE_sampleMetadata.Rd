@@ -3,14 +3,31 @@
 \docType{data}
 \name{CCLE_sampleMetadata}
 \alias{CCLE_sampleMetadata}
-\title{CCLE_sampleMetadata is some preprocessed sample metadata from the CCLE dataset}
+\title{CCLE Sample Metadata}
 \format{
-An object of class \code{data.table} (inherits from \code{data.frame}) with 1461 rows and 4 columns.
+A \code{data.table} with 1461 rows and 4 columns:
+\describe{
+\item{CCLE_ID}{CCLE cell line identifier.}
+\item{depMapID}{DepMap identifier.}
+\item{Name}{Cell line display name.}
+\item{CCLE_ID_parsed}{Parsed cell line identifier used by examples.}
+}
+}
+\source{
+CCLE/DepMap resources; BHKLab-curated PSet on ORCESTRA,
+\url{https://www.orcestra.ca/pset/10.5281/zenodo.3905462}. See
+\code{system.file("extdata", "LICENSES.md", package = "AnnotationGx")} for
+bundled data provenance notes.
 }
 \usage{
-CCLE_sampleMetadata
+data(CCLE_sampleMetadata)
 }
 \description{
-CCLE_sampleMetadata is some preprocessed sample metadata from the CCLE dataset
+A column-reduced example sample metadata table derived from Cancer Cell Line
+Encyclopedia/DepMap resources.
+}
+\examples{
+data(CCLE_sampleMetadata)
+head(CCLE_sampleMetadata)
 }
 \keyword{datasets}

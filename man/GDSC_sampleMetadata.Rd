@@ -3,24 +3,26 @@
 \docType{data}
 \name{GDSC_sampleMetadata}
 \alias{GDSC_sampleMetadata}
-\title{gdsc_sampleMetadata is some preprocessed sample metadata from the GDSC dataset}
+\title{GDSC Sample Metadata}
 \format{
-A data table with 5 columns and 1001 rows.
+A \code{data.table} with 1001 rows and 2 columns:
 \describe{
-\item{GDSC.Sample_Name}{\code{char} The name of the cell line in the GDSC dataset.}
-\item{GDSC.COSMIC_ID}{\code{int} The COSMIC ID of the cell line in the GDSC dataset.}
+\item{GDSC.Sample_Name}{GDSC cell line name.}
+\item{GDSC.COSMIC_ID}{COSMIC identifier.}
 }
 }
 \source{
-https://www.cancerrxgene.org/
+GDSC, \url{https://www.cancerrxgene.org/}; BHKLab-curated PSet on
+ORCESTRA, \url{https://www.orcestra.ca/pset/10.5281/zenodo.3905481}. See
+\code{system.file("extdata", "LICENSES.md", package = "AnnotationGx")} for
+bundled data provenance notes.
 }
 \usage{
 data(GDSC_sampleMetadata)
 }
 \description{
-A preprocessed version of the sample metadata from the GDSC dataset.
-This dataset is provided in the package to test the functionality of the package.
-The original dataset can be downloaded from the CancerRxGene website.
+A column-reduced example sample metadata table derived from the Genomics of
+Drug Sensitivity in Cancer (GDSC) data.
 }
 \examples{
 data(GDSC_sampleMetadata)

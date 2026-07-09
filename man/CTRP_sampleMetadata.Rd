@@ -3,14 +3,31 @@
 \docType{data}
 \name{CTRP_sampleMetadata}
 \alias{CTRP_sampleMetadata}
-\title{CTRP_sampleMetadata is some preprocessed sample metadata from the CTRP dataset}
+\title{CTRP Sample Metadata}
 \format{
-An object of class \code{data.table} (inherits from \code{data.frame}) with 1107 rows and 2 columns.
+A \code{data.table} with 1107 rows and 2 columns:
+\describe{
+\item{master_ccl_id}{CTRP master cell line identifier.}
+\item{ccl_name}{CTRP cell line name.}
+}
+}
+\source{
+Cancer Therapeutics Response Portal v2 / NCI CTD2,
+\url{https://ctd2-data.nci.nih.gov/Public/Broad/CTRPv2.0_2015_ctd2_ExpandedDataset/CTRPv2.0_2015_ctd2_ExpandedDataset.zip};
+BHKLab-curated PSet on ORCESTRA,
+\url{https://www.orcestra.ca/pset/10.5281/zenodo.3905470}. See
+\code{system.file("extdata", "LICENSES.md", package = "AnnotationGx")} for
+bundled data provenance notes.
 }
 \usage{
-CTRP_sampleMetadata
+data(CTRP_sampleMetadata)
 }
 \description{
-CTRP_sampleMetadata is some preprocessed sample metadata from the CTRP dataset
+A column-reduced example sample metadata table derived from Cancer
+Therapeutics Response Portal v2 metadata.
+}
+\examples{
+data(CTRP_sampleMetadata)
+head(CTRP_sampleMetadata)
 }
 \keyword{datasets}

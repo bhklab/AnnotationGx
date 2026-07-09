@@ -1,5 +1,5 @@
 context:
-  version: "0.99.7"
+  version: "0.99.8"
 
 package:
   name: annotationgx
@@ -17,21 +17,26 @@ requirements:
   host:
     - r-base >=4.5.0
     - bioconductor-biocfilecache
+    - bioconductor-biocstyle
     - r-checkmate
+    - r-cli
     - r-crayon
     - r-data.table
     - r-httr2
     - r-memoise
+    - r-r6
     - r-readr
     - r-xml2
   run:
     - r-base >=4.5.0
     - bioconductor-biocfilecache
     - r-checkmate
+    - r-cli
     - r-crayon
     - r-data.table
     - r-httr2
     - r-memoise
+    - r-r6
     - r-readr
     - r-xml2
 

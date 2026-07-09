@@ -3,14 +3,31 @@
 \docType{data}
 \name{CTRP_treatmentMetadata}
 \alias{CTRP_treatmentMetadata}
-\title{CTRP_treatmentMetadata is some preprocessed treatment metadata from the CTRP dataset}
+\title{CTRP Treatment Metadata}
 \format{
-An object of class \code{data.table} (inherits from \code{data.frame}) with 545 rows and 2 columns.
+A \code{data.table} with 545 rows and 2 columns:
+\describe{
+\item{CTRP.treatmentid}{CTRP compound name.}
+\item{CTRP.broad_cpd_id}{Broad compound identifier.}
+}
+}
+\source{
+Cancer Therapeutics Response Portal v2 / NCI CTD2,
+\url{https://ctd2-data.nci.nih.gov/Public/Broad/CTRPv2.0_2015_ctd2_ExpandedDataset/CTRPv2.0_2015_ctd2_ExpandedDataset.zip};
+BHKLab-curated PSet on ORCESTRA,
+\url{https://www.orcestra.ca/pset/10.5281/zenodo.3905470}. See
+\code{system.file("extdata", "LICENSES.md", package = "AnnotationGx")} for
+bundled data provenance notes.
 }
 \usage{
-CTRP_treatmentMetadata
+data(CTRP_treatmentMetadata)
 }
 \description{
-CTRP_treatmentMetadata is some preprocessed treatment metadata from the CTRP dataset
+A column-reduced example treatment metadata table derived from Cancer
+Therapeutics Response Portal v2 metadata.
+}
+\examples{
+data(CTRP_treatmentMetadata)
+head(CTRP_treatmentMetadata)
 }
 \keyword{datasets}

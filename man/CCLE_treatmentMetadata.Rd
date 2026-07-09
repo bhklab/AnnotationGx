@@ -3,14 +3,30 @@
 \docType{data}
 \name{CCLE_treatmentMetadata}
 \alias{CCLE_treatmentMetadata}
-\title{CCLE_treatmentMetadata is some preprocessed treatment metadata from the CCLE dataset}
+\title{CCLE Treatment Metadata}
 \format{
-An object of class \code{data.table} (inherits from \code{data.frame}) with 24 rows and 1 columns.
+A \code{data.table} with 24 rows and 1 column:
+\describe{
+\item{CCLE.treatmentid}{CCLE treatment name.}
+}
+}
+\source{
+CCLE legacy pharmacological profiling data,
+\url{https://data.broadinstitute.org/ccle_legacy_data/pharmacological_profiling/CCLE_NP24.2009_profiling_2012.02.20.csv};
+BHKLab-curated PSet on ORCESTRA,
+\url{https://www.orcestra.ca/pset/10.5281/zenodo.3905462}. See
+\code{system.file("extdata", "LICENSES.md", package = "AnnotationGx")} for
+bundled data provenance notes.
 }
 \usage{
-CCLE_treatmentMetadata
+data(CCLE_treatmentMetadata)
 }
 \description{
-CCLE_treatmentMetadata is some preprocessed treatment metadata from the CCLE dataset
+A column-reduced example treatment metadata table derived from legacy CCLE
+pharmacological profiling data.
+}
+\examples{
+data(CCLE_treatmentMetadata)
+head(CCLE_treatmentMetadata)
 }
 \keyword{datasets}

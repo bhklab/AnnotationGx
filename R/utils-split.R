@@ -1,9 +1,7 @@
-# The following functions are taken from the AcidBase package by acidgenomics using their
-# license. Adding the package as a dependency is the better approach but fails on the
-# CI/CD pipeline as the package is not available on CRAN.
-# TODO:: Add the package as a dependency and remove the following functions.
-# TODO:: reach out to the author to discuss the license and the possibility of
-#        adding the package as a dependency.
+# The string split helpers in this file are adapted from AcidBase.
+# Upstream: https://github.com/acidgenomics/r-acidbase/
+# Author/maintainer: Michael Steinbaugh; copyright holder/funder: Acid Genomics.
+# License: Apache License (>= 2). See inst/THIRD_PARTY_NOTICES.md.
 
 #' Split a character vector into a matrix based on a delimiter
 #'
@@ -146,7 +144,7 @@ strSplit <- function(x, split, fixed = TRUE, n = Inf) {
 #' @note Updated 2023-09-22.
 #' @noRd
 .splitCol <- function(object, colName, split = "; ") {
-  checkmate::assert_class(object, "data.table")
+  checkmate::assert_true(data.table::is.data.table(object))
   object[[colName]] <- strsplit(object[[colName]], split = split, fixed = TRUE)
   object
 }

@@ -25,7 +25,7 @@ It can handle both finite and infinite splits.
 \examples{
 strSplit("Hello,World", ",")
 # Output:
-#      [,1]    [,2]   
+#      [,1]    [,2]
 # [1,] "Hello" "World"
 
 }

@@ -3,14 +3,29 @@
 \docType{data}
 \name{gCSI_sampleMetadata}
 \alias{gCSI_sampleMetadata}
-\title{gCSI_sampleMetadata is some preprocessed sample metadata from the gCSI dataset}
+\title{gCSI Sample Metadata}
 \format{
-An object of class \code{data.table} (inherits from \code{data.frame}) with 1350 rows and 2 columns.
+A \code{data.table} with 1350 rows and 2 columns:
+\describe{
+\item{Characteristics.cell.line.}{gCSI cell line name.}
+\item{Comment.ENA_SAMPLE.}{ENA sample accession.}
+}
+}
+\source{
+gCSI source metadata; BHKLab-curated PSet on ORCESTRA,
+\url{https://www.orcestra.ca/pset/10.5281/zenodo.4737437}. See
+\code{system.file("extdata", "LICENSES.md", package = "AnnotationGx")} for
+bundled data provenance notes.
 }
 \usage{
-gCSI_sampleMetadata
+data(gCSI_sampleMetadata)
 }
 \description{
-gCSI_sampleMetadata is some preprocessed sample metadata from the gCSI dataset
+A column-reduced example sample metadata table derived from Genentech Cell
+Line Screening Initiative (gCSI) metadata.
+}
+\examples{
+data(gCSI_sampleMetadata)
+head(gCSI_sampleMetadata)
 }
 \keyword{datasets}
