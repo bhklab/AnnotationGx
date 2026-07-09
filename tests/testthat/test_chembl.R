@@ -26,6 +26,8 @@ test_that("build_chembl_request constructs the correct URL", {
 
 
 test_that("getChemblMechanism works", {
+  skip_if_offline()
+
   # Set up test data
   chembl_id <- "CHEMBL1413"
 
@@ -48,6 +50,8 @@ test_that("getChemblMechanism works", {
 
 
 test_that("getChemblResourceFields works", {
+  skip_if_offline()
+
   mechanism_fields <- getChemblResourceFields("mechanism")
 
   # should be atomic vector
@@ -80,6 +84,8 @@ test_that("getChemblResourceFields works", {
 })
 
 test_that("queryChemblAPI constructs the correct URL and returns parsed JSON response", {
+  skip_if_offline()
+
   # Set up test data
   resource <- "mechanism"
   field <- "mechanism_of_action"

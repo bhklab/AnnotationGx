@@ -4,6 +4,8 @@ library(checkmate)
 
 
 test_that("mapCell2Accession works as expected", {
+  skip_if_offline()
+
   # Test case 1: Test with a valid cell line name
   cell_line1 <- "Hela"
   expected1 <- "CVCL_0030"
@@ -13,6 +15,8 @@ test_that("mapCell2Accession works as expected", {
 })
 
 test_that("mapCell2Accession fuzzy search works as expected", {
+  skip_if_offline()
+
   cell_line <- "BT474"
 
   result1 <- mapCell2Accession(
@@ -27,6 +31,8 @@ test_that("mapCell2Accession fuzzy search works as expected", {
 })
 
 test_that("mapCell2Accession with multiple cell lines works as expected", {
+  skip_if_offline()
+
   cell_lines <- c("BT474", "Hela")
 
   result1 <- mapCell2Accession(
@@ -40,6 +46,8 @@ test_that("mapCell2Accession with multiple cell lines works as expected", {
 })
 
 test_that("mapCell DOR 13 works", {
+  skip_if_offline()
+
   name <- "DOR 13"
 
   result1 <- mapCell2Accession(name)
@@ -68,6 +76,8 @@ test_that("query only paramater works", {
 })
 
 test_that("raw param works", {
+  skip_if_offline()
+
   result1 <- mapCell2Accession("HT", raw = TRUE)
   expect_class(result1[[1]], "httr2_response")
   expect_equal(names(result1), "HT")
@@ -104,6 +114,8 @@ test_that("raw param works", {
 
 
 test_that("parsed works", {
+  skip_if_offline()
+
   (result1 <- mapCell2Accession("22RV1", parsed = FALSE))$diseases
   expect_data_table(result1, min.rows = 1, min.cols = 3)
   expect_true(
@@ -114,12 +126,16 @@ test_that("parsed works", {
 })
 
 test_that("parsed = FALSE returns user friendly column names", {
+  skip_if_offline()
+
   result <- mapCell2Accession("Hela", parsed = FALSE)
   expect_data_table(result, min.rows = 1)
   expect_true(all(c("synonyms", "diseases") %in% colnames(result)))
 })
 
 test_that("include_query = FALSE removes query columns", {
+  skip_if_offline()
+
   result1 <- mapCell2Accession("Hela", include_query = FALSE)
   result2 <- mapCell2Accession("Hela", parsed = FALSE, include_query = FALSE)
 

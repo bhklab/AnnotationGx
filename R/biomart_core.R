@@ -1,3 +1,7 @@
+.r6_print_lines <- function(lines) {
+  message(paste(lines, collapse = "\n"))
+}
+
 #' BioMart Information Class
 #'
 #' @description
@@ -40,14 +44,16 @@ MartInfo <- R6::R6Class(
     #' @param meta List, additional metadata
     #' @param group Character, the group the mart belongs to
     #' @return A new MartInfo object
-    initialize = function(name,
-                          displayName,
-                          description,
-                          config,
-                          isHidden,
-                          operation,
-                          meta,
-                          group) {
+    initialize = function(
+      name,
+      displayName,
+      description,
+      config,
+      isHidden,
+      operation,
+      meta,
+      group
+    ) {
       self$name <- name
       self$displayName <- displayName
       self$description <- description
@@ -64,10 +70,12 @@ MartInfo <- R6::R6Class(
     #' @param ... Additional arguments (not used)
     #' @return Invisibly returns self
     print = function(...) {
-      cat("<MartInfo>", "\n")
-      cat("  name       :", self$name, "\n")
-      cat("  config     :", self$config, "\n")
-      cat("  displayName:", self$displayName, "\n")
+      .r6_print_lines(c(
+        "<MartInfo>",
+        paste("  name       :", self$name),
+        paste("  config     :", self$config),
+        paste("  displayName:", self$displayName)
+      ))
       invisible(self)
     }
   )
@@ -118,10 +126,12 @@ DatasetInfo <- R6::R6Class(
     #' @param ... Additional arguments (not used)
     #' @return Invisibly returns self
     print = function(...) {
-      cat("<DatasetInfo>\n")
-      cat("  name       :", self$name, "\n")
-      cat("  mart config:", self$mart$config, "\n")
-      cat("  displayName:", self$displayName, "\n")
+      .r6_print_lines(c(
+        "<DatasetInfo>",
+        paste("  name       :", self$name),
+        paste("  mart config:", self$mart$config),
+        paste("  displayName:", self$displayName)
+      ))
       invisible(self)
     }
   )
@@ -163,12 +173,14 @@ FilterInfo <- R6::R6Class(
     #' @param isHidden Logical, whether the filter should be hidden in UIs
     #' @param values List or vector, possible values for the filter if applicable
     #' @return A new FilterInfo object
-    initialize = function(name,
-                          displayName = NULL,
-                          description = NULL,
-                          type = NULL,
-                          isHidden = NULL,
-                          values = NULL) {
+    initialize = function(
+      name,
+      displayName = NULL,
+      description = NULL,
+      type = NULL,
+      isHidden = NULL,
+      values = NULL
+    ) {
       self$name <- name
       self$displayName <- displayName
       self$description <- description
@@ -183,10 +195,12 @@ FilterInfo <- R6::R6Class(
     #' @param ... Additional arguments passed to print methods (not used)
     #' @return Invisibly returns self for method chaining
     print = function(...) {
-      cat("<FilterInfo>\n")
-      cat("  name       :", self$name, "\n")
-      cat("  type       :", self$type, "\n")
-      cat("  displayName:", self$displayName, "\n")
+      .r6_print_lines(c(
+        "<FilterInfo>",
+        paste("  name       :", self$name),
+        paste("  type       :", self$type),
+        paste("  displayName:", self$displayName)
+      ))
       invisible(self)
     }
   )
@@ -226,11 +240,13 @@ AttributeInfo <- R6::R6Class(
     #' @param linkURL Character, URL for additional information about the attribute
     #' @param isHidden Logical, whether the attribute should be hidden in UIs
     #' @return A new AttributeInfo object
-    initialize = function(name,
-                          displayName = NULL,
-                          description = NULL,
-                          linkURL = NULL,
-                          isHidden = NULL) {
+    initialize = function(
+      name,
+      displayName = NULL,
+      description = NULL,
+      linkURL = NULL,
+      isHidden = NULL
+    ) {
       self$name <- name
       self$displayName <- displayName
       self$description <- description
@@ -244,9 +260,11 @@ AttributeInfo <- R6::R6Class(
     #' @param ... Additional arguments passed to print methods (not used)
     #' @return Invisibly returns self for method chaining
     print = function(...) {
-      cat("<AttributeInfo>\n")
-      cat("  name       :", self$name, "\n")
-      cat("  displayName:", self$displayName, "\n")
+      .r6_print_lines(c(
+        "<AttributeInfo>",
+        paste("  name       :", self$name),
+        paste("  displayName:", self$displayName)
+      ))
       invisible(self)
     }
   )
@@ -288,11 +306,15 @@ AttributeSet <- R6::R6Class(
     #' @param ... Additional arguments passed to print methods (not used)
     #' @return Invisibly returns self
     print = function(...) {
-      cat("<AttributeSet>\n")
-      cat("  Attributes:\n")
-      for (attr in self$attributes) {
-        cat("    -", attr$displayName, "\n")
-      }
+      .r6_print_lines(c(
+        "<AttributeSet>",
+        "  Attributes:",
+        vapply(
+          self$attributes,
+          function(attr) paste("    -", attr$displayName),
+          character(1)
+        )
+      ))
       invisible(self)
     },
     #' @description Convert AttributeSet to list
@@ -339,7 +361,7 @@ AttributeSet <- R6::R6Class(
 #' client <- BioMartClient$new("https://www.ensembl.org")
 #' client$path
 #'
-#' \dontrun{
+#' \donttest{
 #' # Create a client for Ensembl BioMart
 #' client <- BioMartClient$new("https://www.ensembl.org")
 #'

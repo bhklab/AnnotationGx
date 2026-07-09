@@ -2,14 +2,15 @@ library(AnnotationGx)
 library(testthat)
 
 test_that(".cache_fetch persists values across calls", {
-  counter <- 0L
+  counter <- new.env(parent = emptyenv())
+  counter$value <- 0L
 
   first <- .cache_fetch(
     namespace = "tests/cache-persist",
     params = list(id = "persist"),
     FUN = function() {
-      counter <<- counter + 1L
-      list(value = counter)
+      counter$value <- counter$value + 1L
+      list(value = counter$value)
     }
   )
 
@@ -17,12 +18,12 @@ test_that(".cache_fetch persists values across calls", {
     namespace = "tests/cache-persist",
     params = list(id = "persist"),
     FUN = function() {
-      counter <<- counter + 1L
-      list(value = counter)
+      counter$value <- counter$value + 1L
+      list(value = counter$value)
     }
   )
 
-  expect_equal(counter, 1L)
+  expect_equal(counter$value, 1L)
   expect_equal(first, second)
   expect_equal(first$value, 1L)
 })
@@ -34,14 +35,15 @@ test_that(".cache_fetch respects the refresh option", {
 
   options(annotationgx.cache.refresh = TRUE)
 
-  counter <- 0L
+  counter <- new.env(parent = emptyenv())
+  counter$value <- 0L
 
   first <- .cache_fetch(
     namespace = "tests/cache-refresh",
     params = list(id = "refresh"),
     FUN = function() {
-      counter <<- counter + 1L
-      counter
+      counter$value <- counter$value + 1L
+      counter$value
     }
   )
 
@@ -49,8 +51,8 @@ test_that(".cache_fetch respects the refresh option", {
     namespace = "tests/cache-refresh",
     params = list(id = "refresh"),
     FUN = function() {
-      counter <<- counter + 1L
-      counter
+      counter$value <- counter$value + 1L
+      counter$value
     }
   )
 

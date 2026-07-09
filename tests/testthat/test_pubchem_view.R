@@ -4,6 +4,8 @@ library(checkmate)
 
 
 test_that("AnnotationGx:::.get_all_heading_types", {
+  skip_if_offline()
+
   res <- AnnotationGx:::.get_all_heading_types()
   checkmate::expect_data_table(
     res,
@@ -16,6 +18,8 @@ test_that("AnnotationGx:::.get_all_heading_types", {
 
 
 test_that("AnnotationGx::getPubchemAnnotationHeadings", {
+  skip_if_offline()
+
   query <- getPubchemAnnotationHeadings("compound", "ChEMBL ID")
   expect_data_table(query, ncols = 2, nrows = 1)
   expect_equal(names(query), c("Heading", "Type"))
@@ -31,10 +35,14 @@ test_that("AnnotationGx::getPubchemAnnotationHeadings", {
 })
 
 test_that("AnnotationGx::getAnotationHeadings Failure", {
+  skip_if_offline()
+
   expect_error(getPubchemAnnotationHeadings("substance", "ChEMBL ID"))
 })
 
 test_that("AnnotationGx::annotatePubchemCompound", {
+  skip_if_offline()
+
   CID <- 176870 # Erlotonib
   expected <- "CHEMBL553"
   expect_equal(annotatePubchemCompound(CID, "ChEMBL ID"), expected)
@@ -105,6 +113,8 @@ test_that("AnnotationGx:::.clean_parsed_annotation removes duplicate values", {
 })
 
 test_that("AnnotationGx:::.build_pubchem_view_query", {
+  skip_if_offline()
+
   # Test case 1: Test with default parameters
   query <- AnnotationGx:::.build_pubchem_view_query(id = "12345")
   expected_url <- "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/12345/JSON"
@@ -153,6 +163,8 @@ test_that("AnnotationGx:::.build_pubchem_view_query", {
 
 
 test_that("AnnotationGx:::.build_pubchem_view_query Failure", {
+  skip_if_offline()
+
   # Test case 1: Test with invalid annotation
   expect_error(AnnotationGx:::.build_pubchem_view_query(
     id = "67890",

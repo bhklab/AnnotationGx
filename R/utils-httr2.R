@@ -5,7 +5,8 @@
 #' @noRd
 #' @keywords internal
 .buildURL <- function(...) {
-  paste0(stats::na.omit(unlist(list(...))), collapse = "/") |> utils::URLencode()
+  paste0(stats::na.omit(unlist(list(...))), collapse = "/") |>
+    utils::URLencode()
 }
 
 #' Builds an HTTP request using the provided URL.
@@ -16,7 +17,11 @@
 #' @keywords internal
 .build_request <- function(url) {
   httr2::request(url) |>
-    httr2::req_retry(max_tries = 5, backoff = ~10) |>
+    httr2::req_timeout(getOption("annotationgx.request.timeout", 10)) |>
+    httr2::req_retry(
+      max_tries = getOption("annotationgx.request.max_tries", 5),
+      backoff = ~10
+    ) |>
     httr2::req_error(is_error = \(resp) FALSE)
 }
 
@@ -39,8 +44,18 @@
 #'
 #' @noRd
 #' @keywords internal
-.perform_request_parallel <- function(reqs, on_error = "continue", progress = TRUE, ...) {
-  httr2::req_perform_parallel(reqs, on_error = on_error, progress = progress, ...)
+.perform_request_parallel <- function(
+  reqs,
+  on_error = "continue",
+  progress = TRUE,
+  ...
+) {
+  httr2::req_perform_parallel(
+    reqs,
+    on_error = on_error,
+    progress = progress,
+    ...
+  )
 }
 
 

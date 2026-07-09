@@ -167,16 +167,14 @@ getUnichemSources <- function(all_columns = FALSE) {
 
     .err(
       .funContext("AnnotationGx::queryUnichemCompound"),
-      paste0(
-        "UniChem returned a non-JSON response for ",
-        request_label,
-        " (status: ",
-        status,
-        ", content type: ",
-        content_type,
-        "). Body preview: ",
-        body_preview
-      )
+      "UniChem returned a non-JSON response for ",
+      request_label,
+      " (status: ",
+      status,
+      ", content type: ",
+      content_type,
+      "). Body preview: ",
+      body_preview
     )
   }
 }

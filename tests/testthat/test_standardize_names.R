@@ -26,7 +26,6 @@ test_that("standardize_names converts names to lowercase, removes trailing infor
   result5 <- standardize_names(names5)
   expect_equal(result5, expected5)
 
-
   # Test case 7: Standardize names with leading and trailing spaces
   names7 <- c("  John Doe  ", " Jane Smith ", " Alice ")
   expected7 <- c("JOHNDOE", "JANESMITH", "ALICE")
@@ -69,7 +68,6 @@ test_that("cleanCharacterStrings removes special characters, formatting, and unw
   result2 <- cleanCharacterStrings(input2)
   expect_equal(result2, expected2)
 
-
   # Test case 5: Clean string with hyphen
   input5 <- "Bio-informatics"
   expected5 <- "BIOINFORMATICS"
@@ -89,7 +87,6 @@ test_that("standardize_names handles different scenarios", {
   expected2 <- c("JOHNDOE", "JANESMITH", "ALICE")
   result2 <- standardize_names(names2)
   expect_equal(result2, expected2)
-
 
   # Test case 4: Standardize names with empty names
   names4 <- c("John Doe", "", "Alice")
@@ -128,7 +125,6 @@ test_that("cleanCharacterStrings handles different scenarios", {
   expected2 <- "CISPLATIN"
   result2 <- cleanCharacterStrings(input2)
   expect_equal(result2, expected2)
-
 
   # Test case 5: Clean string with hyphen
   input5 <- "Bio-informatics"

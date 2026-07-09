@@ -22,14 +22,10 @@
 #'
 #' @keywords internal
 #' @noRd
-#' @export
-#' @examples
-#' \dontrun{
-#' .info("This is an info message")
-#' }
 .info <- function(...) {
   msg <- .log_fmt("INFO", ...)
-  optionIsTRUE <- options("log_level") == "INFO" || (options("log_level") %in% c("WARN", "DEBUG", "ERROR"))
+  optionIsTRUE <- options("log_level") == "INFO" ||
+    (options("log_level") %in% c("WARN", "DEBUG", "ERROR"))
   if (optionIsTRUE) {
     message(crayon::green(msg))
   }
@@ -42,11 +38,6 @@
 #' If either of these options is TRUE, the message is printed in blue and bold format.
 #'
 #' @param ... `character` The messages to print
-#'
-#' @examples
-#' \dontrun{
-#' options("myPackage.verbose" = TRUE)
-#' }
 #'
 #' @keywords internal
 #' @noRd
@@ -78,11 +69,13 @@
 #'
 #' This function takes the name of a function and returns a string that
 #' represents the function context.
-#' The string is formatted as [packageName functionName].
+#' The string is formatted like `"[packageName::functionName]"`.
 #'
 #' @keywords internal
 #' @noRd
-.funContext <- function(funName) paste0("[", utils::packageName(), "::", funName, "]")
+.funContext <- function(funName) {
+  paste0("[", utils::packageName(), "::", funName, "]")
+}
 
 # # test
 # .debug("This is a debug message")

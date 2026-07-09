@@ -16,7 +16,8 @@
 #'
 #' @export
 getPubchemStatus <- function(
-  returnMessage = FALSE, printMessage = TRUE,
+  returnMessage = FALSE,
+  printMessage = TRUE,
   url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/Aspirin/cids/JSON"
 ) {
   funContext <- .funContext("getPubchemStatus")
@@ -57,7 +58,10 @@ getPubchemStatus <- function(
 .checkThrottlingStatus2 <- function(message, printMessage) {
   parsed_info <- .parse_throttling_message(message)
   if (printMessage) {
-    message("Throttling status:\n", paste0(strsplit(message, ", ")[[1]], collapse = "\n"))
+    message(
+      "Throttling status:\n",
+      paste(strsplit(message, ", ")[[1]], collapse = "\n")
+    )
   }
   # Check if the request count or request time is
   if (parsed_info$service$status == "Black") {

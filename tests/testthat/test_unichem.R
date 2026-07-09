@@ -3,11 +3,10 @@ library(AnnotationGx)
 library(checkmate)
 
 test_that("getUnichemSources returns a data.table with the correct columns", {
-  skip_on_bioc()
   skip_if_offline()
   skip_if_unichem_unavailable()
 
-  sources <- getUnichemSources(all_columns = TRUE)
+  sources <- with_unichem_api(getUnichemSources(all_columns = TRUE))
 
   expected_columns <- c(
     "Name",
@@ -41,29 +40,27 @@ test_that("getUnichemSources returns a data.table with the correct columns", {
 
 
 test_that("queryUnichemCompound returns the expected results", {
-  skip_on_bioc()
   skip_if_offline()
   skip_if_unichem_unavailable()
 
   # Test case 1
-  result1 <- queryUnichemCompound(
+  result1 <- with_unichem_api(queryUnichemCompound(
     type = "sourceID",
     compound = "444795",
     sourceID = 22
-  )
+  ))
   expect_true(is.list(result1))
   expect_true("External_Mappings" %in% names(result1))
   expect_true("UniChem_Mappings" %in% names(result1))
 
-  # Test case 2
-  expect_error(queryUnichemCompound(
-    type = "inchikey",
+  # Test local validation without making a second remote request.
+  expect_error(with_unichem_api(queryUnichemCompound(
+    type = "not-a-valid-type",
     compound = "InchiKey123"
-  ))
+  )))
 })
 
 test_that("queryUnichemCompound handles vector inputs", {
-  skip_on_bioc()
   skip_if_offline()
   skip_if_unichem_unavailable()
 
@@ -72,12 +69,12 @@ test_that("queryUnichemCompound handles vector inputs", {
     "444796"
   )
 
-  results <- queryUnichemCompound(
+  results <- with_unichem_api(queryUnichemCompound(
     type = "sourceID",
     compound = fallback,
     sourceID = 22,
     progress = FALSE
-  )
+  ))
 
   expect_length(results, length(fallback))
   expect_named(results, fallback)
@@ -85,30 +82,28 @@ test_that("queryUnichemCompound handles vector inputs", {
 })
 
 test_that("queryUnichemCompound handles non source id lists", {
-  skip_on_bioc()
   skip_if_offline()
   skip_if_unichem_unavailable()
 
   compounds <- c("538323", "538324")
-  results <- queryUnichemCompound(
+  results <- with_unichem_api(queryUnichemCompound(
     compound = compounds,
     type = "uci",
     progress = FALSE
-  )
+  ))
 
   expect_named(results, compounds)
 })
 test_that("queryUnichemCompound returns the expected results 2", {
-  skip_on_bioc()
   skip_if_offline()
   skip_if_unichem_unavailable()
 
   # Test case 1
-  result1 <- queryUnichemCompound(
+  result1 <- with_unichem_api(queryUnichemCompound(
     type = "inchikey",
     compound = "BSYNRYMUTXBXSQ-UHFFFAOYSA-N",
     raw = TRUE
-  )
+  ))
 
   expect_true(is.list(result1))
 
@@ -122,11 +117,11 @@ test_that("queryUnichemCompound returns the expected results 2", {
     subset.of = c("inchi", "sources", "standardInchiKey", "uci")
   )
 
-  result2 <- queryUnichemCompound(
+  result2 <- with_unichem_api(queryUnichemCompound(
     type = "inchikey",
     compound = "BSYNRYMUTXBXSQ-UHFFFAOYSA-N",
     raw = FALSE
-  )
+  ))
 
   expect_true(is.list(result2))
 

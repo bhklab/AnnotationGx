@@ -40,7 +40,10 @@ test_that("unlistNested returns the correct result for a nested list with mixed 
 })
 
 test_that("unlistNested returns the correct result for a deeply nested list", {
-  nested_list <- list(list(list(1, 2), list(3, 4)), list(list(5, 6), list(7, 8)))
+  nested_list <- list(
+    list(list(1, 2), list(3, 4)),
+    list(list(5, 6), list(7, 8))
+  )
   expected_result <- c(1, 2, 3, 4, 5, 6, 7, 8)
   expect_equal(unlistNested(nested_list), expected_result)
 })
@@ -96,14 +99,20 @@ test_that("matchNested,list returns the correct index for a nested list with dup
   expected_result_dups <- c(1, 2)
 
   expect_equal(matchNested(x, table, keep_duplicates = FALSE), expected_result)
-  expect_equal(matchNested(x, table, keep_duplicates = TRUE), expected_result_dups)
+  expect_equal(
+    matchNested(x, table, keep_duplicates = TRUE),
+    expected_result_dups
+  )
 
   x <- 4
   expected_result <- 3
   expected_result_dups <- c(3)
 
   expect_equal(matchNested(x, table), expected_result)
-  expect_equal(matchNested(x, table, keep_duplicates = TRUE), expected_result_dups)
+  expect_equal(
+    matchNested(x, table, keep_duplicates = TRUE),
+    expected_result_dups
+  )
 })
 
 ####################################################################################################
@@ -180,17 +189,22 @@ test_that("matchNested,data.table returns NULL for an empty data.table", {
 test_that("matchNested returns the correct matches for character and data.frame inputs", {
   # Test case 1: Matching single character with data.frame
   x1 <- "apple"
-  table1 <- data.frame(fruit = c("apple", "banana", "orange"), color = c("red", "yellow", "orange"))
+  table1 <- data.frame(
+    fruit = c("apple", "banana", "orange"),
+    color = c("red", "yellow", "orange")
+  )
   result1 <- matchNested(x1, table1)
   expect_equal(result1, 1)
 
   # Test case 2: Matching multiple characters with data.frame
   x2 <- c("apple", "banana")
-  table2 <- data.frame(fruit = c("apple", "banana", "orange"), color = c("red", "yellow", "orange"))
+  table2 <- data.frame(
+    fruit = c("apple", "banana", "orange"),
+    color = c("red", "yellow", "orange")
+  )
   expect_warning(result2 <- matchNested(x2, table2))
 
   expect_equal(result2, 1)
-
 
   x3 <- c("apple", "orange")
   expect_warning(result3 <- matchNested(x3, table2))

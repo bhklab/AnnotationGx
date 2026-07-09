@@ -179,7 +179,7 @@ mapCell2Accession <- function(
 
         resp <- .parse_cellosaurus_lines(resp)
         if (length(resp) == 0L) {
-          .warn(paste0("No results found for ", name))
+          .warn("No results found for ", name)
           result <- data.table::data.table()
           result$query <- name
           return(result)
@@ -289,7 +289,7 @@ mapCell2Accession <- function(
       responses_dt <- data.table::rbindlist(responses_dt, fill = TRUE)
     },
     error = function(e) {
-      .err(paste0("Error parsing response for ", name, ": ", e$message))
+      .err("Error parsing response for ", name, ": ", e$message)
     }
   )
 
@@ -564,7 +564,7 @@ mapCell2Accession <- function(
   )
 
   if (is.null(result)) {
-    .warn(paste0("No results found for ", query))
+    .warn("No results found for ", query)
     # create an empty data.table with the following columns:
     # c("cellLineName", "accession", "query")
     result <- data.table::data.table(
@@ -598,7 +598,7 @@ mapCell2Accession <- function(
   test_ <- strSplit(object[["CC"]], ": ", n = 2)
   test_ <- split(test_[, 2L], f = test_[, 1L])
 
-  test_ <- sapply(test_, strsplit, split = "; ")
+  test_ <- lapply(test_, strsplit, split = "; ", fixed = TRUE)
 
   object[["CC"]] <- test_
   object

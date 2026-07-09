@@ -2,10 +2,18 @@ library(AnnotationGx)
 library(testthat)
 library(checkmate)
 
-compounds <- c("temozolomide", "erlotinib", "TRETINOIN", "TRAMETINIB", "epigallocatechin-3-monogallate")
+compounds <- c(
+  "temozolomide",
+  "erlotinib",
+  "TRETINOIN",
+  "TRAMETINIB",
+  "epigallocatechin-3-monogallate"
+)
 
 # Comprehensive Tests:
 test_that("AnnotationGx::mapCompound2CID 5 Correct Drugs", {
+  skip_if_offline()
+
   expected_cids <- c(5394, 176870, 444795, 11707110, 65064)
 
   result <- mapCompound2CID(names = compounds)
@@ -29,7 +37,12 @@ test_that("AnnotationGx::mapCompound2CID 5 Correct Drugs", {
 })
 
 test_that("AnnotationGx::mapCID2Properties works", {
-  result <- mapCID2Properties(ids = c(5394, 176870), properties = c("MolecularWeight", "CanonicalSMILES"))
+  skip_if_offline()
+
+  result <- mapCID2Properties(
+    ids = c(5394, 176870),
+    properties = c("MolecularWeight", "CanonicalSMILES")
+  )
   expect_data_table(
     x = result,
     types = c("integer", "character", "character"),
@@ -41,6 +54,8 @@ test_that("AnnotationGx::mapCID2Properties works", {
 })
 
 test_that("getPubchemProperties works", {
+  skip_if_offline()
+
   result <- getPubchemProperties()
 
   expect_data_table(
@@ -55,6 +70,8 @@ test_that("getPubchemProperties works", {
 
 
 test_that("AnnotationGx::getPubchemCompound 1 Incorrect Drug", {
+  skip_if_offline()
+
   # Test for an incorrect drug, scoped so it doesnt affect the other tests
   compounds <- c("BAD_DRUG_NAME")
   result <- getPubchemCompound(ids = compounds, from = "name", to = "cids")
@@ -80,6 +97,8 @@ test_that("AnnotationGx::getPubchemCompound 1 Incorrect Drug", {
 
 
 test_that("AnnotationGx::getPubchemCompound 2 Incorrect Drugs in a list", {
+  skip_if_offline()
+
   # Test for an incorrect drug, scoped so it doesnt affect the other tests
   compounds <- c("BAD_DRUG_NAME", compounds, "Another bad drug")
   result <- getPubchemCompound(ids = compounds, from = "name", to = "cids")
@@ -104,10 +123,13 @@ test_that("AnnotationGx::getPubchemCompound 2 Incorrect Drugs in a list", {
 })
 
 test_that("AnnotationGx::getPubchemCompound errors if cid and not integer", {
+  skip_if_offline()
+
   expect_error(
     AnnotationGx::getPubchemCompound(
       ids = c(5394, "PUGREST.BadRequest"),
-      from = "cid", to = "property",
+      from = "cid",
+      to = "property",
       properties = c("Title", "MolecularFormula", "InChIKey", "CanonicalSMILES")
     )
   )

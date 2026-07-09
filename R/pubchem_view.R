@@ -166,7 +166,8 @@ annotatePubchemCompound <- function(
     parsed_responses <- parallel::mclapply(
       responses,
       function(response) {
-        switch(heading,
+        switch(
+          heading,
           "ChEMBL ID" = .parseCHEMBLresponse(response),
           "CAS" = .parseCASresponse(response),
           "NSC Number" = .parseNSCresponse(response),
@@ -192,7 +193,7 @@ annotatePubchemCompound <- function(
       mc.cores = nParallel
     )
 
-    sapply(parsed_responses, .replace_null)
+    vapply(parsed_responses, .replace_null, character(1), USE.NAMES = FALSE)
   }
 
   cacheable <- !query_only &&
@@ -216,5 +217,8 @@ annotatePubchemCompound <- function(
 
 # helper function to replace NULL with NA
 .replace_null <- function(x) {
-  ifelse(is.null(x), NA_character_, x)
+  if (is.null(x)) {
+    return(NA_character_)
+  }
+  x
 }

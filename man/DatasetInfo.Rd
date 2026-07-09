@@ -14,87 +14,90 @@ to the parent mart.
 }
 \keyword{internal}
 \section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{name}}{The internal name of the dataset}
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{name}}{The internal name of the dataset}
 
-\item{\code{description}}{A textual description of the dataset}
+    \item{\code{description}}{A textual description of the dataset}
 
-\item{\code{displayName}}{The human-readable name of the dataset}
+    \item{\code{displayName}}{The human-readable name of the dataset}
 
-\item{\code{mart}}{The MartInfo object this dataset belongs to}
-}
-\if{html}{\out{</div>}}
+    \item{\code{mart}}{The MartInfo object this dataset belongs to}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-DatasetInfo-new}{\code{DatasetInfo$new()}}
-\item \href{#method-DatasetInfo-print}{\code{DatasetInfo$print()}}
-\item \href{#method-DatasetInfo-clone}{\code{DatasetInfo$clone()}}
-}
+  \itemize{
+    \item \href{#method-DatasetInfo-initialize}{\code{DatasetInfo$new()}}
+    \item \href{#method-DatasetInfo-print}{\code{DatasetInfo$print()}}
+    \item \href{#method-DatasetInfo-clone}{\code{DatasetInfo$clone()}}
+  }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-DatasetInfo-new"></a>}}
-\if{latex}{\out{\hypertarget{method-DatasetInfo-new}{}}}
-\subsection{Method \code{new()}}{
-Initialize a new DatasetInfo object
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DatasetInfo$new(name, description, displayName, mart)}\if{html}{\out{</div>}}
+\if{html}{\out{<a id="method-DatasetInfo-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-DatasetInfo-initialize}{}}}
+\subsection{\code{DatasetInfo$new()}}{
+  Initialize a new DatasetInfo object
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{DatasetInfo$new(name, description, displayName, mart)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{name}}{Character, the internal name of the dataset}
+      \item{\code{description}}{Character, the dataset description}
+      \item{\code{displayName}}{Character, the human-readable name}
+      \item{\code{mart}}{MartInfo object, the parent mart}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A new DatasetInfo object
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{name}}{Character, the internal name of the dataset}
-
-\item{\code{description}}{Character, the dataset description}
-
-\item{\code{displayName}}{Character, the human-readable name}
-
-\item{\code{mart}}{MartInfo object, the parent mart}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-A new DatasetInfo object
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-DatasetInfo-print"></a>}}
 \if{latex}{\out{\hypertarget{method-DatasetInfo-print}{}}}
-\subsection{Method \code{print()}}{
-Print method for DatasetInfo objects
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DatasetInfo$print(...)}\if{html}{\out{</div>}}
+\subsection{\code{DatasetInfo$print()}}{
+  Print method for DatasetInfo objects
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{DatasetInfo$print(...)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{...}}{Additional arguments (not used)}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Invisibly returns self
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{...}}{Additional arguments (not used)}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Invisibly returns self
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-DatasetInfo-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-DatasetInfo-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DatasetInfo$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{DatasetInfo$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{DatasetInfo$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

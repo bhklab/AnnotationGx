@@ -4,6 +4,8 @@ library(checkmate)
 
 
 test_that("mapcompound", {
+  skip_if_offline()
+
   result <- mapCompound2CID(c("aspirin", "caffeine"))
 
   expect_data_table(
@@ -16,6 +18,8 @@ test_that("mapcompound", {
 })
 
 test_that("mapproperties", {
+  skip_if_offline()
+
   props <- mapCID2Properties(
     ids = c(123, 456),
     properties = c("MolecularWeight", "CanonicalSMILES")
@@ -31,6 +35,8 @@ test_that("mapproperties", {
 })
 
 test_that("getPubchemCompound", {
+  skip_if_offline()
+
   result <- getPubchemCompound(2244)
   expect_class(result, "data.table")
 

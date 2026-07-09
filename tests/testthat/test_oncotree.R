@@ -3,6 +3,8 @@ library(AnnotationGx)
 library(checkmate)
 
 test_that("Returns data table for versions", {
+  skip_if_offline()
+
   result <- AnnotationGx::getOncotreeVersions()
   expect_data_table(
     result,
@@ -14,6 +16,8 @@ test_that("Returns data table for versions", {
 
 
 test_that("Returns data table for main types", {
+  skip_if_offline()
+
   result <- AnnotationGx::getOncotreeMainTypes()
   expect_data_table(
     result,
@@ -25,6 +29,8 @@ test_that("Returns data table for main types", {
 })
 
 test_that("Returns data table for tumor types", {
+  skip_if_offline()
+
   result <- AnnotationGx::getOncotreeTumorTypes()
   expect_data_table(
     result,

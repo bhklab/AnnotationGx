@@ -15,7 +15,7 @@ retrieving information about available marts, datasets, attributes, and filters.
 client <- BioMartClient$new("https://www.ensembl.org")
 client$path
 
-\dontrun{
+\donttest{
 # Create a client for Ensembl BioMart
 client <- BioMartClient$new("https://www.ensembl.org")
 
@@ -30,135 +30,146 @@ datasets <- client$get_datasets(ensembl)
 }
 \keyword{internal}
 \section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{base_url}}{Base URL of the BioMart service}
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{base_url}}{Base URL of the BioMart service}
 
-\item{\code{path}}{Path to the BioMart API on the server}
-}
-\if{html}{\out{</div>}}
+    \item{\code{path}}{Path to the BioMart API on the server}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-BioMartClient-new}{\code{BioMartClient$new()}}
-\item \href{#method-BioMartClient-get_marts}{\code{BioMartClient$get_marts()}}
-\item \href{#method-BioMartClient-get_datasets}{\code{BioMartClient$get_datasets()}}
-\item \href{#method-BioMartClient-get_attributes}{\code{BioMartClient$get_attributes()}}
-\item \href{#method-BioMartClient-get_filters}{\code{BioMartClient$get_filters()}}
-\item \href{#method-BioMartClient-clone}{\code{BioMartClient$clone()}}
-}
+  \itemize{
+    \item \href{#method-BioMartClient-initialize}{\code{BioMartClient$new()}}
+    \item \href{#method-BioMartClient-get_marts}{\code{BioMartClient$get_marts()}}
+    \item \href{#method-BioMartClient-get_datasets}{\code{BioMartClient$get_datasets()}}
+    \item \href{#method-BioMartClient-get_attributes}{\code{BioMartClient$get_attributes()}}
+    \item \href{#method-BioMartClient-get_filters}{\code{BioMartClient$get_filters()}}
+    \item \href{#method-BioMartClient-clone}{\code{BioMartClient$clone()}}
+  }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-BioMartClient-new"></a>}}
-\if{latex}{\out{\hypertarget{method-BioMartClient-new}{}}}
-\subsection{Method \code{new()}}{
-Initialize a new BioMartClient
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BioMartClient$new(base_url, path = "/biomart")}\if{html}{\out{</div>}}
+\if{html}{\out{<a id="method-BioMartClient-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-BioMartClient-initialize}{}}}
+\subsection{\code{BioMartClient$new()}}{
+  Initialize a new BioMartClient
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{BioMartClient$new(base_url, path = "/biomart")}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{base_url}}{Character, the base URL of the BioMart service}
+      \item{\code{path}}{Character, the API path, defaults to "/biomart"}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A new BioMartClient object
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{base_url}}{Character, the base URL of the BioMart service}
-
-\item{\code{path}}{Character, the API path, defaults to "/biomart"}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-A new BioMartClient object
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-BioMartClient-get_marts"></a>}}
 \if{latex}{\out{\hypertarget{method-BioMartClient-get_marts}{}}}
-\subsection{Method \code{get_marts()}}{
-Retrieve available marts from the BioMart service
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BioMartClient$get_marts()}\if{html}{\out{</div>}}
+\subsection{\code{BioMartClient$get_marts()}}{
+  Retrieve available marts from the BioMart service
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{BioMartClient$get_marts()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    List of MartInfo objects
+  }
 }
 
-\subsection{Returns}{
-List of MartInfo objects
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-BioMartClient-get_datasets"></a>}}
 \if{latex}{\out{\hypertarget{method-BioMartClient-get_datasets}{}}}
-\subsection{Method \code{get_datasets()}}{
-Retrieve available datasets for a given mart
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BioMartClient$get_datasets(mart)}\if{html}{\out{</div>}}
+\subsection{\code{BioMartClient$get_datasets()}}{
+  Retrieve available datasets for a given mart
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{BioMartClient$get_datasets(mart)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{mart}}{MartInfo object, the mart to query}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    List of DatasetInfo objects
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{mart}}{MartInfo object, the mart to query}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-List of DatasetInfo objects
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-BioMartClient-get_attributes"></a>}}
 \if{latex}{\out{\hypertarget{method-BioMartClient-get_attributes}{}}}
-\subsection{Method \code{get_attributes()}}{
-Retrieve available attributes for a given dataset
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BioMartClient$get_attributes(dataset)}\if{html}{\out{</div>}}
+\subsection{\code{BioMartClient$get_attributes()}}{
+  Retrieve available attributes for a given dataset
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{BioMartClient$get_attributes(dataset)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{dataset}}{DatasetInfo object, the dataset to query}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    List of attribute information
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{dataset}}{DatasetInfo object, the dataset to query}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-List of attribute information
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-BioMartClient-get_filters"></a>}}
 \if{latex}{\out{\hypertarget{method-BioMartClient-get_filters}{}}}
-\subsection{Method \code{get_filters()}}{
-Retrieve available filters for a given dataset
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BioMartClient$get_filters(dataset)}\if{html}{\out{</div>}}
+\subsection{\code{BioMartClient$get_filters()}}{
+  Retrieve available filters for a given dataset
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{BioMartClient$get_filters(dataset)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{dataset}}{DatasetInfo object, the dataset to query}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    List of filter information
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{dataset}}{DatasetInfo object, the dataset to query}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-List of filter information
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-BioMartClient-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-BioMartClient-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BioMartClient$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{BioMartClient$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{BioMartClient$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

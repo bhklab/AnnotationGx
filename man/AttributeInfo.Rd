@@ -12,97 +12,99 @@ Attributes are data fields that can be selected for retrieval in BioMart query r
 }
 \keyword{internal}
 \section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{name}}{The internal name of the attribute used in BioMart queries}
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{name}}{The internal name of the attribute used in BioMart queries}
 
-\item{\code{displayName}}{The human-readable name of the attribute shown in user interfaces}
+    \item{\code{displayName}}{The human-readable name of the attribute shown in user interfaces}
 
-\item{\code{description}}{A textual description explaining what the attribute represents}
+    \item{\code{description}}{A textual description explaining what the attribute represents}
 
-\item{\code{linkURL}}{URL that provides additional information about the attribute}
+    \item{\code{linkURL}}{URL that provides additional information about the attribute}
 
-\item{\code{isHidden}}{Logical flag indicating if the attribute should be hidden in user interfaces}
-}
-\if{html}{\out{</div>}}
+    \item{\code{isHidden}}{Logical flag indicating if the attribute should be hidden in user interfaces}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-AttributeInfo-new}{\code{AttributeInfo$new()}}
-\item \href{#method-AttributeInfo-print}{\code{AttributeInfo$print()}}
-\item \href{#method-AttributeInfo-clone}{\code{AttributeInfo$clone()}}
-}
+  \itemize{
+    \item \href{#method-AttributeInfo-initialize}{\code{AttributeInfo$new()}}
+    \item \href{#method-AttributeInfo-print}{\code{AttributeInfo$print()}}
+    \item \href{#method-AttributeInfo-clone}{\code{AttributeInfo$clone()}}
+  }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AttributeInfo-new"></a>}}
-\if{latex}{\out{\hypertarget{method-AttributeInfo-new}{}}}
-\subsection{Method \code{new()}}{
-Initialize a new AttributeInfo object
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AttributeInfo$new(
+\if{html}{\out{<a id="method-AttributeInfo-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-AttributeInfo-initialize}{}}}
+\subsection{\code{AttributeInfo$new()}}{
+  Initialize a new AttributeInfo object
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AttributeInfo$new(
   name,
   displayName = NULL,
   description = NULL,
   linkURL = NULL,
   isHidden = NULL
-)}\if{html}{\out{</div>}}
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{name}}{Character, the internal name of the attribute used in API calls}
+      \item{\code{displayName}}{Character, the human-readable name shown to users}
+      \item{\code{description}}{Character, the attribute description explaining what it represents}
+      \item{\code{linkURL}}{Character, URL for additional information about the attribute}
+      \item{\code{isHidden}}{Logical, whether the attribute should be hidden in UIs}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A new AttributeInfo object
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{name}}{Character, the internal name of the attribute used in API calls}
-
-\item{\code{displayName}}{Character, the human-readable name shown to users}
-
-\item{\code{description}}{Character, the attribute description explaining what it represents}
-
-\item{\code{linkURL}}{Character, URL for additional information about the attribute}
-
-\item{\code{isHidden}}{Logical, whether the attribute should be hidden in UIs}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-A new AttributeInfo object
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AttributeInfo-print"></a>}}
 \if{latex}{\out{\hypertarget{method-AttributeInfo-print}{}}}
-\subsection{Method \code{print()}}{
-Print method for AttributeInfo objects
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AttributeInfo$print(...)}\if{html}{\out{</div>}}
+\subsection{\code{AttributeInfo$print()}}{
+  Print method for AttributeInfo objects
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AttributeInfo$print(...)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{...}}{Additional arguments passed to print methods (not used)}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Invisibly returns self for method chaining
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{...}}{Additional arguments passed to print methods (not used)}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Invisibly returns self for method chaining
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AttributeInfo-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-AttributeInfo-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AttributeInfo$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{AttributeInfo$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AttributeInfo$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

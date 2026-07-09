@@ -12,7 +12,7 @@
 .getRequestOncotree <- function(
   target = c("versions", "mainTypes", "tumorTypes")
 ) {
-  url <- "http://oncotree.mskcc.org"
+  url <- "https://oncotree.mskcc.org"
   targetClean <- match.arg(target)
 
   .cache_fetch(

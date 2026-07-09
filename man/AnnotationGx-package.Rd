@@ -12,17 +12,19 @@ A package for building, updating and querying an annotation database for pharmac
 Useful links:
 \itemize{
   \item \url{https://bhklab.github.io/AnnotationGx/}
+  \item Report bugs at \url{https://github.com/bhklab/AnnotationGx/issues/new?template=issue_template.md}
 }
 
 }
 \author{
-\strong{Maintainer}: Michael Tran \email{michaelcao-anh.tran@uhn.ca}
+\strong{Maintainer}: Benjamin Haibe-Kains \email{benjamin.haibe.kains@utoronto.ca}
 
 Authors:
 \itemize{
+  \item Benjamin Haibe-Kains \email{benjamin.haibe.kains@utoronto.ca}
+  \item Michael Tran \email{michaelcao-anh.tran@uhn.ca}
   \item Jermiah Joseph \email{jermiah.joseph@gmail.com}
   \item Christopher Eeles \email{christopher.eeles@uhnresearch.ca}
-  \item Benjamin Haibe-Kains \email{benjamin.haibe.kains@utoronto.ca}
 }
 
 }

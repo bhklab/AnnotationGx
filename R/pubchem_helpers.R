@@ -52,34 +52,64 @@
 #'
 #' @noRd
 #' @keywords internal
-.build_pubchem_rest_query <- function(id, domain = "compound", namespace = "name", operation = "cids",
-                                      output = "JSON", url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug",
-                                      raw = FALSE, query_only = FALSE, ...) {
+.build_pubchem_rest_query <- function(
+  id,
+  domain = "compound",
+  namespace = "name",
+  operation = "cids",
+  output = "JSON",
+  url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug",
+  raw = FALSE,
+  query_only = FALSE,
+  ...
+) {
   # -------------------------------------- Argument checking --------------------------------------
-  assert_choice(domain, c("compound", "substance", "assay", "cell", "gene", "protein"))
-  switch(domain,
+  assert_choice(
+    domain,
+    c("compound", "substance", "assay", "cell", "gene", "protein")
+  )
+  switch(
+    domain,
     "compound" = {
-      assert_choice(namespace, c("cid", "name", "smiles", "inchi", "sdf", "inchikey", "formula"))
-      assert(test_choice(
-        operation, c("record", "synonyms", "sids", "cids", "aids", "assaysummary")
-      ) ||
-        grepl("property", operation))
+      assert_choice(
+        namespace,
+        c("cid", "name", "smiles", "inchi", "sdf", "inchikey", "formula")
+      )
+      assert(
+        test_choice(
+          operation,
+          c("record", "synonyms", "sids", "cids", "aids", "assaysummary")
+        ) ||
+          grepl("property", operation)
+      )
     },
-    "substance" = assert_choice(namespace, c("sid", "sourceid", "sourceall", "name")),
-    "assay" = assert_choice(namespace, c("aid", "listkey", "type", "sourceall", "target", "activity")),
+    "substance" = assert_choice(
+      namespace,
+      c("sid", "sourceid", "sourceall", "name")
+    ),
+    "assay" = assert_choice(
+      namespace,
+      c("aid", "listkey", "type", "sourceall", "target", "activity")
+    ),
     "cell" = assert_choice(namespace, c("cellacc", "synonym")),
     "gene" = assert_choice(namespace, c("geneid", "genesymbol", "synonym")),
     "protein" = assert_choice(namespace, c("accession", "gi", "synonym"))
   )
   assert_choice(output, c("JSON", "XML", "SDF", "TXT", "CSV"))
   assert_logical(raw, query_only)
-  if (!test_atomic(id, any.missing = FALSE)) .err("id must be an atomic vector with no missing/NA values")
+  if (!test_atomic(id, any.missing = FALSE)) {
+    .err("id must be an atomic vector with no missing/NA values")
+  }
 
-  if (namespace == "cid") assert_integerish(id)
+  if (namespace == "cid") {
+    assert_integerish(id)
+  }
 
   # -------------------------------------- Function context --------------------------------------
   funContext <- .funContext("query_pubchem_rest")
-  if (length(id) > 1 && namespace == "name") .err(funContext, " id must be a single value when namespace is 'name'")
+  if (length(id) > 1 && namespace == "name") {
+    .err(funContext, " id must be a single value when namespace is 'name'")
+  }
 
   url <- .buildURL(url, domain, namespace, id, operation, output)
   .debug(funContext, " Query URL: ", url)
