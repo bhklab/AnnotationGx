@@ -1,47 +1,139 @@
 ---
 title: "Introduction to AnnotationGx"
-author: 
+author:
   - name: Jermiah Joseph
     affiliation:
-    - BHKLab 
-output: rmarkdown::html_vignette
+    - BHKLab
+output:
+  BiocStyle::html_document:
+    toc: true
 vignette: >
   %\VignetteIndexEntry{Introduction to AnnotationGx}
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}  
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup-options, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  crop = NULL ## Related to https://stat.ethz.ch/pipermail/bioc-devel/2020-April/016656.html
+  crop = NULL
+)
+online_examples <- nzchar(Sys.getenv("ANNOTATIONGX_RUN_ONLINE_EXAMPLES"))
+```
+
+# Introduction
+
+`AnnotationGx` provides utilities for mapping pharmacogenomic sample and
+treatment identifiers to public annotation resources. The package focuses on
+the practical annotation tasks that recur when harmonizing drug response
+studies: mapping cell line names to Cellosaurus accessions, mapping treatment
+names to PubChem compound identifiers, collecting selected ChEMBL/UniChem
+annotations, and querying cancer type vocabularies such as OncoTree.
+
+The package belongs in Bioconductor because it supports reproducible
+annotation of pharmacogenomic data objects and complements packages such as
+`PharmacoGx`, which store and analyze pharmacogenomic experiments. `AnnotationGx`
+is intended to sit near the data preparation boundary: it helps normalize
+external identifiers before downstream analyses are performed.
+
+# Installation
+
+Install the package from Bioconductor with:
+
+```{r install-bioc, eval = FALSE}
+if (!requireNamespace("BiocManager", quietly = TRUE)) {
+  install.packages("BiocManager")
+}
+BiocManager::install("AnnotationGx")
+```
+
+During development, install the current source checkout from a terminal with
+`R CMD INSTALL .`.
+
+# Scope and Related Packages
+
+`AnnotationGx` is narrower than general annotation frameworks such as
+`AnnotationDbi` and narrower than assay containers such as `PharmacoGx`. It
+wraps selected web services that are commonly needed for pharmacogenomic sample
+and treatment harmonization. It does not replace those packages.
+
+The small `BioMartClient` helper in this package is currently used for a
+narrow HGNC BioMart REST workflow and shares the package's caching and request
+handling helpers. If BioMart usage expands beyond this focused workflow, the
+implementation should be reconsidered against the Bioconductor `biomaRt`
+package.
+
+# Core Functionality
+
+Load the package and inspect the small example metadata tables:
+
+```{r load-package, message = FALSE}
+library("AnnotationGx")
+data(GDSC_sampleMetadata)
+data(GDSC_treatmentMetadata)
+
+head(GDSC_sampleMetadata)
+head(GDSC_treatmentMetadata)
+```
+
+Build Cellosaurus queries for cell line identifiers:
+
+```{r cellosaurus-query}
+mapCell2Accession(c("A549", "BT474"), query_only = TRUE)
+```
+
+Run the query when an internet connection is available:
+
+```{r cellosaurus-online, eval = online_examples}
+mapCell2Accession(c("A549", "BT474"))
+```
+
+Build PubChem PUG-REST queries for treatment names:
+
+```{r pubchem-query}
+mapCompound2CID(c("erlotinib", "paclitaxel"), query_only = TRUE)
+```
+
+Run the PubChem query when online examples are enabled:
+
+```{r pubchem-online, eval = online_examples}
+mapCompound2CID(c("erlotinib", "paclitaxel"), first = TRUE)
+```
+
+Map a PubChem CID to selected computed properties:
+
+```{r pubchem-properties, eval = online_examples}
+mapCID2Properties(
+  ids = c(176870, 36314),
+  properties = c("Title", "MolecularFormula", "InChIKey")
 )
 ```
 
-# Basics
+Inspect available Cellosaurus fields used by the cell line annotation helpers:
 
-## Install `AnnotationGx`
+```{r cellosaurus-fields}
+head(cellosaurus_fields())
+```
 
-`R` is an open-source statistical environment which can be easily modified to 
-enhance its functionality via packages. `AnnotationGx` is a `R` package hosted
-on Bioconductor and can be installed using `BiocManager`.
+# Data Provenance
 
-## Citing `AnnotationGx`
+The example data objects are derived from public pharmacogenomic resources and
+are documented individually in their help pages. The source package also
+includes `inst/extdata/LICENSES.md`, which records provenance, source links,
+and redistribution notes for bundled data.
 
-We hope that `AnnotationGx` will be useful for your research. Please use the 
-following information to cite the package and the overall approach. Thank you!
+```{r data-license-path}
+system.file("extdata", "LICENSES.md", package = "AnnotationGx")
+```
+
+# Citing AnnotationGx
 
 ```{r citation}
-## Citation info
 citation("AnnotationGx")
 ```
 
-# Quick start to using `AnnotationGx`
-
-```{r load-package, message=FALSE}
-library("AnnotationGx")
-```
+# Session Info
 
 ```{r session-info}
 sessionInfo()

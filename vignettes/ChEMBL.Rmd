@@ -2,7 +2,9 @@
 title: "Querying ChEMBL Database"
 author: 
   - name: Jermiah Joseph, Shahzada Muhammad Shameel Farooq, and Christopher Eeles
-output: rmarkdown::html_vignette
+output:
+  BiocStyle::html_document:
+    toc: true
 vignette: >
   %\VignetteIndexEntry{Querying ChEMBL Database}
   %\VignetteEngine{knitr::rmarkdown}
@@ -15,6 +17,7 @@ knitr::opts_chunk$set(
   comment = "#>",
   crop = NULL ## Related to https://stat.ethz.ch/pipermail/bioc-devel/2020-April/016656.html
 )
+online_examples <- nzchar(Sys.getenv("ANNOTATIONGX_RUN_ONLINE_EXAMPLES"))
 ```
 
 
@@ -59,7 +62,7 @@ resource only. To query other resources, please see the
 
 
 
-```{r single-query}
+```{r single-query, eval = online_examples}
 mechs <- getChemblMechanism("CHEMBL1413")
 mechs
 ```
@@ -107,7 +110,7 @@ to query the ChEMBL API.
 **NOTE: unlike the `getChemblMechanism()` function which returns a `data.table`, 
 the `queryChemblAPI()` function returns the raw data unformatted**
 
-```{r custom-query}
+```{r custom-query, eval = online_examples}
 queryChemblAPI("mechanism", "molecule_chembl_id", "in", "CHEMBL1413")
 ```
 
@@ -121,7 +124,7 @@ getChemblResources()
 
 The `getChemblResourceFields(resource)` function returns a list of possible
 fields that can be queried for a given resource:
-```{r resource-fields}
+```{r resource-fields, eval = online_examples}
 getChemblResourceFields("mechanism")
 ```
 

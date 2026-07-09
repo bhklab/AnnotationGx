@@ -1,6 +1,8 @@
 ---
 title: "Querying OncoTree"
-output: rmarkdown::html_vignette
+output:
+  BiocStyle::html_document:
+    toc: true
 vignette: >
   %\VignetteIndexEntry{Querying OncoTree}
   %\VignetteEngine{knitr::rmarkdown}
@@ -12,6 +14,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+online_examples <- nzchar(Sys.getenv("ANNOTATIONGX_RUN_ONLINE_EXAMPLES"))
 ```
 
 # Introduction
@@ -53,14 +56,14 @@ three types of information:
 ## OncoTree release versions
 
 The `getOncotreeVersions` function retrieves the available OncoTree release.
-```{r oncotree-versions}
+```{r oncotree-versions, eval = online_examples}
 getOncotreeVersions()
 ```
 
 ## Main Cancer types
 
 The `getMainCancerTypes` function retrieves the main cancer types in OncoTree.
-```{r main-cancer-types}
+```{r main-cancer-types, eval = online_examples}
 getOncotreeMainTypes()
 ```
 
@@ -68,7 +71,7 @@ getOncotreeMainTypes()
 
 The `getCancerSubtypes` function retrieves the subtypes of a specific cancer 
 type.
-```{r cancer-subtypes}
+```{r cancer-subtypes, eval = online_examples}
 getOncotreeTumorTypes()
 ```
 

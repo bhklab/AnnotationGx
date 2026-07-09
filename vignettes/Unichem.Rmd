@@ -2,7 +2,9 @@
 title: "Querying Unichem Database"
 author: 
   - name: Jermiah Joseph, Shahzada Muhammad Shameel Farooq, and Christopher Eeles
-output: rmarkdown::html_vignette 
+output:
+  BiocStyle::html_document:
+    toc: true
 vignette: >
   %\VignetteIndexEntry{Querying Unichem Database}
   %\VignetteEngine{knitr::rmarkdown}
@@ -15,6 +17,7 @@ knitr::opts_chunk$set(
   comment = "#>",
   crop = NULL ## Related to https://stat.ethz.ch/pipermail/bioc-devel/2020-April/016656.html
 )
+online_examples <- nzchar(Sys.getenv("ANNOTATIONGX_RUN_ONLINE_EXAMPLES"))
 ```
 
 
@@ -56,7 +59,7 @@ By default, just the database shortname ("Name") and UniChem's ID for it
 ("SourceID") columns are returned.
 To return all columns, pass the `all_columns = TRUE` argument 
 
-```{r unichem-sources}
+```{r unichem-sources, eval = online_examples}
 getUnichemSources()
 ```
 
@@ -97,7 +100,7 @@ with the following headings:
 Note: This type of query requires you to know the UniChem Identifier for the 
 compound. 
 
-```{r uci-query}
+```{r uci-query, eval = online_examples}
 queryUnichemCompound(compound = "161671", type = "uci")
 ```
 

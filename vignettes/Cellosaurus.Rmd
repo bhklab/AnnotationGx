@@ -1,6 +1,8 @@
 ---
 title: "Querying Cellosaurus"
-output: rmarkdown::html_vignette
+output:
+  BiocStyle::html_document:
+    toc: true
 vignette: >
   %\VignetteIndexEntry{Querying Cellosaurus}
   %\VignetteEngine{knitr::rmarkdown}
@@ -12,6 +14,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+online_examples <- nzchar(Sys.getenv("ANNOTATIONGX_RUN_ONLINE_EXAMPLES"))
 ```
 
 ## Introduction
@@ -56,23 +59,23 @@ query if needed.
 
 Let's see how we can use this function to map the "HeLa" and "A549" cell line 
 names to the Cellosaurus database. 
-```{r map-hela}
+```{r map-hela, eval = online_examples}
 mapCell2Accession("hela")
 ```
 
-```{r map-a549}
+```{r map-a549, eval = online_examples}
 mapCell2Accession("A549")
 ```
 
 Functionality for mapping multiple cell lines is also supported.
-```{r map-bt474}
+```{r map-bt474, eval = online_examples}
 mapCell2Accession(c("A549", "THIS SHOULD FAIL", "BT474"))
 ```
 
 By default, the function will parse the API responses to return the most common 
 mapping. To return all possible mappings, set `parsed = FALSE`.
 
-```{r parsed}
+```{r parsed, eval = online_examples}
 # parsed
 mapCell2Accession(c("A549", "hela", "BT474"), parsed = TRUE)
 
@@ -85,14 +88,14 @@ mapCell2Accession(c("A549", "hela", "BT474"), parsed = FALSE)
 
 The backend of the function also tries to map any misspellings or synonyms of 
 the cell line names.
-```{r misspellings}
+```{r misspellings, eval = online_examples}
 samples <- c("SK23", "SJCRH30")
 mapCell2Accession(samples)
 ```
 
 If some cell lines still cannot be found, there is an additional parameter for 
 fuzzy searching.
-```{r fuzzy}
+```{r fuzzy, eval = online_examples}
 # No fuzzy
 mapCell2Accession("DOR 13")
 
@@ -115,7 +118,7 @@ the desired fields.
 By default the function will try to map to 
 `"id", "ac", "hi", "sy", "ca", "sx", "ag", "di", "derived-from-site", "misspelling", "dt"`
 
-```{r annotate}
+```{r annotate, eval = online_examples}
 # Annotate the A549 cell line
 mappedAccessions <- mapCell2Accession("A549")
 
