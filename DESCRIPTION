@@ -1,7 +1,7 @@
 Package: AnnotationGx
 Title: AnnotationGx: A package for building, updating and querying an
     annotation database for pharmaco-genomic data
-Version: 0.99.9
+Version: 0.99.10
 Authors@R: c(
     person("Michael", "Tran", role = c("aut"),
         email = "michaelcao-anh.tran@uhn.ca"),
