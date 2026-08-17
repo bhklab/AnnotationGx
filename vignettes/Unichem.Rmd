@@ -17,7 +17,19 @@ knitr::opts_chunk$set(
   comment = "#>",
   crop = NULL ## Related to https://stat.ethz.ch/pipermail/bioc-devel/2020-April/016656.html
 )
-online_examples <- nzchar(Sys.getenv("ANNOTATIONGX_RUN_ONLINE_EXAMPLES"))
+
+run_unichem_example <- function(expr) {
+  tryCatch(
+    expr,
+    error = function(error) {
+      message(
+        "UniChem is temporarily unavailable: ",
+        conditionMessage(error)
+      )
+      NULL
+    }
+  )
+}
 ```
 
 
@@ -59,8 +71,8 @@ By default, just the database shortname ("Name") and UniChem's ID for it
 ("SourceID") columns are returned.
 To return all columns, pass the `all_columns = TRUE` argument 
 
-```{r unichem-sources, eval = online_examples}
-getUnichemSources()
+```{r unichem-sources}
+run_unichem_example(getUnichemSources())
 ```
 
 When mapping using the `queryUnichemCompound` function, these are the sources 
@@ -100,8 +112,10 @@ with the following headings:
 Note: This type of query requires you to know the UniChem Identifier for the 
 compound. 
 
-```{r uci-query, eval = online_examples}
-queryUnichemCompound(compound = "161671", type = "uci")
+```{r uci-query}
+run_unichem_example(
+  queryUnichemCompound(compound = "161671", type = "uci")
+)
 ```
 
 

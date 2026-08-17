@@ -162,6 +162,8 @@ FilterInfo <- R6::R6Class(
     isHidden = NULL,
     #' @field values Possible values for the filter if it has a fixed/enumerated set of options
     values = NULL,
+    #' @field value Selected value or values to use in a BioMart query
+    value = NULL,
 
     #' @description
     #' Initialize a new FilterInfo object
@@ -172,6 +174,7 @@ FilterInfo <- R6::R6Class(
     #' @param type Character, the data type of the filter (e.g., "string", "boolean")
     #' @param isHidden Logical, whether the filter should be hidden in UIs
     #' @param values List or vector, possible values for the filter if applicable
+    #' @param value Character or vector, selected value or values for a query
     #' @return A new FilterInfo object
     initialize = function(
       name,
@@ -179,7 +182,8 @@ FilterInfo <- R6::R6Class(
       description = NULL,
       type = NULL,
       isHidden = NULL,
-      values = NULL
+      values = NULL,
+      value = NULL
     ) {
       self$name <- name
       self$displayName <- displayName
@@ -187,6 +191,7 @@ FilterInfo <- R6::R6Class(
       self$type <- type
       self$isHidden <- isHidden
       self$values <- values
+      self$value <- value
     },
 
     #' @description

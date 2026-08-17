@@ -19,7 +19,6 @@ knitr::opts_chunk$set(
   comment = "#>",
   crop = NULL
 )
-online_examples <- nzchar(Sys.getenv("ANNOTATIONGX_RUN_ONLINE_EXAMPLES"))
 ```
 
 # Introduction
@@ -85,7 +84,7 @@ mapCell2Accession(c("A549", "BT474"), query_only = TRUE)
 
 Run the query when an internet connection is available:
 
-```{r cellosaurus-online, eval = online_examples}
+```{r cellosaurus-online}
 mapCell2Accession(c("A549", "BT474"))
 ```
 
@@ -97,13 +96,13 @@ mapCompound2CID(c("erlotinib", "paclitaxel"), query_only = TRUE)
 
 Run the PubChem query when online examples are enabled:
 
-```{r pubchem-online, eval = online_examples}
+```{r pubchem-online}
 mapCompound2CID(c("erlotinib", "paclitaxel"), first = TRUE)
 ```
 
 Map a PubChem CID to selected computed properties:
 
-```{r pubchem-properties, eval = online_examples}
+```{r pubchem-properties}
 mapCID2Properties(
   ids = c(176870, 36314),
   properties = c("Title", "MolecularFormula", "InChIKey")

@@ -14,7 +14,6 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-online_examples <- nzchar(Sys.getenv("ANNOTATIONGX_RUN_ONLINE_EXAMPLES"))
 ```
 
 # Introduction to PubChem APIs
@@ -58,14 +57,14 @@ library(AnnotationGx)
 
 The main function that is provided by the package is `mapCompound2CID`. 
 
-```{r aspirin-cid, eval = online_examples}
+```{r aspirin-cid}
 mapCompound2CID("aspirin")
 ```
 
 You can pass in a list of compound names to get the CIDs for all of them at 
 once.
 
-```{r multi-cid, eval = online_examples}
+```{r multi-cid}
 drugs <- c(
   "Aspirin",
   "Erlotinib",
@@ -84,14 +83,14 @@ the first entry has the highest similarity to the requested drug. To subset
 to only the first occurrence of each of drug name use the `first = TRUE` 
 argument:
 
-```{r multi-cid-first, eval = online_examples}
+```{r multi-cid-first}
 mapCompound2CID(drugs, first = TRUE)
 ```
 
 In the case that a compound cannot be mapped, `NA` will be returned and a 
 warning will be issued.
 
-```{r missing-cid, eval = online_examples}
+```{r missing-cid}
 (result <- mapCompound2CID(
   c(drugs, "non existent compound", "another bad compound"),
   first = TRUE
@@ -112,14 +111,14 @@ Once CIDs are obtained, they can be used to query the properties of the compound
 To view the available properties from Pubchem, use the `getPubchemProperties` 
 function.
 
-```{r pubchem-properties, eval = online_examples}
+```{r pubchem-properties}
 getPubchemProperties()
 ```
 
 After deciding which properties to query, you can use the `mapCID2Properties` 
 function to get the properties for a specific CID.
 
-```{r single-cid, eval = online_examples}
+```{r single-cid}
 properties <- c("Title", "MolecularFormula", "InChIKey", "MolecularWeight")
 
 # Need to remove NA values from the query as they will cause an error
@@ -138,25 +137,25 @@ annotation headings and types.
 
 ### Get ALL available annotation headings:
 
-```{r annotation-headings, eval = online_examples}
+```{r annotation-headings}
 getPubchemAnnotationHeadings()
 ```
   
 ### Get annotation headings for a specific type:
 
-```{r headings-by-type, eval = online_examples}
+```{r headings-by-type}
 getPubchemAnnotationHeadings(type = "Compound")
 ```
 
 ### Get annotation headings for a specific heading:
 
-```{r headings-by-heading, eval = online_examples}
+```{r headings-by-heading}
 getPubchemAnnotationHeadings(heading = "ChEMBL ID")
 ```
 
 ### Get annotation headings for a specific type **and** heading:
 
-```{r headings-by-type-heading, eval = online_examples}
+```{r headings-by-type-heading}
 getPubchemAnnotationHeadings(type = "Compound", heading = "CAS")
 ```
 
@@ -164,7 +163,7 @@ getPubchemAnnotationHeadings(type = "Compound", heading = "CAS")
 
 We can then use the heading to query the annotations for a specific CID.
 
-```{r single-cid-annotations, eval = online_examples}
+```{r single-cid-annotations}
 result[!is.na(cids), CAS := annotatePubchemCompound(cids, "CAS")]
 result
 ```

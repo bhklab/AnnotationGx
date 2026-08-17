@@ -14,7 +14,6 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-online_examples <- nzchar(Sys.getenv("ANNOTATIONGX_RUN_ONLINE_EXAMPLES"))
 ```
 
 # Introduction
@@ -56,14 +55,14 @@ three types of information:
 ## OncoTree release versions
 
 The `getOncotreeVersions` function retrieves the available OncoTree release.
-```{r oncotree-versions, eval = online_examples}
+```{r oncotree-versions}
 getOncotreeVersions()
 ```
 
 ## Main Cancer types
 
 The `getMainCancerTypes` function retrieves the main cancer types in OncoTree.
-```{r main-cancer-types, eval = online_examples}
+```{r main-cancer-types}
 getOncotreeMainTypes()
 ```
 
@@ -71,7 +70,7 @@ getOncotreeMainTypes()
 
 The `getCancerSubtypes` function retrieves the subtypes of a specific cancer 
 type.
-```{r cancer-subtypes, eval = online_examples}
+```{r cancer-subtypes}
 getOncotreeTumorTypes()
 ```
 
